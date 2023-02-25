@@ -71,6 +71,9 @@ fastify.listen({ port: 3000 }, async (err, adddress) => {
     fastify.log.error(err);
     process.exit(1);
   }
+
+  await fastify.ready();
+  fastify.swagger();
 });
 
 fastify.setErrorHandler(async (error, request, reply) => {

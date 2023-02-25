@@ -1,7 +1,13 @@
 import { Owner } from "@prisma/client";
 import { FastifyPluginOptions } from "fastify";
 import FastifyTypebox from "../types/fastify";
-import { CreateOwnerOpts, TOwnerIn } from "../types/owner";
+import {
+  CreateOwnerOpts,
+  LoginOwnerOpts,
+  TLoginPropsIn,
+  TLoginTokenOut,
+  TOwnerIn,
+} from "../types/owner";
 
 function ownerPlugin(
   fastify: FastifyTypebox,
@@ -9,9 +15,33 @@ function ownerPlugin(
   next: Function
 ) {
   fastify.post<{
+    Body: TLoginPropsIn;
+    Reply: TLoginTokenOut | { message: string };
+  }>("/login", LoginOwnerOpts, async function (req, reply) {
+    const owner = await fastify.prisma.owner.findUnique({
+      where: {
+        email: req.body.email,
+      },
+    });
+    if (!owner) {
+      reply.code(404).send({ message: "User not found" });
+      return;
+    }
+    const isPasswordValid = await fastify.comparePassword(
+      req.body.password,
+      owner.password
+    );
+    if (!isPasswordValid) {
+      reply.code(401).send({ message: "Invalid credentials" });
+    }
+    const token = fastify.jwt.sign({ id: owner.id });
+    reply.code(200).send({ token });
+  });
+
+  fastify.post<{
     Body: TOwnerIn;
     Reply: Owner;
-  }>("/", CreateOwnerOpts, async function (req, reply) {
+  }>("/register", CreateOwnerOpts, async function (req, reply) {
     const hashedPassword = await fastify.hashPassword(req.body.password);
 
     const userWithHashedPassword = {

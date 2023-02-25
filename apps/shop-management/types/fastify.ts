@@ -7,12 +7,12 @@ import {
 } from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
 
 declare module "fastify" {
   interface FastifyInstance {
     prisma: PrismaClient;
     hashPassword: (password: string) => Promise<string>;
+    comparePassword: (password: string, hash: string) => Promise<boolean>;
   }
 }
 

@@ -11,7 +11,7 @@ async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
         description: "This is a fastify API docs for managing users",
         version: "1.0.0",
       },
-      host: "localhost:3000",
+      host: "http://localhost:3000",
       schemes: ["http"],
       consumes: ["application/json"],
       produces: ["application/json"],
