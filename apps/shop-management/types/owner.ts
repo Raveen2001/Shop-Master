@@ -1,6 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
-import { RouteOptions, RouteShorthandOptions } from "fastify";
-import { StatusCode401 } from "./common";
+import { RouteShorthandOptions } from "fastify";
 
 export const OwnerSchema = Type.Object({
   id: Type.Number(),
@@ -24,7 +23,6 @@ export const CreateOwnerOpts: RouteShorthandOptions = {
     body: Type.Omit(OwnerSchema, ["id", "createdAt", "updatedAt"]),
     response: {
       201: Type.Omit(OwnerSchema, ["password"]),
-      401: StatusCode401,
     },
   },
 };

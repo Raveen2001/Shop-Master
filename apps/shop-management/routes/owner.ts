@@ -10,10 +10,8 @@ function ownerPlugin(
 ) {
   fastify.post<{
     Body: TOwnerIn;
-    // Reply: TOwnerOut;
-  }>("/", CreateOwnerOpts, (req, reply) => {
-    reply.status(201).send(req.body);
-  });
+    Reply: TOwnerOut;
+  }>("/", CreateOwnerOpts, (req, reply) => {});
   next();
 }
 
