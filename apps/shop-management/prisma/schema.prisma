@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Owner {
+  id        BigInt     @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String     @unique
+  password  String
+  image     String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  employees Employee[]
+  shop      Shop       @relation(fields: [shopId], references: [id])
+  shopId    BigInt     @unique
+}
+
+model Shop {
+  id          BigInt     @id @default(autoincrement())
+  name        String
+  address     String
+  phone       String
+  email       String?
+  website     String?
+  description String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  image       String[]
+  Owner       Owner?
+  Employee    Employee[]
+}
+
+model Employee {
+  id        BigInt        @id @default(autoincrement())
+  username  String        @unique
+  phone     String
+  password  String
+  image     String
+  address   String
+  type      EMPLOYEE_TYPE
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  owner     Owner         @relation(fields: [ownerId], references: [id])
+  ownerId   BigInt
+  shop      Shop          @relation(fields: [shopId], references: [id])
+  shopId    BigInt
+}
+
+enum EMPLOYEE_TYPE {
+  MANAGER
+  CASHIER
+  ACCOUNTANT
+  SALESMAN
+  DELIVERY_PERSON
+  PARCEL_COUNTER_DEVICE
+  BILLING_DEVICE
+}
