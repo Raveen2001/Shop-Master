@@ -1,22 +1,68 @@
 import Fastify from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import FastifyTypebox from "./types/fastify.type";
-import authPlugin from "./routes/auth";
+import FastifyHelmet from "@fastify/helmet";
+import FastifyCors from "@fastify/cors";
+import FastifyRateLimit from "@fastify/rate-limit";
+import FastifyAuth from "@fastify/auth";
+import FastifyJwt from "@fastify/jwt";
 
-import SwaggerPlugin from "./swagger";
+import FastifyTypebox from "./types/fastify";
+
+import SwaggerPlugin from "./plugins/swagger";
+import PrismaPlugin from "./plugins/prisma";
+
+import OwnerPlugin from "./routes/owner";
+import ShopPlugin from "./routes/shop";
+import EmployeePlugin from "./routes/employee";
 
 const fastify: FastifyTypebox = Fastify({
-  logger: true,
+  logger: {
+    transport: {
+      target: "@fastify/one-line-logger",
+    },
+  },
 }).withTypeProvider<TypeBoxTypeProvider>();
 
-fastify.get("/ping", async (request, reply) => {
-  return "pong";
+// register rate limit
+fastify.register(FastifyRateLimit, {
+  max: 100,
+  timeWindow: "1 minute",
+});
+
+// register helmet
+fastify.register(FastifyHelmet);
+
+// register cors
+fastify.register(FastifyCors, {
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 });
 
 // register swagger
 fastify.register(SwaggerPlugin);
 
-fastify.register(authPlugin, { prefix: "/auth" });
+// register prisma
+fastify.register(PrismaPlugin);
+
+// register jwt
+fastify.register(FastifyJwt, {
+  secret: "secret",
+});
+
+// register auth
+// TODO: create a auth plugin
+fastify.register(FastifyAuth);
+
+// health check endpoint
+fastify.get("/ping", async (request, reply) => {
+  return "pong";
+});
+
+// register routes
+fastify.register(OwnerPlugin, { prefix: "/owner" });
+fastify.register(ShopPlugin, { prefix: "/shop" });
+fastify.register(EmployeePlugin, { prefix: "/employee" });
 
 // start the server
 fastify.listen({ port: 3000 }, async (err, adddress) => {
@@ -24,7 +70,10 @@ fastify.listen({ port: 3000 }, async (err, adddress) => {
     fastify.log.error(err);
     process.exit(1);
   }
-  await fastify.ready();
-  fastify.swagger();
-  console.log(`Server listening on ${adddress}`);
+});
+
+fastify.addHook("onClose", async (instance, done) => {
+  console.log("closing prisma connection");
+  await instance.prisma.$disconnect();
+  done();
 });

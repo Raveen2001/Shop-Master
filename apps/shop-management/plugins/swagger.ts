@@ -1,5 +1,5 @@
 import FastifyPlugin from "fastify-plugin";
-import FastifyTypebox from "./types/fastify.type";
+import FastifyTypebox from "../types/fastify";
 import FastifySwagger from "@fastify/swagger";
 import FastifySwaggerUi from "@fastify/swagger-ui";
 

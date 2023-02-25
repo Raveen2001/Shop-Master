@@ -2,19 +2,27 @@
   "name": "shop-management",
   "version": "1.0.0",
   "description": "",
-  "main": "sever.ts",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node sever.ts",
-    "dev": "nodemon server.ts"
+    "start": "node server.ts",
+    "dev": "nodemon server.ts",
+    "studio": "prisma studio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/auth": "^4.2.0",
+    "@fastify/cors": "^8.2.0",
+    "@fastify/helmet": "^10.1.0",
+    "@fastify/jwt": "^6.6.0",
+    "@fastify/one-line-logger": "^1.1.1",
+    "@fastify/rate-limit": "^7.6.0",
     "@fastify/swagger": "^8.3.1",
     "@fastify/swagger-ui": "^1.4.0",
     "@fastify/type-provider-typebox": "^2.4.0",
+    "@prisma/client": "^4.10.1",
     "@sinclair/typebox": "^0.25.24",
     "fastify": "^4.13.0",
     "fastify-plugin": "^4.5.0"
@@ -22,8 +30,9 @@
   "devDependencies": {
     "@types/node": "18.13.0",
     "nodemon": "^2.0.20",
-    "prisma": "^4.10.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.5"
+    "prisma": "^4.10.1"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }
