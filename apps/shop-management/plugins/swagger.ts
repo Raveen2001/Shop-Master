@@ -15,7 +15,12 @@ async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
       schemes: ["http"],
       consumes: ["application/json"],
       produces: ["application/json"],
-      tags: [{ name: "Auth", description: "This is auth related endpoints" }],
+      tags: [
+        {
+          name: "Owner",
+          description: "This has all the endpoints related to owners",
+        },
+      ],
     },
   });
 

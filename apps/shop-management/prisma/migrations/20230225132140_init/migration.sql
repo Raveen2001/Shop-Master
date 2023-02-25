@@ -8,10 +8,9 @@ CREATE TABLE "Owner" (
     "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
+    "image" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "shopId" BIGINT NOT NULL,
 
     CONSTRAINT "Owner_pkey" PRIMARY KEY ("id")
 );
@@ -28,6 +27,7 @@ CREATE TABLE "Shop" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "image" TEXT[],
+    "ownerId" BIGINT NOT NULL,
 
     CONSTRAINT "Shop_pkey" PRIMARY KEY ("id")
 );
@@ -53,13 +53,13 @@ CREATE TABLE "Employee" (
 CREATE UNIQUE INDEX "Owner_email_key" ON "Owner"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Owner_shopId_key" ON "Owner"("shopId");
+CREATE UNIQUE INDEX "Shop_ownerId_key" ON "Shop"("ownerId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Employee_username_key" ON "Employee"("username");
 
 -- AddForeignKey
-ALTER TABLE "Owner" ADD CONSTRAINT "Owner_shopId_fkey" FOREIGN KEY ("shopId") REFERENCES "Shop"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Shop" ADD CONSTRAINT "Shop_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "Owner"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Employee" ADD CONSTRAINT "Employee_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "Owner"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
