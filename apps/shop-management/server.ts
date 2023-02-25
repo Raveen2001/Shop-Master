@@ -10,6 +10,7 @@ import FastifyTypebox from "./types/fastify";
 
 import SwaggerPlugin from "./plugins/swagger";
 import PrismaPlugin from "./plugins/prisma";
+import AuthPlugin from "./plugins/auth";
 
 import OwnerPlugin from "./routes/owner";
 import ShopPlugin from "./routes/shop";
@@ -51,7 +52,7 @@ fastify.register(FastifyJwt, {
 });
 
 // register auth
-// TODO: create a auth plugin
+fastify.register(AuthPlugin);
 fastify.register(FastifyAuth);
 
 // health check endpoint
@@ -70,6 +71,11 @@ fastify.listen({ port: 3000 }, async (err, adddress) => {
     fastify.log.error(err);
     process.exit(1);
   }
+});
+
+fastify.setErrorHandler(async (error, request, reply) => {
+  console.error(error);
+  reply.status(400).send({ error: error.message.split("\n").at(-1) });
 });
 
 fastify.addHook("onClose", async (instance, done) => {

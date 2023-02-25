@@ -2,14 +2,14 @@ import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 
 export const OwnerSchema = Type.Object({
-  id: Type.Number(),
-  name: Type.String(),
-  phone: Type.String(),
-  email: Type.String(),
-  password: Type.String(),
-  image: Type.Optional(Type.String()),
+  id: Type.String(),
+  name: Type.String({ minLength: 3, maxLength: 50 }),
+  phone: Type.String({ minLength: 10, maxLength: 10 }),
+  email: Type.String({ format: "email" }),
+  password: Type.String({ minLength: 8 }),
+  image: Type.Union([Type.String(), Type.Null()]),
   createdAt: Type.String({ format: "date-time" }),
-  updatedAt: Type.String({ format: "date" }),
+  updatedAt: Type.String({ format: "date-time" }),
 });
 
 export type TOwner = Static<typeof OwnerSchema>;
