@@ -20,8 +20,7 @@ model Owner {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   employees Employee[]
-  shop      Shop       @relation(fields: [shopId], references: [id])
-  shopId    BigInt     @unique
+  shop      Shop?
 }
 
 model Shop {
@@ -35,7 +34,8 @@ model Shop {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   image       String[]
-  Owner       Owner?
+  Owner       Owner      @relation(fields: [ownerId], references: [id])
+  ownerId     BigInt     @unique
   Employee    Employee[]
 }
 
