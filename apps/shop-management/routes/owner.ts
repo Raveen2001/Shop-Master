@@ -1,12 +1,8 @@
 import { Owner } from "@prisma/client";
 import { FastifyPluginOptions } from "fastify";
-import {
-  TLoginWithEmailIn,
-  TLoginTokenOut,
-  LoginWithEmailOpts,
-} from "../types/auth";
+import { TLoginWithEmailIn, TLoginTokenOut } from "../types/auth";
 import FastifyTypebox from "../types/fastify";
-import { CreateOwnerOpts, TOwnerIn } from "../types/owner";
+import { CreateOwnerOpts, LoginOwnerOpts, TOwnerIn } from "../types/owner";
 
 function ownerPlugin(
   fastify: FastifyTypebox,
@@ -16,7 +12,7 @@ function ownerPlugin(
   fastify.post<{
     Body: TLoginWithEmailIn;
     Reply: TLoginTokenOut | { message: string };
-  }>("/login", LoginWithEmailOpts, async function (req, reply) {
+  }>("/login", LoginOwnerOpts, async function (req, reply) {
     const owner = await fastify.prisma.owner.findUnique({
       where: {
         email: req.body.email,

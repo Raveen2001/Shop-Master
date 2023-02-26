@@ -1,5 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
+import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
 
 export const OwnerSchema = Type.Object({
   id: Type.String(),
@@ -21,11 +22,23 @@ export type TOwnerIn = Omit<TOwner, "id" | "createdAt" | "updatedAt">;
 
 export const CreateOwnerOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Owner"],
+    tags: ["Owner", "Auth"],
     summary: "Create a new owner",
     body: Type.Omit(OwnerSchema, ["id", "createdAt", "updatedAt"]),
     response: {
       201: OwnerSchemaOut,
+    },
+  },
+};
+
+export const LoginOwnerOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Owner", "Auth"],
+    summary: "Login with email and password",
+
+    body: LoginWithEmailPropsSchema,
+    response: {
+      200: LoginTokenSchema,
     },
   },
 };

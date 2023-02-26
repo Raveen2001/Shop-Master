@@ -16,8 +16,21 @@ const swaggerOptions: SwaggerOptions = {
     produces: ["application/json"],
     tags: [
       {
+        name: "Auth",
+        description:
+          "This has all the endpoints related to user authentiocation",
+      },
+      {
         name: "Owner",
         description: "This has all the endpoints related to owners",
+      },
+      {
+        name: "Shop",
+        description: "This has all the endpoints related to shops",
+      },
+      {
+        name: "Employee",
+        description: "This has all the endpoints related to Employees",
       },
     ],
 
