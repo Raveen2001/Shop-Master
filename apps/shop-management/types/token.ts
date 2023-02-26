@@ -1,5 +1,5 @@
 import { RouteShorthandOptions } from "fastify";
-import { LoginTokenSchema } from "./owner";
+import { LoginTokenSchema } from "./auth";
 
 export const TokenRefreshOpt: RouteShorthandOptions = {
   schema: {

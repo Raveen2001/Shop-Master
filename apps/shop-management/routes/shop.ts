@@ -9,6 +9,10 @@ function shopPlugin(
   fastify.get("/", (req, reply) => {
     reply.send("hello");
   });
+
+  fastify.post("/", (req, reply) => {
+    reply.send("hello");
+  });
   next();
 }
 
