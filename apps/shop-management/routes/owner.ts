@@ -34,7 +34,7 @@ function ownerPlugin(
     if (!isPasswordValid) {
       reply.code(401).send({ message: "Invalid credentials" });
     }
-    const token = fastify.jwt.sign({ id: owner.id });
+    const token = fastify.signJwt(owner);
     reply.code(200).send({ token });
   });
 

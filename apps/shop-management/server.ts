@@ -13,6 +13,7 @@ import PrismaPlugin from "./plugins/prisma";
 import AuthPlugin from "./plugins/auth";
 
 import OwnerPlugin from "./routes/owner";
+import TokenPlugin from "./routes/token";
 import ShopPlugin from "./routes/shop";
 import EmployeePlugin from "./routes/employee";
 
@@ -61,6 +62,7 @@ fastify.get("/ping", async (request, reply) => {
 });
 
 // register routes
+fastify.register(TokenPlugin);
 fastify.register(OwnerPlugin, { prefix: "/owner" });
 fastify.register(ShopPlugin, { prefix: "/shop" });
 fastify.register(EmployeePlugin, { prefix: "/employee" });
@@ -71,9 +73,6 @@ fastify.listen({ port: 3000 }, async (err, adddress) => {
     fastify.log.error(err);
     process.exit(1);
   }
-
-  await fastify.ready();
-  fastify.swagger();
 });
 
 fastify.setErrorHandler(async (error, request, reply) => {

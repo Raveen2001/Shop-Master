@@ -13,6 +13,8 @@ declare module "fastify" {
     prisma: PrismaClient;
     hashPassword: (password: string) => Promise<string>;
     comparePassword: (password: string, hash: string) => Promise<boolean>;
+    signJwt: (payload: any) => string;
+    refreshJwt: (token: string) => Promise<string>;
   }
 }
 
