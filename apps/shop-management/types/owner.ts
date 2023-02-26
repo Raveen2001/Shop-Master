@@ -9,14 +9,15 @@ export const OwnerSchema = Type.Object({
   password: Type.String({
     minLength: 8,
   }),
-  image: Type.Optional(Type.String()),
+  image: Type.Optional(Type.String({ format: "uri" })),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
 });
 
+export const OwnerSchemaOut = Type.Omit(OwnerSchema, ["password"]);
+
 export type TOwner = Static<typeof OwnerSchema>;
 export type TOwnerIn = Omit<TOwner, "id" | "createdAt" | "updatedAt">;
-export type TOwnerOut = Omit<TOwner, "password">;
 
 export const CreateOwnerOpts: RouteShorthandOptions = {
   schema: {
@@ -24,7 +25,7 @@ export const CreateOwnerOpts: RouteShorthandOptions = {
     summary: "Create a new owner",
     body: Type.Omit(OwnerSchema, ["id", "createdAt", "updatedAt"]),
     response: {
-      201: Type.Omit(OwnerSchema, ["password"]),
+      201: OwnerSchemaOut,
     },
   },
 };
