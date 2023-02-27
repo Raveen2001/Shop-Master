@@ -43,11 +43,17 @@ function shopPlugin(
   });
 
   fastify.post<{
+    Querystring: TShopQueryString;
     Body: Shop;
-    Reply: Shop;
+    Reply: Shop & { owner: Owner; employees: Employee[] };
   }>("/", CreateShopOpts, async function (req, reply) {
+    const { includeOwner, includeEmployees } = req.query;
     const shop = await fastify.prisma.shop.create({
       data: req.body,
+      include: {
+        owner: includeOwner,
+        employees: includeEmployees,
+      },
     });
 
     reply.code(201).send(shop);
@@ -57,25 +63,28 @@ function shopPlugin(
   fastify.get<{
     Params: TShopQueryParam;
     Querystring: TShopQueryString;
-    Reply: Shop[] | { message: string };
+    Reply:
+      | (Shop & { owner: Owner; employees: Employee[] })[]
+      | { message: string };
   }>("/owner/:id", QueryShopByOwnerOpts, async function (req, reply) {
-    const shop = await fastify.prisma.shop.findMany({
+    const { includeOwner, includeEmployees } = req.query;
+    const shops = await fastify.prisma.shop.findMany({
       where: {
         ownerId: req.params.id,
       },
 
       include: {
-        owner: req.query.includeOwner,
-        employees: req.query.includeEmployees,
+        owner: includeOwner,
+        employees: includeEmployees,
       },
     });
 
-    if (!shop) {
+    if (!shops) {
       reply.code(404).send({ message: "Shop not found" });
       return;
     }
 
-    reply.code(200).send(shop);
+    reply.code(200).send(shops);
   });
 
   next();
