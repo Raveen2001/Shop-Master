@@ -12,7 +12,7 @@ export const EmployeeSchema = Type.Object({
   image: Type.Optional(Type.String({ format: "uri" })),
   email: Type.Optional(Type.String({ format: "email" })),
   address: Type.String({ minLength: 3 }),
-  type: Type.String({ enum: EMPLOYEE_TYPE }),
+  type: Type.String({ enum: Object.values(EMPLOYEE_TYPE) }),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
   ownerId: Type.String(),
@@ -98,9 +98,10 @@ export const QueryEmployeesByShopOpts: RouteShorthandOptions = {
 
 export const CreateEmployeeOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Shop"],
-    summary: "Create a new shop",
+    tags: ["Employee"],
+    summary: "Create a new employee",
     body: EmployeeSchemaIn,
+    querystring: EmployeeQueryStringSchema,
     response: {
       201: EmployeeSchemaOut,
     },

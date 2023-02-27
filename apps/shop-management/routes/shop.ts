@@ -79,7 +79,7 @@ function shopPlugin(
       },
     });
 
-    if (!shops) {
+    if (shops.length === 0) {
       reply.code(404).send({ message: "Shop not found" });
       return;
     }

@@ -57,7 +57,7 @@ export type TShopQueryString = Static<typeof ShopQueryStringSchema>;
 export const QueryShopOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Shop"],
-    summary: "Get a shop by shop_id",
+    summary: "Get shop by shop_id",
     params: ShopQueryParamSchema,
     querystring: ShopQueryStringSchema,
     response: {
@@ -69,7 +69,7 @@ export const QueryShopOpts: RouteShorthandOptions = {
 export const QueryShopByOwnerOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Shop"],
-    summary: "Get a shop by owner_id",
+    summary: "Get shops by owner_id",
     params: ShopQueryParamSchema,
     querystring: ShopQueryStringSchema,
     response: {
@@ -83,6 +83,7 @@ export const CreateShopOpts: RouteShorthandOptions = {
     tags: ["Shop"],
     summary: "Create a new shop",
     body: ShopSchemaIn,
+    querystring: ShopQueryStringSchema,
     response: {
       201: ShopSchemaOut,
     },
