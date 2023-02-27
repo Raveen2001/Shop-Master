@@ -2,13 +2,21 @@ import { Owner } from "@prisma/client";
 import { FastifyPluginOptions } from "fastify";
 import { TLoginWithEmailIn, TLoginTokenOut } from "../types/auth";
 import FastifyTypebox from "../types/fastify";
-import { CreateOwnerOpts, LoginOwnerOpts, TOwnerIn } from "../types/owner";
+import {
+  CreateOwnerOpts,
+  LoginOwnerOpts,
+  QueryOwnerOpts,
+  TOwnerIn,
+  TOwnerQueryParam,
+  TOwnerQueryString,
+} from "../types/owner";
 
 function ownerPlugin(
   fastify: FastifyTypebox,
   options: FastifyPluginOptions,
   next: Function
 ) {
+  // Login as owner
   fastify.post<{
     Body: TLoginWithEmailIn;
     Reply: TLoginTokenOut | { message: string };
@@ -33,8 +41,9 @@ function ownerPlugin(
     reply.code(200).send({ token });
   });
 
+  // Register as owner
   fastify.post<{
-    Body: TOwnerIn;
+    Body: Owner;
     Reply: Owner;
   }>("/register", CreateOwnerOpts, async function (req, reply) {
     const hashedPassword = await fastify.hashPassword(req.body.password);
@@ -49,6 +58,31 @@ function ownerPlugin(
     });
 
     reply.code(201).send(user);
+  });
+
+  // get owner by id
+  fastify.get<{
+    Params: TOwnerQueryParam;
+    Querystring: TOwnerQueryString;
+    Reply: Owner | { message: string };
+  }>("/:id", QueryOwnerOpts, async function (req, reply) {
+    const owner = await fastify.prisma.owner.findUnique({
+      where: {
+        id: req.params.id,
+      },
+
+      include: {
+        shops: req.query.includeShops,
+        employees: req.query.includeEmployees,
+      },
+    });
+
+    if (!owner) {
+      reply.code(404).send({ message: "Owner not found" });
+      return;
+    }
+
+    reply.code(200).send(owner);
   });
 
   next();

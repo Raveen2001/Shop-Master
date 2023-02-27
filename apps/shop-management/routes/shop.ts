@@ -30,7 +30,7 @@ function shopPlugin(
 
       include: {
         owner: req.query.includeOwner,
-        employees: req.query.includeEmployee,
+        employees: req.query.includeEmployees,
       },
     });
 
@@ -66,7 +66,7 @@ function shopPlugin(
 
       include: {
         owner: req.query.includeOwner,
-        employees: req.query.includeEmployee,
+        employees: req.query.includeEmployees,
       },
     });
 
