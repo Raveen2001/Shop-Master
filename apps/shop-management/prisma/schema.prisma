@@ -46,6 +46,7 @@ model Employee {
   password  String
   image     String
   address   String
+  email     String?
   type      EMPLOYEE_TYPE
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt

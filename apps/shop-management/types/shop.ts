@@ -1,6 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
-import { OwnerSchema, OwnerSchemaOut, OwnerSchemaDependency } from "./owner";
+import { OwnerSchemaDependency } from "./owner";
 
 export const ShopSchema = Type.Object({
   id: Type.String(),
