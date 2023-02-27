@@ -1,8 +1,9 @@
-import { Shop } from "@prisma/client";
+import { Employee, Owner, Shop } from "@prisma/client";
 import { FastifyPluginOptions } from "fastify";
 import FastifyTypebox from "../types/fastify";
 import {
   CreateShopOpts,
+  QueryShopByOwnerOpts,
   QueryShopOpts,
   TShopIn,
   TShopQueryParam,
@@ -18,6 +19,9 @@ function shopPlugin(
   fastify.get<{
     Params: TShopQueryParam;
     Querystring: TShopQueryString;
+    Reply:
+      | (Shop & { owner: Owner; employees: Employee[] })
+      | { message: string };
   }>("/:id", QueryShopOpts, async function (req, reply) {
     const shop = await fastify.prisma.shop.findUnique({
       where: {
@@ -25,8 +29,8 @@ function shopPlugin(
       },
 
       include: {
-        Owner: req.query.includeOwner,
-        Employee: req.query.includeEmployee,
+        owner: req.query.includeOwner,
+        employees: req.query.includeEmployee,
       },
     });
 
@@ -39,7 +43,7 @@ function shopPlugin(
   });
 
   fastify.post<{
-    Body: TShopIn;
+    Body: Shop;
     Reply: Shop;
   }>("/", CreateShopOpts, async function (req, reply) {
     const shop = await fastify.prisma.shop.create({
@@ -48,6 +52,32 @@ function shopPlugin(
 
     reply.code(201).send(shop);
   });
+
+  // get shops by owner id
+  fastify.get<{
+    Params: TShopQueryParam;
+    Querystring: TShopQueryString;
+    Reply: Shop[] | { message: string };
+  }>("/owner/:id", QueryShopByOwnerOpts, async function (req, reply) {
+    const shop = await fastify.prisma.shop.findMany({
+      where: {
+        ownerId: req.params.id,
+      },
+
+      include: {
+        owner: req.query.includeOwner,
+        employees: req.query.includeEmployee,
+      },
+    });
+
+    if (!shop) {
+      reply.code(404).send({ message: "Shop not found" });
+      return;
+    }
+
+    reply.code(200).send(shop);
+  });
+
   next();
 }
 

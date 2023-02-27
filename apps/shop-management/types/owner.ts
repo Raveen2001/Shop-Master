@@ -1,6 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
+import { ShopSchemaOut } from "./shop";
 
 export const OwnerSchema = Type.Object({
   id: Type.String(),
@@ -13,6 +14,7 @@ export const OwnerSchema = Type.Object({
   image: Type.Optional(Type.String({ format: "uri" })),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
+  shops: Type.Array(ShopSchemaOut),
 });
 
 export const OwnerSchemaOut = Type.Omit(OwnerSchema, ["password"]);

@@ -20,7 +20,7 @@ model Owner {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   employees Employee[]
-  shop      Shop?
+  shops     Shop[]
 }
 
 model Shop {
@@ -34,9 +34,9 @@ model Shop {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   image       String[]
-  Owner       Owner      @relation(fields: [ownerId], references: [id])
-  ownerId     String     @unique
-  Employee    Employee[]
+  owner       Owner      @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  employees   Employee[]
 }
 
 model Employee {

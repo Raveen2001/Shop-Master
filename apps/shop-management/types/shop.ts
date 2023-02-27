@@ -15,6 +15,7 @@ export const ShopSchema = Type.Object({
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
   owner: Type.Optional(OwnerSchemaOut),
+  employees: Type.Optional(Type.Array(OwnerSchema)),
 });
 
 export const ShopSchemaIn = Type.Omit(ShopSchema, [
@@ -22,6 +23,7 @@ export const ShopSchemaIn = Type.Omit(ShopSchema, [
   "createdAt",
   "updatedAt",
   "owner",
+  "employees",
 ]);
 export const ShopSchemaOut = Type.Omit(ShopSchema, ["ownerId"]);
 
@@ -43,11 +45,23 @@ export type TShopQueryString = Static<typeof ShopQueryStringSchema>;
 export const QueryShopOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Shop"],
-    summary: "Get a shop by id",
+    summary: "Get a shop by shop_id",
     params: ShopQueryParamSchema,
     querystring: ShopQueryStringSchema,
     response: {
       200: ShopSchemaOut,
+    },
+  },
+};
+
+export const QueryShopByOwnerOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Shop"],
+    summary: "Get a shop by owner_id",
+    params: ShopQueryParamSchema,
+    querystring: ShopQueryStringSchema,
+    response: {
+      200: Type.Array(ShopSchemaOut),
     },
   },
 };
