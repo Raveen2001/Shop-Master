@@ -3,7 +3,7 @@ CREATE TYPE "EMPLOYEE_TYPE" AS ENUM ('MANAGER', 'CASHIER', 'ACCOUNTANT', 'SALESM
 
 -- CreateTable
 CREATE TABLE "Owner" (
-    "id" BIGSERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE "Owner" (
 
 -- CreateTable
 CREATE TABLE "Shop" (
-    "id" BIGSERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
@@ -26,34 +26,32 @@ CREATE TABLE "Shop" (
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "image" TEXT[],
-    "ownerId" BIGINT NOT NULL,
+    "images" TEXT[],
+    "ownerId" TEXT NOT NULL,
 
     CONSTRAINT "Shop_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Employee" (
-    "id" BIGSERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
+    "image" TEXT,
     "address" TEXT NOT NULL,
+    "email" TEXT,
     "type" "EMPLOYEE_TYPE" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "ownerId" BIGINT NOT NULL,
-    "shopId" BIGINT NOT NULL,
+    "ownerId" TEXT NOT NULL,
+    "shopId" TEXT NOT NULL,
 
     CONSTRAINT "Employee_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Owner_email_key" ON "Owner"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Shop_ownerId_key" ON "Shop"("ownerId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Employee_username_key" ON "Employee"("username");
