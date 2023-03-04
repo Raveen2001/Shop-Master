@@ -1,0 +1,13 @@
+services:
+  db:
+    build: 
+      context: ./apps/db
+      dockerfile: Dockerfile
+    image: shop_master_postgres:1.0.0
+    restart: unless-stopped
+    ports:
+      - '5433:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
