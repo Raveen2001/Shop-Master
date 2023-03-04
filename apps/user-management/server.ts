@@ -69,8 +69,7 @@ fastify.register(ShopPlugin, { prefix: "/shop" });
 fastify.register(EmployeePlugin, { prefix: "/employee" });
 
 // start the server
-fastify.listen({ port: 3000 }, async (err, adddress) => {
-  console.log("secret" + secret);
+fastify.listen({ port: 5000 }, async (err, address) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
