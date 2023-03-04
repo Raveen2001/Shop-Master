@@ -3,6 +3,7 @@ import FastifyTypebox from "../types/fastify";
 import FastifySwagger, { SwaggerOptions } from "@fastify/swagger";
 import FastifySwaggerUi from "@fastify/swagger-ui";
 
+const host = process.env["USER_MANAGEMENT_SWAGGER"] as string;
 const swaggerOptions: SwaggerOptions = {
   swagger: {
     info: {
@@ -10,15 +11,15 @@ const swaggerOptions: SwaggerOptions = {
       description: "This is a fastify API docs for managing users",
       version: "1.0.0",
     },
-    host: "localhost:3000",
-    schemes: ["http"],
+    host: host,
+    schemes: ["http", "https"],
     consumes: ["application/json"],
     produces: ["application/json"],
     tags: [
       {
         name: "Auth",
         description:
-          "This has all the endpoints related to user authentiocation",
+          "This has all the endpoints related to user authentication",
       },
       {
         name: "Owner",

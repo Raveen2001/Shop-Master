@@ -1,5 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
+import { EmployeeSchemaDependency } from "./employee";
 import { OwnerSchemaDependency } from "./owner";
 
 export const ShopSchema = Type.Object({
@@ -10,12 +11,12 @@ export const ShopSchema = Type.Object({
   email: Type.Optional(Type.String({ format: "email" })),
   website: Type.Optional(Type.String({ format: "uri" })),
   description: Type.String({ minLength: 3 }),
-  image: Type.Array(Type.String({ format: "uri" })),
+  images: Type.Array(Type.String({ format: "uri" })),
   ownerId: Type.String(),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
   owner: Type.Optional(OwnerSchemaDependency),
-  // employees: Type.Optional(Type.Array(OwnerSchema)),
+  employees: Type.Optional(Type.Array(EmployeeSchemaDependency)),
 });
 
 export const ShopSchemaIn = Type.Omit(ShopSchema, [
@@ -34,7 +35,7 @@ export const ShopSchemaDependency = Type.Object({
   email: Type.Optional(Type.String({ format: "email" })),
   website: Type.Optional(Type.String({ format: "uri" })),
   description: Type.String({ minLength: 3 }),
-  image: Type.Array(Type.String({ format: "uri" })),
+  images: Type.Array(Type.String({ format: "uri" })),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
 });

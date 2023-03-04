@@ -2,9 +2,9 @@
   "configurations": [
     {
       "type": "node-terminal",
-      "name": "Shop Management System",
+      "name": "User Management System",
       "request": "launch",
-      "command": "pnpm run dev",
+      "command": "pnpm run standalone",
       "cwd": "${workspaceFolder}/apps/user-management"
     }
   ]

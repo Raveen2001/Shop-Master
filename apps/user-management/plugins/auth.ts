@@ -20,7 +20,8 @@ async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
   );
 
   fastify.decorate("signJwt", (payload: any): string => {
-    const token = fastify.jwt.sign(payload, { expiresIn: "1h" });
+    const expiresIn = process.env["JWT_EXPIRES_IN"] as string;
+    const token = fastify.jwt.sign(payload, { expiresIn: expiresIn });
     return token;
   });
 

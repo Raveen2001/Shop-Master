@@ -55,6 +55,10 @@ function ownerPlugin(
 
     const user = await fastify.prisma.owner.create({
       data: userWithHashedPassword,
+      include: {
+        shops: true,
+        employees: true,
+      },
     });
 
     reply.code(201).send(user);

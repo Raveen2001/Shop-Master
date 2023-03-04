@@ -69,7 +69,8 @@ fastify.register(ShopPlugin, { prefix: "/shop" });
 fastify.register(EmployeePlugin, { prefix: "/employee" });
 
 // start the server
-fastify.listen({ port: 5000 }, async (err, address) => {
+const port = parseInt(process.env["USER_MANAGEMENT_PORT"] as string);
+fastify.listen({ port: port }, async (err, address) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);

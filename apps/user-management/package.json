@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.ts",
     "dev": "nodemon server.ts",
-    "standalone": "dotenv -e ../../.env -- nodemon server.ts",
+    "standalone": "dotenv -e ../../.env -e .env -- nodemon server.ts",
     "studio": "prisma studio"
   },
   "keywords": [],
