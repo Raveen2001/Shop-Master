@@ -1,7 +1,13 @@
 import { Employee, Owner, Shop } from "@prisma/client";
 import { FastifyPluginOptions } from "fastify";
 import {
+  LoginWithUsernameOpts,
+  TLoginTokenOut,
+  TLoginWithUsernameIn,
+} from "../types/auth";
+import {
   CreateEmployeeOpts,
+  LoginEmployeeOpts,
   QueryEmployeeOpts,
   QueryEmployeesByOwnerOpts,
   QueryEmployeesByShopOpts,
@@ -39,15 +45,46 @@ function EmployeePlugin(
     reply.code(200).send(employee);
   });
 
+  fastify.post<{
+    Body: TLoginWithUsernameIn;
+    Reply: TLoginTokenOut | { message: string };
+  }>("/login", LoginEmployeeOpts, async function (req, reply) {
+    const { username, password } = req.body;
+    const employee = await fastify.prisma.employee.findUnique({
+      where: {
+        username: username,
+      },
+    });
+
+    if (!employee) {
+      reply.code(404).send({ message: "User not found" });
+      return;
+    }
+    const isPasswordValid = await fastify.comparePassword(
+      password,
+      employee.password
+    );
+    if (!isPasswordValid) {
+      reply.code(401).send({ message: "Invalid credentials" });
+    }
+    const token = fastify.signJwt(employee);
+    reply.code(200).send({ token });
+  });
+
   // create employee
   fastify.post<{
     Querystring: TEmployeeQueryString;
     Body: Employee;
     Reply: Employee & { owner: Owner; shop: Shop };
-  }>("/", CreateEmployeeOpts, async function (req, reply) {
+  }>("/register", CreateEmployeeOpts, async function (req, reply) {
     const { includeOwner, includeShop } = req.query;
+    const hashedPassword = await fastify.hashPassword(req.body.password);
+    const employeeWithHashedPassword = {
+      ...req.body,
+      password: hashedPassword,
+    };
     const employee = await fastify.prisma.employee.create({
-      data: req.body,
+      data: employeeWithHashedPassword,
       include: {
         owner: includeOwner,
         shop: includeShop,

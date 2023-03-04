@@ -1,6 +1,7 @@
 import { EMPLOYEE_TYPE } from "@prisma/client";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
+import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
 import { OwnerSchemaDependency } from "./owner";
 import { ShopSchemaDependency } from "./shop";
 
@@ -98,12 +99,24 @@ export const QueryEmployeesByShopOpts: RouteShorthandOptions = {
 
 export const CreateEmployeeOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Employee"],
+    tags: ["Employee", "Auth"],
     summary: "Create a new employee",
     body: EmployeeSchemaIn,
     querystring: EmployeeQueryStringSchema,
     response: {
       201: EmployeeSchemaOut,
+    },
+  },
+};
+
+export const LoginEmployeeOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Employee", "Auth"],
+    summary: "Login with username and password",
+
+    body: LoginWithEmailPropsSchema,
+    response: {
+      200: LoginTokenSchema,
     },
   },
 };
