@@ -48,8 +48,9 @@ fastify.register(SwaggerPlugin);
 fastify.register(PrismaPlugin);
 
 // register jwt
+const secret: string = process.env["JWT_SECRET"] as string;
 fastify.register(FastifyJwt, {
-  secret: "secret",
+  secret: secret,
 });
 
 // register auth
@@ -69,6 +70,7 @@ fastify.register(EmployeePlugin, { prefix: "/employee" });
 
 // start the server
 fastify.listen({ port: 3000 }, async (err, adddress) => {
+  console.log("secret" + secret);
   if (err) {
     fastify.log.error(err);
     process.exit(1);
