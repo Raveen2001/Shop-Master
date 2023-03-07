@@ -31,7 +31,4 @@ yarn-error.log*
 
 # turbo
 .turbo
-
-
-# pocketbase
-data.db
+.env
