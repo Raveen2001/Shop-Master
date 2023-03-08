@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Fastify",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs"
+  },
+
+  "exclude": ["node_modules"]
+}

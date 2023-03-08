@@ -34,6 +34,7 @@ importers:
       fastify-plugin: ^4.5.0
       nodemon: ^2.0.20
       ts-node: ^10.9.1
+      tsconfig: workspace:*
       typescript: ^4.9.5
     dependencies:
       '@fastify/auth': 4.2.0
@@ -51,6 +52,7 @@ importers:
       database: link:../../packages/database
       fastify: 4.13.0
       fastify-plugin: 4.5.0
+      tsconfig: link:../../packages/tsconfig
     devDependencies:
       '@types/node': 18.13.0
       nodemon: 2.0.20
