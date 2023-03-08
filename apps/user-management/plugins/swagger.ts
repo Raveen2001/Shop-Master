@@ -1,7 +1,7 @@
 import FastifyPlugin from "fastify-plugin";
-import FastifyTypebox from "../types/fastify";
 import FastifySwagger, { SwaggerOptions } from "@fastify/swagger";
 import FastifySwaggerUi from "@fastify/swagger-ui";
+import FastifyTypebox from "../types/fastify";
 
 const swaggerOptions: SwaggerOptions = {
   swagger: {

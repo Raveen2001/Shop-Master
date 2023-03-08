@@ -8,14 +8,13 @@
     "start": "node server.ts",
     "dev": "nodemon server.ts",
     "standalone": "dotenv -e ../../.env -- nodemon server.ts",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "lint": "eslint . --ext .ts --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "database": "workspace:*",
-    "tsconfig": "workspace:*",
     "@fastify/auth": "^4.2.0",
     "@fastify/cors": "^8.2.0",
     "@fastify/helmet": "^10.1.0",
@@ -28,16 +27,16 @@
     "@sinclair/typebox": "^0.25.24",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.1.0",
+    "database": "workspace:*",
+    "eslint": "^8.35.0",
     "fastify": "^4.13.0",
-    "fastify-plugin": "^4.5.0"
+    "fastify-plugin": "^4.5.0",
+    "tsconfig": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "18.13.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
-  },
-  "prisma": {
-    "schema": "prisma/schema.prisma"
   }
 }

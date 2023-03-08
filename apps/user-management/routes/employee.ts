@@ -1,7 +1,6 @@
 import { Employee, Owner, Shop } from "database";
 import { FastifyPluginOptions } from "fastify";
 import {
-  LoginWithUsernameOpts,
   TLoginTokenOut,
   TLoginWithUsernameIn,
 } from "../types/auth";
@@ -25,7 +24,7 @@ function EmployeePlugin(
     Querystring: TEmployeeQueryString;
     Params: TEmployeeQueryParam;
     Reply: (Employee & { owner: Owner; shop: Shop }) | { message: string };
-  }>("/:id", QueryEmployeeOpts, async function (req, reply) {
+  }>("/:id", QueryEmployeeOpts, async (req, reply) => {
     const { id } = req.params;
     const { includeOwner, includeShop } = req.query;
 
@@ -48,11 +47,11 @@ function EmployeePlugin(
   fastify.post<{
     Body: TLoginWithUsernameIn;
     Reply: TLoginTokenOut | { message: string };
-  }>("/login", LoginEmployeeOpts, async function (req, reply) {
+  }>("/login", LoginEmployeeOpts, async (req, reply) => {
     const { username, password } = req.body;
     const employee = await fastify.prisma.employee.findUnique({
       where: {
-        username: username,
+        username,
       },
     });
 
@@ -76,7 +75,7 @@ function EmployeePlugin(
     Querystring: TEmployeeQueryString;
     Body: Employee;
     Reply: Employee & { owner: Owner; shop: Shop };
-  }>("/register", CreateEmployeeOpts, async function (req, reply) {
+  }>("/register", CreateEmployeeOpts, async (req, reply) => {
     const { includeOwner, includeShop } = req.query;
     const hashedPassword = await fastify.hashPassword(req.body.password);
     const employeeWithHashedPassword = {
@@ -99,7 +98,7 @@ function EmployeePlugin(
     Querystring: TEmployeeQueryString;
     Params: TEmployeeQueryParam;
     Reply: (Employee & { owner: Owner; shop: Shop })[] | { message: string };
-  }>("/owner/:id", QueryEmployeesByOwnerOpts, async function (req, reply) {
+  }>("/owner/:id", QueryEmployeesByOwnerOpts, async (req, reply) => {
     const { id } = req.params;
     const { includeOwner, includeShop } = req.query;
 
@@ -124,7 +123,7 @@ function EmployeePlugin(
     Querystring: TEmployeeQueryString;
     Params: TEmployeeQueryParam;
     Reply: (Employee & { owner: Owner; shop: Shop })[] | { message: string };
-  }>("/shop/:id", QueryEmployeesByShopOpts, async function (req, reply) {
+  }>("/shop/:id", QueryEmployeesByShopOpts, async (req, reply) => {
     const { id } = req.params;
     const { includeOwner, includeShop } = req.query;
 

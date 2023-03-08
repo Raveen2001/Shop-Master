@@ -6,7 +6,6 @@ import {
   CreateOwnerOpts,
   LoginOwnerOpts,
   QueryOwnerOpts,
-  TOwnerIn,
   TOwnerQueryParam,
   TOwnerQueryString,
 } from "../types/owner";
@@ -20,7 +19,7 @@ function ownerPlugin(
   fastify.post<{
     Body: TLoginWithEmailIn;
     Reply: TLoginTokenOut | { message: string };
-  }>("/login", LoginOwnerOpts, async function (req, reply) {
+  }>("/login", LoginOwnerOpts, async (req, reply) => {
     const owner = await fastify.prisma.owner.findUnique({
       where: {
         email: req.body.email,
@@ -45,7 +44,7 @@ function ownerPlugin(
   fastify.post<{
     Body: Owner;
     Reply: Owner;
-  }>("/register", CreateOwnerOpts, async function (req, reply) {
+  }>("/register", CreateOwnerOpts, async (req, reply) => {
     const hashedPassword = await fastify.hashPassword(req.body.password);
 
     const userWithHashedPassword = {
@@ -65,7 +64,7 @@ function ownerPlugin(
     Params: TOwnerQueryParam;
     Querystring: TOwnerQueryString;
     Reply: Owner | { message: string };
-  }>("/:id", QueryOwnerOpts, async function (req, reply) {
+  }>("/:id", QueryOwnerOpts, async (req, reply) => {
     const owner = await fastify.prisma.owner.findUnique({
       where: {
         id: req.params.id,

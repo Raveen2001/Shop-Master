@@ -1,6 +1,6 @@
 import FastifyPlugin from "fastify-plugin";
-import FastifyTypebox from "../types/fastify";
 import { PrismaClient } from "database";
+import FastifyTypebox from "../types/fastify";
 
 const prisma = new PrismaClient();
 

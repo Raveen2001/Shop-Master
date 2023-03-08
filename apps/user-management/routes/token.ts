@@ -1,7 +1,7 @@
 import { FastifyPluginOptions } from "fastify";
-import FastifyTypebox from "../types/fastify";
 import FastifyPlugin from "fastify-plugin";
-import { TokenRefreshOpt } from "../types/token";
+import FastifyTypebox from "../types/fastify";
+import { TokenRefreshOpt } from "../types/auth";
 
 function shopPlugin(
   fastify: FastifyTypebox,
@@ -10,7 +10,7 @@ function shopPlugin(
 ) {
   fastify.get<{
     Headers: { authorization: string };
-  }>("/refresh-token", TokenRefreshOpt, async function (req, reply) {
+  }>("/refresh-token", TokenRefreshOpt, async (req, reply) => {
     const token = req.headers.authorization;
     try {
       const newToken = await fastify.refreshJwt(token);

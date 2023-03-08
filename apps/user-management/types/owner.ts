@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
-import { ShopSchemaOut, ShopSchemaDependency } from "./shop";
+import ShopSchemaDependency from "./shop_dependency";
 
 export const OwnerSchema = Type.Object({
   id: Type.String(),
@@ -18,16 +18,6 @@ export const OwnerSchema = Type.Object({
 });
 
 export const OwnerSchemaOut = Type.Omit(OwnerSchema, ["password"]);
-
-export const OwnerSchemaDependency = Type.Object({
-  id: Type.String(),
-  name: Type.String({ minLength: 3, maxLength: 50 }),
-  phone: Type.String({ format: "regex", pattern: "^\\d{1,3}\\s\\d{10}$" }), // prettier-ignore
-  email: Type.String({ format: "email" }),
-  image: Type.Optional(Type.String({ format: "uri" })),
-  createdAt: Type.String({ format: "date-time" }),
-  updatedAt: Type.String({ format: "date-time" }),
-});
 
 export type TOwner = Static<typeof OwnerSchema>;
 export type TOwnerIn = Omit<TOwner, "id" | "createdAt" | "updatedAt">;

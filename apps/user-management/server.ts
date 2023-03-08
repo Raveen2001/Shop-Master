@@ -48,9 +48,9 @@ fastify.register(SwaggerPlugin);
 fastify.register(PrismaPlugin);
 
 // register jwt
-const secret: string = process.env["JWT_SECRET"] as string;
+const secret: string = process.env.JWT_SECRET as string;
 fastify.register(FastifyJwt, {
-  secret: secret,
+  secret,
 });
 
 // register auth
@@ -58,9 +58,7 @@ fastify.register(AuthPlugin);
 fastify.register(FastifyAuth);
 
 // health check endpoint
-fastify.get("/ping", async (request, reply) => {
-  return "pong";
-});
+fastify.get("/ping", async () => "pong");
 
 // register routes
 fastify.register(TokenPlugin);
@@ -69,7 +67,7 @@ fastify.register(ShopPlugin, { prefix: "/shop" });
 fastify.register(EmployeePlugin, { prefix: "/employee" });
 
 // start the server
-fastify.listen({ port: 5000 }, async (err, address) => {
+fastify.listen({ port: 5000 }, async (err) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
