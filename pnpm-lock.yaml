@@ -83,6 +83,15 @@ importers:
       ts-node: 10.9.1_4bewfcp2iebiwuold25d6rgcsy
       typescript: 4.9.5
 
+  packages/database:
+    specifiers:
+      '@prisma/client': ^4.10.1
+      prisma: ^4.10.1
+    dependencies:
+      '@prisma/client': 4.10.1_prisma@4.10.1
+    devDependencies:
+      prisma: 4.10.1
+
   packages/eslint-config-custom:
     specifiers:
       eslint: ^7.23.0
