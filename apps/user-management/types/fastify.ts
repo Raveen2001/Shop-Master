@@ -6,7 +6,7 @@ import {
   RawServerDefault,
 } from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "database";
 
 declare module "fastify" {
   interface FastifyInstance {

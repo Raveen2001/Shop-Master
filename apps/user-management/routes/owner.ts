@@ -1,4 +1,4 @@
-import { Owner } from "@prisma/client";
+import { Owner } from "database";
 import { FastifyPluginOptions } from "fastify";
 import { TLoginWithEmailIn, TLoginTokenOut } from "../types/auth";
 import FastifyTypebox from "../types/fastify";

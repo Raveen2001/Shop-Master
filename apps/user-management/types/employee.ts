@@ -1,4 +1,4 @@
-import { EMPLOYEE_TYPE } from "@prisma/client";
+import { EMPLOYEE_TYPE } from "database";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";

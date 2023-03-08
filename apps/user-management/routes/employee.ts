@@ -1,4 +1,4 @@
-import { Employee, Owner, Shop } from "@prisma/client";
+import { Employee, Owner, Shop } from "database";
 import { FastifyPluginOptions } from "fastify";
 import {
   LoginWithUsernameOpts,
