@@ -1,9 +1,6 @@
 import { Employee, Owner, Shop } from "database";
 import { FastifyPluginOptions } from "fastify";
-import {
-  TLoginTokenOut,
-  TLoginWithUsernameIn,
-} from "../types/auth";
+import { TLoginTokenOut, TLoginWithUsernameIn } from "../types/auth";
 import {
   CreateEmployeeOpts,
   LoginEmployeeOpts,

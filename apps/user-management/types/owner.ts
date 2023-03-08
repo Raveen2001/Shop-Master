@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
-import ShopSchemaDependency from "./shop_dependency";
+import ShopSchemaDependency from "./shopDependency";
 
 export const OwnerSchema = Type.Object({
   id: Type.String(),

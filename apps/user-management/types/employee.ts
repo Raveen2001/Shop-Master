@@ -2,8 +2,8 @@ import { EMPLOYEE_TYPE } from "database";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
-import OwnerSchemaDependency from "./owner_dependency";
-import ShopSchemaDependency from "./shop_dependency";
+import OwnerSchemaDependency from "./ownerDependency";
+import ShopSchemaDependency from "./shopDependency";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),

@@ -1,6 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
-import  OwnerSchemaDependency  from "./owner_dependency";
+import OwnerSchemaDependency from "./ownerDependency";
 
 export const ShopSchema = Type.Object({
   id: Type.String(),
@@ -26,7 +26,6 @@ export const ShopSchemaIn = Type.Omit(ShopSchema, [
   // "employees",
 ]);
 export const ShopSchemaOut = Type.Omit(ShopSchema, ["ownerId"]);
-
 
 export type TShopSchema = Static<typeof ShopSchema>;
 export type TShopIn = Static<typeof ShopSchemaIn>;
