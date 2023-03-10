@@ -29,10 +29,10 @@
     "bcrypt": "^5.1.0",
     "database": "workspace:*",
     "fastify": "^4.13.0",
-    "fastify-plugin": "^4.5.0",
-    "tsconfig": "workspace:*"
+    "fastify-plugin": "^4.5.0"
   },
   "devDependencies": {
+    "tsconfig": "workspace:*",
     "@types/node": "18.13.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",

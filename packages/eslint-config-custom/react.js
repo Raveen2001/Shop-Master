@@ -3,14 +3,16 @@ module.exports = {
     "turbo",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "react-app",
-    "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
-    "airbnb",
-    "airbnb/hooks",
     "prettier",
   ],
-  parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
-  rules: {},
+  parser: "@typescript-eslint/parser",
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
 };
