@@ -1,7 +1,19 @@
 module.exports = {
-  extends: ["next", "turbo", "prettier", "next/babel"],
+  env: {
+    browser: false,
+    es2022: true,
+  },
+
+  extends: [
+    "turbo",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+  ],
+  parser: "@typescript-eslint/parser",
+  plugins: ["filename-rules", "@typescript-eslint"],
+
   rules: {
-    "@next/next/no-html-link-for-pages": "off",
-    "react/jsx-key": "off",
+    "filename-rules/match": ["error", "camelCase"],
   },
 };

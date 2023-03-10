@@ -1,6 +1,6 @@
 import FastifyPlugin from "fastify-plugin";
-import FastifyTypebox from "../types/fastify";
 import bcrypt from "bcrypt";
+import FastifyTypebox from "../types/fastify";
 
 async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
   fastify.decorate(
@@ -32,8 +32,8 @@ async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
       if (err.code === "FAST_JWT_EXPIRED") {
         const data = fastify.jwt.decode(token) as any;
         if (data) {
-          delete data["exp"];
-          delete data["iat"];
+          delete data.exp;
+          delete data.iat;
 
           const newToken = fastify.signJwt(data);
           return newToken;
