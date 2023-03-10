@@ -7,10 +7,22 @@
       "outputs": ["dist/**", ".next/**"]
     },
     "lint": {
-      "outputs": []
+      "outputs": [],
+      "cache": false
+
     },
     "dev": {
       "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false
     }
-  }
+  },
+  "globalEnv": ["JWT_SECRET"]
 }
