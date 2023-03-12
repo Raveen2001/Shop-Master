@@ -8,5 +8,8 @@
     "fastify.json",
     "react.json",
     "react-library.json"
-  ]
+  ],
+  "dependencies": {
+    "react": "^18.2.0"
+  }
 }
