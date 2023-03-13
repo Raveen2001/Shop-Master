@@ -1,16 +1,21 @@
-import { Box, Button, Typography, useColorMode } from "ui";
+import { useEffect, useMemo } from "react";
+import { redirect, RouterProvider } from "react-router-dom";
 import "./App.scss";
+import { router } from "./routes";
 
 function App() {
-  const { toggleColorMode } = useColorMode();
-  return (
-    <Box className="App">
-      <Button variant="contained" onClick={toggleColorMode}>
-        Hello World
-      </Button>
-      <Typography variant="h1">Hello</Typography>
-    </Box>
-  );
+  // get the logged in status from local storage
+  const isLoggedIn = useMemo(() => !!localStorage.getItem("token"), []);
+
+  // redirect to login page if not logged in
+  useEffect(() => {
+    console.log(isLoggedIn);
+    if (!isLoggedIn) {
+      // router.navigate("/login");
+    }
+  }, [isLoggedIn]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
