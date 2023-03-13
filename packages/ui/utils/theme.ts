@@ -7,6 +7,11 @@ const darkTheme = {
       paper: "#212B36",
     },
 
+    contrast: {
+      main: "#ffffff",
+      contrastText: "#212b36",
+    },
+
     text: {
       primary: "#FFFFFF",
       secondary: "#919EAB",
@@ -32,8 +37,23 @@ const darkTheme = {
 export const getTheme = (mode: "dark" | "light") =>
   createTheme({
     spacing: 8,
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: "8px ",
+            height: "48px",
+            fontSize: "15px",
+            fontWeight: "700",
+            textTransform: "none",
+          },
+        },
+      },
+    },
+
     typography: {
       fontFamily: ["public-sans", "sans-serif"].join(","),
+
       h1: {
         fontSize: "64px",
         lineHeight: "80px",
@@ -137,6 +157,11 @@ export const getTheme = (mode: "dark" | "light") =>
         light: "#F9FAFB",
         main: "#FFAB00",
         dark: "#7A4100",
+      },
+
+      contrast: {
+        main: "#212b36",
+        contrastText: "#ffffff",
       },
 
       success: {

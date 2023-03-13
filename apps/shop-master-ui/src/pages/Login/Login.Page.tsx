@@ -10,18 +10,21 @@ import {
   Box,
   Stack,
   IconButton,
+  styled,
+  TextFieldProps,
 } from "ui";
 
 import { Facebook, Google } from "ui/icons";
 import ProjectionImage from "ui/assets/projections.svg";
 
 import "./Login.style.scss";
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
   return (
-    <Grid container className="LoginPage" sx={{ padding: "8px" }}>
+    <Grid container className="LoginPage" sx={{ padding: "32px" }}>
       <Grid item xs={8} className="left">
         <Typography variant="h3">Hi, Welcome back</Typography>
         <ProjectionImage />
@@ -29,7 +32,7 @@ const LoginPage = () => {
       <Grid item xs={4} className="right">
         <Typography variant="h4">Sign in to Shop Master</Typography>
         <Typography
-          variant="p"
+          variant="body2"
           sx={{ marginBottom: "40px", marginTop: "16px" }}
         >
           New user?
@@ -42,21 +45,28 @@ const LoginPage = () => {
           </Link>
         </Typography>
 
-        <TextField
-          error
-          label="Email address"
-          defaultValue="Hello World"
-          helperText="Incorrect entry."
-        />
-        <PasswordField sx={{ marginTop: "16px" }} error errorMsg="Hello" />
+        <TextField label="Email address" color="contrast" type="email" />
 
-        <Typography variant="a" sx={{ textAlign: "right", padding: "16px 0" }}>
-          <Link to="forgot-password" className="forgot-password">
+        <PasswordField sx={{ marginTop: "16px" }} color="contrast" />
+
+        <Typography
+          variant="body2"
+          sx={{ textAlign: "right", padding: "16px 0" }}
+        >
+          <Link
+            to="forgot-password"
+            className="forgot-password"
+            style={{
+              color: theme.palette.text.primary,
+            }}
+          >
             Forgot password?
           </Link>
         </Typography>
 
-        <Button variant="contained">Login</Button>
+        <Button variant="contained" color="contrast">
+          Login
+        </Button>
 
         <Box
           sx={{
