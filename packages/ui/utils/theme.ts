@@ -31,6 +31,7 @@ const darkTheme = {
 
 export const getTheme = (mode: "dark" | "light") =>
   createTheme({
+    spacing: 8,
     typography: {
       fontFamily: ["public-sans", "sans-serif"].join(","),
       h1: {
