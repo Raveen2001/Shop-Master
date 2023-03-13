@@ -12,14 +12,14 @@ import { FC, useState } from "react";
 
 interface IPasswordFieldProps {
   error?: boolean;
-  errorMsg?: string;
+  helperText?: string;
   sx?: SxProps;
   className?: string;
 }
 
-const PasswordField: FC<IPasswordFieldProps> = ({
+export const PasswordField: FC<IPasswordFieldProps> = ({
   error,
-  errorMsg,
+  helperText,
   sx,
   className,
 }) => {
@@ -49,9 +49,7 @@ const PasswordField: FC<IPasswordFieldProps> = ({
         label="Password"
         error={error}
       />
-      <FormHelperText error={error}>{errorMsg}</FormHelperText>
+      <FormHelperText error={error}>{helperText}</FormHelperText>
     </FormControl>
   );
 };
-
-export default PasswordField;

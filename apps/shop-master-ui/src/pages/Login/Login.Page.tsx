@@ -1,21 +1,18 @@
-import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
   Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
   TextField,
   Typography,
   useTheme,
+  PasswordField,
+  Button,
+  Divider,
+  Box,
+  Stack,
+  IconButton,
 } from "ui";
 
-import { Visibility, VisibilityOff } from "ui/icons";
+import { Facebook, Google } from "ui/icons";
 import ProjectionImage from "ui/assets/projections.svg";
 
 import "./Login.style.scss";
@@ -51,6 +48,35 @@ const LoginPage = () => {
           defaultValue="Hello World"
           helperText="Incorrect entry."
         />
+        <PasswordField sx={{ marginTop: "16px" }} error errorMsg="Hello" />
+
+        <Typography variant="a" sx={{ textAlign: "right", padding: "16px 0" }}>
+          <Link to="forgot-password" className="forgot-password">
+            Forgot password?
+          </Link>
+        </Typography>
+
+        <Button variant="contained">Login</Button>
+
+        <Box
+          sx={{
+            margin: "20px 0",
+            fontSize: "10px",
+            fontWeight: "600",
+            color: theme.palette.grey["600"],
+          }}
+        >
+          <Divider>OR</Divider>
+        </Box>
+
+        <Stack direction="row" justifyContent="center">
+          <IconButton>
+            <Google />
+          </IconButton>
+          <IconButton>
+            <Facebook />
+          </IconButton>
+        </Stack>
       </Grid>
     </Grid>
   );
