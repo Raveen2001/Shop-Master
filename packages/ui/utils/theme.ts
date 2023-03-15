@@ -37,11 +37,13 @@ const darkTheme = {
 export const getTheme = (mode: "dark" | "light") =>
   createTheme({
     spacing: 8,
+    shape: {
+      borderRadius: 8,
+    },
     components: {
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: "8px ",
             height: "48px",
             fontSize: "15px",
             fontWeight: "700",
@@ -49,6 +51,26 @@ export const getTheme = (mode: "dark" | "light") =>
           },
         },
       },
+
+      // MuiAlert: {
+      //   styleOverrides: {
+      //     standardError: {
+      //       backgroundColor: "#FFE9D5",
+      //     },
+
+      //     standardInfo: {
+      //       backgroundColor: "#CAFDF5",
+      //     },
+
+      //     standardSuccess: {
+      //       backgroundColor: "#D8FBDE",
+      //     },
+
+      //     standardWarning: {
+      //       backgroundColor: "#FFF5CC",
+      //     },
+      //   },
+      // },
     },
 
     typography: {

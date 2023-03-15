@@ -13,7 +13,7 @@ interface IMyThemeProviderProps {
 export const MyThemeProvider: React.FC<IMyThemeProviderProps> = ({
   children,
 }) => {
-  const [mode, setMode] = React.useState<"light" | "dark">("dark");
+  const [mode, setMode] = React.useState<"light" | "dark">("light");
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {

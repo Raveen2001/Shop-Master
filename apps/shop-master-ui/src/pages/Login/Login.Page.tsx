@@ -12,6 +12,8 @@ import {
   IconButton,
   styled,
   TextFieldProps,
+  Alert,
+  AlertTitle,
 } from "ui";
 
 import { Facebook, Google } from "ui/icons";
@@ -24,12 +26,45 @@ const LoginPage = () => {
   const theme = useTheme();
 
   return (
-    <Grid container className="LoginPage" sx={{ padding: "32px" }}>
-      <Grid item xs={8} className="left">
+    <Grid
+      container
+      className="LoginPage"
+      sx={{
+        padding: {
+          xs: "16px 0",
+          md: "32px",
+        },
+      }}
+    >
+      <Box
+        component={Grid}
+        item
+        lg={8}
+        md={6}
+        sx={{
+          display: {
+            xs: "none !important",
+            md: "flex !important",
+          },
+        }}
+        className="left"
+      >
         <Typography variant="h3">Hi, Welcome back</Typography>
         <ProjectionImage />
-      </Grid>
-      <Grid item xs={4} className="right">
+      </Box>
+      <Grid
+        item
+        lg={4}
+        md={6}
+        xs={12}
+        className="right"
+        sx={{
+          padding: {
+            xs: "16px",
+            md: "32px",
+          },
+        }}
+      >
         <Typography variant="h4">Sign in to Shop Master</Typography>
         <Typography
           variant="body2"
@@ -45,7 +80,15 @@ const LoginPage = () => {
           </Link>
         </Typography>
 
-        <TextField label="Email address" color="contrast" type="email" />
+        <Alert severity="error" variant={"filled"}>
+          No user found with this email address
+        </Alert>
+        <TextField
+          sx={{ marginTop: "16px" }}
+          label="Email address"
+          color="contrast"
+          type="email"
+        />
 
         <PasswordField sx={{ marginTop: "16px" }} color="contrast" />
 
