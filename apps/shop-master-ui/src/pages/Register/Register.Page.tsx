@@ -10,25 +10,23 @@ import {
   Box,
   Stack,
   IconButton,
-  styled,
-  TextFieldProps,
+  Link as MuiLink,
   Alert,
-  AlertTitle,
 } from "ui";
 
 import { Facebook, Google } from "ui/icons";
-import ProjectionImage from "ui/assets/projections.svg";
+import WellDoneImage from "ui/assets/well_done.svg";
 
-import "./Login.style.scss";
+import "./Register.style.scss";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
   return (
     <Grid
       container
-      className="LoginPage"
+      className="RegisterPage"
       sx={{
         padding: "16px 0",
       }}
@@ -45,8 +43,12 @@ const LoginPage = () => {
         }}
         className="left"
       >
-        <Typography variant="h3">Hi, Welcome back</Typography>
-        <ProjectionImage />
+        <Typography variant="h3" textAlign="center">
+          Manage the job more effectively
+          <br />
+          with Shop Master
+        </Typography>
+        <WellDoneImage />
       </Grid>
       <Grid
         item
@@ -61,18 +63,18 @@ const LoginPage = () => {
           },
         }}
       >
-        <Typography variant="h4">Sign in to Shop Master</Typography>
+        <Typography variant="h4">Get started with Shop Master</Typography>
         <Typography
           variant="body2"
           sx={{ marginBottom: "40px", marginTop: "16px" }}
         >
-          New user?
+          Already have an account?
           <Link
-            to="/register"
-            className="register"
+            to="/login"
+            className="login"
             style={{ color: theme.palette.primary.main }}
           >
-            Create an account
+            Sign in
           </Link>
         </Typography>
 
@@ -87,6 +89,12 @@ const LoginPage = () => {
         />
 
         <PasswordField sx={{ marginTop: "16px" }} color="contrast" />
+
+        <PasswordField
+          label="Confirm password"
+          sx={{ marginTop: "16px" }}
+          color="contrast"
+        />
 
         <Typography
           variant="body2"
@@ -104,9 +112,20 @@ const LoginPage = () => {
         </Typography>
 
         <Button variant="contained" color="contrast">
-          Login
+          Create Account
         </Button>
 
+        <Typography
+          variant="caption"
+          sx={{
+            marginTop: "20px",
+            marginLeft: "5px",
+            color: theme.palette.grey["600"],
+          }}
+        >
+          By signing up, I agree to <MuiLink>Terms of Service</MuiLink> and{" "}
+          <MuiLink>Privacy Policy</MuiLink>
+        </Typography>
         <Box
           sx={{
             margin: "20px 0",
@@ -131,4 +150,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

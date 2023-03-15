@@ -44,7 +44,7 @@ export const getTheme = (mode: "dark" | "light") =>
       MuiButton: {
         styleOverrides: {
           root: {
-            height: "48px",
+            minHeight: "48px",
             fontSize: "15px",
             fontWeight: "700",
             textTransform: "none",

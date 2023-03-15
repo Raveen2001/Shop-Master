@@ -11,6 +11,7 @@ import {
 import { FC, useState } from "react";
 
 interface IPasswordFieldProps {
+  label?: string;
   error?: boolean;
   helperText?: string;
   sx?: SxProps;
@@ -20,6 +21,7 @@ interface IPasswordFieldProps {
 
 export const PasswordField: FC<IPasswordFieldProps> = ({
   error,
+  label,
   helperText,
   sx,
   color,
@@ -32,7 +34,7 @@ export const PasswordField: FC<IPasswordFieldProps> = ({
   return (
     <FormControl variant="outlined" sx={sx} className={className}>
       <InputLabel htmlFor="password" error={error} color={color as any}>
-        Password
+        {label?? "Password"}
       </InputLabel>
       <OutlinedInput
         id="password"
@@ -49,7 +51,7 @@ export const PasswordField: FC<IPasswordFieldProps> = ({
             </IconButton>
           </InputAdornment>
         }
-        label="Password"
+        label= {label?? "Password"}
         error={error}
       />
       <FormHelperText error={error}>{helperText}</FormHelperText>
