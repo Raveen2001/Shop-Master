@@ -1,0 +1,29 @@
+{
+  "name": "database-drizzle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "pull": "drizzle-kit introspect:pg",
+    "generate": "drizzle-kit generate:pg",
+    "drop": "drizzle-kit drop",
+    "up": "drizzle-kit up:pg",
+    "check": "drizzle-kit check:pg",
+    "studio": "drizzle-kit studio --port 9000 --verbose",
+    "migrate": "ts-node migrate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.27.0",
+    "postgres": "^3.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "18.13.0",
+    "drizzle-kit": "^0.19.3",
+    "pg": "^8.11.1"
+  }
+}
