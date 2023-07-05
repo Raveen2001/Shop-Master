@@ -78,9 +78,3 @@ fastify.setErrorHandler(async (error, request, reply) => {
   console.error(error);
   reply.status(400).send({ error: error.message.split("\n").at(-1) });
 });
-
-fastify.addHook("onClose", async (instance, done) => {
-  console.log("closing prisma connection");
-  await instance.prisma.$disconnect();
-  done();
-});

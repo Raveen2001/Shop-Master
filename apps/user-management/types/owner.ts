@@ -6,15 +6,13 @@ import ShopSchemaDependency from "./shopDependency";
 export const OwnerSchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3, maxLength: 50 }),
-  phone: Type.String({ format: "regex", pattern: "^\\d{1,3}\\s\\d{10}$" }), // prettier-ignore
+  phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
   email: Type.String({ format: "email" }),
   password: Type.String({
     minLength: 8,
   }),
-  image: Type.Optional(Type.String({ format: "uri" })),
+  // image: Type.Optional(Type.String({ format: "uri" })),
   createdAt: Type.String({ format: "date-time" }),
-  updatedAt: Type.String({ format: "date-time" }),
-  shops: Type.Array(ShopSchemaDependency),
 });
 
 export const OwnerSchemaOut = Type.Omit(OwnerSchema, ["password"]);
@@ -26,7 +24,7 @@ export const CreateOwnerOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Owner", "Auth"],
     summary: "Create a new owner",
-    body: Type.Omit(OwnerSchema, ["id", "createdAt", "updatedAt"]),
+    body: Type.Omit(OwnerSchema, ["id", "createdAt"]),
     response: {
       201: OwnerSchemaOut,
     },
@@ -39,9 +37,9 @@ export const LoginOwnerOpts: RouteShorthandOptions = {
     summary: "Login with email and password",
 
     body: LoginWithEmailPropsSchema,
-    response: {
-      200: LoginTokenSchema,
-    },
+    // response: {
+    //   200: LoginTokenSchema,
+    // },
   },
 };
 

@@ -9,18 +9,17 @@
     "lint": {
       "outputs": [],
       "cache": false
-
     },
     "dev": {
       "cache": false
     },
-    "db:generate": {
+    "generate": {
       "cache": false
     },
-    "db:push": {
+    "studio": {
       "cache": false
     },
-    "db:studio": {
+    "migrate": {
       "cache": false
     }
   },

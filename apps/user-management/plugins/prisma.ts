@@ -1,11 +1,9 @@
 import FastifyPlugin from "fastify-plugin";
-import { PrismaClient } from "database";
+import db from "database-drizzle";
 import FastifyTypebox from "../types/fastify";
 
-const prisma = new PrismaClient();
-
 async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
-  fastify.decorate("prisma", prisma);
+  fastify.decorate("db", db);
   done();
 }
 

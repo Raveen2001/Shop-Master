@@ -1,4 +1,4 @@
-import { EMPLOYEE_TYPE } from "database";
+import { EMPLOYEE_TYPE } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
@@ -13,22 +13,13 @@ export const EmployeeSchema = Type.Object({
   image: Type.Optional(Type.String({ format: "uri" })),
   email: Type.Optional(Type.String({ format: "email" })),
   address: Type.String({ minLength: 3 }),
-  type: Type.String({ enum: Object.values(EMPLOYEE_TYPE) }),
+  type: Type.String({ enum: EMPLOYEE_TYPE }),
   createdAt: Type.String({ format: "date-time" }),
-  updatedAt: Type.String({ format: "date-time" }),
   ownerId: Type.String(),
   shopId: Type.String(),
-  owner: Type.Optional(OwnerSchemaDependency),
-  shop: Type.Optional(ShopSchemaDependency),
 });
 
-export const EmployeeSchemaIn = Type.Omit(EmployeeSchema, [
-  "id",
-  "createdAt",
-  "updatedAt",
-  "owner",
-  "shop",
-]);
+export const EmployeeSchemaIn = Type.Omit(EmployeeSchema, ["id", "createdAt"]);
 export const EmployeeSchemaOut = Type.Omit(EmployeeSchema, [
   "ownerId",
   "shopId",

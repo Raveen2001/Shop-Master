@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import { EMPLOYEE_TYPE } from "database";
+import { EMPLOYEE_TYPE } from "database-drizzle";
 
 const EmployeeSchemaDependency = Type.Object({
   id: Type.String(),

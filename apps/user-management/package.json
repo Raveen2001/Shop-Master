@@ -8,7 +8,6 @@
     "start": "node server.ts",
     "dev": "nodemon server.ts",
     "standalone": "dotenv -e ../../.env -- nodemon server.ts",
-    "studio": "prisma studio",
     "lint": "eslint . *.ts --fix"
   },
   "keywords": [],
@@ -27,7 +26,7 @@
     "@sinclair/typebox": "^0.25.24",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.1.0",
-    "database": "workspace:*",
+    "database-drizzle": "workspace:*",
     "fastify": "^4.13.0",
     "fastify-plugin": "^4.5.0"
   },

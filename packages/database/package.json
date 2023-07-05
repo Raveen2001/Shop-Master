@@ -4,8 +4,7 @@
   "types": "./index.ts",
   "scripts": {
     "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate",
-    "db:studio": "prisma studio"
+    "db:push": "prisma db push --skip-generate"
   },
   "dependencies": {
     "@prisma/client": "^4.10.1"

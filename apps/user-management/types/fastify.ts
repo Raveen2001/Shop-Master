@@ -6,11 +6,11 @@ import {
   RawServerDefault,
 } from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import { PrismaClient } from "database";
+import db from "database-drizzle";
 
 declare module "fastify" {
   interface FastifyInstance {
-    prisma: PrismaClient;
+    db: typeof db;
     hashPassword: (password: string) => Promise<string>;
     comparePassword: (password: string, hash: string) => Promise<boolean>;
     signJwt: (payload: any) => string;

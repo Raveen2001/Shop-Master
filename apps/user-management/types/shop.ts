@@ -10,12 +10,10 @@ export const ShopSchema = Type.Object({
   email: Type.Optional(Type.String({ format: "email" })),
   website: Type.Optional(Type.String({ format: "uri" })),
   description: Type.String({ minLength: 3 }),
-  image: Type.Array(Type.String({ format: "uri" })),
   ownerId: Type.String(),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
   owner: Type.Optional(OwnerSchemaDependency),
-  // employees: Type.Optional(Type.Array(OwnerSchema)),
 });
 
 export const ShopSchemaIn = Type.Omit(ShopSchema, [

@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { InferModel, relations } from "drizzle-orm";
 import {
   pgEnum,
   pgTable,
@@ -7,8 +7,8 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { owners } from "./owners";
-import { shops } from "./shops";
+import { Owner, owners } from "./owners";
+import { Shop, shops } from "./shops";
 
 export const employeeTypeEnum = pgEnum("employeeType", [
   "MANAGER",
@@ -24,15 +24,28 @@ export const employees = pgTable("employees", {
   id: uuid("id").defaultRandom().primaryKey(),
   username: text("username").notNull(),
   password: text("password").notNull(),
-  phone: varchar("phone", { length: 10 }),
+  email: varchar("email", { length: 256 }),
+  phone: varchar("phone", { length: 10 }).notNull(),
   image: text("image"),
-  createdAt: timestamp("created_at").defaultNow(),
+  address: text("address").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
   type: employeeTypeEnum("type").notNull(),
-  shopId: uuid("shop_id").references(() => shops.id),
-  ownerId: uuid("owner_id").references(() => owners.id),
+  shopId: uuid("shop_id")
+    .notNull()
+    .references(() => shops.id),
+  ownerId: uuid("owner_id")
+    .notNull()
+    .references(() => owners.id),
 });
 
 export const employeesRelations = relations(employees, ({ one }) => ({
   shop: one(shops, { fields: [employees.shopId], references: [shops.id] }),
   owner: one(owners, { fields: [employees.ownerId], references: [owners.id] }),
 }));
+
+export type Employee = InferModel<typeof employees> & {
+  shop: Shop;
+  owner: Owner;
+};
+
+export const EMPLOYEE_TYPE = employeeTypeEnum.enumValues;

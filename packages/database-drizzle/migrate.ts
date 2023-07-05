@@ -9,6 +9,7 @@ export async function migrateDB() {
   const client = postgres(process.env.DATABASE_URL!, { max: 1 });
   const db = drizzle(client);
   await migrate(db, { migrationsFolder: "drizzle" });
+
   console.log("Migrated successfully");
 }
 

@@ -7,7 +7,6 @@ const OwnerSchemaDependency = Type.Object({
   email: Type.String({ format: "email" }),
   Image: Type.Optional(Type.String({ format: "uri" })),
   createdAt: Type.String({ format: "date-time" }),
-  updatedAt: Type.String({ format: "date-time" }),
 });
 
 export default OwnerSchemaDependency;
