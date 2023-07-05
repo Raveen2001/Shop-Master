@@ -5,9 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.ts",
-    "dev": "nodemon server.ts",
-    "standalone": "dotenv -e ../../.env -- nodemon server.ts",
+    "start": "dotenv -e ../../.env -- node server.ts",
+    "dev": "dotenv -e ../../.env -- nodemon server.ts",
     "lint": "eslint . *.ts --fix"
   },
   "keywords": [],

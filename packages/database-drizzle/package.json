@@ -5,19 +5,18 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "pull": "drizzle-kit introspect:pg",
-    "generate": "drizzle-kit generate:pg",
-    "drop": "drizzle-kit drop",
-    "up": "drizzle-kit up:pg",
-    "check": "drizzle-kit check:pg",
-    "studio": "drizzle-kit studio --port 9000 --verbose",
-    "migrate": "ts-node migrate"
+    "pull": "dotenv -e ../../.env -- drizzle-kit introspect:pg",
+    "generate": "dotenv -e ../../.env -- drizzle-kit generate:pg",
+    "drop": "dotenv -e ../../.env -- drizzle-kit drop",
+    "up": "dotenv -e ../../.env -- drizzle-kit up:pg",
+    "check": "dotenv -e ../../.env -- drizzle-kit check:pg",
+    "studio": "dotenv -e ../../.env -- drizzle-kit studio --port 9000 --verbose",
+    "migrate": "dotenv -e ../../.env -- ts-node migrate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.3.1",
     "drizzle-orm": "^0.27.0",
     "postgres": "^3.3.5"
   },
