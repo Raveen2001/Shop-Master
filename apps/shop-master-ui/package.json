@@ -1,0 +1,33 @@
+{
+  "name": "shop-master-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . *.ts --fix"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react-swc": "^3.0.0",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.9.0",
+    "sort-by": "^1.2.0",
+    "ui": "workspace:*",
+    "vite": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "eslint": "^8.35.0",
+    "eslint-config-custom": "workspace:*",
+    "sass": "^1.58.3",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.9.3",
+    "vite-plugin-svgr": "^2.4.0"
+  }
+}

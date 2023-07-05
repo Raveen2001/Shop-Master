@@ -4,8 +4,12 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
+  "files": [
+    "icons.tsx",
+    "assets"
+  ],
   "scripts": {
-    "lint": "eslint --fix *.ts*"
+    "lint": "eslint . --fix *.ts*"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
@@ -15,5 +19,11 @@
     "react": "^18.2.0",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.12"
   }
 }
