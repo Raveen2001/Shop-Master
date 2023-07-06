@@ -1,7 +1,8 @@
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
-import ShopSchemaDependency from "./shopDependency";
+import { ShopSchema } from "./shop";
+import { EmployeeSchema } from "./employee";
 
 export const OwnerSchema = Type.Object({
   id: Type.String(),
@@ -11,20 +12,28 @@ export const OwnerSchema = Type.Object({
   password: Type.String({
     minLength: 8,
   }),
-  // image: Type.Optional(Type.String({ format: "uri" })),
+  image: Type.Optional(Type.String({ format: "uri" })),
   createdAt: Type.String({ format: "date-time" }),
 });
 
-export const OwnerSchemaOut = Type.Omit(OwnerSchema, ["password"]);
+export const OwnerSchemaWithoutPassword = Type.Omit(OwnerSchema, ["password"]);
 
-export type TOwner = Static<typeof OwnerSchema>;
-export type TOwnerIn = Omit<TOwner, "id" | "createdAt" | "updatedAt">;
+export const OwnerSchemaOut = Type.Intersect([
+  OwnerSchemaWithoutPassword,
+  Type.Object({
+    shops: Type.Optional(Type.Array(ShopSchema)),
+    employees: Type.Optional(Type.Array(EmployeeSchema)),
+  }),
+]);
+
+export const OwnerSchemaIn = Type.Omit(OwnerSchema, ["id", "createdAt"]);
+export type TOwnerIn = Static<typeof OwnerSchemaIn>;
 
 export const CreateOwnerOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Owner", "Auth"],
     summary: "Create a new owner",
-    body: Type.Omit(OwnerSchema, ["id", "createdAt"]),
+    body: OwnerSchemaIn,
     response: {
       201: OwnerSchemaOut,
     },
@@ -37,9 +46,9 @@ export const LoginOwnerOpts: RouteShorthandOptions = {
     summary: "Login with email and password",
 
     body: LoginWithEmailPropsSchema,
-    // response: {
-    //   200: LoginTokenSchema,
-    // },
+    response: {
+      200: LoginTokenSchema,
+    },
   },
 };
 

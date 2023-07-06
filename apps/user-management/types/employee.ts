@@ -2,8 +2,8 @@ import { EMPLOYEE_TYPE } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
-import OwnerSchemaDependency from "./ownerDependency";
-import ShopSchemaDependency from "./shopDependency";
+import { OwnerSchemaWithoutPassword } from "./owner";
+import { ShopSchema } from "./shop";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),
@@ -19,11 +19,17 @@ export const EmployeeSchema = Type.Object({
   shopId: Type.String(),
 });
 
-export const EmployeeSchemaIn = Type.Omit(EmployeeSchema, ["id", "createdAt"]);
-export const EmployeeSchemaOut = Type.Omit(EmployeeSchema, [
-  "ownerId",
-  "shopId",
+export const EmployeeSchemaWithoutPassword = Type.Omit(EmployeeSchema, [
   "password",
+]);
+
+export const EmployeeSchemaIn = Type.Omit(EmployeeSchema, ["id", "createdAt"]);
+export const EmployeeSchemaOut = Type.Intersect([
+  EmployeeSchemaWithoutPassword,
+  Type.Object({
+    owner: Type.Optional(OwnerSchemaWithoutPassword),
+    shop: Type.Optional(ShopSchema),
+  }),
 ]);
 
 export type TShopIn = Static<typeof EmployeeSchemaIn>;
