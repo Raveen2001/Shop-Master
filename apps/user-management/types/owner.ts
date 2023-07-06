@@ -17,6 +17,7 @@ export const OwnerSchema = Type.Object({
 });
 
 export const OwnerSchemaWithoutPassword = Type.Omit(OwnerSchema, ["password"]);
+export type TOwnerWithoutPassword = Static<typeof OwnerSchemaWithoutPassword>;
 
 export const OwnerSchemaOut = Type.Intersect([
   OwnerSchemaWithoutPassword,
@@ -36,7 +37,7 @@ export const CreateOwnerOpts: RouteShorthandOptions = {
     summary: "Create a new owner",
     body: OwnerSchemaIn,
     response: {
-      201: OwnerSchemaOut,
+      201: OwnerSchemaWithoutPassword,
     },
   },
 };

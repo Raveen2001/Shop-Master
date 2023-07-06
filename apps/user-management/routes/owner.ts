@@ -6,9 +6,11 @@ import {
   CreateOwnerOpts,
   LoginOwnerOpts,
   QueryOwnerOpts,
+  TOwnerIn,
   TOwnerOut,
   TOwnerQueryParam,
   TOwnerQueryString,
+  TOwnerWithoutPassword,
 } from "../types/owner";
 
 function ownerPlugin(
@@ -42,8 +44,8 @@ function ownerPlugin(
 
   // Register as owner
   fastify.post<{
-    Body: Owner;
-    Reply: Owner;
+    Body: TOwnerIn;
+    Reply: TOwnerWithoutPassword;
   }>("/register", CreateOwnerOpts, async (req, reply) => {
     const hashedPassword = await fastify.hashPassword(req.body.password);
 

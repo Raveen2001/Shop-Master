@@ -48,6 +48,7 @@ function shopPlugin(
       await fastify.db
         .insert(shops)
         .values(req.body)
+        .onConflictDoNothing()
         .returning({ insertedId: shops.id })
     )[0];
 
@@ -77,11 +78,6 @@ function shopPlugin(
         employees: includeEmployees || undefined,
       },
     });
-
-    if (shops.length === 0) {
-      reply.code(404).send({ message: "Shop not found" });
-      return;
-    }
 
     reply.code(200).send(shops);
   });
