@@ -1,7 +1,7 @@
 services:
   db:
     build:
-      context: ./packages/database
+      context: ./packages/database-drizzle
       dockerfile: Dockerfile
     image: shop_master_postgres:1.0.0
     restart: unless-stopped
