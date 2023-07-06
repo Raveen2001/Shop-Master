@@ -1,8 +1,15 @@
 {
   "configurations": [
     {
+      "name": "Attach by Process ID",
+      "processId": "${command:PickProcess}",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
       "type": "node-terminal",
-      "name": "Shop Management System",
+      "name": "User Management System",
       "request": "launch",
       "command": "pnpm run standalone",
       "cwd": "${workspaceFolder}/apps/user-management"

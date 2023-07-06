@@ -6,6 +6,7 @@ import {
   CreateOwnerOpts,
   LoginOwnerOpts,
   QueryOwnerOpts,
+  TOwnerOut,
   TOwnerQueryParam,
   TOwnerQueryString,
 } from "../types/owner";
@@ -66,14 +67,14 @@ function ownerPlugin(
   fastify.get<{
     Params: TOwnerQueryParam;
     Querystring: TOwnerQueryString;
-    Reply: Owner | { message: string };
+    Reply: TOwnerOut | { message: string };
   }>("/:id", QueryOwnerOpts, async (req, reply) => {
     const owner = await fastify.db.query.owners.findFirst({
       where: (owners, { eq }) => eq(owners.id, req.params.id),
 
       with: {
-        shops: req.query.includeShops || undefined,
         employees: req.query.includeEmployees || undefined,
+        shops: req.query.includeShops || undefined,
       },
     });
 
