@@ -1,4 +1,4 @@
-import { Shop, shops } from "database-drizzle";
+import { Shop, shopsDB } from "database-drizzle";
 import { FastifyPluginOptions } from "fastify";
 import FastifyTypebox from "../types/fastify";
 import {
@@ -19,10 +19,9 @@ function shopPlugin(
   fastify.get<{
     Params: TShopQueryParam;
     Querystring: TShopQueryString;
-    Reply: TShopOut | { message: string };
   }>("/:id", QueryShopOpts, async (req, reply) => {
-    const shop = await fastify.db.query.shops.findFirst({
-      where: (shops, { eq }) => eq(shops.id, req.params.id),
+    const shop = await fastify.db.query.shopsDB.findFirst({
+      where: (shopsDB, { eq }) => eq(shopsDB.id, req.params.id),
 
       with: {
         owner: req.query.includeOwner || undefined,
@@ -41,19 +40,18 @@ function shopPlugin(
   fastify.post<{
     Querystring: TShopQueryString;
     Body: Shop;
-    Reply: TShopOut;
   }>("/", CreateShopOpts, async (req, reply) => {
     const { includeOwner, includeEmployees } = req.query;
     const { insertedId } = (
       await fastify.db
-        .insert(shops)
+        .insert(shopsDB)
         .values(req.body)
         .onConflictDoNothing()
-        .returning({ insertedId: shops.id })
+        .returning({ insertedId: shopsDB.id })
     )[0];
 
-    const shop = await fastify.db.query.shops.findFirst({
-      where: (shops, { eq }) => eq(shops.id, insertedId),
+    const shop = await fastify.db.query.shopsDB.findFirst({
+      where: (shopsDB, { eq }) => eq(shopsDB.id, insertedId),
       with: {
         owner: includeOwner || undefined,
         employees: includeEmployees || undefined,
@@ -67,11 +65,10 @@ function shopPlugin(
   fastify.get<{
     Params: TShopQueryParam;
     Querystring: TShopQueryString;
-    Reply: TShopOut[] | { message: string };
   }>("/owner/:id", QueryShopByOwnerOpts, async (req, reply) => {
     const { includeOwner, includeEmployees } = req.query;
-    const shops = await fastify.db.query.shops.findMany({
-      where: (shops, { eq }) => eq(shops.ownerId, req.params.id),
+    const shops = await fastify.db.query.shopsDB.findMany({
+      where: (shopsDB, { eq }) => eq(shopsDB.ownerId, req.params.id),
 
       with: {
         owner: includeOwner || undefined,

@@ -17,7 +17,6 @@ export const LoginTokenSchema = Type.Object({
 
 export type TLoginWithEmailIn = Static<typeof LoginWithEmailPropsSchema>;
 export type TLoginWithUsernameIn = Static<typeof LoginWithUsernamePropsSchema>;
-export type TLoginTokenOut = Static<typeof LoginTokenSchema>;
 
 export const LoginWithEmailOpts: RouteShorthandOptions = {
   schema: {

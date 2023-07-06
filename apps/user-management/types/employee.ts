@@ -1,15 +1,19 @@
 import { EMPLOYEE_TYPE } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
-import { LoginTokenSchema, LoginWithEmailPropsSchema } from "./auth";
+import {
+  LoginTokenSchema,
+  LoginWithEmailPropsSchema,
+  LoginWithUsernamePropsSchema,
+} from "./auth";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),
   username: Type.String({ minLength: 3, maxLength: 100 }),
-  phone: Type.String({ format: "regex", pattern: "^\\d{1,3}\\s\\d{10}$" }), // prettier-ignore
-  password: Type.String(),
+  phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
+  password: Type.String({ minLength: 8 }),
   image: Type.Optional(Type.String({ format: "uri" })),
   email: Type.Optional(Type.String({ format: "email" })),
   address: Type.String({ minLength: 3 }),
@@ -32,7 +36,7 @@ export const EmployeeSchemaOut = Type.Intersect([
   }),
 ]);
 
-export type TShopIn = Static<typeof EmployeeSchemaIn>;
+export type TEmployeeIn = Static<typeof EmployeeSchemaIn>;
 
 export const EmployeeQueryParamSchema = Type.Object({
   id: Type.String(),
@@ -99,7 +103,7 @@ export const LoginEmployeeOpts: RouteShorthandOptions = {
     tags: ["Employee", "Auth"],
     summary: "Login with username and password",
 
-    body: LoginWithEmailPropsSchema,
+    body: LoginWithUsernamePropsSchema,
     response: {
       200: LoginTokenSchema,
     },

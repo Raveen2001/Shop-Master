@@ -1,9 +1,9 @@
 import { pgTable, uuid, varchar, text, timestamp } from "drizzle-orm/pg-core";
 import { InferModel, relations } from "drizzle-orm";
-import { employees } from "./employees";
-import { shops } from "./shops";
+import { employeesDB } from "./employees";
+import { shopsDB } from "./shops";
 
-export const owners = pgTable("owners", {
+export const ownersDB = pgTable("owners", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   phone: varchar("phone", { length: 10 }).notNull(),
@@ -13,9 +13,9 @@ export const owners = pgTable("owners", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const ownersRelations = relations(owners, ({ many }) => ({
-  employees: many(employees),
-  shops: many(shops),
+export const ownersRelations = relations(ownersDB, ({ many }) => ({
+  employees: many(employeesDB),
+  shops: many(shopsDB),
 }));
 
-export type Owner = InferModel<typeof owners>;
+export type Owner = InferModel<typeof ownersDB>;

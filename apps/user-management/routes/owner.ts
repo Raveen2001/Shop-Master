@@ -1,16 +1,14 @@
-import { Owner, owners } from "database-drizzle";
+import { ownersDB } from "database-drizzle";
 import { FastifyPluginOptions } from "fastify";
-import { TLoginWithEmailIn, TLoginTokenOut } from "../types/auth";
+import { TLoginWithEmailIn } from "../types/auth";
 import FastifyTypebox from "../types/fastify";
 import {
   CreateOwnerOpts,
   LoginOwnerOpts,
   QueryOwnerOpts,
   TOwnerIn,
-  TOwnerOut,
   TOwnerQueryParam,
   TOwnerQueryString,
-  TOwnerWithoutPassword,
 } from "../types/owner";
 
 function ownerPlugin(
@@ -21,10 +19,9 @@ function ownerPlugin(
   // Login as owner
   fastify.post<{
     Body: TLoginWithEmailIn;
-    Reply: TLoginTokenOut | { message: string };
   }>("/login", LoginOwnerOpts, async (req, reply) => {
-    const owner = await fastify.db.query.owners.findFirst({
-      where: (owners, { eq }) => eq(owners.email, req.body.email),
+    const owner = await fastify.db.query.ownersDB.findFirst({
+      where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
     });
 
     if (!owner) {
@@ -45,7 +42,6 @@ function ownerPlugin(
   // Register as owner
   fastify.post<{
     Body: TOwnerIn;
-    Reply: TOwnerWithoutPassword;
   }>("/register", CreateOwnerOpts, async (req, reply) => {
     const hashedPassword = await fastify.hashPassword(req.body.password);
 
@@ -56,7 +52,7 @@ function ownerPlugin(
 
     const user = (
       await fastify.db
-        .insert(owners)
+        .insert(ownersDB)
         .values(userWithHashedPassword)
         .onConflictDoNothing()
         .returning()
@@ -69,21 +65,15 @@ function ownerPlugin(
   fastify.get<{
     Params: TOwnerQueryParam;
     Querystring: TOwnerQueryString;
-    Reply: TOwnerOut | { message: string };
   }>("/:id", QueryOwnerOpts, async (req, reply) => {
-    const owner = await fastify.db.query.owners.findFirst({
-      where: (owners, { eq }) => eq(owners.id, req.params.id),
+    const owner = await fastify.db.query.ownersDB.findFirst({
+      where: (ownersDB, { eq }) => eq(ownersDB.id, req.params.id),
 
       with: {
         employees: req.query.includeEmployees || undefined,
         shops: req.query.includeShops || undefined,
       },
     });
-
-    if (!owner) {
-      reply.code(404).send({ message: "Owner not found" });
-      return;
-    }
 
     reply.code(200).send(owner);
   });

@@ -26,7 +26,6 @@ export const OwnerSchemaOut = Type.Intersect([
     employees: Type.Optional(Type.Array(EmployeeSchema)),
   }),
 ]);
-export type TOwnerOut = Static<typeof OwnerSchemaOut>;
 
 export const OwnerSchemaIn = Type.Omit(OwnerSchema, ["id", "createdAt"]);
 export type TOwnerIn = Static<typeof OwnerSchemaIn>;

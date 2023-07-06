@@ -1,9 +1,9 @@
 import { InferModel, relations } from "drizzle-orm";
 import { pgTable, uuid, text, varchar, timestamp } from "drizzle-orm/pg-core";
-import { employees } from "./employees";
-import { owners } from "./owners";
+import { employeesDB } from "./employees";
+import { ownersDB } from "./owners";
 
-export const shops = pgTable("shops", {
+export const shopsDB = pgTable("shops", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   phone: varchar("phone", { length: 10 }).notNull(),
@@ -14,12 +14,15 @@ export const shops = pgTable("shops", {
   website: text("website"),
   ownerId: uuid("ownerId")
     .notNull()
-    .references(() => owners.id),
+    .references(() => ownersDB.id),
 });
 
-export const shopsRelations = relations(shops, ({ many, one }) => ({
-  employees: many(employees),
-  owner: one(owners, { fields: [shops.ownerId], references: [owners.id] }),
+export const shopsRelations = relations(shopsDB, ({ many, one }) => ({
+  employees: many(employeesDB),
+  owner: one(ownersDB, {
+    fields: [shopsDB.ownerId],
+    references: [ownersDB.id],
+  }),
 }));
 
-export type Shop = InferModel<typeof shops>;
+export type Shop = InferModel<typeof shopsDB>;
