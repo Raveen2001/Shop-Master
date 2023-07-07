@@ -1,15 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import {
-  Grid,
+  LoadingButton,
   TextField,
   Typography,
   useTheme,
-  Button,
   Divider,
   Box,
   Stack,
   IconButton,
   Alert,
+  Grid,
+  Button,
 } from "ui";
 
 import { Facebook, Google } from "ui/icons";
@@ -18,11 +19,21 @@ import ProjectionImage from "ui/assets/projections.svg";
 import "./Login.style.scss";
 import { Controller, useForm } from "react-hook-form";
 import { ILoginData } from "./model";
+import { useMutation } from "@tanstack/react-query";
+import { loginAsOwner } from "../../services/auth";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const { control, handleSubmit } = useForm<ILoginData>();
+  const { mutate, isError, isLoading } = useMutation<
+    unknown,
+    unknown,
+    ILoginData
+  >({
+    mutationKey: ["login"],
+    mutationFn: loginAsOwner,
+  });
 
   return (
     <Grid
@@ -75,12 +86,17 @@ const LoginPage = () => {
           </Link>
         </Typography>
 
-        <Alert severity="error" variant={"filled"}>
-          No user found with this email address
-        </Alert>
+        {isError && (
+          <Alert severity="error" variant={"filled"}>
+            No user found with this email address
+          </Alert>
+        )}
 
         <form
-          onSubmit={handleSubmit((data) => console.log(data))}
+          onSubmit={handleSubmit((data) => {
+            console.log(data);
+            mutate(data);
+          })}
           className="form"
         >
           <Controller
@@ -147,9 +163,14 @@ const LoginPage = () => {
             </Link>
           </Typography>
 
-          <Button variant="contained" color="contrast" type="submit">
+          <LoadingButton
+            variant="contained"
+            color="contrast"
+            type="submit"
+            loading={isLoading}
+          >
             Login
-          </Button>
+          </LoadingButton>
         </form>
         <Box
           sx={{
