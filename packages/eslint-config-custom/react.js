@@ -9,7 +9,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "prettier",
   ],
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "@tanstack/query"],
   parser: "@typescript-eslint/parser",
   settings: {
     react: {
