@@ -21,18 +21,23 @@ import { Controller, useForm } from "react-hook-form";
 import { ILoginData } from "./model";
 import { useMutation } from "@tanstack/react-query";
 import { loginAsOwner } from "../../services/auth";
+import { AxiosError } from "axios";
+import { IRequestError } from "../../models";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const { control, handleSubmit } = useForm<ILoginData>();
-  const { mutate, isError, isLoading } = useMutation<
+  const { mutate, isError, isLoading, error } = useMutation<
     unknown,
-    unknown,
+    AxiosError<IRequestError>,
     ILoginData
   >({
     mutationKey: ["login"],
     mutationFn: loginAsOwner,
+    onSuccess: () => {
+      navigate("/dashboard");
+    },
   });
 
   return (
@@ -85,10 +90,9 @@ const LoginPage = () => {
             Create an account
           </Link>
         </Typography>
-
         {isError && (
           <Alert severity="error" variant={"filled"}>
-            No user found with this email address
+            {error?.response?.data?.message || "Something went wrong"}
           </Alert>
         )}
 
@@ -129,8 +133,8 @@ const LoginPage = () => {
             rules={{
               required: "Password is required",
               minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters",
+                value: 8,
+                message: "Password must be at least 8 characters",
               },
             }}
             defaultValue=""
@@ -182,7 +186,6 @@ const LoginPage = () => {
         >
           <Divider>OR</Divider>
         </Box>
-
         <Stack direction="row" justifyContent="center">
           <IconButton>
             <Google />

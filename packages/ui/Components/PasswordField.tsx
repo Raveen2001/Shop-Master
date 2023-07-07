@@ -52,7 +52,7 @@ export const PasswordField: FC<IPasswordFieldProps> = ({
         }
         label={label ?? "Password"}
       />
-      <FormHelperText></FormHelperText>
+      <FormHelperText> true</FormHelperText>
     </FormControl>
   );
 };

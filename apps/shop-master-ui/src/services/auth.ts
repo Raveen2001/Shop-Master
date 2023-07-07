@@ -1,6 +1,6 @@
 import { ILoginData } from "../pages/Login/model";
+import { axiosClient } from "../utils/axios";
 
 export const loginAsOwner = async (data: ILoginData) => {
-  console.log("loginAsOwner", data);
-  return data;
+  return axiosClient.post("/owner/login", data);
 };
