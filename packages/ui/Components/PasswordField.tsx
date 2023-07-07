@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 
+import { ControllerFieldState, ControllerRenderProps } from "react-hook-form";
+
 interface IPasswordFieldProps {
   label?: string;
   error?: boolean;
@@ -17,23 +19,25 @@ interface IPasswordFieldProps {
   sx?: SxProps;
   color?:string;
   className?: string;
+  field: ControllerRenderProps<any, any>;
+  fieldState: ControllerFieldState;
 }
 
 export const PasswordField: FC<IPasswordFieldProps> = ({
-  error,
   label,
-  helperText,
   sx,
   color,
   className,
+  field,
+  fieldState: {error}
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
-    <FormControl variant="outlined" sx={sx} className={className}>
-      <InputLabel htmlFor="password" error={error} color={color as any}>
+    <FormControl variant="outlined" sx={sx} className={className} fullWidth>
+      <InputLabel htmlFor="password" error={!!error} color={color as any}>
         {label?? "Password"}
       </InputLabel>
       <OutlinedInput
@@ -52,9 +56,10 @@ export const PasswordField: FC<IPasswordFieldProps> = ({
           </InputAdornment>
         }
         label= {label?? "Password"}
-        error={error}
+        error={!!error}
+        {...field}
       />
-      <FormHelperText error={error}>{helperText}</FormHelperText>
+      <FormHelperText error={!!error}>{error?.message}</FormHelperText>
     </FormControl>
   );
 };

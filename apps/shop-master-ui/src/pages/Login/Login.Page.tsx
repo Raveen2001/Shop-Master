@@ -4,26 +4,25 @@ import {
   TextField,
   Typography,
   useTheme,
-  PasswordField,
   Button,
   Divider,
   Box,
   Stack,
   IconButton,
-  styled,
-  TextFieldProps,
   Alert,
-  AlertTitle,
 } from "ui";
 
 import { Facebook, Google } from "ui/icons";
 import ProjectionImage from "ui/assets/projections.svg";
 
 import "./Login.style.scss";
+import { Controller, useForm } from "react-hook-form";
+import { ILoginData } from "./model";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const { control, handleSubmit } = useForm<ILoginData>();
 
   return (
     <Grid
@@ -79,34 +78,79 @@ const LoginPage = () => {
         <Alert severity="error" variant={"filled"}>
           No user found with this email address
         </Alert>
-        <TextField
-          sx={{ marginTop: "16px" }}
-          label="Email address"
-          color="contrast"
-          type="email"
-        />
 
-        <PasswordField sx={{ marginTop: "16px" }} color="contrast" />
-
-        <Typography
-          variant="body2"
-          sx={{ textAlign: "right", padding: "16px 0" }}
+        <form
+          onSubmit={handleSubmit((data) => console.log(data))}
+          className="form"
         >
-          <Link
-            to="forgot-password"
-            className="forgot-password"
-            style={{
-              color: theme.palette.text.primary,
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: "Email address is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Please enter a valid email address",
+              },
             }}
+            defaultValue=""
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                sx={{ marginTop: "16px" }}
+                label="Email address"
+                color="contrast"
+                error={!!error}
+                helperText={error?.message}
+                fullWidth
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            name="password"
+            control={control}
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+            }}
+            defaultValue=""
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                sx={{ marginTop: "16px" }}
+                label="Password"
+                type="password"
+                color="contrast"
+                error={!!error}
+                helperText={error?.message}
+                fullWidth
+                {...field}
+              />
+            )}
+          />
+
+          <Typography
+            variant="body2"
+            sx={{ textAlign: "right", padding: "16px 0" }}
           >
-            Forgot password?
-          </Link>
-        </Typography>
+            <Link
+              to="forgot-password"
+              className="forgot-password"
+              style={{
+                color: theme.palette.text.primary,
+              }}
+            >
+              Forgot password?
+            </Link>
+          </Typography>
 
-        <Button variant="contained" color="contrast">
-          Login
-        </Button>
-
+          <Button variant="contained" color="contrast" type="submit">
+            Login
+          </Button>
+        </form>
         <Box
           sx={{
             margin: "20px 0",
