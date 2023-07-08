@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     console.log(isLoggedIn);
     if (!isLoggedIn) {
-      // router.navigate("/login");
+      router.navigate("/login");
     }
   }, [isLoggedIn]);
 

@@ -17,7 +17,7 @@ import ProjectionImage from "ui/assets/projections.svg";
 
 import "./Login.style.scss";
 import { Controller, useForm } from "react-hook-form";
-import { ILoginData } from "./model";
+import { ILoginData, ILoginResponse } from "./model";
 import { useMutation } from "@tanstack/react-query";
 import { loginAsOwner } from "../../services/auth";
 import { IRequestError } from "../../models";
@@ -27,13 +27,14 @@ const LoginPage = () => {
   const theme = useTheme();
   const { control, handleSubmit } = useForm<ILoginData>();
   const { mutate, isError, isLoading, error } = useMutation<
-    unknown,
+    ILoginResponse,
     IRequestError,
     ILoginData
   >({
     mutationKey: ["login"],
     mutationFn: loginAsOwner,
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
+      localStorage.setItem("token", data.token);
       navigate("/dashboard");
     },
   });

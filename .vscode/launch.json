@@ -1,6 +1,14 @@
 {
   "configurations": [
     {
+      "name": "Edge 5173",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/apps/shop-master-ui/src"
+    },
+
+    {
       "name": "Attach by Process ID",
       "processId": "${command:PickProcess}",
       "request": "attach",
