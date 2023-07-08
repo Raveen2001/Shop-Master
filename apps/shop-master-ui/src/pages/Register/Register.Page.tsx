@@ -12,16 +12,33 @@ import {
   IconButton,
   Link as MuiLink,
   Alert,
+  LoadingButton,
 } from "ui";
 
 import { Facebook, Google } from "ui/icons";
 import WellDoneImage from "ui/assets/well_done.svg";
 
 import "./Register.style.scss";
+import { Controller, useForm } from "react-hook-form";
+import { IRegisterData } from "./model";
+import { useMutation } from "@tanstack/react-query";
+import { registerAsOwner } from "../../services/auth";
+import { IRequestError } from "../../models";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const { control, handleSubmit } = useForm<IRegisterData>();
+  const { mutate, isLoading, isError, error } = useMutation<
+    unknown,
+    IRequestError,
+    IRegisterData
+  >({
+    mutationFn: registerAsOwner,
+    onSuccess: () => {
+      navigate("/login");
+    },
+  });
 
   return (
     <Grid
@@ -77,43 +94,133 @@ const RegisterPage = () => {
             Sign in
           </Link>
         </Typography>
+        {isError && (
+          <Alert severity="error" variant={"filled"}>
+            {error?.response?.data?.message ||
+              "Something went wrong, Try again later."}
+          </Alert>
+        )}
 
-        <Alert severity="error" variant={"filled"}>
-          No user found with this email address
-        </Alert>
-        <TextField
-          sx={{ marginTop: "16px" }}
-          label="Email address"
-          color="contrast"
-          type="email"
-        />
-
-        <PasswordField sx={{ marginTop: "16px" }} color="contrast" />
-
-        <PasswordField
-          label="Confirm password"
-          sx={{ marginTop: "16px" }}
-          color="contrast"
-        />
-
-        <Typography
-          variant="body2"
-          sx={{ textAlign: "right", padding: "16px 0" }}
-        >
-          <Link
-            to="forgot-password"
-            className="forgot-password"
-            style={{
-              color: theme.palette.text.primary,
+        <form className="form" onSubmit={handleSubmit((data) => mutate(data))}>
+          <Controller
+            name="name"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: "Name is required",
+              minLength: {
+                value: 3,
+                message: "Name must be at least 3 characters",
+              },
             }}
-          >
-            Forgot password?
-          </Link>
-        </Typography>
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Name"
+                color="contrast"
+                type="text"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
 
-        <Button variant="contained" color="contrast">
-          Create Account
-        </Button>
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: "Phone is required",
+              pattern: {
+                value: /^\d{10}$/,
+                message: "Must be a valid phone number",
+              },
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                sx={{ marginTop: "16px" }}
+                label="Phone"
+                color="contrast"
+                type="tel"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+
+          <Controller
+            name="email"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Must be a valid email",
+              },
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                sx={{ marginTop: "16px" }}
+                label="Email address"
+                color="contrast"
+                type="text"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+
+          <Controller
+            name="password"
+            control={control}
+            defaultValue=""
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                sx={{ marginTop: "16px" }}
+                label="Password"
+                color="contrast"
+                type="password"
+                error={!!error}
+                helperText={error?.message}
+              />
+            )}
+          />
+
+          <Typography
+            variant="body2"
+            sx={{ textAlign: "right", padding: "16px 0" }}
+          >
+            <Link
+              to="forgot-password"
+              className="forgot-password"
+              style={{
+                color: theme.palette.text.primary,
+              }}
+            >
+              Forgot password?
+            </Link>
+          </Typography>
+
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            color="contrast"
+            loading={isLoading}
+          >
+            Create Account
+          </LoadingButton>
+        </form>
 
         <Typography
           variant="caption"

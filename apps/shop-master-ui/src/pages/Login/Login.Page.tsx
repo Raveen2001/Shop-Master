@@ -10,7 +10,6 @@ import {
   IconButton,
   Alert,
   Grid,
-  Button,
 } from "ui";
 
 import { Facebook, Google } from "ui/icons";
@@ -21,7 +20,6 @@ import { Controller, useForm } from "react-hook-form";
 import { ILoginData } from "./model";
 import { useMutation } from "@tanstack/react-query";
 import { loginAsOwner } from "../../services/auth";
-import { AxiosError } from "axios";
 import { IRequestError } from "../../models";
 
 const LoginPage = () => {
@@ -30,7 +28,7 @@ const LoginPage = () => {
   const { control, handleSubmit } = useForm<ILoginData>();
   const { mutate, isError, isLoading, error } = useMutation<
     unknown,
-    AxiosError<IRequestError>,
+    IRequestError,
     ILoginData
   >({
     mutationKey: ["login"],
