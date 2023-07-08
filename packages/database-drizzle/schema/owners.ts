@@ -1,17 +1,31 @@
-import { pgTable, uuid, varchar, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  uuid,
+  varchar,
+  text,
+  timestamp,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 import { InferModel, relations } from "drizzle-orm";
 import { employeesDB } from "./employees";
 import { shopsDB } from "./shops";
+import { table } from "console";
 
-export const ownersDB = pgTable("owners", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  name: text("name").notNull(),
-  phone: varchar("phone", { length: 10 }).notNull(),
-  email: varchar("email", { length: 256 }).notNull(),
-  password: text("password").notNull(),
-  image: text("image"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+export const ownersDB = pgTable(
+  "owners",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    name: text("name").notNull(),
+    phone: varchar("phone", { length: 10 }).notNull(),
+    email: varchar("email", { length: 256 }).notNull(),
+    password: text("password").notNull(),
+    image: text("image"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    emailIndex: uniqueIndex("email_index").on(table.email),
+  })
+);
 
 export const ownersRelations = relations(ownersDB, ({ many }) => ({
   employees: many(employeesDB),

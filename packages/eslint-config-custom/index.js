@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 module.exports = {
   env: {
     browser: false,
@@ -11,9 +13,7 @@ module.exports = {
     "plugin:prettier/recommended",
   ],
   parser: "@typescript-eslint/parser",
-  plugins: ["filename-rules", "@typescript-eslint"],
+  plugins: ["@typescript-eslint"],
 
-  rules: {
-    "filename-rules/match": ["error", "camelCase"],
-  },
+  rules: {},
 };

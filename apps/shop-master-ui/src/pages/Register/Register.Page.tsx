@@ -119,6 +119,7 @@ const RegisterPage = () => {
                 label="Name"
                 color="contrast"
                 type="text"
+                sx={{ marginTop: "16px" }}
                 error={!!error}
                 helperText={error?.message}
               />

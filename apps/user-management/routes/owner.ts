@@ -43,6 +43,16 @@ function ownerPlugin(
   fastify.post<{
     Body: TOwnerIn;
   }>("/register", CreateOwnerOpts, async (req, reply) => {
+    // check if email already exists
+    const existingOwner = await fastify.db.query.ownersDB.findFirst({
+      where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
+    });
+
+    if (existingOwner) {
+      reply.code(409).send({ message: "Email already exists" });
+      return;
+    }
+
     const hashedPassword = await fastify.hashPassword(req.body.password);
 
     const userWithHashedPassword = {

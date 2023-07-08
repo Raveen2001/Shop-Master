@@ -1,11 +1,7 @@
 import { EMPLOYEE_TYPE } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
-import {
-  LoginTokenSchema,
-  LoginWithEmailPropsSchema,
-  LoginWithUsernamePropsSchema,
-} from "./auth";
+import { LoginTokenSchema, LoginWithUsernamePropsSchema } from "./auth";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";
 

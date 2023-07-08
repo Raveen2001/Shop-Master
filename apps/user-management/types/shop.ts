@@ -1,7 +1,6 @@
-import { employeesDB } from "./../../../packages/database-drizzle/schema/employees";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
-import { OwnerSchema, OwnerSchemaWithoutPassword } from "./owner";
+import { OwnerSchemaWithoutPassword } from "./owner";
 import { EmployeeSchema } from "./employee";
 
 export const ShopSchema = Type.Object({
