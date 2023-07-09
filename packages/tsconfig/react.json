@@ -1,23 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "ReactJs",
-  "extends": "./base.json",
+  "display": "Vite React",
+  "_version": "2.0.0",
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "incremental": true,
-    "esModuleInterop": true,
-    "module": "esnext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
-    "preserveSymlinks": true
-  },
-  "include": ["src", "custom.d.ts"],
-  "exclude": ["node_modules"]
+    "noEmit": true,
+    "jsx": "react-jsx"
+  }
 }

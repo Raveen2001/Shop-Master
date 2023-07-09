@@ -1,4 +1,4 @@
-import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import { getTheme } from "./utils/theme";
 

@@ -1,5 +1,5 @@
 /* eslint-env node */
 module.exports = {
-  root: true,
   extends: ["custom/react"],
+  // projects: ["./tsconfig.json", "./tsconfig.node.json"],
 };

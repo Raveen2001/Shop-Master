@@ -1,11 +1,6 @@
 /* eslint-env node */
 
 module.exports = {
-  env: {
-    browser: false,
-    es2022: true,
-  },
-
   extends: [
     "turbo",
     "eslint:recommended",
