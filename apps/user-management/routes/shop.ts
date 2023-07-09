@@ -1,25 +1,24 @@
-import { Shop, shopsDB } from "database-drizzle";
-import { FastifyPluginOptions } from "fastify";
-import FastifyTypebox from "../types/fastify";
+import { Shop, shopsDB } from 'database-drizzle';
+import { FastifyPluginOptions } from 'fastify';
+import FastifyTypebox from '../types/fastify';
 import {
   CreateShopOpts,
   QueryShopByOwnerOpts,
   QueryShopOpts,
-  TShopOut,
-  TShopQueryParam,
+  >TShopQueryParam,
   TShopQueryString,
-} from "../types/shop";
+} from '../types/shop';
 
 function shopPlugin(
   fastify: FastifyTypebox,
   options: FastifyPluginOptions,
-  next: Function
+  next: () => void,
 ) {
   // get shop by id
   fastify.get<{
     Params: TShopQueryParam;
     Querystring: TShopQueryString;
-  }>("/:id", QueryShopOpts, async (req, reply) => {
+  }>('/:id', QueryShopOpts, async (req, reply) => {
     const shop = await fastify.db.query.shopsDB.findFirst({
       where: (shopsDB, { eq }) => eq(shopsDB.id, req.params.id),
 
@@ -30,7 +29,7 @@ function shopPlugin(
     });
 
     if (!shop) {
-      reply.code(404).send({ message: "Shop not found" });
+      reply.code(404).send({ message: 'Shop not found' });
       return;
     }
 
@@ -40,7 +39,7 @@ function shopPlugin(
   fastify.post<{
     Querystring: TShopQueryString;
     Body: Shop;
-  }>("/", CreateShopOpts, async (req, reply) => {
+  }>('/', CreateShopOpts, async (req, reply) => {
     const { includeOwner, includeEmployees } = req.query;
     const { insertedId } = (
       await fastify.db
@@ -65,7 +64,7 @@ function shopPlugin(
   fastify.get<{
     Params: TShopQueryParam;
     Querystring: TShopQueryString;
-  }>("/owner/:id", QueryShopByOwnerOpts, async (req, reply) => {
+  }>('/owner/:id', QueryShopByOwnerOpts, async (req, reply) => {
     const { includeOwner, includeEmployees } = req.query;
     const shops = await fastify.db.query.shopsDB.findMany({
       where: (shopsDB, { eq }) => eq(shopsDB.ownerId, req.params.id),

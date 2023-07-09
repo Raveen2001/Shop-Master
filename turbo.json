@@ -23,5 +23,5 @@
       "cache": false
     }
   },
-  "globalEnv": ["JWT_SECRET"]
+  "globalEnv": ["JWT_SECRET", "DATABASE_URL"]
 }

@@ -1,24 +1,24 @@
-import { createBrowserRouter } from "react-router-dom";
-import LoginPage from "./pages/Login";
-import RegisterPage from "./pages/Register";
-import RootLayout from "./layouts/RootLayout";
-import ManageEmployee from "./pages/ManageEmployee/ManageEmployee";
+import { createBrowserRouter } from 'react-router-dom';
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+import RootLayout from './layouts/RootLayout';
+import ManageEmployee from './pages/ManageEmployee/ManageEmployee';
 export const router = createBrowserRouter([
   {
-    path: "/login",
+    path: '/login',
     element: <LoginPage />,
   },
   {
-    path: "/register",
+    path: '/register',
     element: <RegisterPage />,
   },
   {
-    path: "/",
+    path: '/',
     element: <RootLayout />,
 
     children: [
       {
-        path: "/",
+        path: '/',
         element: <ManageEmployee />,
       },
     ],

@@ -1,30 +1,25 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from '@tanstack/react-query';
+import { Controller, useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import {
+  Alert,
+  Box,
+  Divider,
   Grid,
+  IconButton,
+  LoadingButton,
+  Link as MuiLink,
+  Stack,
   TextField,
   Typography,
   useTheme,
-  PasswordField,
-  Button,
-  Divider,
-  Box,
-  Stack,
-  IconButton,
-  Link as MuiLink,
-  Alert,
-  LoadingButton,
-} from "ui";
-
-import { Facebook, Google } from "ui/icons";
-import WellDoneImage from "ui/assets/well_done.svg";
-
-import "./Register.style.scss";
-import { Controller, useForm } from "react-hook-form";
-import { IRegisterData } from "./model";
-import { useMutation } from "@tanstack/react-query";
-import { registerAsOwner } from "../../services/auth";
-import { IRequestError } from "../../models";
-
+} from 'ui';
+import WellDoneImage from 'ui/assets/well_done.svg';
+import { Facebook, Google } from 'ui/icons';
+import { IRequestError } from '../../models';
+import { registerAsOwner } from '../../services/auth';
+import './Register.style.scss';
+import { IRegisterData } from './model';
 const RegisterPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -36,7 +31,7 @@ const RegisterPage = () => {
   >({
     mutationFn: registerAsOwner,
     onSuccess: () => {
-      navigate("/login");
+      navigate('/login');
     },
   });
 
@@ -45,7 +40,7 @@ const RegisterPage = () => {
       container
       className="RegisterPage"
       sx={{
-        padding: "16px 0",
+        padding: '16px 0',
       }}
     >
       <Grid
@@ -54,8 +49,8 @@ const RegisterPage = () => {
         md={6}
         sx={{
           display: {
-            xs: "none !important",
-            md: "flex !important",
+            xs: 'none !important',
+            md: 'flex !important',
           },
         }}
         className="left"
@@ -75,15 +70,15 @@ const RegisterPage = () => {
         className="right"
         sx={{
           padding: {
-            xs: "0 16px",
-            md: "0 32px",
+            xs: '0 16px',
+            md: '0 32px',
           },
         }}
       >
         <Typography variant="h4">Get started with Shop Master</Typography>
         <Typography
           variant="body2"
-          sx={{ marginBottom: "40px", marginTop: "16px" }}
+          sx={{ marginBottom: '40px', marginTop: '16px' }}
         >
           Already have an account?
           <Link
@@ -95,9 +90,9 @@ const RegisterPage = () => {
           </Link>
         </Typography>
         {isError && (
-          <Alert severity="error" variant={"filled"}>
+          <Alert severity="error" variant={'filled'}>
             {error?.response?.data?.message ||
-              "Something went wrong, Try again later."}
+              'Something went wrong, Try again later.'}
           </Alert>
         )}
 
@@ -107,10 +102,10 @@ const RegisterPage = () => {
             control={control}
             defaultValue=""
             rules={{
-              required: "Name is required",
+              required: 'Name is required',
               minLength: {
                 value: 3,
-                message: "Name must be at least 3 characters",
+                message: 'Name must be at least 3 characters',
               },
             }}
             render={({ field, fieldState: { error } }) => (
@@ -119,7 +114,7 @@ const RegisterPage = () => {
                 label="Name"
                 color="contrast"
                 type="text"
-                sx={{ marginTop: "16px" }}
+                sx={{ marginTop: '16px' }}
                 error={!!error}
                 helperText={error?.message}
               />
@@ -131,16 +126,16 @@ const RegisterPage = () => {
             control={control}
             defaultValue=""
             rules={{
-              required: "Phone is required",
+              required: 'Phone is required',
               pattern: {
                 value: /^\d{10}$/,
-                message: "Must be a valid phone number",
+                message: 'Must be a valid phone number',
               },
             }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                sx={{ marginTop: "16px" }}
+                sx={{ marginTop: '16px' }}
                 label="Phone"
                 color="contrast"
                 type="tel"
@@ -155,16 +150,16 @@ const RegisterPage = () => {
             control={control}
             defaultValue=""
             rules={{
-              required: "Email is required",
+              required: 'Email is required',
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: "Must be a valid email",
+                message: 'Must be a valid email',
               },
             }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                sx={{ marginTop: "16px" }}
+                sx={{ marginTop: '16px' }}
                 label="Email address"
                 color="contrast"
                 type="text"
@@ -179,16 +174,16 @@ const RegisterPage = () => {
             control={control}
             defaultValue=""
             rules={{
-              required: "Password is required",
+              required: 'Password is required',
               minLength: {
                 value: 8,
-                message: "Password must be at least 8 characters",
+                message: 'Password must be at least 8 characters',
               },
             }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                sx={{ marginTop: "16px" }}
+                sx={{ marginTop: '16px' }}
                 label="Password"
                 color="contrast"
                 type="password"
@@ -200,7 +195,7 @@ const RegisterPage = () => {
 
           <Typography
             variant="body2"
-            sx={{ textAlign: "right", padding: "16px 0" }}
+            sx={{ textAlign: 'right', padding: '16px 0' }}
           >
             <Link
               to="forgot-password"
@@ -226,20 +221,20 @@ const RegisterPage = () => {
         <Typography
           variant="caption"
           sx={{
-            marginTop: "20px",
-            marginLeft: "5px",
-            color: theme.palette.grey["600"],
+            marginTop: '20px',
+            marginLeft: '5px',
+            color: theme.palette.grey['600'],
           }}
         >
-          By signing up, I agree to <MuiLink>Terms of Service</MuiLink> and{" "}
+          By signing up, I agree to <MuiLink>Terms of Service</MuiLink> and{' '}
           <MuiLink>Privacy Policy</MuiLink>
         </Typography>
         <Box
           sx={{
-            margin: "20px 0",
-            fontSize: "10px",
-            fontWeight: "600",
-            color: theme.palette.grey["600"],
+            margin: '20px 0',
+            fontSize: '10px',
+            fontWeight: '600',
+            color: theme.palette.grey['600'],
           }}
         >
           <Divider>OR</Divider>
