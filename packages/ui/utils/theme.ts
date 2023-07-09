@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 const darkTheme = {
   palette: {
@@ -77,78 +77,78 @@ export const getTheme = (mode: "dark" | "light") =>
       fontFamily: ["public-sans", "sans-serif"].join(","),
 
       h1: {
-        fontSize: "64px",
-        lineHeight: "80px",
+        fontSize: "3rem",
+        lineHeight: "5rem",
         fontStyle: "normal",
         fontWeight: 800,
       },
       h2: {
-        fontSize: "48px",
-        lineHeight: "64px",
+        fontSize: "2.25rem",
+        lineHeight: "4rem",
         fontStyle: "normal",
         fontWeight: 800,
       },
       h3: {
-        fontSize: "32px",
-        lineHeight: "48px",
+        fontSize: "1.875rem",
+        lineHeight: "3rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
       h4: {
-        fontSize: "24px",
-        lineHeight: "36px",
+        fontSize: "1.5rem",
+        lineHeight: "2.25rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
       h5: {
-        fontSize: "20px",
-        lineHeight: "30px",
+        fontSize: "1.25rem",
+        lineHeight: "2rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
       h6: {
-        fontSize: "18px",
-        lineHeight: "28px",
+        fontSize: "1.125rem",
+        lineHeight: "1.75rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
 
       subtitle1: {
-        fontSize: "16px",
-        lineHeight: "24px",
+        fontSize: "1rem",
+        lineHeight: "1.5rem",
         fontStyle: "normal",
         fontWeight: 600,
       },
 
       subtitle2: {
-        fontSize: "14px",
-        lineHeight: "22px",
+        fontSize: "0.875rem",
+        lineHeight: "1.25rem",
         fontStyle: "normal",
         fontWeight: 600,
       },
       body1: {
-        fontSize: "16px",
-        lineHeight: "24px",
+        fontSize: "1rem",
+        lineHeight: "1.5rem",
         fontStyle: "normal",
         fontWeight: 400,
       },
       body2: {
-        fontSize: "14px",
-        lineHeight: "22px",
+        fontSize: "0.875rem",
+        lineHeight: "1.25rem",
         fontStyle: "normal",
         fontWeight: 400,
       },
 
       caption: {
-        fontSize: "12px",
-        lineHeight: "18px",
+        fontSize: "0.75rem",
+        lineHeight: "1rem",
         fontStyle: "normal",
         fontWeight: 400,
       },
 
       overline: {
-        fontSize: "12px",
-        lineHeight: "18px",
+        fontSize: "0.75rem",
+        lineHeight: "1rem",
         fontStyle: "normal",
         fontWeight: 700,
       },

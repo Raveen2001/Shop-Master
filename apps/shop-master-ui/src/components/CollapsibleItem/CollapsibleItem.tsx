@@ -16,14 +16,14 @@ const CollapsibleItem: React.FC<ICollapsibleItem> = ({ name, content }) => {
       <Typography
         variant="caption"
         onClick={toggle}
-        className={`cursor-pointer font-bold uppercase opacity-80 hover:opacity-100`}
+        className={`cursor-pointer px-4 font-bold uppercase opacity-80 hover:opacity-100`}
       >
         {name}
       </Typography>
       <Box
-        className={clsx("my-2 box-border flex flex-col gap-1 overflow-hidden", {
+        className={clsx("box-border flex flex-col gap-1 overflow-hidden", {
           "my-0 max-h-0": isClose,
-          "max-h-ful": isOpen,
+          "max-h-ful my-2": isOpen,
         })}
       >
         {content}
