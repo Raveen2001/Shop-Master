@@ -1,10 +1,19 @@
-interface ISidebarItem {
-  name: string;
-  items: ISidebarSubItem[];
-}
+import { People, VerifiedUser } from "ui/icons";
 
-interface ISidebarSubItem {
-  name: string;
-  path: string;
-  icon: string;
-}
+const sidebarItems: ISidebarItem[] = [
+  {
+    name: "Overview",
+    items: [
+      {
+        name: "Employee",
+        path: "/employee",
+        icon: <VerifiedUser />,
+      },
+      {
+        name: "Customer",
+        path: "/customer",
+        icon: <People />,
+      },
+    ],
+  },
+];
