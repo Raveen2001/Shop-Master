@@ -20,6 +20,7 @@ import {
 } from "@tanstack/react-table";
 
 import { PaginatedData } from "./models";
+import ShowStatus from "./ShowStatus";
 
 interface ITableProps<T, K> {
   columns: ColumnDef<T, K>[];
@@ -46,7 +47,7 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
   );
 
   const containsData = React.useMemo(() => {
-    return data && data.rows.length > 0;
+    return data && data.rows.length > 0 && !isLoading && !isError;
   }, [data]);
 
   const defaultData = React.useMemo(() => [], []);
@@ -75,54 +76,55 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
 
   return (
     <Box>
-      <MUITable>
-        <TableHead className="bg-slate-100">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableCell key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder ? null : (
-                      <Box>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                      </Box>
-                    )}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHead>
-        {}
-        <TableBody>
-          {isLoading && <CircularProgress />}
-          {isError && <div>Something went wrong</div>}
-
-          {!containsData && !isLoading && !isError && (
-            <div>No data to display</div>
-          )}
-
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <TableRow key={row.id} className="hover:bg-slate-100">
-                {row.getVisibleCells().map((cell) => {
+      <Box className="relative w-full overflow-auto border border-dotted border-slate-400">
+        <MUITable className={`w-[${table.getTotalSize()}px]`}>
+          <TableHead className={`bg-slate-100 `}>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
                   return (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
+                    <TableCell key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder ? null : (
+                        <Box>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                        </Box>
                       )}
                     </TableCell>
                   );
                 })}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </MUITable>
+            ))}
+          </TableHead>
+          <TableBody>
+            {containsData &&
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow key={row.id} className="hover:bg-slate-50">
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </MUITable>
+        {!containsData && (
+          <Box className="w-full h-80 sticky inset-0 flex justify-center items-center p-4">
+            <ShowStatus isLoading={true} isError={false} />
+          </Box>
+        )}
+      </Box>
+
       {containsData && (
         <TablePagination
           component="div"

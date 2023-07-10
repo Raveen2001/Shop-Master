@@ -6,7 +6,11 @@ import { sidebarItems } from "./utils";
 
 const Sidebar = () => {
   return (
-    <Box className={"h-screen w-[250px] border-r-2 border-dotted py-4"}>
+    <Box
+      className={
+        "h-screen min-w-[250px] max-w-[250px] border-r-2 border-dotted py-4"
+      }
+    >
       <Box className={"flex flex-col"}>
         <Typography variant="h5" color={"primary"} className="mb-4 px-4">
           Shop Master
