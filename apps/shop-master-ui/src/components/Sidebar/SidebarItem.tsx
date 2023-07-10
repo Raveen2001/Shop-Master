@@ -1,19 +1,30 @@
 import clsx from "clsx";
-import { sample } from "lodash";
-import React from "react";
+import React, { useMemo } from "react";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "ui";
 
 const SidebarItem: React.FC<ISidebarSubItem> = ({
   name,
-  // path,
+  path,
   icon,
   // items,
 }) => {
   const theme = useTheme();
-  const isSelected = sample([true, false]);
+
+  const location = useLocation();
+
+  const isSelected = useMemo(() => {
+    return !!matchPath(location.pathname, path);
+  }, [location.pathname, path]);
+  const navigate = useNavigate();
 
   return (
-    <Box className={`group relative mx-3 h-[50px]`}>
+    <Box
+      className={`group relative  mx-3 h-[50px] cursor-pointer`}
+      onClick={() => {
+        navigate(path);
+      }}
+    >
       <Box
         className={clsx(
           "absolute inset-0 h-full w-full rounded-[10px] opacity-20",
@@ -45,6 +56,8 @@ const SidebarItem: React.FC<ISidebarSubItem> = ({
         >
           {name}
         </Typography>
+
+        {/* TODO: Add sub items */}
       </Box>
     </Box>
   );

@@ -1,14 +1,15 @@
-import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { FC, useState } from "react";
+
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
   InputLabel,
   OutlinedInput,
-  InputAdornment,
-  IconButton,
-  FormHelperText,
   SxProps,
 } from "@mui/material";
-import { FC, useState } from "react";
 
 interface IPasswordFieldProps {
   label?: string;

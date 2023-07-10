@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useEffect, useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
-import "./App.css";
+import "ui/styles.css";
 
 const queryClient = new QueryClient();
 

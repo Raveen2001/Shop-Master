@@ -1,14 +1,8 @@
-import { InferModel, relations } from "drizzle-orm";
-import {
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-  uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
-import { Owner, ownersDB } from "./owners";
-import { Shop, shopsDB } from "./shops";
+import { InferModel, relations } from 'drizzle-orm';
+import { pgEnum, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+
+import { Owner, ownersDB } from './owners';
+import { Shop, shopsDB } from './shops';
 
 export const employeeTypeEnum = pgEnum("employeeType", [
   "MANAGER",
@@ -23,6 +17,7 @@ export const employeeTypeEnum = pgEnum("employeeType", [
 export const employeesDB = pgTable("employees", {
   id: uuid("id").defaultRandom().primaryKey(),
   username: text("username").notNull(),
+  name: text("name").notNull(),
   password: text("password").notNull(),
   email: varchar("email", { length: 256 }),
   phone: varchar("phone", { length: 10 }).notNull(),

@@ -1,25 +1,32 @@
-import { createBrowserRouter } from 'react-router-dom';
-import LoginPage from './pages/Login';
-import RegisterPage from './pages/Register';
-import RootLayout from './layouts/RootLayout';
-import ManageEmployee from './pages/ManageEmployee/ManageEmployee';
+import { createBrowserRouter } from "react-router-dom";
+
+import RootLayout from "./layouts/RootLayout";
+import LoginPage from "./pages/Login";
+import ManageEmployee from "./pages/ManageEmployee/ManageEmployee";
+import RegisterPage from "./pages/Register";
+
 export const router = createBrowserRouter([
   {
-    path: '/login',
+    path: "/login",
     element: <LoginPage />,
   },
   {
-    path: '/register',
+    path: "/register",
     element: <RegisterPage />,
   },
   {
-    path: '/',
+    path: "/",
     element: <RootLayout />,
 
     children: [
       {
-        path: '/',
+        path: "/",
         element: <ManageEmployee />,
+      },
+
+      {
+        path: "*",
+        element: <h1>404 Not Found</h1>,
       },
     ],
   },

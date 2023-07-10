@@ -1,33 +1,59 @@
-import { People, VerifiedUser } from "ui/icons";
+import {
+  DashboardTwoTone,
+  ManageAccountsTwoTone,
+  PaymentTwoTone,
+  PeopleAltTwoTone,
+  WorkTwoTone,
+} from "ui/icons";
 
 export const sidebarItems: ISidebarItem[] = [
   {
     name: "Overview",
     items: [
       {
+        name: "Dashboard",
+        path: "/",
+        icon: <DashboardTwoTone />,
+      },
+      {
         name: "Employee",
         path: "/employee",
-        icon: <VerifiedUser />,
+        icon: <WorkTwoTone />,
       },
       {
         name: "Customer",
         path: "/customer",
-        icon: <People />,
+        icon: <PeopleAltTwoTone />,
       },
     ],
   },
   {
-    name: "Overview",
+    name: "Employee",
     items: [
       {
-        name: "Employee",
-        path: "/employee",
-        icon: <VerifiedUser />,
+        name: "Manage Employees",
+        path: "/employee/manage",
+        icon: <ManageAccountsTwoTone />,
       },
       {
-        name: "Customer",
-        path: "/customer",
-        icon: <People />,
+        name: "Payment History",
+        path: "/employee/payment-history",
+        icon: <PaymentTwoTone />,
+      },
+    ],
+  },
+  {
+    name: "Customer",
+    items: [
+      {
+        name: "Manage Customers",
+        path: "/customer/manage",
+        icon: <ManageAccountsTwoTone />,
+      },
+      {
+        name: "Payment History",
+        path: "/customer/payment-history",
+        icon: <PaymentTwoTone />,
       },
     ],
   },
