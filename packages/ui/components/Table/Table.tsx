@@ -1,6 +1,8 @@
 import React, { ChangeEvent } from "react";
 
 import {
+  Box,
+  CircularProgress,
   Table as MUITable,
   TableBody,
   TableCell,
@@ -35,9 +37,17 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
     pageSize,
   };
 
-  const dataQuery = useQuery(["data", fetchDataOptions], queryFn, {
-    keepPreviousData: true,
-  });
+  const { data, isError, isLoading } = useQuery(
+    ["data", fetchDataOptions],
+    queryFn,
+    {
+      keepPreviousData: true,
+    },
+  );
+
+  const containsData = React.useMemo(() => {
+    return data && data.rows.length > 0;
+  }, [data]);
 
   const defaultData = React.useMemo(() => [], []);
 
@@ -50,9 +60,9 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
   );
 
   const table = useReactTable({
-    data: dataQuery.data?.rows ?? defaultData,
+    data: data?.rows ?? defaultData,
     columns,
-    pageCount: dataQuery.data?.pageNumber ?? -1,
+    pageCount: data?.pageNumber ?? -1,
     state: {
       pagination,
     },
@@ -64,8 +74,7 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
   });
 
   return (
-    <div className="p-5">
-      <div className="h-2" />
+    <Box>
       <MUITable>
         <TableHead className="bg-slate-100">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -74,12 +83,12 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
                 return (
                   <TableCell key={header.id} colSpan={header.colSpan}>
                     {header.isPlaceholder ? null : (
-                      <div>
+                      <Box>
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                      </div>
+                      </Box>
                     )}
                   </TableCell>
                 );
@@ -87,7 +96,15 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
             </TableRow>
           ))}
         </TableHead>
+        {}
         <TableBody>
+          {isLoading && <CircularProgress />}
+          {isError && <div>Something went wrong</div>}
+
+          {!containsData && !isLoading && !isError && (
+            <div>No data to display</div>
+          )}
+
           {table.getRowModel().rows.map((row) => {
             return (
               <TableRow key={row.id} className="hover:bg-slate-100">
@@ -106,26 +123,28 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
           })}
         </TableBody>
       </MUITable>
-      <TablePagination
-        component="div"
-        count={dataQuery.data?.totalCount ?? 0}
-        page={pageIndex}
-        onPageChange={(e, page) => {
-          setPagination((p) => ({
-            ...p,
-            pageIndex: page,
-          }));
-        }}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
-          setPagination((p) => ({
-            ...p,
-            pageSize: Number(e.target.value),
-            pageIndex: 0,
-          }));
-        }}
-      />
-    </div>
+      {containsData && (
+        <TablePagination
+          component="div"
+          count={data?.totalCount ?? 0}
+          page={pageIndex}
+          onPageChange={(e, page) => {
+            setPagination((p) => ({
+              ...p,
+              pageIndex: page,
+            }));
+          }}
+          rowsPerPage={pageSize}
+          onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setPagination((p) => ({
+              ...p,
+              pageSize: Number(e.target.value),
+              pageIndex: 0,
+            }));
+          }}
+        />
+      )}
+    </Box>
   );
 };
 

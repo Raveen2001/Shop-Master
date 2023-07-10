@@ -1,10 +1,26 @@
-import { Table } from "ui";
+import { Box, Breadcrumbs, Button, Table, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
+import { Add } from "ui/icons";
 
 const ManageEmployee = () => {
   return (
-    <div>
+    <Box>
+      <Box className="mb-8 flex">
+        <Box className="flex-1">
+          <Typography variant="h6">Manage Employees</Typography>
+          <Breadcrumbs></Breadcrumbs>
+        </Box>
+
+        <Button
+          variant="contained"
+          color="contrast"
+          size="small"
+          startIcon={<Add />}
+        >
+          New Employee
+        </Button>
+      </Box>
       <Table
         columns={columnsDefs}
         queryFn={async () => ({
@@ -47,7 +63,7 @@ const ManageEmployee = () => {
           totalCount: 100,
         })}
       />
-    </div>
+    </Box>
   );
 };
 
