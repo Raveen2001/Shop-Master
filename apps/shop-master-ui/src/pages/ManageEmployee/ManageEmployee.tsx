@@ -10,7 +10,7 @@ const ManageEmployee = () => {
         queryFn={async () => ({
           rows: [
             {
-              userName: "test",
+              username: "test",
               email: "test",
               phone: "test",
               address: "test",
@@ -21,7 +21,7 @@ const ManageEmployee = () => {
               password: "test",
             },
             {
-              userName: "test",
+              username: "test",
               email: "test",
               phone: "test",
               address: "test",
@@ -32,7 +32,7 @@ const ManageEmployee = () => {
               password: "test",
             },
             {
-              userName: "test",
+              username: "test",
               email: "test",
               phone: "test",
               address: "test",

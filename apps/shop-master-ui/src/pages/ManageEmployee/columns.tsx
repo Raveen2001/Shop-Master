@@ -1,11 +1,12 @@
-import { ColumnDef, createColumnHelper } from "ui";
+import { createColumnHelper } from "ui";
+import { IEmployeeData } from "./models";
 
 const columnHelper = createColumnHelper<IEmployeeData>();
 
 export const columnsDefs = [
-  columnHelper.accessor("userName", {
-    id: "userName",
-    header: "User Name",
+  columnHelper.accessor("username", {
+    id: "username",
+    header: "Username",
   }),
 
   columnHelper.accessor("email", {

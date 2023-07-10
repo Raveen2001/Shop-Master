@@ -20,7 +20,7 @@ export const MyThemeProvider: React.FC<IMyThemeProviderProps> = ({
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    []
+    [],
   );
 
   const theme = React.useMemo(() => getTheme(mode), [mode]);

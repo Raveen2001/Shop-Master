@@ -67,7 +67,7 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
     <div className="p-5">
       <div className="h-2" />
       <MUITable>
-        <TableHead>
+        <TableHead className="bg-slate-100">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -90,7 +90,7 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
         <TableBody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <TableRow key={row.id}>
+              <TableRow key={row.id} className="hover:bg-slate-100">
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <TableCell key={cell.id}>

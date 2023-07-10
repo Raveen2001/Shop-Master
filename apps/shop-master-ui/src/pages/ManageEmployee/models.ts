@@ -1,5 +1,5 @@
-interface IEmployeeData {
-  userName: string;
+export interface IEmployeeData {
+  username: string;
   name: string;
   password: string;
   email: string;
