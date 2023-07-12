@@ -1,5 +1,4 @@
 import { employeesDB, eq, sql } from "database-drizzle";
-import { FastifyPluginOptions } from "fastify";
 import { TLoginWithUsernameIn } from "../types/auth";
 import {
   CreateEmployeeOpts,
@@ -11,13 +10,10 @@ import {
   TEmployeeQueryParam,
   TEmployeeQueryString,
 } from "../types/employee";
-import FastifyTypebox from "../types/fastify";
 
-function EmployeePlugin(
-  fastify: FastifyTypebox,
-  options: FastifyPluginOptions,
-  next: () => void
-) {
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+
+export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // query employee by id
   fastify.get<{
     Querystring: TEmployeeQueryString;
@@ -168,8 +164,6 @@ function EmployeePlugin(
 
     reply.code(200).send({ rows: employees, total, page, limit });
   });
+};
 
-  next();
-}
-
-export default EmployeePlugin;
+export default EmployeeRoutes;

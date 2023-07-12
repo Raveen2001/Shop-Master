@@ -1,9 +1,9 @@
-import FastifyPlugin from "fastify-plugin";
+import fp from "fastify-plugin";
 import FastifySwagger, { SwaggerOptions } from "@fastify/swagger";
 import FastifySwaggerUi from "@fastify/swagger-ui";
-import FastifyTypebox from "../types/fastify";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
-const swaggerOptions: SwaggerOptions = {
+export const swaggerOptions: SwaggerOptions = {
   swagger: {
     info: {
       title: "User Management API",
@@ -45,14 +45,12 @@ const swaggerOptions: SwaggerOptions = {
   },
 };
 
-async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
-  await fastify.register(FastifySwagger, swaggerOptions);
+const swaggerPlugin: FastifyPluginAsyncTypebox = async (fastify) => {
+  fastify.register(FastifySwagger, swaggerOptions);
 
-  await fastify.register(FastifySwaggerUi, {
+  fastify.register(FastifySwaggerUi, {
     routePrefix: "/docs",
   });
+};
 
-  done();
-}
-
-export default FastifyPlugin(swaggerPlugin);
+export default fp(swaggerPlugin);

@@ -1,8 +1,8 @@
-import FastifyPlugin from "fastify-plugin";
+import fp from "fastify-plugin";
 import bcrypt from "bcrypt";
-import FastifyTypebox from "../types/fastify";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
-async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
+const decoratorPlugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.decorate(
     "hashPassword",
     async (password: string): Promise<string> => {
@@ -19,7 +19,7 @@ async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
     }
   );
 
-  fastify.decorate("signJwt", (payload: any): string => {
+  fastify.decorate("signJwt", (payload: Record<string, unknown>): string => {
     const token = fastify.jwt.sign(payload, { expiresIn: "1h" });
     return token;
   });
@@ -30,7 +30,7 @@ async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
       return token;
     } catch (err: any) {
       if (err.code === "FAST_JWT_EXPIRED") {
-        const data = fastify.jwt.decode(token) as any;
+        const data: Record<string, unknown> | null = fastify.jwt.decode(token);
         if (data) {
           delete data.exp;
           delete data.iat;
@@ -42,7 +42,6 @@ async function swaggerPlugin(fastify: FastifyTypebox, ops: any, done: any) {
       throw new Error("Invalid token");
     }
   });
-  done();
-}
+};
 
-export default FastifyPlugin(swaggerPlugin);
+export default fp(decoratorPlugin);

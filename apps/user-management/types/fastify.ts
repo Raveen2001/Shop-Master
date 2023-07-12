@@ -13,8 +13,13 @@ declare module "fastify" {
     db: typeof db;
     hashPassword: (password: string) => Promise<string>;
     comparePassword: (password: string, hash: string) => Promise<boolean>;
-    signJwt: (payload: any) => string;
+    signJwt: (payload: Record<string, unknown>) => string;
     refreshJwt: (token: string) => Promise<string>;
+    verifyJwt: (
+      request: FastifyRequest,
+      reply: FastifyReply,
+      done: (err?: Error) => void
+    ) => void;
   }
 }
 

@@ -13,7 +13,6 @@ import {
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
-  ColumnSort,
   flexRender,
   getCoreRowModel,
   SortingState,
@@ -58,10 +57,6 @@ const Table = <T, K>({
       order: sorting[0]?.desc ? "desc" : "asc",
     };
   }, [pagination, sorting]);
-
-  useEffect(() => {
-    console.log(sorting);
-  }, [sorting]);
 
   const {
     data: axiosResponse,
@@ -166,27 +161,25 @@ const Table = <T, K>({
         )}
       </Box>
 
-      {containsData && (
-        <TablePagination
-          component="div"
-          count={axiosResponse?.data.total ?? 0}
-          page={pagination.page}
-          onPageChange={(e, page) => {
-            setPagination((p) => ({
-              ...p,
-              page,
-            }));
-          }}
-          rowsPerPage={pagination.limit}
-          onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setPagination((p) => ({
-              ...p,
-              limit: Number(e.target.value),
-              page: 0,
-            }));
-          }}
-        />
-      )}
+      <TablePagination
+        component="div"
+        count={axiosResponse?.data.total ?? 0}
+        page={pagination.page}
+        onPageChange={(e, page) => {
+          setPagination((p) => ({
+            ...p,
+            page,
+          }));
+        }}
+        rowsPerPage={pagination.limit}
+        onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
+          setPagination((p) => ({
+            ...p,
+            limit: Number(e.target.value),
+            page: 0,
+          }));
+        }}
+      />
     </Box>
   );
 };

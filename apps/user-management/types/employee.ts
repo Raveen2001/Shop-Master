@@ -5,7 +5,7 @@ import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithUsernamePropsSchema } from "./auth";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";
-import { PagableSchema } from "./general";
+import { PagableSchema } from "./common";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),

@@ -6,16 +6,15 @@ import FastifyRateLimit from "@fastify/rate-limit";
 import FastifyAuth from "@fastify/auth";
 import FastifyJwt from "@fastify/jwt";
 
-import FastifyTypebox from "./types/fastify";
-
 import SwaggerPlugin from "./plugins/swagger";
-import PrismaPlugin from "./plugins/prisma";
-import AuthPlugin from "./plugins/auth";
+import DrizzlePlugin from "./plugins/drizzle";
+import DecoratorPlugin from "./plugins/decorators";
 
-import OwnerPlugin from "./routes/owner";
-import TokenPlugin from "./routes/token";
-import ShopPlugin from "./routes/shop";
-import EmployeePlugin from "./routes/employee";
+import HelperRoutes from "./routes/helper";
+import OwnerRoutes from "./routes/owner";
+import ShopRoutes from "./routes/shop";
+import EmployeeRoutes from "./routes/employee";
+import FastifyTypebox from "./types/fastify";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -24,12 +23,6 @@ const fastify: FastifyTypebox = Fastify({
     },
   },
 }).withTypeProvider<TypeBoxTypeProvider>();
-
-// register rate limit
-fastify.register(FastifyRateLimit, {
-  max: 100,
-  timeWindow: "1 minute",
-});
 
 // register helmet
 fastify.register(FastifyHelmet);
@@ -41,11 +34,14 @@ fastify.register(FastifyCors, {
   allowedHeaders: ["Content-Type", "Authorization"],
 });
 
-// register swagger
-fastify.register(SwaggerPlugin);
+// register rate limit
+fastify.register(FastifyRateLimit, {
+  max: 100,
+  timeWindow: "1 minute",
+});
 
-// register prisma
-fastify.register(PrismaPlugin);
+// register auth
+fastify.register(FastifyAuth);
 
 // register jwt
 const secret: string = process.env.JWT_SECRET as string;
@@ -53,18 +49,22 @@ fastify.register(FastifyJwt, {
   secret,
 });
 
-// register auth
-fastify.register(AuthPlugin);
-fastify.register(FastifyAuth);
+// ---- register custom plugins ----
 
-// health check endpoint
-fastify.get("/ping", async () => "pong");
+// register swagger
+fastify.register(SwaggerPlugin);
+
+// register drizzle
+fastify.register(DrizzlePlugin);
+
+// register decorators
+fastify.register(DecoratorPlugin);
 
 // register routes
-fastify.register(TokenPlugin);
-fastify.register(OwnerPlugin, { prefix: "/owner" });
-fastify.register(ShopPlugin, { prefix: "/shop" });
-fastify.register(EmployeePlugin, { prefix: "/employee" });
+fastify.register(HelperRoutes);
+fastify.register(OwnerRoutes, { prefix: "/owner" });
+fastify.register(ShopRoutes, { prefix: "/shop" });
+fastify.register(EmployeeRoutes, { prefix: "/employee" });
 
 // start the server
 fastify.listen({ port: 5000 }, async (err) => {
@@ -72,6 +72,8 @@ fastify.listen({ port: 5000 }, async (err) => {
     fastify.log.error(err);
     process.exit(1);
   }
+
+  fastify.swagger();
 });
 
 fastify.setErrorHandler(async (error, request, reply) => {

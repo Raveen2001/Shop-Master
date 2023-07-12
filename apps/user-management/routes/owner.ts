@@ -1,7 +1,5 @@
-import { ownersDB } from 'database-drizzle';
-import { FastifyPluginOptions } from 'fastify';
-import { TLoginWithEmailIn } from '../types/auth';
-import FastifyTypebox from '../types/fastify';
+import { ownersDB } from "database-drizzle";
+import { TLoginWithEmailIn } from "../types/auth";
 import {
   CreateOwnerOpts,
   LoginOwnerOpts,
@@ -9,31 +7,28 @@ import {
   TOwnerIn,
   TOwnerQueryParam,
   TOwnerQueryString,
-} from '../types/owner';
+} from "../types/owner";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
-function ownerPlugin(
-  fastify: FastifyTypebox,
-  options: FastifyPluginOptions,
-  next: () => void,
-) {
+const OwnerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // Login as owner
   fastify.post<{
     Body: TLoginWithEmailIn;
-  }>('/login', LoginOwnerOpts, async (req, reply) => {
+  }>("/login", LoginOwnerOpts, async (req, reply) => {
     const owner = await fastify.db.query.ownersDB.findFirst({
       where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
     });
 
     if (!owner) {
-      reply.code(404).send({ message: 'User not found' });
+      reply.code(404).send({ message: "User not found" });
       return;
     }
     const isPasswordValid = await fastify.comparePassword(
       req.body.password,
-      owner.password,
+      owner.password
     );
     if (!isPasswordValid) {
-      reply.code(401).send({ message: 'Invalid credentials' });
+      reply.code(401).send({ message: "Invalid credentials" });
     }
     const token = fastify.signJwt(owner);
     reply.code(200).send({ token });
@@ -42,14 +37,14 @@ function ownerPlugin(
   // Register as owner
   fastify.post<{
     Body: TOwnerIn;
-  }>('/register', CreateOwnerOpts, async (req, reply) => {
+  }>("/register", CreateOwnerOpts, async (req, reply) => {
     // check if email already exists
     const existingOwner = await fastify.db.query.ownersDB.findFirst({
       where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
     });
 
     if (existingOwner) {
-      reply.code(409).send({ message: 'Email already exists' });
+      reply.code(409).send({ message: "Email already exists" });
       return;
     }
 
@@ -75,7 +70,7 @@ function ownerPlugin(
   fastify.get<{
     Params: TOwnerQueryParam;
     Querystring: TOwnerQueryString;
-  }>('/:id', QueryOwnerOpts, async (req, reply) => {
+  }>("/:id", QueryOwnerOpts, async (req, reply) => {
     const owner = await fastify.db.query.ownersDB.findFirst({
       where: (ownersDB, { eq }) => eq(ownersDB.id, req.params.id),
 
@@ -87,8 +82,6 @@ function ownerPlugin(
 
     reply.code(200).send(owner);
   });
+};
 
-  next();
-}
-
-export default ownerPlugin;
+export default OwnerRoutes;
