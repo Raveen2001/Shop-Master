@@ -1,14 +1,48 @@
 import { Box } from "ui";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
-import { getShopByOwnerId } from "../services/shop";
+import { getOwnerByToken } from "../services/owner";
 import { useQuery } from "@tanstack/react-query";
+import { useGlobalStore } from "../store/globalStore";
+import { useEffect } from "react";
+import { getShopsByOwnerId } from "../services/shop";
 
 const RootLayout = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["owner", "shops"],
-    queryFn: getShopByOwnerId("1"),
+  const [setSelectedShopId, setShops, setOwner] = useGlobalStore((state) => [
+    state.setSelectedShopId,
+    state.setShops,
+    state.setOwner,
+  ]);
+  const ownerQuery = useQuery({
+    queryKey: ["owner", "me"],
+    queryFn: getOwnerByToken,
   });
+
+  const shopsQuery = useQuery({
+    queryKey: ["shops", ownerQuery.data?.data.id],
+    queryFn: getShopsByOwnerId(ownerQuery.data?.data.id ?? ""),
+    enabled: !!ownerQuery.data,
+  });
+
+  useEffect(() => {
+    if (!ownerQuery.isLoading && !ownerQuery.isError) {
+      setOwner(ownerQuery.data.data);
+    }
+  }, [ownerQuery.isError, ownerQuery.isLoading, ownerQuery.data, setOwner]);
+
+  useEffect(() => {
+    if (!shopsQuery.isLoading && !shopsQuery.isError) {
+      setShops(shopsQuery.data.data);
+      setSelectedShopId(shopsQuery.data.data[0]?.id);
+    }
+  }, [
+    setSelectedShopId,
+    setShops,
+    shopsQuery.data,
+    shopsQuery.isError,
+    shopsQuery.isLoading,
+  ]);
+
   return (
     <Box className="flex flex-row">
       <Sidebar />

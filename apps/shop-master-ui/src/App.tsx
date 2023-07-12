@@ -7,15 +7,20 @@ import "ui/styles.css";
 
 const queryClient = new QueryClient();
 
+const AUTH_URLS = ["/login", "/register"];
+
 function App() {
   // get the logged in status from local storage
   const isLoggedIn = useMemo(() => !!localStorage.getItem("token"), []);
-
   // redirect to login page if not logged in
   useEffect(() => {
-    console.log(isLoggedIn);
+    const location = window.location.pathname;
+
     if (!isLoggedIn) {
       router.navigate("/login");
+    }
+    if (AUTH_URLS.includes(location)) {
+      router.navigate("/");
     }
   }, [isLoggedIn]);
 

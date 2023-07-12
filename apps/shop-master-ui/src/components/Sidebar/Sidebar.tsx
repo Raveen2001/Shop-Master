@@ -3,8 +3,15 @@ import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "ui";
 import CollapsibleItem from "../CollapsibleItem/CollapsibleItem";
 import SidebarItem from "./SidebarItem";
 import { sidebarItems } from "./utils";
+import { useGlobalStore } from "../../store/globalStore";
 
 const Sidebar = () => {
+  const [selectedShopId, shops, setSelectedShopId] = useGlobalStore((state) => [
+    state.selectedShopId,
+    state.shops,
+    state.setSelectedShopId,
+  ]);
+
   return (
     <Box
       className={
@@ -20,17 +27,20 @@ const Sidebar = () => {
           <InputLabel id="demo-select-small-label">Age</InputLabel>
           <Select
             labelId="demo-select-small-label"
-            id="demo-select-small"
-            // value={age}
-            label="Age"
-            // onChange={() => {}}
+            defaultValue={selectedShopId}
+            label="Shop"
+            key={selectedShopId}
+            onChange={(e) => setSelectedShopId(e.target.value as string)}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {Object.values(shops ?? {}).map((shop) => (
+              <MenuItem
+                value={shop.id}
+                key={shop.id}
+                onClick={() => setSelectedShopId(shop.id)}
+              >
+                {shop.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
