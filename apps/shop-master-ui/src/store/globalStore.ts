@@ -15,8 +15,8 @@ interface IGlobalStore {
 
 export const useGlobalStore = create(
   immer<IGlobalStore>((set) => ({
-    shops: undefined,
-    selectedShopId: undefined,
+    shops: {},
+    selectedShopId: "",
     owner: undefined,
     selectedShop: undefined,
 
