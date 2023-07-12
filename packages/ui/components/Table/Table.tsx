@@ -47,7 +47,7 @@ const Table = <T, K>({
   );
   const [pagination, setPagination] = useState({
     page: 0,
-    limit: 2,
+    limit: 10,
   });
 
   const fetchOptions = useMemo(() => {
@@ -107,9 +107,12 @@ const Table = <T, K>({
                     <TableCell key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder ? null : (
                         <Box
-                          className={clsx("flex items-center", {
+                          className={clsx("flex items-center text-slate-500", {
                             "cursor-pointer select-none":
                               header.column.getCanSort() && !disableSorting,
+                            "text-slate-900":
+                              header.column.id === sorting[0]?.id ||
+                              disableSorting,
                           })}
                           onClick={
                             disableSorting
@@ -168,7 +171,6 @@ const Table = <T, K>({
           component="div"
           count={axiosResponse?.data.total ?? 0}
           page={pagination.page}
-          rowsPerPageOptions={[2, 4]}
           onPageChange={(e, page) => {
             setPagination((p) => ({
               ...p,

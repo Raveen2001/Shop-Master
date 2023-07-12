@@ -23,11 +23,6 @@ export const columnsDefs = [
     header: "Phone",
   }),
 
-  columnHelper.accessor("address", {
-    id: "address",
-    header: "Address",
-  }),
-
   columnHelper.accessor("type", {
     id: "type",
     header: "Type",
@@ -36,5 +31,9 @@ export const columnsDefs = [
   columnHelper.accessor("createdAt", {
     id: "createdAt",
     header: "Created At",
+  }),
+  columnHelper.accessor("address", {
+    id: "address",
+    header: "Address",
   }),
 ];
