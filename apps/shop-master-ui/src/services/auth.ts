@@ -1,8 +1,4 @@
-import {
-  ILoginData,
-  ILoginResponse,
-  ILoginSuccess,
-} from "../pages/Login/model";
+import { ILoginData, ILoginSuccess } from "../pages/Login/model";
 import { axiosClient } from "../utils/axios";
 
 export const loginAsOwner = async (data: ILoginData) => {

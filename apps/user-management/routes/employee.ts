@@ -128,7 +128,7 @@ function EmployeePlugin(
   });
 
   // query employees by shop id
-  fastify.post<{
+  fastify.get<{
     Querystring: TEmployeeQueryString;
     Params: TEmployeeQueryParam;
   }>("/shop/:id", QueryEmployeesByShopOpts, async (req, reply) => {
@@ -166,7 +166,7 @@ function EmployeePlugin(
         .where(eq(employeesDB.shopId, id))
     )[0];
 
-    reply.code(200).send({ rows: employees, total });
+    reply.code(200).send({ rows: employees, total, page, limit });
   });
 
   next();

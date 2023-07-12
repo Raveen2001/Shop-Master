@@ -2,6 +2,9 @@ import { Box, Breadcrumbs, Button, Table, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
+import { getEmployeeByShopId } from "../../services/employee";
+
+const shopId = "32378637-01ba-4b02-90b7-38214d8aaeca";
 
 const ManageEmployee = () => {
   return (
@@ -23,45 +26,8 @@ const ManageEmployee = () => {
       </Box>
       <Table
         columns={columnsDefs}
-        queryFn={async () => ({
-          rows: [
-            {
-              username: "test",
-              email: "test",
-              phone: "test",
-              address: "test",
-              type: "test",
-              createdAt: "test",
-              image: "test",
-              name: "test",
-              password: "test",
-            },
-            {
-              username: "test",
-              email: "test",
-              phone: "test",
-              address: "test",
-              type: "test",
-              createdAt: "test",
-              image: "test",
-              name: "test",
-              password: "test",
-            },
-            {
-              username: "test",
-              email: "test",
-              phone: "test",
-              address: "test",
-              type: "test",
-              createdAt: "test",
-              image: "test",
-              name: "test",
-              password: "test",
-            },
-          ],
-          pageNumber: 5,
-          totalCount: 100,
-        })}
+        queryFn={getEmployeeByShopId(shopId)}
+        queryKeys={["employee", "shop", shopId]}
       />
     </Box>
   );

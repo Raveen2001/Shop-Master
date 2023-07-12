@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from "react";
+import { flatten } from "lodash";
 
 import {
   Box,
-  CircularProgress,
   Table as MUITable,
   TableBody,
   TableCell,
@@ -10,7 +10,11 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import {
+  QueryFunctionContext,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import {
   ColumnDef,
   flexRender,
@@ -19,59 +23,47 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { PaginatedData } from "./models";
+import { IPaginatedData } from "./../../models";
 import ShowStatus from "./ShowStatus";
+import { AxiosResponse } from "axios";
 
 interface ITableProps<T, K> {
   columns: ColumnDef<T, K>[];
-  queryFn: (options: any) => Promise<PaginatedData<T>>;
+  queryFn: (
+    context: QueryFunctionContext,
+  ) => Promise<AxiosResponse<IPaginatedData<T>>>;
+  queryKeys: string[];
 }
-const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
+const Table = <T, K>({ columns, queryFn, queryKeys }: ITableProps<T, K>) => {
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
       pageIndex: 0,
-      pageSize: 10,
+      pageSize: 2,
     });
 
   const fetchDataOptions = {
-    pageIndex,
-    pageSize,
+    page: pageIndex,
+    limit: pageSize,
   };
 
-  const { data, isError, isLoading } = useQuery(
-    ["data", fetchDataOptions],
-    queryFn,
-    {
-      keepPreviousData: true,
-    },
-  );
+  const {
+    data: axiosResponse,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: [...queryKeys, fetchDataOptions],
+    queryFn: queryFn,
+    meta: fetchDataOptions,
+  });
 
   const containsData = React.useMemo(() => {
-    return data && data.rows.length > 0 && !isLoading && !isError;
-  }, [data]);
-
-  const defaultData = React.useMemo(() => [], []);
-
-  const pagination = React.useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize],
-  );
+    return !isLoading && !isError && axiosResponse.data.rows.length > 0;
+  }, [axiosResponse]);
 
   const table = useReactTable({
-    data: data?.rows ?? defaultData,
+    data: axiosResponse?.data.rows ?? [],
     columns,
-    pageCount: data?.pageNumber ?? -1,
-    state: {
-      pagination,
-    },
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    // getPaginationRowModel: getPaginationRowModel(), // If only doing manual pagination, you don't need this
-    debugTable: true,
   });
 
   return (
@@ -120,7 +112,7 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
         </MUITable>
         {!containsData && (
           <Box className="w-full h-80 sticky inset-0 flex justify-center items-center p-4">
-            <ShowStatus isLoading={true} isError={false} />
+            <ShowStatus isLoading={isLoading} isError={isError} />
           </Box>
         )}
       </Box>
@@ -128,8 +120,9 @@ const Table = <T, K>({ columns, queryFn }: ITableProps<T, K>) => {
       {containsData && (
         <TablePagination
           component="div"
-          count={data?.totalCount ?? 0}
+          count={axiosResponse?.data.total ?? 0}
           page={pageIndex}
+          rowsPerPageOptions={[2, 4]}
           onPageChange={(e, page) => {
             setPagination((p) => ({
               ...p,
