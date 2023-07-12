@@ -1,17 +1,28 @@
+import "@mui/material";
+import { PaletteColor, PaletteColorOptions } from "@mui/material/styles";
+
 declare module "@mui/material/styles" {
   interface Palette {
-    contrast?: {
-      main: string;
-      contrastText: string;
-    };
+    contrast: PaletteColor;
   }
   // allow configuration using `createTheme`
   interface PaletteOptions {
-    contrast?: {
-      main: string;
-      contrastText: string;
-    };
+    contrast?: PaletteColorOptions;
   }
 }
 
-export {};
+declare module "@mui/material" {
+  interface ButtonPropsColorOverrides {
+    contrast: true;
+  }
+
+  interface TextFieldPropsColorOverrides {
+    contrast: true;
+  }
+}
+
+declare module "@mui/lab" {
+  interface ButtonPropsColorOverrides {
+    contrast: true;
+  }
+}

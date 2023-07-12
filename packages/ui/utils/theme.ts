@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { Theme, createTheme } from "@mui/material/styles";
 
 const darkTheme = {
   palette: {
@@ -9,6 +9,8 @@ const darkTheme = {
 
     contrast: {
       main: "#ffffff",
+      light: "#ffffff",
+      dark: "#ffffff",
       contrastText: "#212b36",
     },
 
@@ -239,5 +241,5 @@ export const getTheme = (mode: "dark" | "light") =>
       divider: "rgba(145, 158, 171, 0.24)",
 
       ...(mode === "dark" ? darkTheme.palette : {}),
-    },
+    } as Theme["palette"],
   });

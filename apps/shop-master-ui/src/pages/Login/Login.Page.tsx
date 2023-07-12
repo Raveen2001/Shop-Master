@@ -35,7 +35,7 @@ const LoginPage = () => {
     mutationFn: loginAsOwner,
     onSuccess: ({ data }) => {
       localStorage.setItem("token", data.token);
-      navigate("/dashboard");
+      navigate("/");
     },
   });
 
