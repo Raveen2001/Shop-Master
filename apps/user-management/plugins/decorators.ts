@@ -42,6 +42,20 @@ const decoratorPlugin: FastifyPluginAsyncTypebox = async (fastify) => {
       throw new Error("Invalid token");
     }
   });
+
+  fastify.decorate("verifyJwt", async (request, reply) => {
+    try {
+      const token = request.headers.authorization;
+      if (!token) {
+        reply.code(401).send({ message: "No token provided" });
+        return;
+      }
+      const data = fastify.jwt.verify(token);
+      request.user = data;
+    } catch {
+      reply.code(401).send({ message: "Invalid token" });
+    }
+  });
 };
 
 export default fp(decoratorPlugin);

@@ -15,11 +15,11 @@ declare module "fastify" {
     comparePassword: (password: string, hash: string) => Promise<boolean>;
     signJwt: (payload: Record<string, unknown>) => string;
     refreshJwt: (token: string) => Promise<string>;
-    verifyJwt: (
-      request: FastifyRequest,
-      reply: FastifyReply,
-      done: (err?: Error) => void
-    ) => void;
+    verifyJwt: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+  }
+
+  interface FastifyRequest {
+    user: string | object | Buffer;
   }
 }
 

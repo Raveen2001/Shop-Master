@@ -15,6 +15,7 @@ import OwnerRoutes from "./routes/owner";
 import ShopRoutes from "./routes/shop";
 import EmployeeRoutes from "./routes/employee";
 import FastifyTypebox from "./types/fastify";
+import AuthRoutes from "./routes/auth";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -60,8 +61,11 @@ fastify.register(DrizzlePlugin);
 // register decorators
 fastify.register(DecoratorPlugin);
 
-// register routes
+// register unauthenticated routes
 fastify.register(HelperRoutes);
+fastify.register(AuthRoutes);
+
+// register authenticated routes
 fastify.register(OwnerRoutes, { prefix: "/owner" });
 fastify.register(ShopRoutes, { prefix: "/shop" });
 fastify.register(EmployeeRoutes, { prefix: "/employee" });

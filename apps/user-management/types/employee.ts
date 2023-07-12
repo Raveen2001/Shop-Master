@@ -96,7 +96,7 @@ export const QueryEmployeesByShopOpts: RouteShorthandOptions = {
 
 export const CreateEmployeeOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Employee", "Auth"],
+    tags: ["Auth"],
     summary: "Create a new employee",
     body: EmployeeSchemaIn,
     response: {
@@ -107,7 +107,7 @@ export const CreateEmployeeOpts: RouteShorthandOptions = {
 
 export const LoginEmployeeOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Employee", "Auth"],
+    tags: ["Auth"],
     summary: "Login with username and password",
 
     body: LoginWithUsernamePropsSchema,

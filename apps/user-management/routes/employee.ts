@@ -1,8 +1,6 @@
 import { employeesDB, eq, sql } from "database-drizzle";
-import { TLoginWithUsernameIn } from "../types/auth";
 import {
   CreateEmployeeOpts,
-  LoginEmployeeOpts,
   QueryEmployeeOpts,
   QueryEmployeesByOwnerOpts,
   QueryEmployeesByShopOpts,
@@ -14,54 +12,6 @@ import {
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
 export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
-  // query employee by id
-  fastify.get<{
-    Querystring: TEmployeeQueryString;
-    Params: TEmployeeQueryParam;
-  }>("/:id", QueryEmployeeOpts, async (req, reply) => {
-    const { id } = req.params;
-    const { includeOwner, includeShop } = req.query;
-
-    const employee = await fastify.db.query.employeesDB.findFirst({
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-      },
-      where: (employeesDB, { eq }) => eq(employeesDB.id, id),
-    });
-
-    if (!employee) {
-      reply.code(404).send({ message: "Employee not found" });
-      return;
-    }
-
-    reply.code(200).send(employee);
-  });
-
-  // login employee
-  fastify.post<{
-    Body: TLoginWithUsernameIn;
-  }>("/login", LoginEmployeeOpts, async (req, reply) => {
-    const { username, password } = req.body;
-    const employee = await fastify.db.query.employeesDB.findFirst({
-      where: (employeesDB, { eq }) => eq(employeesDB.username, username),
-    });
-
-    if (!employee) {
-      reply.code(404).send({ message: "User not found" });
-      return;
-    }
-    const isPasswordValid = await fastify.comparePassword(
-      password,
-      employee.password
-    );
-    if (!isPasswordValid) {
-      reply.code(401).send({ message: "Invalid credentials" });
-    }
-    const token = fastify.signJwt(employee);
-    reply.code(200).send({ token });
-  });
-
   // create employee
   fastify.post<{
     Querystring: TEmployeeQueryString;
@@ -101,6 +51,30 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
       },
     });
     reply.code(201).send(employee);
+  });
+
+  // query employee by id
+  fastify.get<{
+    Querystring: TEmployeeQueryString;
+    Params: TEmployeeQueryParam;
+  }>("/:id", QueryEmployeeOpts, async (req, reply) => {
+    const { id } = req.params;
+    const { includeOwner, includeShop } = req.query;
+
+    const employee = await fastify.db.query.employeesDB.findFirst({
+      with: {
+        owner: includeOwner || undefined,
+        shop: includeShop || undefined,
+      },
+      where: (employeesDB, { eq }) => eq(employeesDB.id, id),
+    });
+
+    if (!employee) {
+      reply.code(404).send({ message: "Employee not found" });
+      return;
+    }
+
+    reply.code(200).send(employee);
   });
 
   // query employees by owner id

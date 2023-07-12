@@ -44,7 +44,7 @@ export const LoginWithUsernameOpts: RouteShorthandOptions = {
 
 export const TokenRefreshOpt: RouteShorthandOptions = {
   schema: {
-    // tags: ["Auth"],
+    tags: ["Auth"],
     summary: "Refresh the token if it is expired but valid",
     response: {
       200: LoginTokenSchema,

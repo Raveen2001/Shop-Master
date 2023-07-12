@@ -1,69 +1,27 @@
-import { ownersDB } from "database-drizzle";
-import { TLoginWithEmailIn } from "../types/auth";
 import {
-  CreateOwnerOpts,
-  LoginOwnerOpts,
+  QueryOwnerByTokenOpts,
   QueryOwnerOpts,
-  TOwnerIn,
+  TOwner,
   TOwnerQueryParam,
   TOwnerQueryString,
 } from "../types/owner";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
 const OwnerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
-  // Login as owner
-  fastify.post<{
-    Body: TLoginWithEmailIn;
-  }>("/login", LoginOwnerOpts, async (req, reply) => {
+  fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+
+  fastify.get("/me", QueryOwnerByTokenOpts, async (req, reply) => {
+    const user = req.user as TOwner;
     const owner = await fastify.db.query.ownersDB.findFirst({
-      where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
+      where: (ownersDB, { eq }) => eq(ownersDB.id, user.id),
     });
 
     if (!owner) {
-      reply.code(404).send({ message: "User not found" });
-      return;
-    }
-    const isPasswordValid = await fastify.comparePassword(
-      req.body.password,
-      owner.password
-    );
-    if (!isPasswordValid) {
-      reply.code(401).send({ message: "Invalid credentials" });
-    }
-    const token = fastify.signJwt(owner);
-    reply.code(200).send({ token });
-  });
-
-  // Register as owner
-  fastify.post<{
-    Body: TOwnerIn;
-  }>("/register", CreateOwnerOpts, async (req, reply) => {
-    // check if email already exists
-    const existingOwner = await fastify.db.query.ownersDB.findFirst({
-      where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
-    });
-
-    if (existingOwner) {
-      reply.code(409).send({ message: "Email already exists" });
+      reply.code(404).send({ message: "Owner not found" });
       return;
     }
 
-    const hashedPassword = await fastify.hashPassword(req.body.password);
-
-    const userWithHashedPassword = {
-      ...req.body,
-      password: hashedPassword,
-    };
-
-    const user = (
-      await fastify.db
-        .insert(ownersDB)
-        .values(userWithHashedPassword)
-        .onConflictDoNothing()
-        .returning()
-    )[0];
-
-    reply.code(201).send(user);
+    reply.code(200).send(owner);
   });
 
   // get owner by id

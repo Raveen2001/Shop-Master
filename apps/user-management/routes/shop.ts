@@ -34,6 +34,7 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
     reply.code(200).send(shop);
   });
 
+  // create shop
   fastify.post<{
     Querystring: TShopQueryString;
     Body: Shop;
