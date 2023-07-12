@@ -1,5 +1,5 @@
-import React, { ChangeEvent } from "react";
-import { flatten } from "lodash";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import clsx from "clsx";
 
 import {
   Box,
@@ -10,22 +10,21 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import {
-  QueryFunctionContext,
-  useInfiniteQuery,
-  useQuery,
-} from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
+  ColumnSort,
   flexRender,
   getCoreRowModel,
-  PaginationState,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
 import { IPaginatedData } from "./../../models";
 import ShowStatus from "./ShowStatus";
 import { AxiosResponse } from "axios";
+import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
+import { IColumnSort } from "./model";
 
 interface ITableProps<T, K> {
   columns: ColumnDef<T, K>[];
@@ -33,27 +32,45 @@ interface ITableProps<T, K> {
     context: QueryFunctionContext,
   ) => Promise<AxiosResponse<IPaginatedData<T>>>;
   queryKeys: string[];
+  defaultSortColumn?: IColumnSort<T>;
+  disableSorting?: boolean;
 }
-const Table = <T, K>({ columns, queryFn, queryKeys }: ITableProps<T, K>) => {
-  const [{ pageIndex, pageSize }, setPagination] =
-    React.useState<PaginationState>({
-      pageIndex: 0,
-      pageSize: 2,
-    });
+const Table = <T, K>({
+  columns,
+  queryFn,
+  queryKeys,
+  defaultSortColumn,
+  disableSorting,
+}: ITableProps<T, K>) => {
+  const [sorting, setSorting] = useState<SortingState>(
+    (defaultSortColumn ? [defaultSortColumn] : []) as SortingState,
+  );
+  const [pagination, setPagination] = useState({
+    page: 0,
+    limit: 2,
+  });
 
-  const fetchDataOptions = {
-    page: pageIndex,
-    limit: pageSize,
-  };
+  const fetchOptions = useMemo(() => {
+    return {
+      page: pagination.page,
+      limit: pagination.limit,
+      orderBy: sorting[0]?.id,
+      order: sorting[0]?.desc ? "desc" : "asc",
+    };
+  }, [pagination, sorting]);
+
+  useEffect(() => {
+    console.log(sorting);
+  }, [sorting]);
 
   const {
     data: axiosResponse,
     isError,
     isLoading,
   } = useQuery({
-    queryKey: [...queryKeys, fetchDataOptions],
+    queryKey: [...queryKeys, fetchOptions],
     queryFn: queryFn,
-    meta: fetchDataOptions,
+    meta: fetchOptions,
   });
 
   const containsData = React.useMemo(() => {
@@ -63,7 +80,19 @@ const Table = <T, K>({ columns, queryFn, queryKeys }: ITableProps<T, K>) => {
   const table = useReactTable({
     data: axiosResponse?.data.rows ?? [],
     columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: (newSorting) => {
+      setPagination((p) => ({
+        ...p,
+        page: 0,
+      }));
+      setSorting(newSorting as SortingState);
+    },
+
     getCoreRowModel: getCoreRowModel(),
+    enableSortingRemoval: false,
   });
 
   return (
@@ -77,11 +106,28 @@ const Table = <T, K>({ columns, queryFn, queryKeys }: ITableProps<T, K>) => {
                   return (
                     <TableCell key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder ? null : (
-                        <Box>
+                        <Box
+                          className={clsx("flex items-center", {
+                            "cursor-pointer select-none":
+                              header.column.getCanSort() && !disableSorting,
+                          })}
+                          onClick={
+                            disableSorting
+                              ? undefined
+                              : header.column.getToggleSortingHandler()
+                          }
+                        >
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
+
+                          {disableSorting
+                            ? null
+                            : {
+                                asc: <ArrowUpwardRounded fontSize="small" />,
+                                desc: <ArrowDownwardRounded fontSize="small" />,
+                              }[header.column.getIsSorted() as string] ?? null}
                         </Box>
                       )}
                     </TableCell>
@@ -121,20 +167,20 @@ const Table = <T, K>({ columns, queryFn, queryKeys }: ITableProps<T, K>) => {
         <TablePagination
           component="div"
           count={axiosResponse?.data.total ?? 0}
-          page={pageIndex}
+          page={pagination.page}
           rowsPerPageOptions={[2, 4]}
           onPageChange={(e, page) => {
             setPagination((p) => ({
               ...p,
-              pageIndex: page,
+              page,
             }));
           }}
-          rowsPerPage={pageSize}
+          rowsPerPage={pagination.limit}
           onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
             setPagination((p) => ({
               ...p,
-              pageSize: Number(e.target.value),
-              pageIndex: 0,
+              limit: Number(e.target.value),
+              page: 0,
             }));
           }}
         />

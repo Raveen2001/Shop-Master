@@ -4,6 +4,10 @@ import { IEmployeeData } from "./models";
 const columnHelper = createColumnHelper<IEmployeeData>();
 
 export const columnsDefs = [
+  columnHelper.accessor("name", {
+    id: "name",
+    header: "Name",
+  }),
   columnHelper.accessor("username", {
     id: "username",
     header: "Username",
@@ -27,5 +31,10 @@ export const columnsDefs = [
   columnHelper.accessor("type", {
     id: "type",
     header: "Type",
+  }),
+
+  columnHelper.accessor("createdAt", {
+    id: "createdAt",
+    header: "Created At",
   }),
 ];

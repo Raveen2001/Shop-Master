@@ -28,6 +28,7 @@ const ManageEmployee = () => {
         columns={columnsDefs}
         queryFn={getEmployeeByShopId(shopId)}
         queryKeys={["employee", "shop", shopId]}
+        defaultSortColumn={{ id: "createdAt", desc: false }}
       />
     </Box>
   );
