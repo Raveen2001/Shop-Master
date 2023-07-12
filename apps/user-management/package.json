@@ -28,7 +28,8 @@
     "bcrypt": "^5.1.0",
     "database-drizzle": "workspace:*",
     "fastify": "^4.19.2",
-    "fastify-plugin": "^4.5.0"
+    "fastify-plugin": "^4.5.0",
+    "ts-transformer-keys": "^0.4.4"
   },
   "devDependencies": {
     "@types/node": "20.4.0",

@@ -7,13 +7,16 @@ END $$;
 CREATE TABLE IF NOT EXISTS "employees" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" text NOT NULL,
+	"name" text NOT NULL,
 	"password" text NOT NULL,
-	"phone" varchar(10),
+	"email" varchar(256),
+	"phone" varchar(10) NOT NULL,
 	"image" text,
-	"created_at" timestamp DEFAULT now(),
+	"address" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"type" "employeeType" NOT NULL,
-	"shop_id" uuid,
-	"owner_id" uuid
+	"shop_id" uuid NOT NULL,
+	"owner_id" uuid NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "owners" (
@@ -23,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "owners" (
 	"email" varchar(256) NOT NULL,
 	"password" text NOT NULL,
 	"image" text,
-	"created_at" timestamp DEFAULT now()
+	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "shops" (
@@ -32,11 +35,13 @@ CREATE TABLE IF NOT EXISTS "shops" (
 	"phone" varchar(10) NOT NULL,
 	"email" varchar(256),
 	"address" text NOT NULL,
-	"description" text,
+	"description" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"website" text,
 	"ownerId" uuid NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "email_index" ON "owners" ("email");--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "employees" ADD CONSTRAINT "employees_shop_id_shops_id_fk" FOREIGN KEY ("shop_id") REFERENCES "shops"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION

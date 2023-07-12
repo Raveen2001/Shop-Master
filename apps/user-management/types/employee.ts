@@ -1,22 +1,25 @@
+import { EMPLOYEE_DB_COLUMNS } from "./../../../packages/database-drizzle/schema/employees";
 import { EMPLOYEE_TYPE } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithUsernamePropsSchema } from "./auth";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";
+import { PagableSchema } from "./general";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),
   username: Type.String({ minLength: 3, maxLength: 100 }),
-  phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
+  name: Type.String({ minLength: 3 }),
   password: Type.String({ minLength: 8 }),
-  image: Type.Optional(Type.String({ format: "uri" })),
   email: Type.Optional(Type.String({ format: "email" })),
+  phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
+  image: Type.Optional(Type.String({ format: "uri" })),
   address: Type.String({ minLength: 3 }),
-  type: Type.String({ enum: EMPLOYEE_TYPE }),
   createdAt: Type.String({ format: "date-time" }),
-  ownerId: Type.String(),
+  type: Type.Union(EMPLOYEE_TYPE.map((key) => Type.Literal(key))),
   shopId: Type.String(),
+  ownerId: Type.String(),
 });
 
 export const EmployeeSchemaWithoutPassword = Type.Omit(EmployeeSchema, [
@@ -32,7 +35,10 @@ export const EmployeeSchemaOut = Type.Intersect([
   }),
 ]);
 
+export const PagableEmployeeSchemaOut = PagableSchema(EmployeeSchemaOut);
+
 export type TEmployeeIn = Static<typeof EmployeeSchemaIn>;
+export type TPagedEmployeeOut = Static<typeof PagableEmployeeSchemaOut>;
 
 export const EmployeeQueryParamSchema = Type.Object({
   id: Type.String(),
@@ -41,6 +47,12 @@ export const EmployeeQueryParamSchema = Type.Object({
 export const EmployeeQueryStringSchema = Type.Object({
   includeOwner: Type.Boolean({ default: false }),
   includeShop: Type.Boolean({ default: false }),
+  limit: Type.Optional(Type.Integer()),
+  page: Type.Optional(Type.Integer()),
+  orderBy: Type.Optional(
+    Type.Union(EMPLOYEE_DB_COLUMNS.map((key) => Type.Literal(key)))
+  ),
+  order: Type.Optional(Type.Union([Type.Literal("asc"), Type.Literal("desc")])),
 });
 
 export type TEmployeeQueryParam = Static<typeof EmployeeQueryParamSchema>;
@@ -65,7 +77,7 @@ export const QueryEmployeesByOwnerOpts: RouteShorthandOptions = {
     params: EmployeeQueryParamSchema,
     querystring: EmployeeQueryStringSchema,
     response: {
-      200: Type.Array(EmployeeSchemaOut),
+      200: PagableEmployeeSchemaOut,
     },
   },
 };
@@ -77,7 +89,7 @@ export const QueryEmployeesByShopOpts: RouteShorthandOptions = {
     params: EmployeeQueryParamSchema,
     querystring: EmployeeQueryStringSchema,
     response: {
-      200: Type.Array(EmployeeSchemaOut),
+      200: PagableEmployeeSchemaOut,
     },
   },
 };
@@ -87,7 +99,6 @@ export const CreateEmployeeOpts: RouteShorthandOptions = {
     tags: ["Employee", "Auth"],
     summary: "Create a new employee",
     body: EmployeeSchemaIn,
-    querystring: EmployeeQueryStringSchema,
     response: {
       201: EmployeeSchemaOut,
     },

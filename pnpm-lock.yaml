@@ -183,6 +183,9 @@ importers:
       fastify-plugin:
         specifier: ^4.5.0
         version: 4.5.0
+      ts-transformer-keys:
+        specifier: ^0.4.4
+        version: 0.4.4(typescript@5.1.6)
     devDependencies:
       '@types/node':
         specifier: 20.4.0
@@ -213,6 +216,9 @@ importers:
       postgres:
         specifier: ^3.3.5
         version: 3.3.5
+      ts-transformer-keys:
+        specifier: ^0.4.4
+        version: 0.4.4(typescript@4.9.5)
     devDependencies:
       '@types/node':
         specifier: 18.13.0
@@ -6081,6 +6087,22 @@ packages:
       yn: 3.1.1
     dev: true
 
+  /ts-transformer-keys@0.4.4(typescript@4.9.5):
+    resolution: {integrity: sha512-LrqgvaFvar01/5mbunRyeLTSIkqoC2xfcpL/90aDY6vR07DGyH+UaYGdIEsUudnlAw2Sr0pxFgdZvE0QIyI4qA==}
+    peerDependencies:
+      typescript: '>=2.4.1'
+    dependencies:
+      typescript: 4.9.5
+    dev: false
+
+  /ts-transformer-keys@0.4.4(typescript@5.1.6):
+    resolution: {integrity: sha512-LrqgvaFvar01/5mbunRyeLTSIkqoC2xfcpL/90aDY6vR07DGyH+UaYGdIEsUudnlAw2Sr0pxFgdZvE0QIyI4qA==}
+    peerDependencies:
+      typescript: '>=2.4.1'
+    dependencies:
+      typescript: 5.1.6
+    dev: false
+
   /tsconfig-paths@3.14.2:
     resolution: {integrity: sha512-o/9iXgCYc5L/JxCHPe3Hvh8Q/2xm5Z+p18PESBU6Ff33695QnCHBEjcytY2q19ua7Mbl/DavtBOLq+oG0RCL+g==}
     dependencies:
@@ -6200,7 +6222,6 @@ packages:
     resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}

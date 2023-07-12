@@ -5,7 +5,7 @@ import {
   CreateShopOpts,
   QueryShopByOwnerOpts,
   QueryShopOpts,
-  >TShopQueryParam,
+  TShopQueryParam,
   TShopQueryString,
 } from '../types/shop';
 

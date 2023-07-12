@@ -1,8 +1,14 @@
-import { InferModel, relations } from 'drizzle-orm';
-import { pgEnum, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-
-import { Owner, ownersDB } from './owners';
-import { Shop, shopsDB } from './shops';
+import { InferModel, relations } from "drizzle-orm";
+import {
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
+import { ownersDB } from "./owners";
+import { shopsDB } from "./shops";
 
 export const employeeTypeEnum = pgEnum("employeeType", [
   "MANAGER",
@@ -33,6 +39,21 @@ export const employeesDB = pgTable("employees", {
     .references(() => ownersDB.id),
 });
 
+export const EMPLOYEE_DB_COLUMNS = [
+  "id",
+  "username",
+  "name",
+  "password",
+  "email",
+  "phone",
+  "image",
+  "address",
+  "createdAt",
+  "type",
+  "shopId",
+  "ownerId",
+] as const;
+
 export const employeesRelations = relations(employeesDB, ({ one }) => ({
   shop: one(shopsDB, {
     fields: [employeesDB.shopId],
@@ -44,9 +65,6 @@ export const employeesRelations = relations(employeesDB, ({ one }) => ({
   }),
 }));
 
-export type Employee = InferModel<typeof employeesDB> & {
-  shop: Shop;
-  owner: Owner;
-};
+export type TEmployeeDB = InferModel<typeof employeesDB>;
 
 export const EMPLOYEE_TYPE = employeeTypeEnum.enumValues;
