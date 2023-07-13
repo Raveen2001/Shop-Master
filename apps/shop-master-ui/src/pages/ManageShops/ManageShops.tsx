@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, Button, Table, Typography } from "ui";
+import { Box, Button, Table, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
@@ -11,17 +11,11 @@ const ManageShops = () => {
     <Box>
       <Box className="mb-8 flex">
         <Box className="flex-1">
-          <Typography variant="h6">Manage Employees</Typography>
-          <Breadcrumbs></Breadcrumbs>
+          <Typography variant="h6">Manage Shops</Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          color="contrast"
-          size="small"
-          startIcon={<Add />}
-        >
-          New Employee
+        <Button variant="contained" size="small" startIcon={<Add />}>
+          New Shop
         </Button>
       </Box>
       <Table

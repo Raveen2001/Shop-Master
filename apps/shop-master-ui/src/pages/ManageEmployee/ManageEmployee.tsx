@@ -15,12 +15,7 @@ const ManageEmployee = () => {
           <Breadcrumbs></Breadcrumbs>
         </Box>
 
-        <Button
-          variant="contained"
-          color="contrast"
-          size="small"
-          startIcon={<Add />}
-        >
+        <Button variant="contained" size="small" startIcon={<Add />}>
           New Employee
         </Button>
       </Box>

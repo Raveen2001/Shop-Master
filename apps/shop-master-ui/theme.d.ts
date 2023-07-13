@@ -1,11 +1,11 @@
-import "ui";
+// import "ui";
 
-declare module "ui" {
-  interface ButtonPropsColorOverrides {
-    contrast: true;
-  }
+// declare module "ui" {
+//   interface ButtonPropsColorOverrides {
+//     contrast: true;
+//   }
 
-  interface TextFieldPropsColorOverrides {
-    contrast: true;
-  }
-}
+//   interface TextFieldPropsColorOverrides {
+//     contrast: true;
+//   }
+// }

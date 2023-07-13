@@ -4,6 +4,8 @@ import {
   PaymentTwoTone,
   PeopleAltTwoTone,
   WorkTwoTone,
+  StoreTwoTone,
+  EngineeringTwoTone,
 } from "ui/icons";
 
 export const sidebarItems: ISidebarItem[] = [
@@ -33,7 +35,7 @@ export const sidebarItems: ISidebarItem[] = [
       {
         name: "Manage Employees",
         path: "/employee/manage",
-        icon: <ManageAccountsTwoTone />,
+        icon: <EngineeringTwoTone />,
       },
       {
         name: "Payment History",
@@ -54,6 +56,16 @@ export const sidebarItems: ISidebarItem[] = [
         name: "Payment History",
         path: "/customer/payment-history",
         icon: <PaymentTwoTone />,
+      },
+    ],
+  },
+  {
+    name: "Shop",
+    items: [
+      {
+        name: "Manage Shops",
+        path: "/shop/manage",
+        icon: <StoreTwoTone />,
       },
     ],
   },

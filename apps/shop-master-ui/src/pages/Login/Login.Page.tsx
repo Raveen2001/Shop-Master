@@ -84,7 +84,7 @@ const LoginPage = () => {
           <Link
             to="/register"
             className="register"
-            style={{ color: theme.palette.primary.main }}
+            style={{ color: theme.palette.secondary.main }}
           >
             Create an account
           </Link>
@@ -117,7 +117,6 @@ const LoginPage = () => {
               <TextField
                 sx={{ marginTop: "16px" }}
                 label="Email address"
-                color="contrast"
                 error={!!error}
                 helperText={error?.message}
                 fullWidth
@@ -142,7 +141,6 @@ const LoginPage = () => {
                 sx={{ marginTop: "16px" }}
                 label="Password"
                 type="password"
-                color="contrast"
                 error={!!error}
                 helperText={error?.message}
                 fullWidth
@@ -166,12 +164,7 @@ const LoginPage = () => {
             </Link>
           </Typography>
 
-          <LoadingButton
-            variant="contained"
-            color="contrast"
-            type="submit"
-            loading={isLoading}
-          >
+          <LoadingButton variant="contained" type="submit" loading={isLoading}>
             Login
           </LoadingButton>
         </form>

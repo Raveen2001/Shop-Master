@@ -7,7 +7,7 @@ const darkTheme = {
       paper: "#212B36",
     },
 
-    contrast: {
+    primary: {
       main: "#ffffff",
       light: "#ffffff",
       dark: "#ffffff",
@@ -159,16 +159,16 @@ export const getTheme = (mode: "dark" | "light") =>
     palette: {
       mode: mode,
       primary: {
+        main: "#212b36",
+        light: "#212b36",
+        dark: "#212b36",
+        contrastText: "#ffffff",
+      },
+      secondary: {
         light: "#C8FACD",
         main: "#00AB55",
         dark: "#005249",
         contrastText: "#FFFFFF",
-      },
-      secondary: {
-        light: "#FFF5CC",
-        main: "#b66e00",
-        dark: "#ffab00",
-        contrastText: "#212b36",
       },
 
       info: {
@@ -181,11 +181,6 @@ export const getTheme = (mode: "dark" | "light") =>
         light: "#F9FAFB",
         main: "#FFAB00",
         dark: "#7A4100",
-      },
-
-      contrast: {
-        main: "#212b36",
-        contrastText: "#ffffff",
       },
 
       success: {

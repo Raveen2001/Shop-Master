@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useGlobalStore } from "../store/globalStore";
 import { useEffect } from "react";
 import { getShopsByOwnerId } from "../services/shop";
+import Topbar from "../components/Topbar/Topbar";
 
 const RootLayout = () => {
   const [setSelectedShopId, setShops, setOwner] = useGlobalStore((state) => [
@@ -46,8 +47,12 @@ const RootLayout = () => {
   return (
     <Box className="flex flex-row">
       <Sidebar />
-      <Box className="flex-1 overflow-auto p-4">
-        <Outlet />
+      <Box className="relative flex-1 overflow-auto">
+        <Topbar />
+        <Box className="h-16" />
+        <Box className="p-4">
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

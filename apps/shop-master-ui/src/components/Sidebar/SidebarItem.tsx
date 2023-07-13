@@ -50,7 +50,7 @@ const SidebarItem: React.FC<ISidebarSubItem> = ({
         <Typography
           variant="body2"
           className={clsx("font-bold", {
-            [`text-primaryDark font-bold`]: isSelected,
+            [`font-bold text-primaryDark`]: isSelected,
             [`text-gray-600`]: !isSelected,
           })}
         >

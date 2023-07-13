@@ -84,7 +84,7 @@ const RegisterPage = () => {
           <Link
             to="/login"
             className="login"
-            style={{ color: theme.palette.primary.main }}
+            style={{ color: theme.palette.secondary.main }}
           >
             Sign in
           </Link>
@@ -112,7 +112,6 @@ const RegisterPage = () => {
               <TextField
                 {...field}
                 label="Name"
-                color="contrast"
                 type="text"
                 sx={{ marginTop: "16px" }}
                 error={!!error}
@@ -137,7 +136,6 @@ const RegisterPage = () => {
                 {...field}
                 sx={{ marginTop: "16px" }}
                 label="Phone"
-                color="contrast"
                 type="tel"
                 error={!!error}
                 helperText={error?.message}
@@ -161,7 +159,6 @@ const RegisterPage = () => {
                 {...field}
                 sx={{ marginTop: "16px" }}
                 label="Email address"
-                color="contrast"
                 type="text"
                 error={!!error}
                 helperText={error?.message}
@@ -185,7 +182,6 @@ const RegisterPage = () => {
                 {...field}
                 sx={{ marginTop: "16px" }}
                 label="Password"
-                color="contrast"
                 type="password"
                 error={!!error}
                 helperText={error?.message}
@@ -208,12 +204,7 @@ const RegisterPage = () => {
             </Link>
           </Typography>
 
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            color="contrast"
-            loading={isLoading}
-          >
+          <LoadingButton type="submit" variant="contained" loading={isLoading}>
             Create Account
           </LoadingButton>
         </form>

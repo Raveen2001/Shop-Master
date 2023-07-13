@@ -1,1 +1,1 @@
-export { default } from "./ManageEmployee";
+export { default } from "./ManageShops";

@@ -4,6 +4,7 @@ import RootLayout from "./layouts/RootLayout";
 import LoginPage from "./pages/Login";
 import ManageEmployee from "./pages/ManageEmployee/ManageEmployee";
 import RegisterPage from "./pages/Register";
+import ManageShops from "./pages/ManageShops/ManageShops";
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ export const router = createBrowserRouter([
 
       {
         path: "/",
-        element: <h1>Home</h1>,
+        element: <ManageShops />,
       },
       {
         path: "*",
