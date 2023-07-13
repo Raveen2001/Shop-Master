@@ -80,70 +80,59 @@ export const getTheme = (mode: "dark" | "light") =>
 
       h1: {
         fontSize: "3rem",
-        lineHeight: "5rem",
         fontStyle: "normal",
         fontWeight: 800,
       },
       h2: {
         fontSize: "2.25rem",
-        lineHeight: "4rem",
         fontStyle: "normal",
         fontWeight: 800,
       },
       h3: {
         fontSize: "1.875rem",
-        lineHeight: "3rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
       h4: {
         fontSize: "1.5rem",
-        lineHeight: "2.25rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
       h5: {
         fontSize: "1.25rem",
-        lineHeight: "2rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
       h6: {
         fontSize: "1.125rem",
-        lineHeight: "1.75rem",
         fontStyle: "normal",
         fontWeight: 700,
       },
 
       subtitle1: {
         fontSize: "1rem",
-        lineHeight: "1.5rem",
         fontStyle: "normal",
         fontWeight: 600,
       },
 
       subtitle2: {
         fontSize: "0.875rem",
-        lineHeight: "1.25rem",
         fontStyle: "normal",
         fontWeight: 600,
       },
       body1: {
         fontSize: "1rem",
-        lineHeight: "1.5rem",
         fontStyle: "normal",
         fontWeight: 400,
       },
       body2: {
         fontSize: "0.875rem",
-        lineHeight: "1.25rem",
         fontStyle: "normal",
         fontWeight: 400,
       },
 
       caption: {
         fontSize: "0.75rem",
-        lineHeight: "1rem",
         fontStyle: "normal",
         fontWeight: 400,
       },

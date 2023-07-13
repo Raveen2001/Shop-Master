@@ -67,4 +67,4 @@ export const employeesRelations = relations(employeesDB, ({ one }) => ({
 
 export type TEmployeeDB = InferModel<typeof employeesDB>;
 
-export const EMPLOYEE_TYPE = employeeTypeEnum.enumValues;
+export const EMPLOYEE_TYPES = employeeTypeEnum.enumValues;

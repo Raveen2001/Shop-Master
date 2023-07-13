@@ -19,6 +19,7 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     Body: TEmployeeIn;
   }>("/register", CreateEmployeeOpts, async (req, reply) => {
     const { includeOwner, includeShop } = req.query;
+
     // check if the employee username already exists
     const existingEmployee = await fastify.db.query.employeesDB.findFirst({
       where: (employeesDB, { eq }) =>

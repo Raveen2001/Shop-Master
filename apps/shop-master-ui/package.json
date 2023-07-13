@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@hookform/resolvers": "^3.1.1",
     "@mui/material": "^5.11.12",
     "@tanstack/react-query": "^4.29.19",
     "@tanstack/react-query-devtools": "^4.29.19",
@@ -26,8 +27,10 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.1",
     "react-router-dom": "^6.9.0",
+    "schema": "workspace:*",
     "ui": "workspace:*",
     "vite": "^4.1.0",
+    "zod": "^3.21.4",
     "zustand": "^4.3.9"
   },
   "devDependencies": {

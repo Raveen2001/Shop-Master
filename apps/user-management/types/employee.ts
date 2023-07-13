@@ -1,5 +1,5 @@
 import { EMPLOYEE_DB_COLUMNS } from "./../../../packages/database-drizzle/schema/employees";
-import { EMPLOYEE_TYPE } from "database-drizzle";
+import { EMPLOYEE_TYPES } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithUsernamePropsSchema } from "./auth";
@@ -14,10 +14,10 @@ export const EmployeeSchema = Type.Object({
   password: Type.String({ minLength: 8 }),
   email: Type.Optional(Type.String({ format: "email" })),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
-  image: Type.Optional(Type.String({ format: "uri" })),
+  image: Type.Union([Type.Null(), Type.String({ format: "uri" })]),
   address: Type.String({ minLength: 3 }),
   createdAt: Type.String({ format: "date-time" }),
-  type: Type.Union(EMPLOYEE_TYPE.map((key) => Type.Literal(key))),
+  type: Type.Union(EMPLOYEE_TYPES.map((key) => Type.Literal(key))),
   shopId: Type.String(),
   ownerId: Type.String(),
 });

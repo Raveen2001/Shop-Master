@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import ManageEmployee from "./pages/ManageEmployee/ManageEmployee";
 import RegisterPage from "./pages/Register";
 import ManageShops from "./pages/ManageShops/ManageShops";
+import EmployeeForm from "./pages/ManageEmployee/EmployeeForm";
 
 export const router = createBrowserRouter([
   {
@@ -21,13 +22,18 @@ export const router = createBrowserRouter([
 
     children: [
       {
+        path: "/",
+        element: <ManageShops />,
+      },
+
+      {
         path: "/employee",
         element: <ManageEmployee />,
       },
 
       {
-        path: "/",
-        element: <ManageShops />,
+        path: "/employee/create",
+        element: <EmployeeForm />,
       },
       {
         path: "*",

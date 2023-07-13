@@ -22,7 +22,7 @@ const ManageEmployee = () => {
       <PaginatedTable
         columns={columnsDefs}
         queryFn={getEmployeeByShopId(selectedShopId)}
-        queryKeys={["employee", "shop", selectedShopId]}
+        queryKeys={["employees", "shop", selectedShopId]}
         defaultSortColumn={{ id: "createdAt", desc: false }}
       />
     </Box>

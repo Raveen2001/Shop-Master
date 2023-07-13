@@ -1,5 +1,5 @@
 import { createColumnHelper } from "ui";
-import { IEmployeeData } from "../../models/employee";
+import { IEmployeeData } from "schema";
 
 const columnHelper = createColumnHelper<IEmployeeData>();
 

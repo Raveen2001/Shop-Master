@@ -9,11 +9,13 @@ import { getShopsByOwnerId } from "../services/shop";
 import Topbar from "../components/Topbar/Topbar";
 
 const RootLayout = () => {
-  const [setSelectedShopId, setShops, setOwner] = useGlobalStore((state) => [
-    state.setSelectedShopId,
-    state.setShops,
-    state.setOwner,
-  ]);
+  const [selectedShopId, setSelectedShopId, setShops, setOwner] =
+    useGlobalStore((state) => [
+      state.selectedShopId,
+      state.setSelectedShopId,
+      state.setShops,
+      state.setOwner,
+    ]);
   const ownerQuery = useQuery({
     queryKey: ["owner", "me"],
     queryFn: getOwnerByToken,
@@ -34,9 +36,11 @@ const RootLayout = () => {
   useEffect(() => {
     if (!shopsQuery.isLoading && !shopsQuery.isError) {
       setShops(shopsQuery.data.data.rows);
-      setSelectedShopId(shopsQuery.data.data.rows[0]?.id);
+
+      if (!selectedShopId) setSelectedShopId(shopsQuery.data.data.rows[0]?.id);
     }
   }, [
+    selectedShopId,
     setSelectedShopId,
     setShops,
     shopsQuery.data,

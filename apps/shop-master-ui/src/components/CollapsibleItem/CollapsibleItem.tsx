@@ -1,8 +1,6 @@
 import clsx from "clsx";
 import React from "react";
-import { Box, Typography } from "ui";
-
-import { useToggle } from "../../hooks";
+import { Box, Typography, useToggle } from "ui";
 
 interface ICollapsibleItem {
   name: string;
