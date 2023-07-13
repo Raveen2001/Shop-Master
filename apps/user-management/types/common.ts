@@ -8,3 +8,22 @@ export const PagableSchema = <T extends TSchema>(schema: T) => {
     limit: Type.Optional(Type.Number()),
   });
 };
+
+export const PagableQueryStringSchema = <T extends TSchema, V extends string>(
+  schema: T,
+  orderByCols: readonly V[]
+) => {
+  return Type.Intersect([
+    schema,
+    Type.Object({
+      limit: Type.Optional(Type.Number({ default: 10 })),
+      page: Type.Optional(Type.Number({ default: 0 })),
+      order: Type.Optional(
+        Type.Union([Type.Literal("asc"), Type.Literal("desc")])
+      ),
+      orderBy: Type.Optional(
+        Type.Union(orderByCols.map((col) => Type.Literal(col)))
+      ),
+    }),
+  ]);
+};

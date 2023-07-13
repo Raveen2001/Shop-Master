@@ -2,6 +2,8 @@ import { Static, Type } from "@sinclair/typebox";
 import { RouteShorthandOptions } from "fastify";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { EmployeeSchema } from "./employee";
+import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { SHOP_DB_COLUMNS } from "database-drizzle";
 
 export const ShopSchema = Type.Object({
   id: Type.String(),
@@ -24,10 +26,13 @@ export const ShopSchemaOut = Type.Intersect([
     employees: Type.Optional(Type.Array(EmployeeSchema)),
   }),
 ]);
-export type TShopOut = Static<typeof ShopSchemaOut>;
+
+export const PagableShopSchemaOut = PagableSchema(ShopSchemaOut);
 
 export type TShopSchema = Static<typeof ShopSchema>;
 export type TShopIn = Static<typeof ShopSchemaIn>;
+export type TShopOut = Static<typeof ShopSchemaOut>;
+export type TPagableShopOut = Static<typeof PagableShopSchemaOut>;
 
 export const ShopQueryParamSchema = Type.Object({
   id: Type.String(),
@@ -38,8 +43,16 @@ export const ShopQueryStringSchema = Type.Object({
   includeEmployees: Type.Boolean({ default: false }),
 });
 
+export const PagableShopQueryStringSchema = PagableQueryStringSchema(
+  ShopQueryStringSchema,
+  SHOP_DB_COLUMNS
+);
+
 export type TShopQueryParam = Static<typeof ShopQueryParamSchema>;
 export type TShopQueryString = Static<typeof ShopQueryStringSchema>;
+export type TPagableShopQueryString = Static<
+  typeof PagableShopQueryStringSchema
+>;
 
 export const QueryShopOpts: RouteShorthandOptions = {
   schema: {
@@ -58,9 +71,9 @@ export const QueryShopByOwnerOpts: RouteShorthandOptions = {
     tags: ["Shop"],
     summary: "Get shops by owner_id",
     params: ShopQueryParamSchema,
-    querystring: ShopQueryStringSchema,
+    querystring: PagableShopQueryStringSchema,
     response: {
-      200: Type.Array(ShopSchemaOut),
+      200: PagableShopSchemaOut,
     },
   },
 };

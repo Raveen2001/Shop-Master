@@ -5,7 +5,7 @@ import { RouteShorthandOptions } from "fastify";
 import { LoginTokenSchema, LoginWithUsernamePropsSchema } from "./auth";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";
-import { PagableSchema } from "./common";
+import { PagableQueryStringSchema, PagableSchema } from "./common";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),
@@ -47,16 +47,18 @@ export const EmployeeQueryParamSchema = Type.Object({
 export const EmployeeQueryStringSchema = Type.Object({
   includeOwner: Type.Boolean({ default: false }),
   includeShop: Type.Boolean({ default: false }),
-  limit: Type.Optional(Type.Integer()),
-  page: Type.Optional(Type.Integer()),
-  orderBy: Type.Optional(
-    Type.Union(EMPLOYEE_DB_COLUMNS.map((key) => Type.Literal(key)))
-  ),
-  order: Type.Optional(Type.Union([Type.Literal("asc"), Type.Literal("desc")])),
 });
+
+export const PagableEmployeeQueryStringSchema = PagableQueryStringSchema(
+  EmployeeQueryStringSchema,
+  EMPLOYEE_DB_COLUMNS
+);
 
 export type TEmployeeQueryParam = Static<typeof EmployeeQueryParamSchema>;
 export type TEmployeeQueryString = Static<typeof EmployeeQueryStringSchema>;
+export type TPagableEmployeeQueryString = Static<
+  typeof PagableEmployeeQueryStringSchema
+>;
 
 export const QueryEmployeeOpts: RouteShorthandOptions = {
   schema: {
@@ -75,7 +77,7 @@ export const QueryEmployeesByOwnerOpts: RouteShorthandOptions = {
     tags: ["Employee"],
     summary: "Get all employees by owner_id",
     params: EmployeeQueryParamSchema,
-    querystring: EmployeeQueryStringSchema,
+    querystring: PagableEmployeeQueryStringSchema,
     response: {
       200: PagableEmployeeSchemaOut,
     },
@@ -87,7 +89,7 @@ export const QueryEmployeesByShopOpts: RouteShorthandOptions = {
     tags: ["Employee"],
     summary: "Get all employees by shop_id",
     params: EmployeeQueryParamSchema,
-    querystring: EmployeeQueryStringSchema,
+    querystring: PagableEmployeeQueryStringSchema,
     response: {
       200: PagableEmployeeSchemaOut,
     },

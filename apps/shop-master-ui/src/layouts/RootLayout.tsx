@@ -32,8 +32,8 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (!shopsQuery.isLoading && !shopsQuery.isError) {
-      setShops(shopsQuery.data.data);
-      setSelectedShopId(shopsQuery.data.data[0]?.id);
+      setShops(shopsQuery.data.data.rows);
+      setSelectedShopId(shopsQuery.data.data.rows[0]?.id);
     }
   }, [
     setSelectedShopId,

@@ -17,6 +17,18 @@ export const shopsDB = pgTable("shops", {
     .references(() => ownersDB.id),
 });
 
+export const SHOP_DB_COLUMNS = [
+  "id",
+  "name",
+  "phone",
+  "email",
+  "address",
+  "description",
+  "createdAt",
+  "website",
+  "ownerId",
+] as const;
+
 export const shopsRelations = relations(shopsDB, ({ many, one }) => ({
   employees: many(employeesDB),
   owner: one(ownersDB, {

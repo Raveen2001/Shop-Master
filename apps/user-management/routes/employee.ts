@@ -7,6 +7,7 @@ import {
   TEmployeeIn,
   TEmployeeQueryParam,
   TEmployeeQueryString,
+  TPagableEmployeeQueryString,
 } from "../types/employee";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
@@ -79,7 +80,7 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
 
   // query employees by owner id
   fastify.get<{
-    Querystring: TEmployeeQueryString;
+    Querystring: TPagableEmployeeQueryString;
     Params: TEmployeeQueryParam;
   }>("/owner/:id", QueryEmployeesByOwnerOpts, async (req, reply) => {
     const { id } = req.params;
@@ -98,10 +99,9 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
       limit: limit,
       offset: offset,
       orderBy: (employeesDB, { asc, desc }) => {
-        if (!orderBy) return asc(employeesDB.createdAt);
-        if (order == "asc") {
+        if (orderBy && order == "asc") {
           return asc(employeesDB[orderBy]);
-        } else if (order == "desc") {
+        } else if (orderBy && order == "desc") {
           return desc(employeesDB[orderBy]);
         }
         return asc(employeesDB.createdAt);
@@ -122,7 +122,7 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
 
   // query employees by shop id
   fastify.get<{
-    Querystring: TEmployeeQueryString;
+    Querystring: TPagableEmployeeQueryString;
     Params: TEmployeeQueryParam;
   }>("/shop/:id", QueryEmployeesByShopOpts, async (req, reply) => {
     const { id } = req.params;
@@ -140,10 +140,9 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
       limit: limit,
       offset: offset,
       orderBy: (employeesDB, { asc, desc }) => {
-        if (!orderBy) return asc(employeesDB.createdAt);
-        if (order == "asc") {
+        if (orderBy && order == "asc") {
           return asc(employeesDB[orderBy]);
-        } else if (order == "desc") {
+        } else if (orderBy && order == "desc") {
           return desc(employeesDB[orderBy]);
         }
         return asc(employeesDB.createdAt);

@@ -8,7 +8,7 @@ export const getShopsByOwnerId = (ownerId: string) => {
   const url = `/shop/owner/${ownerId}`;
   return async (
     context: QueryFunctionContext
-  ): Promise<AxiosResponse<IPaginatedData<IShopData[]>>> => {
+  ): Promise<AxiosResponse<IPaginatedData<IShopData>>> => {
     const queryParams = context.meta;
     return axiosClient.get(url, { params: queryParams });
   };
