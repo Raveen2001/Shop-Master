@@ -4,9 +4,11 @@ import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
 import { getEmployeeByShopId } from "../../services/employee";
 import { useGlobalStore } from "../../store/globalStore";
+import { useNavigate } from "react-router-dom";
 
 const ManageEmployee = () => {
   const selectedShopId = useGlobalStore((state) => state.selectedShopId) ?? "";
+  const navigate = useNavigate();
   return (
     <Box>
       <Box className="mb-8 flex">
@@ -15,7 +17,12 @@ const ManageEmployee = () => {
           <Breadcrumbs></Breadcrumbs>
         </Box>
 
-        <Button variant="contained" size="small" startIcon={<Add />}>
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<Add />}
+          onClick={() => navigate("/employee/create")}
+        >
           New Employee
         </Button>
       </Box>

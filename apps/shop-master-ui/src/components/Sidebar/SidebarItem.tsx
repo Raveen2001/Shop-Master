@@ -14,7 +14,8 @@ const SidebarItem: React.FC<ISidebarSubItem> = ({
   const location = useLocation();
 
   const isSelected = useMemo(() => {
-    return !!matchPath(location.pathname, path);
+    if (path === "/") return location.pathname === path;
+    return location.pathname.includes(path);
   }, [location.pathname, path]);
   const navigate = useNavigate();
 

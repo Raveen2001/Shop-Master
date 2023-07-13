@@ -2,10 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 
 import RootLayout from "./layouts/RootLayout";
 import LoginPage from "./pages/Login";
-import ManageEmployee from "./pages/ManageEmployee/ManageEmployee";
+import ManageEmployee from "./pages/Employee/ManageEmployee";
 import RegisterPage from "./pages/Register";
 import ManageShops from "./pages/ManageShops/ManageShops";
-import EmployeeForm from "./pages/ManageEmployee/EmployeeForm";
+import EmployeeForm from "./pages/Employee/EmployeeForm";
+import Layout from "./layouts/Layout";
 
 export const router = createBrowserRouter([
   {
@@ -22,18 +23,23 @@ export const router = createBrowserRouter([
 
     children: [
       {
-        path: "/",
+        path: "",
         element: <ManageShops />,
       },
 
       {
-        path: "/employee",
-        element: <ManageEmployee />,
-      },
-
-      {
-        path: "/employee/create",
-        element: <EmployeeForm />,
+        path: "employee/*",
+        element: <Layout />,
+        children: [
+          {
+            path: "",
+            element: <ManageEmployee />,
+          },
+          {
+            path: "create",
+            element: <EmployeeForm />,
+          },
+        ],
       },
       {
         path: "*",
