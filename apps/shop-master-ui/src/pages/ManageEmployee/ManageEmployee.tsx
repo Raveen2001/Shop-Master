@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, Button, Table, Typography } from "ui";
+import { Box, Breadcrumbs, Button, PaginatedTable, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
@@ -19,7 +19,7 @@ const ManageEmployee = () => {
           New Employee
         </Button>
       </Box>
-      <Table
+      <PaginatedTable
         columns={columnsDefs}
         queryFn={getEmployeeByShopId(selectedShopId)}
         queryKeys={["employee", "shop", selectedShopId]}

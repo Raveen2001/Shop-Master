@@ -1,4 +1,4 @@
-import { Box, Button, Table, Typography } from "ui";
+import { Box, Button, PaginatedTable, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
@@ -18,7 +18,7 @@ const ManageShops = () => {
           New Shop
         </Button>
       </Box>
-      <Table
+      <PaginatedTable
         columns={columnsDefs}
         queryFn={getShopsByOwnerId(ownerId)}
         queryKeys={["shop", "owner", ownerId]}

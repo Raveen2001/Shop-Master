@@ -19,13 +19,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { IPaginatedData } from "./../../models";
+import { IPaginatedData } from "../../models";
 import ShowStatus from "./ShowStatus";
 import { AxiosResponse } from "axios";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import { IColumnSort } from "./model";
 
-interface ITableProps<T, K> {
+interface IPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
   queryFn: (
     context: QueryFunctionContext,
@@ -34,13 +34,13 @@ interface ITableProps<T, K> {
   defaultSortColumn?: IColumnSort<T>;
   disableSorting?: boolean;
 }
-const Table = <T, K>({
+const PaginatedTable = <T, K>({
   columns,
   queryFn,
   queryKeys,
   defaultSortColumn,
   disableSorting,
-}: ITableProps<T, K>) => {
+}: IPaginatedTableProps<T, K>) => {
   const [sorting, setSorting] = useState<SortingState>(
     (defaultSortColumn ? [defaultSortColumn] : []) as SortingState,
   );
@@ -70,7 +70,7 @@ const Table = <T, K>({
 
   const containsData = React.useMemo(() => {
     return !isLoading && !isError && axiosResponse.data.rows.length > 0;
-  }, [axiosResponse]);
+  }, [axiosResponse, isError, isLoading]);
 
   const table = useReactTable({
     data: axiosResponse?.data.rows ?? [],
@@ -184,4 +184,4 @@ const Table = <T, K>({
   );
 };
 
-export default Table;
+export default PaginatedTable;

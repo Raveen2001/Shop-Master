@@ -20,7 +20,7 @@ interface IPasswordFieldProps {
   className?: string;
 }
 
-export const PasswordField: FC<IPasswordFieldProps> = ({
+const PasswordField: FC<IPasswordFieldProps> = ({
   label,
   sx,
   color,
@@ -57,3 +57,5 @@ export const PasswordField: FC<IPasswordFieldProps> = ({
     </FormControl>
   );
 };
+
+export default PasswordField;
