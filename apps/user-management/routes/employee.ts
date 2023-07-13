@@ -83,7 +83,10 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     Params: TEmployeeQueryParam;
   }>("/owner/:id", QueryEmployeesByOwnerOpts, async (req, reply) => {
     const { id } = req.params;
-    const { includeOwner, includeShop } = req.query;
+    const { includeOwner, includeShop, limit, page, order, orderBy } =
+      req.query;
+
+    const offset = page && limit ? page * limit : undefined;
 
     const employees = await fastify.db.query.employeesDB.findMany({
       where: (employees, { eq }) => eq(employees.ownerId, id),
@@ -92,9 +95,29 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
         owner: includeOwner || undefined,
         shop: includeShop || undefined,
       },
+      limit: limit,
+      offset: offset,
+      orderBy: (employeesDB, { asc, desc }) => {
+        if (!orderBy) return asc(employeesDB.createdAt);
+        if (order == "asc") {
+          return asc(employeesDB[orderBy]);
+        } else if (order == "desc") {
+          return desc(employeesDB[orderBy]);
+        }
+        return asc(employeesDB.createdAt);
+      },
     });
 
-    reply.code(200).send(employees);
+    const { total } = (
+      await fastify.db
+        .select({
+          total: sql<number>`count(*)`.mapWith(Number),
+        })
+        .from(employeesDB)
+        .where(eq(employeesDB.ownerId, id))
+    )[0];
+
+    reply.code(200).send({ rows: employees, total, page, limit });
   });
 
   // query employees by shop id
