@@ -1,10 +1,10 @@
-import { Box } from "ui";
+import { Box, PageLoading } from "ui";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import { getOwnerByToken } from "../services/owner";
 import { useQuery } from "@tanstack/react-query";
 import { useGlobalStore } from "../store/globalStore";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { getShopsByOwnerId } from "../services/shop";
 import Topbar from "../components/Topbar/Topbar";
 
@@ -20,7 +20,7 @@ const RootLayout = () => {
   });
 
   const shopsQuery = useQuery({
-    queryKey: ["shops", "owner", ownerQuery.data?.data.id],
+    queryKey: ["shops"],
     queryFn: getShopsByOwnerId(ownerQuery.data?.data.id ?? ""),
     enabled: !!ownerQuery.data,
   });
@@ -44,15 +44,34 @@ const RootLayout = () => {
     shopsQuery.isLoading,
   ]);
 
+  const isLoading = useMemo(
+    () => ownerQuery.isLoading || shopsQuery.isLoading,
+    [ownerQuery.isLoading, shopsQuery.isLoading]
+  );
+
+  const isError = useMemo(
+    () => ownerQuery.isError || shopsQuery.isError,
+    [ownerQuery.isError, shopsQuery.isError]
+  );
+
   return (
     <Box className="flex flex-row">
       <Sidebar />
       <Box className="relative flex-1 overflow-auto">
-        <Topbar />
-        <Box className="h-16" />
-        <Box className="p-4">
-          <Outlet />
-        </Box>
+        {isError && <></>}
+        {isLoading && !isError && (
+          <PageLoading message="Fetching your informations. Please wait..." />
+        )}
+
+        {!isLoading && !isError && (
+          <>
+            <Topbar />
+            {/* <Box className="h-16" /> */}
+            <Box className="p-4">
+              <Outlet />
+            </Box>
+          </>
+        )}
       </Box>
     </Box>
   );

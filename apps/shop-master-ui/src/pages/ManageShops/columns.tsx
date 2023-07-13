@@ -20,7 +20,7 @@ export const columnsDefs = [
   }),
 
   columnHelper.accessor("website", {
-    id: "type",
+    id: "website",
     header: "Website",
   }),
 

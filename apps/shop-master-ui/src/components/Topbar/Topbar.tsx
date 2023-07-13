@@ -4,7 +4,7 @@ import SelectShop from "./components/SelectShop";
 
 const Topbar = () => {
   return (
-    <Box className="absolute inset-0 z-50 flex h-20 w-full items-center justify-between bg-white/60 p-4 drop-shadow-sm backdrop-blur">
+    <Box className="sticky inset-0 z-50 flex h-20 w-full items-center justify-between bg-white/60 p-4 drop-shadow-sm backdrop-blur">
       <SelectShop />
       <Box>
         <Profile />
