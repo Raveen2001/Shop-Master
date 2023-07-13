@@ -20,10 +20,14 @@ export const router = createBrowserRouter([
 
     children: [
       {
-        path: "/",
+        path: "/employee",
         element: <ManageEmployee />,
       },
 
+      {
+        path: "/",
+        element: <h1>Home</h1>,
+      },
       {
         path: "*",
         element: <h1>404 Not Found</h1>,

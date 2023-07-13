@@ -20,7 +20,7 @@ const decoratorPlugin: FastifyPluginAsyncTypebox = async (fastify) => {
   );
 
   fastify.decorate("signJwt", (payload: Record<string, unknown>): string => {
-    const token = fastify.jwt.sign(payload, { expiresIn: "1m" });
+    const token = fastify.jwt.sign(payload, { expiresIn: "30d" });
     return token;
   });
 

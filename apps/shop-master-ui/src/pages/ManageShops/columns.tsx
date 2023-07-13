@@ -1,21 +1,12 @@
 import { createColumnHelper } from "ui";
-import { IEmployeeData } from "../../models/employee";
+import { IShopData } from "../../models/shop";
 
-const columnHelper = createColumnHelper<IEmployeeData>();
+const columnHelper = createColumnHelper<IShopData>();
 
 export const columnsDefs = [
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",
-  }),
-  columnHelper.accessor("username", {
-    id: "username",
-    header: "Username",
-  }),
-
-  columnHelper.accessor("email", {
-    id: "email",
-    header: "Email",
   }),
 
   columnHelper.accessor("phone", {
@@ -23,9 +14,14 @@ export const columnsDefs = [
     header: "Phone",
   }),
 
-  columnHelper.accessor("type", {
+  columnHelper.accessor("email", {
+    id: "email",
+    header: "Email",
+  }),
+
+  columnHelper.accessor("website", {
     id: "type",
-    header: "Type",
+    header: "Website",
   }),
 
   columnHelper.accessor("createdAt", {
@@ -35,5 +31,10 @@ export const columnsDefs = [
   columnHelper.accessor("address", {
     id: "address",
     header: "Address",
+  }),
+
+  columnHelper.accessor("description", {
+    id: "description",
+    header: "Description",
   }),
 ];

@@ -19,7 +19,7 @@ const RootLayout = () => {
   });
 
   const shopsQuery = useQuery({
-    queryKey: ["shops", ownerQuery.data?.data.id],
+    queryKey: ["shops", "owner", ownerQuery.data?.data.id],
     queryFn: getShopsByOwnerId(ownerQuery.data?.data.id ?? ""),
     enabled: !!ownerQuery.data,
   });
