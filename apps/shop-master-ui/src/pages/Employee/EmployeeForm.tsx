@@ -137,6 +137,7 @@ const EmployeeForm = () => {
                   {...register("password")}
                   error={!!errors.password}
                   helperText={errors.password?.message}
+                  type="password"
                 />
                 <TextField
                   label="Address *"
@@ -146,18 +147,6 @@ const EmployeeForm = () => {
                   multiline
                   rows={4}
                 />
-                {/* <input
-                  type="hidden"
-                  {...register("ownerId")}
-                  value={ownerId}
-                  key={ownerId}
-                />
-                <input
-                  type="hidden"
-                  {...(shopId ? register("shopId") : {})}
-                  value={shopId}
-                  key={shopId}
-                /> */}
               </Box>
             </Box>
 
@@ -182,7 +171,8 @@ const EmployeeForm = () => {
         }}
       >
         <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
-          {error?.message ?? "Something went wrong, please try again later"}
+          {error?.response?.data.message ??
+            "Something went wrong, please try again later"}
         </Alert>
       </Snackbar>
     </Box>

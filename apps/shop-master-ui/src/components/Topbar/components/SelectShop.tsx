@@ -59,7 +59,7 @@ const SelectShop = () => {
         </Typography>
         {Object.values(shops ?? {}).map((shop) => (
           <MenuItem
-            className="rounded p-2"
+            className="my-1 rounded p-2"
             key={shop.id}
             selected={shop.id === selectedShopId}
             onClick={() => handleMenuItemClick(shop.id)}

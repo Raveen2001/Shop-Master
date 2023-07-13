@@ -23,12 +23,7 @@ export const router = createBrowserRouter([
 
     children: [
       {
-        path: "",
-        element: <ManageShops />,
-      },
-
-      {
-        path: "employee/*",
+        path: "employees",
         element: <Layout />,
         children: [
           {
@@ -38,6 +33,16 @@ export const router = createBrowserRouter([
           {
             path: "create",
             element: <EmployeeForm />,
+          },
+        ],
+      },
+      {
+        path: "shops",
+        element: <Layout />,
+        children: [
+          {
+            path: "",
+            element: <ManageShops />,
           },
         ],
       },

@@ -9,37 +9,37 @@ import {
 } from "ui/icons";
 
 export const sidebarItems: ISidebarItem[] = [
-  {
-    name: "Overview",
-    items: [
-      {
-        name: "Dashboard",
-        path: "/",
-        icon: <DashboardTwoTone />,
-      },
-      {
-        name: "Employee",
-        path: "/employee",
-        icon: <WorkTwoTone />,
-      },
-      {
-        name: "Customer",
-        path: "/customer",
-        icon: <PeopleAltTwoTone />,
-      },
-    ],
-  },
+  // {
+  //   name: "Overview",
+  //   items: [
+  //     {
+  //       name: "Dashboard",
+  //       path: "/",
+  //       icon: <DashboardTwoTone />,
+  //     },
+  //     {
+  //       name: "Employee",
+  //       path: "/employee",
+  //       icon: <WorkTwoTone />,
+  //     },
+  //     {
+  //       name: "Customer",
+  //       path: "/customer",
+  //       icon: <PeopleAltTwoTone />,
+  //     },
+  //   ],
+  // },
   {
     name: "Employee",
     items: [
       {
         name: "Manage Employees",
-        path: "/employee/manage",
+        path: "/employees",
         icon: <EngineeringTwoTone />,
       },
       {
         name: "Payment History",
-        path: "/employee/payment-history",
+        path: "/employees/payment-history",
         icon: <PaymentTwoTone />,
       },
     ],
@@ -49,12 +49,12 @@ export const sidebarItems: ISidebarItem[] = [
     items: [
       {
         name: "Manage Customers",
-        path: "/customer/manage",
+        path: "/customers",
         icon: <ManageAccountsTwoTone />,
       },
       {
         name: "Payment History",
-        path: "/customer/payment-history",
+        path: "/customers/payment-history",
         icon: <PaymentTwoTone />,
       },
     ],
@@ -64,7 +64,7 @@ export const sidebarItems: ISidebarItem[] = [
     items: [
       {
         name: "Manage Shops",
-        path: "/shop/manage",
+        path: "/shops",
         icon: <StoreTwoTone />,
       },
     ],
