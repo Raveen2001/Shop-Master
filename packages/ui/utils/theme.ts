@@ -160,8 +160,8 @@ export const getTheme = (mode: "dark" | "light") =>
       mode: mode,
       primary: {
         main: "#212b36",
-        light: "#212b36",
-        dark: "#212b36",
+        light: "#d7d8d9",
+        dark: "#080d12",
         contrastText: "#ffffff",
       },
       secondary: {
@@ -214,17 +214,12 @@ export const getTheme = (mode: "dark" | "light") =>
       },
 
       action: {
-        active: "#637381",
-        hover: "rgba(145, 158, 171)",
-        selected: "rgba(145, 158, 171)",
-        disabled: "rgba(145, 158, 171)",
+        active: "rgba(145, 158, 171)",
+        hover: "rgba(145, 158, 171, 0.18)",
+        selected: "rgba(145, 158, 171, 0.36)",
+        disabled: "rgba(145, 158, 171, 0.8)",
         disabledBackground: "rgba(145, 158, 171, 0.24)",
-        focus: "rgba(145, 158, 171)",
-        focusOpacity: 0.24,
-        activatedOpacity: 1,
-        disabledOpacity: 0.8,
-        selectedOpacity: 0.16,
-        hoverOpacity: 0.08,
+        focus: "rgba(145, 158, 171, 0.24)",
       },
 
       text: {
@@ -233,7 +228,7 @@ export const getTheme = (mode: "dark" | "light") =>
         disabled: "#919EAB",
       },
 
-      divider: "rgba(145, 158, 171, 0.24)",
+      divider: "rgba(145, 158, 171, 0.5)",
 
       ...(mode === "dark" ? darkTheme.palette : {}),
     } as Theme["palette"],
