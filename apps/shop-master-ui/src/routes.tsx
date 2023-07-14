@@ -2,10 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 
 import RootLayout from "./layouts/RootLayout";
 import LoginPage from "./pages/Login";
-import ManageEmployee from "./pages/Employee/ManageEmployee";
+import ManageEmployee from "./pages/ManageEmployees/ManageEmployee";
 import RegisterPage from "./pages/Register";
 import ManageShops from "./pages/ManageShops/ManageShops";
-import EmployeeForm from "./pages/Employee/EmployeeForm";
+import EmployeeForm from "./pages/ManageEmployees/EmployeeForm";
 import Layout from "./layouts/Layout";
 
 export const router = createBrowserRouter([
