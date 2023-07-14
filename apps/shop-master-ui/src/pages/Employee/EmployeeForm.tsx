@@ -22,9 +22,9 @@ import { IRequestError } from "ui/models/error";
 
 const EmployeeForm = () => {
   const navigate = useNavigate();
-  const [ownerId, shopId] = useGlobalStore((state) => [
+  const [ownerId, selectedShop] = useGlobalStore((state) => [
     state.owner?.id,
-    state.selectedShopId,
+    state.selectedShop,
   ]);
   const queryClient = useQueryClient();
   const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -55,9 +55,9 @@ const EmployeeForm = () => {
   });
 
   useEffect(() => {
-    setValue("shopId", shopId ?? "");
+    setValue("shopId", selectedShop?.id ?? "");
     setValue("ownerId", ownerId ?? "");
-  }, [shopId, ownerId, setValue]);
+  }, [selectedShop, ownerId, setValue]);
 
   return (
     <Box className="px-8 py-4">
@@ -118,6 +118,7 @@ const EmployeeForm = () => {
                   error={!!errors.phone}
                   helperText={errors.phone?.message}
                 />
+                <TextField label="Shop" disabled value={selectedShop?.name} />
                 <TextField
                   label="Type *"
                   {...register("type")}
