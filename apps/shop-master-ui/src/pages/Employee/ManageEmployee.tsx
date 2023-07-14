@@ -21,7 +21,7 @@ const ManageEmployee = () => {
           variant="contained"
           size="small"
           startIcon={<Add />}
-          onClick={() => navigate("/employee/create")}
+          onClick={() => navigate("/employees/create")}
         >
           New Employee
         </Button>

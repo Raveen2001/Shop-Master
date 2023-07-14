@@ -71,7 +71,7 @@ fastify.register(ShopRoutes, { prefix: "/shop" });
 fastify.register(EmployeeRoutes, { prefix: "/employee" });
 
 // start the server
-fastify.listen({ port: 5000 }, async (err) => {
+fastify.listen({ port: 5000, host: "0.0.0.0" }, async (err) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);

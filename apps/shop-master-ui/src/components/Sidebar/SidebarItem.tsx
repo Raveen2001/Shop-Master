@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { useMemo } from "react";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "ui";
+import { sidebarItemParentForMatch } from "./utils";
 
 const SidebarItem: React.FC<ISidebarSubItem> = ({
   name,
@@ -14,8 +15,12 @@ const SidebarItem: React.FC<ISidebarSubItem> = ({
   const location = useLocation();
 
   const isSelected = useMemo(() => {
-    if (path === "/") return location.pathname === path;
-    return location.pathname.includes(path);
+    const sidebarParentPath =
+      sidebarItemParentForMatch[location.pathname] ?? "";
+    return (
+      !!matchPath(location.pathname, path) ||
+      !!matchPath(sidebarParentPath, path)
+    );
   }, [location.pathname, path]);
   const navigate = useNavigate();
 

@@ -8,6 +8,13 @@ import {
   EngineeringTwoTone,
 } from "ui/icons";
 
+export const sidebarItemParentForMatch: Record<string, string> = {
+  "/employees/create": "/employees",
+  "/employees/edit": "/employees",
+  "/shops/create": "/shops",
+  "/shops/edit": "/shops",
+};
+
 export const sidebarItems: ISidebarItem[] = [
   // {
   //   name: "Overview",
