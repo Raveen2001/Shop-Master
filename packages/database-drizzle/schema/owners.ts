@@ -9,7 +9,6 @@ import {
 import { InferModel, relations } from "drizzle-orm";
 import { employeesDB } from "./employees";
 import { shopsDB } from "./shops";
-import { table } from "console";
 
 export const ownersDB = pgTable(
   "owners",

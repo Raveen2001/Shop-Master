@@ -7,6 +7,7 @@ import RegisterPage from "./pages/Register";
 import ManageShops from "./pages/ManageShops/ManageShops";
 import EmployeeForm from "./pages/ManageEmployees/EmployeeForm";
 import Layout from "./layouts/Layout";
+import EmployeesPaymentHistory from "./pages/EmployeesPaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
           {
             path: "create",
             element: <EmployeeForm />,
+          },
+          {
+            path: "payment-history",
+            element: <EmployeesPaymentHistory />,
           },
         ],
       },
