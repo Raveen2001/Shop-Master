@@ -31,8 +31,8 @@ export const EmployeeFormSchema = object({
   address: string().required(),
 });
 
-export type IEmployeeFormSchema = InferType<typeof EmployeeFormSchema>;
-export type IEmployeeData = IEmployeeFormSchema & {
+export type TEmployeeFormSchema = InferType<typeof EmployeeFormSchema>;
+export type TEmployeeData = TEmployeeFormSchema & {
   id: string;
   createdAt: string;
 };

@@ -1,7 +1,7 @@
 import { createColumnHelper } from "ui";
-import { IEmployeeData } from "schema";
+import { TEmployeeData } from "schema";
 
-const columnHelper = createColumnHelper<IEmployeeData>();
+const columnHelper = createColumnHelper<TEmployeeData>();
 
 export const columnsDefs = [
   columnHelper.accessor("name", {

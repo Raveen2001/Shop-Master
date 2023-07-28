@@ -16,7 +16,7 @@ import { createEmployee } from "../../services/employee";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { EmployeeFormSchema, IEmployeeFormSchema } from "schema";
+import { EmployeeFormSchema, TEmployeeFormSchema } from "schema";
 import { useGlobalStore } from "../../store/globalStore";
 import { IRequestError } from "schema";
 
@@ -33,7 +33,7 @@ const EmployeeForm = () => {
   const { mutate, isLoading, isError, error } = useMutation<
     Awaited<ReturnType<typeof createEmployee>>,
     IRequestError,
-    IEmployeeFormSchema
+    TEmployeeFormSchema
   >({
     mutationKey: ["employee", "create"],
     mutationFn: createEmployee,
@@ -48,7 +48,7 @@ const EmployeeForm = () => {
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<IEmployeeFormSchema>({
+  } = useForm<TEmployeeFormSchema>({
     defaultValues: {
       image: null,
     },

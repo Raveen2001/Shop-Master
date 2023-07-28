@@ -1,4 +1,4 @@
-import { IEmployeeData, IEmployeeFormSchema } from "schema";
+import { TEmployeeData, TEmployeeFormSchema } from "schema";
 import { axiosClient } from "../utils/axios";
 import { QueryFunctionContext } from "@tanstack/react-query";
 
@@ -10,7 +10,7 @@ export const getEmployeeByShopId = (shopId: string) => {
   };
 };
 
-export const createEmployee = (data: IEmployeeFormSchema) => {
+export const createEmployee = (data: TEmployeeFormSchema) => {
   const url = `/employee/register`;
-  return axiosClient.post<IEmployeeData>(url, data);
+  return axiosClient.post<TEmployeeData>(url, data);
 };
