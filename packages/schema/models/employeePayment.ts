@@ -1,8 +1,14 @@
-// import { EMPLOYEE_PAYEMENT_TYPES } from "database-drizzle";
-
 import { object, string, mixed, InferType, number, date } from "yup";
 import { TEmployeeData } from "./employee";
 import { IPaginatedData } from "../common";
+
+export const EMPLOYEE_PAYEMENT_TYPES = [
+  "SALARY",
+  "ADVANCE",
+  "BONUS",
+  "PRODUCT_PURCHASE",
+  "OTHERS",
+] as const;
 
 export const EmployeePaymentFormSchema = object({
   amount: number()
@@ -10,9 +16,9 @@ export const EmployeePaymentFormSchema = object({
     .required("Amount is required"),
   comment: string(),
   createdAt: date().required(),
-  //   type: mixed()
-  //     .oneOf(EMPLOYEE_PAYEMENT_TYPES, "Type should be valid")
-  //     .required("Payment type is required"),
+  type: mixed()
+    .oneOf(EMPLOYEE_PAYEMENT_TYPES, "Type should be valid")
+    .required("Payment type is required"),
   createdByEmployeeId: string().required(),
   employeeId: string().required(),
   shopId: string().required(),
