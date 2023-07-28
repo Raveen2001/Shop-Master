@@ -20,7 +20,7 @@ import { Controller, useForm } from "react-hook-form";
 import { ILoginData, ILoginResponse } from "./model";
 import { useMutation } from "@tanstack/react-query";
 import { loginAsOwner } from "../../services/auth";
-import { IRequestError } from "../../models";
+import { IRequestError } from "schema";
 
 const LoginPage = () => {
   const navigate = useNavigate();

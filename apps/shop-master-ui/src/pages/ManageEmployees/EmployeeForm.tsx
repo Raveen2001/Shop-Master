@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { EmployeeFormSchema, IEmployeeFormSchema } from "schema";
 import { useGlobalStore } from "../../store/globalStore";
-import { IRequestError } from "ui/models/error";
+import { IRequestError } from "schema";
 
 const EmployeeForm = () => {
   const navigate = useNavigate();

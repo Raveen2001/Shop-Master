@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "yup": "^1.2.0",
-    "database-drizzle": "workspace:*"
+    "axios": "^1.4.0",
+    "database-drizzle": "workspace:*",
+    "yup": "^1.2.0"
   }
 }

@@ -16,7 +16,7 @@ import {
 } from "ui";
 import WellDoneImage from "ui/assets/well_done.svg";
 import { Facebook, Google } from "ui/icons";
-import { IRequestError } from "../../models";
+import { IRequestError } from "schema";
 import { registerAsOwner } from "../../services/auth";
 import "./Register.style.scss";
 import { IRegisterData } from "./model";

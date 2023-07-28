@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { loginAsOwner } from "../../services/auth";
 
 export interface ILoginData {

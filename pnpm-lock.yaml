@@ -293,6 +293,9 @@ importers:
 
   packages/schema:
     dependencies:
+      axios:
+        specifier: ^1.4.0
+        version: 1.4.0
       database-drizzle:
         specifier: workspace:*
         version: link:../database-drizzle
