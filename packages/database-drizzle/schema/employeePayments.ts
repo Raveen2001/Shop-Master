@@ -28,7 +28,9 @@ export const employeePaymentsDB = pgTable("employee_payments", {
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
 
-  createdBy: uuid("created_by").references(() => employeesDB.id),
+  createdByEmployeeId: uuid("created_by_employee_id").references(
+    () => employeesDB.id
+  ),
 
   employeeId: uuid("employee_id")
     .notNull()
@@ -43,11 +45,23 @@ export const employeePaymentsDB = pgTable("employee_payments", {
     .references(() => ownersDB.id),
 });
 
+export const EMPLOYEE_PAYEMENT_DB_COLUMNS = [
+  "id",
+  "type",
+  "amount",
+  "comment",
+  "createdAt",
+  "createdByEmployeeId",
+  "employeeId",
+  "shopId",
+  "ownerId",
+];
+
 export const employeePaymentsRelations = relations(
   employeePaymentsDB,
   ({ one }) => ({
-    createdBy: one(employeesDB, {
-      fields: [employeePaymentsDB.createdBy],
+    createdByEmployee: one(employeesDB, {
+      fields: [employeePaymentsDB.createdByEmployeeId],
       references: [employeesDB.id],
     }),
 
