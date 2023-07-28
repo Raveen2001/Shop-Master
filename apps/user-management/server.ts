@@ -10,12 +10,13 @@ import SwaggerPlugin from "./plugins/swagger";
 import DrizzlePlugin from "./plugins/drizzle";
 import DecoratorPlugin from "./plugins/decorators";
 
+import FastifyTypebox from "./types/fastify";
 import HelperRoutes from "./routes/helper";
 import OwnerRoutes from "./routes/owner";
 import ShopRoutes from "./routes/shop";
 import EmployeeRoutes from "./routes/employee";
-import FastifyTypebox from "./types/fastify";
 import AuthRoutes from "./routes/auth";
+import EmployeePaymentRoutes from "./routes/employeePayments";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -69,6 +70,7 @@ fastify.register(AuthRoutes);
 fastify.register(OwnerRoutes, { prefix: "/owner" });
 fastify.register(ShopRoutes, { prefix: "/shop" });
 fastify.register(EmployeeRoutes, { prefix: "/employee" });
+fastify.register(EmployeePaymentRoutes, { prefix: "/employee-payment" });
 
 // start the server
 fastify.listen({ port: 5000, host: "0.0.0.0" }, async (err) => {

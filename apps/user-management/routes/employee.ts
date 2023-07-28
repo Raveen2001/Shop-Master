@@ -1,4 +1,9 @@
-import { employeesDB, eq, sql } from "database-drizzle";
+import {
+  TEMPLOYEE_QUERY_BY_FIELDS,
+  employeesDB,
+  eq,
+  sql,
+} from "database-drizzle";
 import {
   CreateEmployeeOpts,
   QueryEmployeeOpts,
@@ -11,8 +16,11 @@ import {
 } from "../types/employee";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { RouteHandlerMethod } from "fastify";
 
 export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
+  // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+
   // create employee
   fastify.post<{
     Querystring: TEmployeeQueryString;
@@ -79,88 +87,58 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     reply.code(200).send(employee);
   });
 
-  // query employees by owner id
-  fastify.get<{
-    Querystring: TPagableEmployeeQueryString;
-    Params: TEmployeeQueryParam;
-  }>("/owner/:id", QueryEmployeesByOwnerOpts, async (req, reply) => {
-    const { id } = req.params;
-    const { includeOwner, includeShop, limit, page, order, orderBy } =
-      req.query;
+  function queryEmployeeBy(
+    queryBy: TEMPLOYEE_QUERY_BY_FIELDS
+  ): RouteHandlerMethod {
+    return async (req, reply) => {
+      const { id } = req.params as TEmployeeQueryParam;
+      const { includeOwner, includeShop, limit, page, order, orderBy } =
+        req.query as TPagableEmployeeQueryString;
 
-    const offset = page && limit ? page * limit : undefined;
+      const offset = page && limit ? page * limit : undefined;
 
-    const employees = await fastify.db.query.employeesDB.findMany({
-      where: (employees, { eq }) => eq(employees.ownerId, id),
+      const employees = await fastify.db.query.employeesDB.findMany({
+        where: (employeesDB, { eq }) => eq(employeesDB[queryBy], id),
+        with: {
+          owner: includeOwner || undefined,
+          shop: includeShop || undefined,
+        },
+        limit: limit,
+        offset: offset,
+        orderBy: (employeesDB, { asc, desc }) => {
+          if (orderBy && order == "asc") {
+            return asc(employeesDB[orderBy]);
+          } else if (orderBy && order == "desc") {
+            return desc(employeesDB[orderBy]);
+          }
+          return asc(employeesDB.createdAt);
+        },
+      });
 
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-      },
-      limit: limit,
-      offset: offset,
-      orderBy: (employeesDB, { asc, desc }) => {
-        if (orderBy && order == "asc") {
-          return asc(employeesDB[orderBy]);
-        } else if (orderBy && order == "desc") {
-          return desc(employeesDB[orderBy]);
-        }
-        return asc(employeesDB.createdAt);
-      },
-    });
+      const { total } = (
+        await fastify.db
+          .select({
+            total: sql<number>`count(*)`.mapWith(Number),
+          })
+          .from(employeesDB)
+          .where(eq(employeesDB[queryBy], id))
+      )[0];
 
-    const { total } = (
-      await fastify.db
-        .select({
-          total: sql<number>`count(*)`.mapWith(Number),
-        })
-        .from(employeesDB)
-        .where(eq(employeesDB.ownerId, id))
-    )[0];
-
-    reply.code(200).send({ rows: employees, total, page, limit });
-  });
+      reply.code(200).send({ rows: employees, total, page, limit });
+    };
+  }
 
   // query employees by shop id
   fastify.get<{
     Querystring: TPagableEmployeeQueryString;
     Params: TEmployeeQueryParam;
-  }>("/shop/:id", QueryEmployeesByShopOpts, async (req, reply) => {
-    const { id } = req.params;
-    const { includeOwner, includeShop, limit, page, order, orderBy } =
-      req.query;
+  }>("/shop/:id", QueryEmployeesByShopOpts, queryEmployeeBy("shopId"));
 
-    const offset = page && limit ? page * limit : undefined;
-
-    const employees = await fastify.db.query.employeesDB.findMany({
-      where: (employeesDB, { eq }) => eq(employeesDB.shopId, id),
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-      },
-      limit: limit,
-      offset: offset,
-      orderBy: (employeesDB, { asc, desc }) => {
-        if (orderBy && order == "asc") {
-          return asc(employeesDB[orderBy]);
-        } else if (orderBy && order == "desc") {
-          return desc(employeesDB[orderBy]);
-        }
-        return asc(employeesDB.createdAt);
-      },
-    });
-
-    const { total } = (
-      await fastify.db
-        .select({
-          total: sql<number>`count(*)`.mapWith(Number),
-        })
-        .from(employeesDB)
-        .where(eq(employeesDB.shopId, id))
-    )[0];
-
-    reply.code(200).send({ rows: employees, total, page, limit });
-  });
+  // query employees by owner id
+  fastify.get<{
+    Querystring: TPagableEmployeeQueryString;
+    Params: TEmployeeQueryParam;
+  }>("/owner/:id", QueryEmployeesByOwnerOpts, queryEmployeeBy("ownerId"));
 };
 
 export default EmployeeRoutes;

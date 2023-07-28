@@ -5,8 +5,10 @@
   "extends": "./base.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "target": "ES6"
   },
 
   "exclude": ["node_modules"]

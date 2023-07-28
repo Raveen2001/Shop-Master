@@ -15,6 +15,13 @@
       "when": 1690476278295,
       "tag": "0001_youthful_ulik",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1690555590357,
+      "tag": "0002_flat_mindworm",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { InferModel, relations } from "drizzle-orm";
 import {
-  numeric,
+  integer,
   pgEnum,
   pgTable,
   text,
@@ -23,7 +23,7 @@ export const employeePaymentsDB = pgTable("employee_payments", {
   id: uuid("id").defaultRandom().primaryKey(),
 
   type: employeePaymentTypeEnum("type").notNull(),
-  amount: numeric("amount").notNull(),
+  amount: integer("amount").notNull(),
   comment: text("comment"),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -55,7 +55,13 @@ export const EMPLOYEE_PAYEMENT_DB_COLUMNS = [
   "employeeId",
   "shopId",
   "ownerId",
-];
+] as const;
+
+export type TEMPLOYEE_PAYMENT_QUERY_BY_FIELDS =
+  | "employeeId"
+  | "ownerId"
+  | "shopId"
+  | "createdByEmployeeId";
 
 export const employeePaymentsRelations = relations(
   employeePaymentsDB,
@@ -82,6 +88,6 @@ export const employeePaymentsRelations = relations(
   })
 );
 
-export type TEmployeeDB = InferModel<typeof employeesDB>;
+export type TEmployeePaymentDB = InferModel<typeof employeesDB>;
 
 export const EMPLOYEE_PAYEMENT_TYPES = employeePaymentTypeEnum.enumValues;

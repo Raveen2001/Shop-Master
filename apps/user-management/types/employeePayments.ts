@@ -5,13 +5,18 @@ import {
   EMPLOYEE_PAYEMENT_DB_COLUMNS,
   EMPLOYEE_PAYEMENT_TYPES,
 } from "database-drizzle/schema/employeePayments";
+import { EmployeeSchemaWithoutPassword } from "./employee";
+import { OwnerSchemaWithoutPassword } from "./owner";
+import { ShopSchema } from "./shop";
 
 export const EmployeePaymentSchema = Type.Object({
   id: Type.String(),
   type: Type.Union(EMPLOYEE_PAYEMENT_TYPES.map((key) => Type.Literal(key))),
   amount: Type.Number({ minimum: 1 }),
   comment: Type.Optional(Type.String({ minLength: 3 })),
-  createdAt: Type.String(),
+  createdAt: Type.String({
+    format: "date-time",
+  }),
   createdByEmployeeId: Type.String(),
   employeeId: Type.String(),
   shopId: Type.String(),
@@ -19,8 +24,17 @@ export const EmployeePaymentSchema = Type.Object({
 });
 
 export const EmployeePaymentSchemaIn = Type.Omit(EmployeePaymentSchema, ["id"]);
+export const EmployeePaymentSchemaOut = Type.Intersect([
+  EmployeePaymentSchema,
+  Type.Object({
+    owner: Type.Optional(OwnerSchemaWithoutPassword),
+    shop: Type.Optional(ShopSchema),
+    employee: Type.Optional(EmployeeSchemaWithoutPassword),
+    createdByEmployee: Type.Optional(EmployeeSchemaWithoutPassword),
+  }),
+]);
 export const PagableEmployeePaymentsSchemaOut = PagableSchema(
-  EmployeePaymentSchema
+  EmployeePaymentSchemaOut
 );
 
 export type TEmployeePaymentIn = Static<typeof EmployeePaymentSchemaIn>;
@@ -35,6 +49,8 @@ export const EmployeePaymentsQueryParamSchema = Type.Object({
 export const EmployeePaymentQueryStringSchema = Type.Object({
   includeEmployee: Type.Boolean({ default: false }),
   includeCreatedByEmployee: Type.Boolean({ default: false }),
+  includeShop: Type.Boolean({ default: false }),
+  includeOwner: Type.Boolean({ default: false }),
 });
 
 export const PagableEmployeePaymentsQueryStringSchema =
@@ -50,22 +66,9 @@ export type TEmployeePaymentQueryParam = Static<
 export type TPagableEmployeePaymentQueryString = Static<
   typeof PagableEmployeePaymentsQueryStringSchema
 >;
-
-export const QueryEmployeePaymentsOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Employee"],
-    summary: "Get a employee by employee_id",
-    params: EmployeePaymentsQueryParamSchema,
-    querystring: PagableEmployeePaymentsQueryStringSchema,
-    response: {
-      200: PagableEmployeePaymentsSchemaOut,
-    },
-  },
-};
-
 export const QueryEmployeesPaymentsByIdOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Employee"],
+    tags: ["Employee-Payments"],
     summary: "Get all employees payments by id",
     params: EmployeePaymentsQueryParamSchema,
     querystring: PagableEmployeePaymentsQueryStringSchema,
@@ -77,7 +80,7 @@ export const QueryEmployeesPaymentsByIdOpts: RouteShorthandOptions = {
 
 export const CreateEmployeePaymentOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Employee"],
+    tags: ["Employee-Payments"],
     summary: "Create a new employee payment",
     body: EmployeePaymentSchemaIn,
     response: {

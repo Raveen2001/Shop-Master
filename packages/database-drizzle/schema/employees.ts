@@ -54,6 +54,8 @@ export const EMPLOYEE_DB_COLUMNS = [
   "ownerId",
 ] as const;
 
+export type TEMPLOYEE_QUERY_BY_FIELDS = "shopId" | "ownerId" | "id";
+
 export const employeesRelations = relations(employeesDB, ({ one }) => ({
   shop: one(shopsDB, {
     fields: [employeesDB.shopId],
