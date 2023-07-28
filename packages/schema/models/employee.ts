@@ -1,4 +1,4 @@
-import { EMPLOYEE_TYPES } from "./../database-drizzle/schema/employees";
+import { EMPLOYEE_TYPES } from "../../database-drizzle/schema/employees";
 import { object, string, mixed, InferType } from "yup";
 
 export const EmployeeFormSchema = object({
@@ -31,8 +31,8 @@ export const EmployeeFormSchema = object({
   address: string().required(),
 });
 
-export type IFormEmployeeSchema = InferType<typeof EmployeeFormSchema>;
-export type IEmployeeData = IFormEmployeeSchema & {
+export type IEmployeeFormSchema = InferType<typeof EmployeeFormSchema>;
+export type IEmployeeData = IEmployeeFormSchema & {
   id: string;
   createdAt: string;
 };

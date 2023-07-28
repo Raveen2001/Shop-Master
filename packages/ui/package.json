@@ -35,6 +35,7 @@
     "clsx": "^1.2.1",
     "config": "workspace:*",
     "eslint-config-custom": "workspace:*",
+    "schema": "workspace:*",
     "lodash": "^4.17.21"
   }
 }

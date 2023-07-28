@@ -1,4 +1,4 @@
-import React, { ChangeEvent,  useMemo, useState } from "react";
+import React, { ChangeEvent, useMemo, useState } from "react";
 import clsx from "clsx";
 
 import {
@@ -19,7 +19,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { IPaginatedData } from "../../models";
+import { IPaginatedData } from "schema";
 import ShowStatus from "./ShowStatus";
 import { AxiosResponse } from "axios";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
