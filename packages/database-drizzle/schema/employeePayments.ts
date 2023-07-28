@@ -90,4 +90,10 @@ export const employeePaymentsRelations = relations(
 
 export type TEmployeePaymentDB = InferModel<typeof employeesDB>;
 
-export const EMPLOYEE_PAYEMENT_TYPES = employeePaymentTypeEnum.enumValues;
+export const EMPLOYEE_PAYEMENT_TYPES = [
+  "SALARY",
+  "ADVANCE",
+  "BONUS",
+  "PRODUCT_PURCHASE",
+  "OTHERS",
+] as const;

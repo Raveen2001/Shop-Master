@@ -6,6 +6,10 @@ module.exports = {
     "plugin:react-hooks/recommended",
   ],
   plugins: ["@typescript-eslint", "@tanstack/query"],
+
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
   settings: {
     react: {
       version: "detect",
