@@ -21,19 +21,22 @@ function stringToColor(string: string) {
 
 interface IAvatarWithFallbackProps {
   fallbackName: string;
-  src?: string;
+  src?: string | null;
+  fontSize?: string;
 }
 
 const AvatarWithFallback: React.FC<IAvatarWithFallbackProps> = ({
   src,
   fallbackName,
+  fontSize,
 }) => {
   return (
     <Avatar
       sx={{
         bgcolor: stringToColor(fallbackName),
+        fontSize,
       }}
-      src={src}
+      src={src ?? undefined}
     >
       {fallbackName
         .split(" ")
