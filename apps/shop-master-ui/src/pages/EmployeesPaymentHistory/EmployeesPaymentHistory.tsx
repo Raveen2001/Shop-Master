@@ -1,6 +1,6 @@
 import { Box, Typography, Breadcrumbs, Button, PaginatedTable } from "ui";
 import { Add } from "ui/icons";
-import { getEmployeePaymentsBy } from "../../services/employeePayments";
+import { getEmployeePaymentsBy } from "../../services/employee-payments";
 import { columnsDefs } from "./columns";
 import { useNavigate } from "react-router-dom";
 import { useGlobalStore } from "../../store/globalStore";
