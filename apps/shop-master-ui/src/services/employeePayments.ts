@@ -6,7 +6,7 @@ export const getEmployeePaymentsBy = (
   queryBy: "owner" | "employee" | "shop" | "createdByEmployee",
   id: string
 ) => {
-  const url = `/employee-payment/${queryBy}/${id}`;
+  const url = `/employee-payments/${queryBy}/${id}`;
   return async (context: QueryFunctionContext) => {
     const queryParams = {
       ...context.meta,
@@ -18,6 +18,6 @@ export const getEmployeePaymentsBy = (
 };
 
 export const createEmployeePayment = (data: TEmployeePaymentFormSchema) => {
-  const url = `/employee-payment/new`;
+  const url = `/employee-payments/new`;
   return axiosClient.post<TEmployeePaymentData>(url, data);
 };
