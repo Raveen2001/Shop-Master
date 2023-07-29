@@ -1,4 +1,9 @@
-import { ColumnDef, TableProfileCell, createColumnHelper } from "ui";
+import {
+  ColumnDef,
+  TableDateTimeCell,
+  TableProfileCell,
+  createColumnHelper,
+} from "ui";
 import { TEmployeePaymentData } from "schema";
 
 const columnHelper = createColumnHelper<TEmployeePaymentData>();
@@ -26,6 +31,11 @@ export const columnsDefs: ColumnDef<TEmployeePaymentData, any>[] = [
   columnHelper.accessor("createdAt", {
     id: "createdAt",
     header: "Date",
+
+    cell: ({ getValue }) => {
+      const date = getValue();
+      return <TableDateTimeCell date={date} />;
+    },
   }),
 
   columnHelper.accessor("type", {
