@@ -12,7 +12,7 @@ const EmployeesPaymentHistory = () => {
     <Box>
       <Box className="mb-8 flex">
         <Box className="flex-1">
-          <Typography variant="h6">Manage Employees</Typography>
+          <Typography variant="h6">Manage Employee Payments</Typography>
           <Breadcrumbs></Breadcrumbs>
         </Box>
 
@@ -22,13 +22,13 @@ const EmployeesPaymentHistory = () => {
           startIcon={<Add />}
           onClick={() => navigate("/employee-payment/create")}
         >
-          New Employee
+          New Employee Payment
         </Button>
       </Box>
       <PaginatedTable
         columns={columnsDefs}
         queryFn={getEmployeePaymentsBy("shop", selectedShopId)}
-        queryKeys={["employees", "shop", selectedShopId]}
+        queryKeys={["shop", "employees", "payments", selectedShopId]}
         defaultSortColumn={{ id: "createdAt", desc: false }}
       />
     </Box>

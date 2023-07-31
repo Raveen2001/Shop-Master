@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "ui";
+import { Accordion, Box, Typography } from "ui";
 
 import CollapsibleItem from "../CollapsibleItem/CollapsibleItem";
 import SidebarItem from "./SidebarItem";

@@ -8,6 +8,8 @@ import ManageShops from "./pages/ManageShops/ManageShops";
 import EmployeeForm from "./pages/ManageEmployees/EmployeeForm";
 import Layout from "./layouts/Layout";
 import EmployeesPaymentHistory from "./pages/EmployeesPaymentHistory";
+import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
+import CustomersPaymentHistory from "./pages/EmployeesPaymentHistory/CustomersPaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +50,20 @@ export const router = createBrowserRouter([
           {
             path: "",
             element: <ManageShops />,
+          },
+        ],
+      },
+      {
+        path: "customers",
+        element: <Layout />,
+        children: [
+          {
+            path: "",
+            element: <ManageCustomers />,
+          },
+          {
+            path: "payment-history",
+            element: <CustomersPaymentHistory />,
           },
         ],
       },
