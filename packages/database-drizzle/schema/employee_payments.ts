@@ -11,15 +11,18 @@ import { employeesDB } from "./employees";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
 
-export const customerPaymentTypeEnum = pgEnum("customer_payment_types", [
-  "CREDIT",
-  "DEBIT",
+export const employeePaymentTypeEnum = pgEnum("employee_payment_type", [
+  "SALARY",
+  "ADVANCE",
+  "BONUS",
+  "PRODUCT_PURCHASE",
+  "OTHERS",
 ]);
 
 export const employeePaymentsDB = pgTable("employee_payments", {
   id: uuid("id").defaultRandom().primaryKey(),
 
-  type: customerPaymentTypeEnum("type").notNull(),
+  type: employeePaymentTypeEnum("type").notNull(),
   amount: integer("amount").notNull(),
   comment: text("comment"),
 
@@ -87,4 +90,4 @@ export const employeePaymentsRelations = relations(
 
 export type TEmployeePaymentDB = InferModel<typeof employeesDB>;
 
-export const EMPLOYEE_PAYEMENT_TYPES = customerPaymentTypeEnum.enumValues;
+export const EMPLOYEE_PAYEMENT_TYPES = employeePaymentTypeEnum.enumValues;

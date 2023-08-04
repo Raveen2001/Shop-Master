@@ -10,7 +10,7 @@ import {
 import { ownersDB } from "./owners";
 import { shopsDB } from "./shops";
 
-export const employeeTypeEnum = pgEnum("employeeType", [
+export const employeeTypeEnum = pgEnum("employee_type", [
   "MANAGER",
   "CASHIER",
   "ACCOUNTANT",

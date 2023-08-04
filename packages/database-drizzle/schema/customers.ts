@@ -1,13 +1,16 @@
 import { InferModel, relations } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { employeesDB } from "./employees";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
 
+export const customerTypeEnum = pgEnum("customer_type", ["SHOP", "INDIVIDUAL"]);
+
 export const customerDB = pgTable("customers", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
-  phone: text("phone").notNull(),
+  phone: text("phone"),
+  type: customerTypeEnum("type").notNull(),
   address: text("address"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 
@@ -28,17 +31,13 @@ export const CUSTOMER_DB_COLUMNS = [
   "id",
   "name",
   "phone",
+  "type",
   "address",
   "createdAt",
   "createdByEmployeeId",
   "shopId",
   "ownerId",
 ] as const;
-
-export type TEMPLOYEE_PAYMENT_QUERY_BY_FIELDS =
-  | "ownerId"
-  | "shopId"
-  | "createdByEmployeeId";
 
 export const customerRelations = relations(customerDB, ({ one }) => ({
   createdByEmployee: one(employeesDB, {
@@ -57,4 +56,4 @@ export const customerRelations = relations(customerDB, ({ one }) => ({
   }),
 }));
 
-export type TEmployeePaymentDB = InferModel<typeof employeesDB>;
+export type TCustomerDB = InferModel<typeof customerDB>;
