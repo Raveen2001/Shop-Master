@@ -6,7 +6,7 @@ import * as ownersSchema from "./schema/owners";
 import * as shopsSchema from "./schema/shops";
 import * as employeePaymentsSchema from "./schema/employee_payments";
 import * as brandsSchema from "./schema/brands";
-
+import * as productCategoriesSchema from "./schema/product_categories";
 if (!process.env.DATABASE_URL) {
   console.log("Database url is not available");
   process.exit(1);
@@ -20,6 +20,7 @@ const db = drizzle(client, {
     ...shopsSchema,
     ...employeePaymentsSchema,
     ...brandsSchema,
+    ...productCategoriesSchema,
   },
   //   logger: true,
 });
