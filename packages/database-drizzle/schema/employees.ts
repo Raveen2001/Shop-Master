@@ -30,6 +30,7 @@ export const employeesDB = pgTable("employees", {
   image: text("image"),
   address: text("address").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
   type: employeeTypeEnum("type").notNull(),
   shopId: uuid("shop_id")
     .notNull()

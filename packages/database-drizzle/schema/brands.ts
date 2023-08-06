@@ -6,6 +6,7 @@ export const brandsDB = pgTable("brands", {
   name: text("name").notNull(),
   image: text("image"),
   created_at: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export type TBrandsDB = InferModel<typeof brandsDB>;

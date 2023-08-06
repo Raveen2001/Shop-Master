@@ -13,6 +13,7 @@ export const customerDB = pgTable("customers", {
   type: customerTypeEnum("type").notNull(),
   address: text("address"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 
   shopId: uuid("shop_id")
     .notNull()

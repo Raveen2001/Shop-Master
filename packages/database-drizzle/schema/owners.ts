@@ -20,6 +20,7 @@ export const ownersDB = pgTable(
     password: text("password").notNull(),
     image: text("image"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
   (table) => ({
     emailIndex: uniqueIndex("email_index").on(table.email),

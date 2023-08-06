@@ -11,6 +11,7 @@ export const shopsDB = pgTable("shops", {
   address: text("address").notNull(),
   description: text("description").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
   website: text("website"),
   ownerId: uuid("ownerId")
     .notNull()
