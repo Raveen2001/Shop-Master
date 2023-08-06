@@ -1,5 +1,7 @@
 import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
 import { productCategoriesDB } from "./product_categories";
+import { InferModel, relations } from "drizzle-orm";
+import { productsDB } from "./products";
 
 export const productSubCategoriesDB = pgTable("product_sub_categories", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -11,3 +13,17 @@ export const productSubCategoriesDB = pgTable("product_sub_categories", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   image: text("image"),
 });
+
+export const productSubCategoriesRelation = relations(
+  productSubCategoriesDB,
+  ({ one, many }) => ({
+    category: one(productCategoriesDB, {
+      fields: [productSubCategoriesDB.categoryId],
+      references: [productCategoriesDB.id],
+    }),
+
+    products: many(productsDB),
+  })
+);
+
+export type TProductSubCategoriesDB = InferModel<typeof productSubCategoriesDB>;

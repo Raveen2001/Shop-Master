@@ -1,3 +1,4 @@
+import { InferModel, relations } from "drizzle-orm";
 import {
   boolean,
   integer,
@@ -5,6 +6,7 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
+import { productsDB } from "./products";
 
 export const productVariantsDB = pgTable("product_variants", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -17,3 +19,15 @@ export const productVariantsDB = pgTable("product_variants", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   availability: boolean("availability").default(true),
 });
+
+export const productVariantsRelation = relations(
+  productVariantsDB,
+  ({ one }) => ({
+    product: one(productsDB, {
+      fields: [productVariantsDB.productId],
+      references: [productsDB.id],
+    }),
+  })
+);
+
+export type TProductVariantsDB = InferModel<typeof productVariantsDB>;

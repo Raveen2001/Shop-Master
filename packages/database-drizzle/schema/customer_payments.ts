@@ -25,6 +25,7 @@ export const customerPaymentsDB = pgTable("customer_payments", {
   comment: text("comment"),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 
   createdByEmployeeId: uuid("created_by_employee_id").references(
     () => employeesDB.id
