@@ -6,6 +6,7 @@
   "types": "./index.ts",
   "scripts": {
     "pull": "dotenv -e ../../.env -- drizzle-kit introspect:pg",
+    "push": "dotenv -e ../../.env -- drizzle-kit push:pg",
     "generate": "dotenv -e ../../.env -- drizzle-kit generate:pg",
     "drop": "dotenv -e ../../.env -- drizzle-kit drop",
     "up": "dotenv -e ../../.env -- drizzle-kit up:pg",
