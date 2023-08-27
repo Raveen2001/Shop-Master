@@ -1,7 +1,7 @@
+import { TShopData } from "schema";
 import { createColumnHelper } from "ui";
-import { IShopData } from "../../models/shop";
 
-const columnHelper = createColumnHelper<IShopData>();
+const columnHelper = createColumnHelper<TShopData>();
 
 export const columnsDefs = [
   columnHelper.accessor("name", {

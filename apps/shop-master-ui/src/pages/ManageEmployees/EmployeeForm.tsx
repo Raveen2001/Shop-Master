@@ -25,7 +25,6 @@ import { EmployeeFormSchema, TEmployeeFormSchema } from "schema";
 import { useGlobalStore } from "../../store/globalStore";
 import { IRequestError } from "schema";
 import { EMPLOYEE_TYPES } from "../../../../../packages/database-drizzle/schema/employees";
-import { ErrorSharp } from "ui/icons";
 
 const EmployeeForm = () => {
   const navigate = useNavigate();

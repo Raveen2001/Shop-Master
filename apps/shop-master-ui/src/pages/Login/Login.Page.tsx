@@ -155,7 +155,6 @@ const LoginPage = () => {
           >
             <Link
               to="forgot-password"
-              className="forgot-password"
               style={{
                 color: theme.palette.text.primary,
               }}

@@ -67,7 +67,6 @@ export const columnsDefs: ColumnDef<TEmployeePaymentData, any>[] = [
         return <TableProfileCell name="Owner" subText={ownerId} />;
       }
       return (
-        
         <TableProfileCell
           name={createdByEmployee.name}
           subText={createdByEmployee.username}
