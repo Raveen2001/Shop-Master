@@ -5,48 +5,36 @@ import {
   Box,
   Button,
   Card,
-  FormControl,
-  FormHelperText,
-  InputLabel,
   LoadingButton,
-  MenuItem,
   ProfileImagePicker,
-  Select,
   Snackbar,
-  Switch,
   TextField,
   Typography,
 } from "ui";
-import { createEmployee } from "../../services/employee";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { EmployeeFormSchema, TEmployeeFormSchema } from "schema";
+import { ShopFormSchema, TShopFormSchema } from "schema";
 import { useGlobalStore } from "../../store/globalStore";
 import { IRequestError } from "schema";
-import { EMPLOYEE_TYPES } from "../../../../../packages/database-drizzle/schema/employees";
-import { ErrorSharp } from "ui/icons";
+import { createShop } from "../../services/shop";
 
-const EmployeeForm = () => {
+const ShopForm = () => {
   const navigate = useNavigate();
-  const [owner, shops, selectedShopId] = useGlobalStore((state) => [
-    state.owner,
-    state.shops,
-    state.selectedShopId,
-  ]);
+  const ownerId = useGlobalStore((state) => state.owner?.id);
   const queryClient = useQueryClient();
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   const { mutate, isLoading, isError, error } = useMutation<
-    Awaited<ReturnType<typeof createEmployee>>,
+    Awaited<ReturnType<typeof createShop>>,
     IRequestError,
-    TEmployeeFormSchema
+    TShopFormSchema
   >({
-    mutationKey: ["employee", "create"],
-    mutationFn: createEmployee,
+    mutationKey: ["shops", "create"],
+    mutationFn: createShop,
     onSuccess: () => {
-      queryClient.invalidateQueries(["employees"]);
-      navigate("/employees");
+      queryClient.invalidateQueries(["shops"]);
+      navigate("/shops");
     },
   });
 
@@ -55,21 +43,21 @@ const EmployeeForm = () => {
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<TEmployeeFormSchema>({
+  } = useForm<TShopFormSchema>({
     defaultValues: {
       image: null,
+      website: null,
     },
-    resolver: yupResolver(EmployeeFormSchema),
+    resolver: yupResolver(ShopFormSchema) as any,
   });
 
   useEffect(() => {
-    setValue("shopId", selectedShopId ?? "");
-    setValue("ownerId", owner?.id ?? "");
-  }, [selectedShopId, owner?.id, setValue]);
+    setValue("ownerId", ownerId ?? "");
+  }, [ownerId, setValue]);
 
   return (
     <Box className="px-8 py-4">
-      <Typography variant="h5">Create a new Employee</Typography>
+      <Typography variant="h5">Create a new Shop</Typography>
 
       <Box className="h-8" />
 
@@ -78,30 +66,17 @@ const EmployeeForm = () => {
           elevation={5}
           className="flex flex-col items-center justify-center gap-8 px-6 py-10"
         >
-          <ProfileImagePicker onImageChange={setProfileImage} />
-
-          <Box className="flex items-center">
-            <Box className="flex-1">
-              <Typography variant="subtitle2">Email Verified</Typography>
-              <Typography
-                variant="caption"
-                className="m-0 p-0 leading-none text-slate-600"
-              >
-                Disabling this will automatically send the user a verification
-                email
-              </Typography>
-            </Box>
-            <Switch color="secondary" />
-          </Box>
+          <ProfileImagePicker onImageChange={setImage} />
 
           <Button color="error" variant="outlined">
-            Delete Employee
+            Delete Shop
           </Button>
         </Card>
 
         <Card elevation={5} className="ml-10 p-6">
           <form
             onSubmit={handleSubmit((data) => {
+              if (!data.website) delete data.website;
               mutate(data);
             })}
             className="flex h-full flex-col gap-4"
@@ -126,43 +101,21 @@ const EmployeeForm = () => {
                   error={!!errors.phone}
                   helperText={errors.phone?.message}
                 />
-                <FormControl error={!!errors.type}>
-                  <InputLabel id="type-label">Type</InputLabel>
-                  <Select
-                    labelId="type-label"
-                    id="type"
-                    {...register("type")}
-                    label="Type"
-                  >
-                    {EMPLOYEE_TYPES.map((type) => (
-                      <MenuItem key={type} value={type}>
-                        {type}
-                      </MenuItem>
-                    ))}
-                  </Select>
-
-                  <FormHelperText>{errors.type?.message}</FormHelperText>
-                </FormControl>
                 <TextField
-                  label="Shop"
-                  disabled
-                  value={shops?.[selectedShopId ?? ""]?.name ?? ""}
+                  label="Website"
+                  {...register("website")}
+                  error={!!errors.website}
+                  helperText={errors.website?.message}
                 />
-                <TextField label="Owner" disabled value={owner?.name ?? ""} />
               </Box>
               <Box className="flex flex-col gap-4">
                 <TextField
-                  label="Username *"
-                  {...register("username")}
-                  error={!!errors.username}
-                  helperText={errors.username?.message}
-                />
-                <TextField
-                  label="Password *"
-                  {...register("password")}
-                  error={!!errors.password}
-                  helperText={errors.password?.message}
-                  type="password"
+                  label="Description *"
+                  {...register("description")}
+                  error={!!errors.description}
+                  helperText={errors.description?.message}
+                  multiline
+                  rows={4}
                 />
                 <TextField
                   label="Address *"
@@ -204,4 +157,4 @@ const EmployeeForm = () => {
   );
 };
 
-export default EmployeeForm;
+export default ShopForm;

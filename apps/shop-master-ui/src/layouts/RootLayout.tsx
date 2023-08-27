@@ -1,6 +1,6 @@
 import { Box, PageLoading } from "ui";
 import Sidebar from "../components/Sidebar/Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { getOwnerByToken } from "../services/owner";
 import { useQuery } from "@tanstack/react-query";
 import { useGlobalStore } from "../store/globalStore";
@@ -9,6 +9,7 @@ import { getShopsByOwnerId } from "../services/shop";
 import Topbar from "../components/Topbar/Topbar";
 
 const RootLayout = () => {
+  const navigate = useNavigate();
   const [selectedShopId, setSelectedShopId, setShops, setOwner] =
     useGlobalStore((state) => [
       state.selectedShopId,
@@ -35,11 +36,17 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (!shopsQuery.isLoading && !shopsQuery.isError) {
-      setShops(shopsQuery.data.data.rows);
-
-      if (!selectedShopId) setSelectedShopId(shopsQuery.data.data.rows[0]?.id);
+      const shops = shopsQuery.data.data.rows;
+      if (shops.length) {
+        setShops(shops);
+        if (!selectedShopId)
+          setSelectedShopId(shopsQuery.data.data.rows[0]?.id);
+      } else {
+        navigate("/shops/create");
+      }
     }
   }, [
+    navigate,
     selectedShopId,
     setSelectedShopId,
     setShops,

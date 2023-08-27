@@ -1,8 +1,9 @@
-import { IPaginatedData } from "./../../../../packages/ui/models/paginated";
+import { IPaginatedData } from "schema/common/pagination";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { axiosClient } from "../utils/axios";
 import { AxiosResponse } from "axios";
 import { IShopData } from "../models/shop";
+import { TShopData, TShopFormSchema } from "schema";
 
 export const getShopsByOwnerId = (ownerId: string) => {
   const url = `/shop/owner/${ownerId}`;
@@ -12,4 +13,9 @@ export const getShopsByOwnerId = (ownerId: string) => {
     const queryParams = context.meta;
     return axiosClient.get(url, { params: queryParams });
   };
+};
+
+export const createShop = (data: TShopFormSchema) => {
+  const url = `/shop/create`;
+  return axiosClient.post<TShopData>(url, data);
 };

@@ -10,6 +10,7 @@ import Layout from "./layouts/Layout";
 import EmployeesPaymentHistory from "./pages/EmployeesPaymentHistory";
 import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
 import CustomersPaymentHistory from "./pages/EmployeesPaymentHistory/CustomersPaymentHistory";
+import ShopForm from "./pages/ManageShops/ShopForm";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
           {
             path: "",
             element: <ManageShops />,
+          },
+          {
+            path: "create",
+            element: <ShopForm />,
           },
         ],
       },

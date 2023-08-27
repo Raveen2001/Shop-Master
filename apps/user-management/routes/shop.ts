@@ -39,7 +39,7 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
   fastify.post<{
     Querystring: TShopQueryString;
     Body: Shop;
-  }>("/register", CreateShopOpts, async (req, reply) => {
+  }>("/create", CreateShopOpts, async (req, reply) => {
     const { includeOwner, includeEmployees } = req.query;
     const { insertedId } = (
       await fastify.db

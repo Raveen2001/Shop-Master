@@ -18,9 +18,11 @@ function App() {
 
     if (!isLoggedIn) {
       router.navigate("/login");
+      return;
     }
     if (AUTH_URLS.includes(location)) {
       router.navigate("/");
+      return;
     }
   }, [isLoggedIn]);
 

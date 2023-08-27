@@ -80,7 +80,7 @@ export const QueryShopByOwnerOpts: RouteShorthandOptions = {
 
 export const CreateShopOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["Auth"],
+    tags: ["Shop"],
     summary: "Create a new shop",
     body: ShopSchemaIn,
     querystring: ShopQueryStringSchema,

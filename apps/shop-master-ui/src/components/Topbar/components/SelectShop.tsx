@@ -69,7 +69,7 @@ const SelectShop = () => {
         ))}
         <Divider />
         <Link to="/shops">
-          <MenuItem className="rounded p-2">
+          <MenuItem className="rounded p-2" onClick={handleClose}>
             <Typography variant="subtitle2">Manage Shops</Typography>
           </MenuItem>
         </Link>
