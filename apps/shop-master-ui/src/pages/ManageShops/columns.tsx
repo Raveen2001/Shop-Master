@@ -36,6 +36,8 @@ export const columnsDefs = [
     header: "Website",
     cell: ({ getValue }) => {
       const website = getValue();
+
+      if (!website) return "-";
       return <MyLink text={website} to={website} />;
     },
   }),

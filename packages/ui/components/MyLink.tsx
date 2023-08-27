@@ -14,6 +14,7 @@ const MyLink: FC<LinkProps> = ({ text, to, color }) => {
     <Typography variant="body2" className="hover:underline">
       <Link
         to={to ?? "#"}
+        target="_blank"
         style={{
           color: color ?? theme.palette.secondary.main,
         }}
