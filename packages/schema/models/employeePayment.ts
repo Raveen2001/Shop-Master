@@ -15,12 +15,12 @@ export const EmployeePaymentFormSchema = object({
     .min(1, "Amount must be at least 1")
     .required("Amount is required"),
   comment: string(),
-  createdAt: date().required(),
+  createdAt: date().required("Created at is required"),
   type: mixed()
-    .oneOf(EMPLOYEE_PAYEMENT_TYPES, "Type should be valid")
-    .required("Payment type is required"),
-  createdByEmployeeId: string().required(),
-  employeeId: string().required(),
+    .oneOf(EMPLOYEE_PAYEMENT_TYPES, "Payment Type should be valid")
+    .required("Payment Type is required"),
+  createdByEmployeeId: string().nullable(),
+  employeeId: string().required("Employee is required"),
   shopId: string().required(),
   ownerId: string().required(),
 });

@@ -14,13 +14,6 @@
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
-    },
-    {
-      "type": "node-terminal",
-      "name": "User Management System",
-      "request": "launch",
-      "command": "pnpm run standalone",
-      "cwd": "${workspaceFolder}/apps/user-management"
     }
   ]
 }

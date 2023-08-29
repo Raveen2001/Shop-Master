@@ -10,7 +10,7 @@ export const ShopSchema = Type.Object({
   address: Type.String({ minLength: 3 }),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
   email: Type.Optional(Type.String({ format: "email" })),
-  website: Type.Optional(Type.String({ format: "uri" })),
+  website: Type.Union([Type.Null(), Type.String({ format: "uri" })]),
   description: Type.String({ minLength: 3 }),
   ownerId: Type.String(),
   createdAt: Type.String({ format: "date-time" }),

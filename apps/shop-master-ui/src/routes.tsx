@@ -9,8 +9,9 @@ import EmployeeForm from "./pages/ManageEmployees/EmployeeForm";
 import Layout from "./layouts/Layout";
 import EmployeesPaymentHistory from "./pages/EmployeesPaymentHistory";
 import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
-import CustomersPaymentHistory from "./pages/EmployeesPaymentHistory/CustomersPaymentHistory";
 import ShopForm from "./pages/ManageShops/ShopForm";
+import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
+import EmployeePaymentForm from "./pages/EmployeesPaymentHistory/EmployeePaymentForm";
 
 export const router = createBrowserRouter([
   {
@@ -40,7 +41,18 @@ export const router = createBrowserRouter([
           },
           {
             path: "payment-history",
-            element: <EmployeesPaymentHistory />,
+            element: <Layout />,
+
+            children: [
+              {
+                path: "",
+                element: <EmployeesPaymentHistory />,
+              },
+              {
+                path: "create",
+                element: <EmployeePaymentForm />,
+              },
+            ],
           },
         ],
       },

@@ -62,7 +62,7 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
     reply.code(201).send(shop);
   });
 
-  // get shops by owner id
+  // get paginated shops by owner id
   fastify.get<{
     Params: TShopQueryParam;
     Querystring: TPagableShopQueryString;

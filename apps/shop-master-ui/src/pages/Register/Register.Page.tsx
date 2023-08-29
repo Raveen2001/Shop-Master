@@ -91,7 +91,7 @@ const RegisterPage = () => {
         </Typography>
         {isError && (
           <Alert severity="error" variant={"filled"}>
-            {error?.response?.data?.message ||
+            {error?.response?.data?.error ||
               "Something went wrong, Try again later."}
           </Alert>
         )}

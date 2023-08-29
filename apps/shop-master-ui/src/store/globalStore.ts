@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { IShopData } from "../models/shop";
+import { TShopData } from "schema";
 
 interface IGlobalStore {
-  shops?: Record<string, IShopData>;
+  shops?: Record<string, TShopData>;
   selectedShopId?: string;
-  selectedShop?: IShopData;
+  selectedShop?: TShopData;
   owner?: IOwnerData;
 
-  setShops: (shops: IShopData[]) => void;
+  setShops: (shops: TShopData[]) => void;
   setSelectedShopId: (shopId: string) => void;
   setOwner: (owner: IOwnerData) => void;
 }
@@ -20,12 +20,12 @@ export const useGlobalStore = create(
     owner: undefined,
     selectedShop: undefined,
 
-    setShops: (shops: IShopData[]) => {
+    setShops: (shops: TShopData[]) => {
       set((state) => {
         state.shops = shops.reduce((acc, shop) => {
           acc[shop.id] = shop;
           return acc;
-        }, {} as Record<string, IShopData>);
+        }, {} as Record<string, TShopData>);
       });
     },
 

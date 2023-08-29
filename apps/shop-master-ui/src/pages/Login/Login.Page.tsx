@@ -91,7 +91,7 @@ const LoginPage = () => {
         </Typography>
         {isError && (
           <Alert severity="error" variant={"filled"}>
-            {error?.response?.data?.message || "Something went wrong"}
+            {error?.response?.data?.error || "Something went wrong"}
           </Alert>
         )}
 

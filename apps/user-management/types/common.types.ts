@@ -16,8 +16,8 @@ export const PagableQueryStringSchema = <T extends TSchema, V extends string>(
   return Type.Intersect([
     schema,
     Type.Object({
-      limit: Type.Optional(Type.Number({ default: 10 })),
-      page: Type.Optional(Type.Number({ default: 0 })),
+      limit: Type.Optional(Type.Number()),
+      page: Type.Optional(Type.Number()),
       order: Type.Optional(
         Type.Union([Type.Literal("asc"), Type.Literal("desc")])
       ),

@@ -1,4 +1,5 @@
 export * from "@mui/material";
+export * from "@mui/x-date-pickers";
 export * from "./MyThemeProvider";
 export * from "./components";
 export * from "./hooks";

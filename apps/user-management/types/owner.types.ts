@@ -10,7 +10,7 @@ export const OwnerSchema = Type.Object({
   password: Type.String({
     minLength: 8,
   }),
-  image: Type.Optional(Type.String({ format: "uri" })),
+  image: Type.Union([Type.Null(), Type.String({ format: "uri" })]),
   createdAt: Type.String({ format: "date-time" }),
 });
 

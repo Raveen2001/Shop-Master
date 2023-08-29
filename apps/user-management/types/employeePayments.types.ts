@@ -12,11 +12,14 @@ export const EmployeePaymentSchema = Type.Object({
   id: Type.String(),
   type: Type.Union(EMPLOYEE_PAYEMENT_TYPES.map((key) => Type.Literal(key))),
   amount: Type.Number({ minimum: 1 }),
-  comment: Type.Optional(Type.String({ minLength: 3 })),
+  comment: Type.Optional(Type.String()),
   createdAt: Type.String({
     format: "date-time",
   }),
-  createdByEmployeeId: Type.String(),
+  createdByEmployeeId: Type.Union([
+    Type.Null(),
+    Type.String({ format: "uri" }),
+  ]),
   employeeId: Type.String(),
   shopId: Type.String(),
   ownerId: Type.String(),

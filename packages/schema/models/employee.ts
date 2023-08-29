@@ -28,7 +28,7 @@ export const EmployeeFormSchema = object({
     .lowercase(),
 
   image: string().url("Image should be valid").required().nullable(),
-  type: mixed()
+  type: string()
     .oneOf(EMPLOYEE_TYPES, "Type should be valid")
     .required("Employee type is required"),
   address: string()

@@ -149,7 +149,7 @@ const ShopForm = () => {
         }}
       >
         <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
-          {error?.response?.data.message ??
+          {error?.response?.data.error ??
             "Something went wrong, please try again later"}
         </Alert>
       </Snackbar>

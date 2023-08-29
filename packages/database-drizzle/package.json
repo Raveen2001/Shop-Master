@@ -18,13 +18,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "drizzle-orm": "^0.27.0",
+    "drizzle-orm": "^0.28.5",
     "postgres": "^3.3.5",
     "ts-transformer-keys": "^0.4.4"
   },
   "devDependencies": {
-    "@types/node": "18.13.0",
-    "drizzle-kit": "^0.19.3",
-    "pg": "^8.11.1"
+    "@types/node": "20.5.7",
+    "drizzle-kit": "^0.19.13",
+    "pg": "^8.11.3"
   }
 }
