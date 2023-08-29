@@ -1,14 +1,16 @@
 import { Shop, eq, shopsDB, sql } from "database-drizzle";
-import FastifyTypebox from "../types/fastify";
+import FastifyTypebox from "../types/fastify.types";
+import {
+  TPagableShopQueryString,
+  TShopQueryParam,
+  TShopQueryString,
+} from "../types/shop.types";
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
   CreateShopOpts,
   QueryShopByOwnerOpts,
   QueryShopOpts,
-  TPagableShopQueryString,
-  TShopQueryParam,
-  TShopQueryString,
-} from "../types/shop";
-import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+} from "../opts/shops.opts";
 
 const ShopRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox

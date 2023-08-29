@@ -5,18 +5,20 @@ import {
   sql,
 } from "database-drizzle";
 import {
-  CreateEmployeeOpts,
-  QueryEmployeeOpts,
-  QueryEmployeesByOwnerOpts,
-  QueryEmployeesByShopOpts,
   TEmployeeIn,
   TEmployeeQueryParam,
   TEmployeeQueryString,
   TPagableEmployeeQueryString,
-} from "../types/employee";
+} from "../types/employee.types";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
+import {
+  CreateEmployeeOpts,
+  QueryEmployeeOpts,
+  QueryEmployeesByShopOpts,
+  QueryEmployeesByOwnerOpts,
+} from "../opts/employee.opts";
 
 export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));

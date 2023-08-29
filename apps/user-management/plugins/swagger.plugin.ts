@@ -18,7 +18,7 @@ export const swaggerOptions: SwaggerOptions = {
       {
         name: "Auth",
         description:
-          "This has all the endpoints related to user authentiocation",
+          "This has all the endpoints related to user authentication",
       },
       {
         name: "Owner",

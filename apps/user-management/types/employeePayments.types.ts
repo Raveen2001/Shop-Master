@@ -1,13 +1,12 @@
 import { Static, Type } from "@sinclair/typebox";
-import { RouteShorthandOptions } from "fastify";
-import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { PagableQueryStringSchema, PagableSchema } from "./common.types";
 import {
   EMPLOYEE_PAYEMENT_DB_COLUMNS,
   EMPLOYEE_PAYEMENT_TYPES,
 } from "database-drizzle/schema/employee_payments";
-import { EmployeeSchemaWithoutPassword } from "./employee";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { ShopSchema } from "./shop";
+import { EmployeeSchemaWithoutPassword } from "./employee.types";
+import { OwnerSchemaWithoutPassword } from "./owner.types";
+import { ShopSchema } from "./shop.types";
 
 export const EmployeePaymentSchema = Type.Object({
   id: Type.String(),
@@ -66,25 +65,3 @@ export type TEmployeePaymentQueryParam = Static<
 export type TPagableEmployeePaymentQueryString = Static<
   typeof PagableEmployeePaymentsQueryStringSchema
 >;
-export const QueryEmployeesPaymentsByIdOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Employee-Payments"],
-    summary: "Get all employees payments by id",
-    params: EmployeePaymentsQueryParamSchema,
-    querystring: PagableEmployeePaymentsQueryStringSchema,
-    response: {
-      200: PagableEmployeePaymentsSchemaOut,
-    },
-  },
-};
-
-export const CreateEmployeePaymentOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Employee-Payments"],
-    summary: "Create a new employee payment",
-    body: EmployeePaymentSchemaIn,
-    response: {
-      201: EmployeePaymentSchema,
-    },
-  },
-};

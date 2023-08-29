@@ -1,10 +1,9 @@
+import { QueryOwnerByTokenOpts, QueryOwnerOpts } from "../opts/owner.opts";
 import {
-  QueryOwnerByTokenOpts,
-  QueryOwnerOpts,
   TOwner,
   TOwnerQueryParam,
   TOwnerQueryString,
-} from "../types/owner";
+} from "../types/owner.types";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
 const OwnerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {

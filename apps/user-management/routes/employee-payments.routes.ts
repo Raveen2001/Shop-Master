@@ -5,15 +5,17 @@ import {
   employeePaymentsDB,
 } from "database-drizzle";
 import {
-  CreateEmployeePaymentOpts,
-  QueryEmployeesPaymentsByIdOpts,
   TEmployeePaymentIn,
   TEmployeePaymentQueryParam,
   TPagableEmployeePaymentQueryString,
-} from "../types/employeePayments";
+} from "../types/employeePayments.types";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
+import {
+  CreateEmployeePaymentOpts,
+  QueryEmployeesPaymentsByIdOpts,
+} from "../opts/employee-payments.opts";
 
 const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));

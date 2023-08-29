@@ -1,11 +1,9 @@
-import { EMPLOYEE_DB_COLUMNS } from "./../../../packages/database-drizzle/schema/employees";
+import { EMPLOYEE_DB_COLUMNS } from "database-drizzle/schema/employees";
 import { EMPLOYEE_TYPES } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
-import { RouteShorthandOptions } from "fastify";
-import { LoginTokenSchema, LoginWithUsernamePropsSchema } from "./auth";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { ShopSchema } from "./shop";
-import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { OwnerSchemaWithoutPassword } from "./owner.types";
+import { ShopSchema } from "./shop.types";
+import { PagableQueryStringSchema, PagableSchema } from "./common.types";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),
@@ -59,62 +57,3 @@ export type TEmployeeQueryString = Static<typeof EmployeeQueryStringSchema>;
 export type TPagableEmployeeQueryString = Static<
   typeof PagableEmployeeQueryStringSchema
 >;
-
-export const QueryEmployeeOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Employee"],
-    summary: "Get a employee by employee_id",
-    params: EmployeeQueryParamSchema,
-    querystring: EmployeeQueryStringSchema,
-    response: {
-      200: EmployeeSchemaOut,
-    },
-  },
-};
-
-export const QueryEmployeesByOwnerOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Employee"],
-    summary: "Get all employees by owner_id",
-    params: EmployeeQueryParamSchema,
-    querystring: PagableEmployeeQueryStringSchema,
-    response: {
-      200: PagableEmployeeSchemaOut,
-    },
-  },
-};
-
-export const QueryEmployeesByShopOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Employee"],
-    summary: "Get all employees by shop_id",
-    params: EmployeeQueryParamSchema,
-    querystring: PagableEmployeeQueryStringSchema,
-    response: {
-      200: PagableEmployeeSchemaOut,
-    },
-  },
-};
-
-export const CreateEmployeeOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Auth"],
-    summary: "Create a new employee",
-    body: EmployeeSchemaIn,
-    response: {
-      201: EmployeeSchemaOut,
-    },
-  },
-};
-
-export const LoginEmployeeOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Auth"],
-    summary: "Login with username and password",
-
-    body: LoginWithUsernamePropsSchema,
-    response: {
-      200: LoginTokenSchema,
-    },
-  },
-};
