@@ -1,12 +1,19 @@
-import { TShopData } from "schema";
-import { createColumnHelper } from "ui";
+import { TCustomerData } from "schema";
+import { TableDateTimeCell, TableProfileCell, createColumnHelper } from "ui";
 
-const columnHelper = createColumnHelper<TShopData>();
+const columnHelper = createColumnHelper<TCustomerData>();
 
 export const columnsDefs = [
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",
+    cell: ({
+      row: {
+        original: { name, email, image },
+      },
+    }) => {
+      return <TableProfileCell name={name} subText={email} imageUrl={image} />;
+    },
   }),
 
   columnHelper.accessor("phone", {
@@ -14,27 +21,22 @@ export const columnsDefs = [
     header: "Phone",
   }),
 
-  columnHelper.accessor("email", {
-    id: "email",
-    header: "Email",
-  }),
-
-  columnHelper.accessor("website", {
-    id: "website",
-    header: "Website",
+  columnHelper.accessor("type", {
+    id: "type",
+    header: "Type",
   }),
 
   columnHelper.accessor("createdAt", {
     id: "createdAt",
     header: "Created At",
+    cell: ({ getValue }) => {
+      const date = getValue();
+      return <TableDateTimeCell date={date} />;
+    },
   }),
+
   columnHelper.accessor("address", {
     id: "address",
     header: "Address",
-  }),
-
-  columnHelper.accessor("description", {
-    id: "description",
-    header: "Description",
   }),
 ];

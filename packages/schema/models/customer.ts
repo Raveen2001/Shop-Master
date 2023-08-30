@@ -1,3 +1,4 @@
+import { CUSTOMER_TYPES } from "./../../database-drizzle/schema/customers";
 import { object, string, InferType } from "yup";
 
 export const CustomerFormSchema = object({
@@ -6,14 +7,12 @@ export const CustomerFormSchema = object({
     .required("Name is required"),
 
   phone: string().matches(/^\d{10}$/, "Phone must be 10 digits"),
-
   email: string().email("Email should be valid").lowercase(),
-
   image: string().url("Image should be valid").nullable(),
 
   type: string()
     .oneOf(CUSTOMER_TYPES, "Type should be valid")
-    .required("Employee type is required"),
+    .required("Customer type is required"),
   address: string()
     .min(3, "Address must be atleast 3 characters")
     .required("Address is required"),

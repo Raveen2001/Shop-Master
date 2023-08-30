@@ -2,8 +2,8 @@ import { Box, Button, PaginatedTable, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
-import { getShopsByOwnerId } from "../../services/shop";
 import { useGlobalStore } from "../../store/globalStore";
+import { getCustomersByShopId } from "../../services/customer";
 
 const ManageCustomers = () => {
   const shopId = useGlobalStore((state) => state.selectedShop?.id ?? "");
@@ -20,8 +20,8 @@ const ManageCustomers = () => {
       </Box>
       <PaginatedTable
         columns={columnsDefs}
-        queryFn={getShopsByOwnerId(shopId)}
-        queryKeys={["shop", "customers", shopId]}
+        queryFn={getCustomersByShopId(shopId)}
+        queryKeys={["shop", shopId, "customers"]}
         defaultSortColumn={{ id: "createdAt", desc: false }}
       />
     </Box>
