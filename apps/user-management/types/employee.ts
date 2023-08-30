@@ -7,15 +7,18 @@ import { PagableQueryStringSchema, PagableSchema } from "./common";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),
-  username: Type.String({ minLength: 3, maxLength: 100 }),
   name: Type.String({ minLength: 3 }),
+  type: Type.Union(EMPLOYEE_TYPES.map((key) => Type.Literal(key))),
+  username: Type.String({ minLength: 3, maxLength: 100 }),
   password: Type.String({ minLength: 8 }),
   email: Type.Optional(Type.String({ format: "email" })),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
   image: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
   address: Type.String({ minLength: 3 }),
+
   createdAt: Type.String({ format: "date-time" }),
-  type: Type.Union(EMPLOYEE_TYPES.map((key) => Type.Literal(key))),
+  updatedAt: Type.String({ format: "date-time" }),
+
   shopId: Type.String(),
   ownerId: Type.String(),
 });
@@ -24,7 +27,11 @@ export const EmployeeSchemaWithoutPassword = Type.Omit(EmployeeSchema, [
   "password",
 ]);
 
-export const EmployeeSchemaIn = Type.Omit(EmployeeSchema, ["id", "createdAt"]);
+export const EmployeeSchemaIn = Type.Omit(EmployeeSchema, [
+  "id",
+  "createdAt",
+  "updatedAt",
+]);
 export const EmployeeSchemaOut = Type.Intersect([
   EmployeeSchemaWithoutPassword,
   Type.Object({

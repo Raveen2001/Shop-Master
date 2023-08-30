@@ -36,12 +36,14 @@ export const shopsDB = pgTable(
 export const SHOP_DB_COLUMNS = [
   "id",
   "name",
+  "domain",
   "phone",
   "email",
   "image",
   "address",
   "description",
   "createdAt",
+  "updatedAt",
   "website",
   "ownerId",
 ] as const;

@@ -12,6 +12,7 @@ export const OwnerSchema = Type.Object({
   }),
   image: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
   createdAt: Type.String({ format: "date-time" }),
+  updatedAt: Type.String({ format: "date-time" }),
 });
 
 export type TOwner = Static<typeof OwnerSchema>;
@@ -27,7 +28,11 @@ export const OwnerSchemaOut = Type.Intersect([
   }),
 ]);
 
-export const OwnerSchemaIn = Type.Omit(OwnerSchema, ["id", "createdAt"]);
+export const OwnerSchemaIn = Type.Omit(OwnerSchema, [
+  "id",
+  "createdAt",
+  "updatedAt",
+]);
 export type TOwnerIn = Static<typeof OwnerSchemaIn>;
 
 export const OwnerQueryParamSchema = Type.Object({

@@ -50,6 +50,7 @@ export const EMPLOYEE_DB_COLUMNS = [
   "image",
   "address",
   "createdAt",
+  "updatedAt",
   "type",
   "shopId",
   "ownerId",

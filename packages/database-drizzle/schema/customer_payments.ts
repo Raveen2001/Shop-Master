@@ -50,6 +50,7 @@ export const CUSTOMER_PAYEMENT_DB_COLUMNS = [
   "amount",
   "comment",
   "createdAt",
+  "updatedAt",
   "createdByEmployeeId",
   "customerId",
   "shopId",

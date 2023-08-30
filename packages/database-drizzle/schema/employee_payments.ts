@@ -52,6 +52,7 @@ export const EMPLOYEE_PAYEMENT_DB_COLUMNS = [
   "amount",
   "comment",
   "createdAt",
+  "updatedAt",
   "createdByEmployeeId",
   "employeeId",
   "shopId",

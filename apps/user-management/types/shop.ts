@@ -16,9 +16,14 @@ export const ShopSchema = Type.Object({
   description: Type.String({ minLength: 3 }),
   ownerId: Type.String(),
   createdAt: Type.String({ format: "date-time" }),
+  updatedAt: Type.String({ format: "date-time" }),
 });
 
-export const ShopSchemaIn = Type.Omit(ShopSchema, ["id", "createdAt"]);
+export const ShopSchemaIn = Type.Omit(ShopSchema, [
+  "id",
+  "createdAt",
+  "updatedAt",
+]);
 
 export const ShopSchemaOut = Type.Intersect([
   ShopSchema,

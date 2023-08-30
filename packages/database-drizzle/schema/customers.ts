@@ -10,6 +10,8 @@ export const customerDB = pgTable("customers", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   phone: text("phone"),
+  email: text("email"),
+  image: text("image"),
   type: customerTypeEnum("type").notNull(),
   address: text("address"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -19,25 +21,27 @@ export const customerDB = pgTable("customers", {
     .notNull()
     .references(() => shopsDB.id),
 
-  createdByEmployeeId: uuid("created_by_employee_id").references(
-    () => employeesDB.id
-  ),
-
   ownerId: uuid("owner_id")
     .notNull()
     .references(() => ownersDB.id),
+  createdByEmployeeId: uuid("created_by_employee_id").references(
+    () => employeesDB.id
+  ),
 });
 
 export const CUSTOMER_DB_COLUMNS = [
   "id",
   "name",
   "phone",
+  "email",
+  "image",
   "type",
   "address",
   "createdAt",
-  "createdByEmployeeId",
+  "updatedAt",
   "shopId",
   "ownerId",
+  "createdByEmployeeId",
 ] as const;
 
 export const customerRelations = relations(customerDB, ({ one }) => ({

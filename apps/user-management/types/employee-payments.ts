@@ -16,6 +16,9 @@ export const EmployeePaymentSchema = Type.Object({
   createdAt: Type.String({
     format: "date-time",
   }),
+  updatedAt: Type.String({
+    format: "date-time",
+  }),
   createdByEmployeeId: Type.Union([
     Type.String({ format: "uri" }),
     Type.Null(),
@@ -25,7 +28,10 @@ export const EmployeePaymentSchema = Type.Object({
   ownerId: Type.String(),
 });
 
-export const EmployeePaymentSchemaIn = Type.Omit(EmployeePaymentSchema, ["id"]);
+export const EmployeePaymentSchemaIn = Type.Omit(EmployeePaymentSchema, [
+  "id",
+  "updatedAt",
+]);
 export const EmployeePaymentSchemaOut = Type.Intersect([
   EmployeePaymentSchema,
   Type.Object({
