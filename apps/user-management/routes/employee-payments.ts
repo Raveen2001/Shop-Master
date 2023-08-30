@@ -15,7 +15,7 @@ import { RouteHandlerMethod } from "fastify";
 import {
   CreateEmployeePaymentOpts,
   QueryEmployeesPaymentsByIdOpts,
-} from "../opts/employee-payments.opts";
+} from "../opts/employee-payments";
 
 const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));

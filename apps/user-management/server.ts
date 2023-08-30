@@ -11,12 +11,12 @@ import DrizzlePlugin from "./plugins/drizzle.plugin";
 import DecoratorPlugin from "./plugins/decorators.plugin";
 
 import FastifyTypebox from "./types/fastify";
-import HelperRoutes from "./routes/helper.routes";
-import OwnerRoutes from "./routes/owner.routes";
-import ShopRoutes from "./routes/shop.routes";
-import EmployeeRoutes from "./routes/employee.routes";
-import AuthRoutes from "./routes/auth.routes";
-import EmployeePaymentRoutes from "./routes/employee-payments.routes";
+import HelperRoutes from "./routes/helper";
+import OwnerRoutes from "./routes/owner";
+import ShopRoutes from "./routes/shop";
+import EmployeeRoutes from "./routes/employee";
+import AuthRoutes from "./routes/auth";
+import EmployeePaymentRoutes from "./routes/employee-payments";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
