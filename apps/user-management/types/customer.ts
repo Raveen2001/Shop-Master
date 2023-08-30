@@ -62,3 +62,9 @@ export type TCustomerQueryString = Static<typeof CustomerQueryStringSchema>;
 export type TPagableCustomerQueryString = Static<
   typeof PagableCustomerQueryStringSchema
 >;
+
+export type TCustomerQueryByFields =
+  | "shopId"
+  | "ownerId"
+  | "createdByEmployeeId"
+  | "id";

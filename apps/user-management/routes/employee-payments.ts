@@ -23,7 +23,7 @@ const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // create employee payment
   fastify.post<{
     Body: TEmployeePaymentIn;
-  }>("/new", CreateEmployeePaymentOpts, async (req, reply) => {
+  }>("/create", CreateEmployeePaymentOpts, async (req, reply) => {
     const data = {
       ...req.body,
       createdAt: new Date(req.body.createdAt),

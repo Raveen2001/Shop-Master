@@ -5,8 +5,10 @@ import * as employeesSchema from "./schema/employees";
 import * as ownersSchema from "./schema/owners";
 import * as shopsSchema from "./schema/shops";
 import * as employeePaymentsSchema from "./schema/employee_payments";
+import * as customersSchema from "./schema/customers";
 import * as brandsSchema from "./schema/brands";
 import * as productCategoriesSchema from "./schema/product_categories";
+
 if (!process.env.DATABASE_URL) {
   console.log("Database url is not available");
   process.exit(1);
@@ -15,10 +17,11 @@ if (!process.env.DATABASE_URL) {
 const client = postgres(process.env.DATABASE_URL);
 const db = drizzle(client, {
   schema: {
-    ...employeesSchema,
-    ...ownersSchema,
     ...shopsSchema,
+    ...ownersSchema,
+    ...employeesSchema,
     ...employeePaymentsSchema,
+    ...customersSchema,
     ...brandsSchema,
     ...productCategoriesSchema,
   },

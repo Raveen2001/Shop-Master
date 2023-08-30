@@ -18,6 +18,6 @@ export const getEmployeePaymentsBy = (
 };
 
 export const createEmployeePayment = (data: TEmployeePaymentFormSchema) => {
-  const url = `/employee-payments/new`;
+  const url = `/employee-payments/create`;
   return axiosClient.post<TEmployeePaymentData>(url, data);
 };

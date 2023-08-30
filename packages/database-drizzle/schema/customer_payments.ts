@@ -9,7 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
-import { customerDB } from "./customers";
+import { customersDB } from "./customers";
 import { employeesDB } from "./employees";
 
 export const customerPaymentTypeEnum = pgEnum("customer_payment_type", [
@@ -33,7 +33,7 @@ export const customerPaymentsDB = pgTable("customer_payments", {
 
   customerId: uuid("customer_id")
     .notNull()
-    .references(() => customerDB.id),
+    .references(() => customersDB.id),
 
   shopId: uuid("shop_id")
     .notNull()
@@ -71,9 +71,9 @@ export const customerPaymentsRelations = relations(
       references: [customerPaymentsDB.id],
     }),
 
-    customer: one(customerDB, {
+    customer: one(customersDB, {
       fields: [customerPaymentsDB.customerId],
-      references: [customerDB.id],
+      references: [customersDB.id],
     }),
 
     shop: one(shopsDB, {

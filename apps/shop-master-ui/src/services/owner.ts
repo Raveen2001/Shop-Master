@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { axiosClient } from "../utils/axios";
 
 export const getOwnerByToken = (): Promise<AxiosResponse<IOwnerData>> => {
-  const url = `/owner/me`;
+  const url = `/owners/me`;
 
   return axiosClient.get(url);
 };

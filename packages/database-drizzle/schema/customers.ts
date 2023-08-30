@@ -6,7 +6,7 @@ import { ownersDB } from "./owners";
 
 export const customerTypeEnum = pgEnum("customer_type", ["SHOP", "INDIVIDUAL"]);
 
-export const customerDB = pgTable("customers", {
+export const customersDB = pgTable("customers", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   phone: text("phone"),
@@ -44,24 +44,24 @@ export const CUSTOMER_DB_COLUMNS = [
   "createdByEmployeeId",
 ] as const;
 
-export const customerRelations = relations(customerDB, ({ one }) => ({
+export const customerRelations = relations(customersDB, ({ one }) => ({
   createdByEmployee: one(employeesDB, {
-    fields: [customerDB.createdByEmployeeId],
+    fields: [customersDB.createdByEmployeeId],
     references: [employeesDB.id],
   }),
 
   shop: one(shopsDB, {
-    fields: [customerDB.shopId],
+    fields: [customersDB.shopId],
     references: [shopsDB.id],
   }),
 
   owner: one(ownersDB, {
-    fields: [customerDB.ownerId],
+    fields: [customersDB.ownerId],
     references: [ownersDB.id],
   }),
 }));
 
-export type TCustomerDB = typeof customerDB.$inferSelect;
-export type TNewCustomerDB = typeof customerDB.$inferInsert;
+export type TCustomerDB = typeof customersDB.$inferSelect;
+export type TNewCustomerDB = typeof customersDB.$inferInsert;
 
 export const CUSTOMER_TYPES = customerTypeEnum.enumValues;

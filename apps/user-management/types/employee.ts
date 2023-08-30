@@ -64,3 +64,5 @@ export type TEmployeeQueryString = Static<typeof EmployeeQueryStringSchema>;
 export type TPagableEmployeeQueryString = Static<
   typeof PagableEmployeeQueryStringSchema
 >;
+
+export type TEmployeeQueryByFields = "shopId" | "ownerId" | "id";

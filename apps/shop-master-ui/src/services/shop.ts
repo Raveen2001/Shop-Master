@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 import { TShopData, TShopFormSchema } from "schema";
 
 export const getShopsByOwnerId = (ownerId: string) => {
-  const url = `/shop/owner/${ownerId}`;
+  const url = `/shops/owner/${ownerId}`;
   return async (
     context: QueryFunctionContext
   ): Promise<AxiosResponse<IPaginatedData<TShopData>>> => {
@@ -15,6 +15,6 @@ export const getShopsByOwnerId = (ownerId: string) => {
 };
 
 export const createShop = (data: TShopFormSchema) => {
-  const url = `/shop/create`;
+  const url = `/shops/create`;
   return axiosClient.post<TShopData>(url, data);
 };

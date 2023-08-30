@@ -1,10 +1,6 @@
+import { employeesDB, eq, sql } from "database-drizzle";
 import {
-  TEMPLOYEE_QUERY_BY_FIELDS,
-  employeesDB,
-  eq,
-  sql,
-} from "database-drizzle";
-import {
+  TEmployeeQueryByFields,
   TEmployeeIn,
   TEmployeeQueryParam,
   TEmployeeQueryString,
@@ -90,7 +86,7 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   });
 
   function queryEmployeeBy(
-    queryBy: TEMPLOYEE_QUERY_BY_FIELDS
+    queryBy: TEmployeeQueryByFields
   ): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TEmployeeQueryParam;

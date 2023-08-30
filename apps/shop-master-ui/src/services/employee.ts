@@ -4,7 +4,7 @@ import { QueryFunctionContext } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
 export const getEmployeeByShopId = (shopId: string) => {
-  const url = `/employee/shop/${shopId}`;
+  const url = `/employees/shop/${shopId}`;
   return async (
     context: QueryFunctionContext
   ): Promise<AxiosResponse<IPaginatedData<TEmployeeData>>> => {
@@ -18,6 +18,6 @@ export type TGetEmployeeByShopId = Awaited<
 >;
 
 export const createEmployee = (data: TEmployeeFormSchema) => {
-  const url = `/employee/register`;
+  const url = `/employees/register`;
   return axiosClient.post<TEmployeeData>(url, data);
 };

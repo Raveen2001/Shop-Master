@@ -17,6 +17,7 @@ import ShopRoutes from "./routes/shop";
 import EmployeeRoutes from "./routes/employee";
 import AuthRoutes from "./routes/auth";
 import EmployeePaymentRoutes from "./routes/employee-payments";
+import CustomerRoutes from "./routes/customer";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -67,10 +68,11 @@ fastify.register(HelperRoutes);
 fastify.register(AuthRoutes);
 
 // register authenticated routes
-fastify.register(OwnerRoutes, { prefix: "/owner" });
-fastify.register(ShopRoutes, { prefix: "/shop" });
+fastify.register(OwnerRoutes, { prefix: "/owners" });
+fastify.register(ShopRoutes, { prefix: "/shops" });
 fastify.register(EmployeeRoutes, { prefix: "/employee" });
 fastify.register(EmployeePaymentRoutes, { prefix: "/employee-payments" });
+fastify.register(CustomerRoutes, { prefix: "/customers" });
 
 // start the server
 fastify.listen({ port: 5000, host: "0.0.0.0" }, async (err) => {
