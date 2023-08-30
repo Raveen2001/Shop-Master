@@ -7,6 +7,7 @@ import {
   StoreTwoTone,
   EngineeringTwoTone,
 } from "ui/icons";
+import { ISidebarItem } from "./models";
 
 export const sidebarItemParentForMatch: Record<string, string> = {
   "/employees/create": "/employees",

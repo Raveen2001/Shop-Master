@@ -1,4 +1,4 @@
-import { Box, Typography, Breadcrumbs, Button, PaginatedTable } from "ui";
+import { Box, Typography, Button, PaginatedTable } from "ui";
 import { Add } from "ui/icons";
 import { getCustomerPaymentsBy } from "../../services/customer-payments";
 import { columnsDefs } from "./columns";

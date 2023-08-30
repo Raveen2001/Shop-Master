@@ -1,4 +1,4 @@
-interface IOwnerData {
+export interface IOwnerData {
   id: string;
   name: string;
   phone: string;

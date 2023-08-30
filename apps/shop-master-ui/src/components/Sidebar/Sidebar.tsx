@@ -1,4 +1,4 @@
-import { Accordion, Box, Typography } from "ui";
+import { Box, Typography } from "ui";
 
 import CollapsibleItem from "../CollapsibleItem/CollapsibleItem";
 import SidebarItem from "./SidebarItem";

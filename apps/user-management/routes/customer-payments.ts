@@ -27,7 +27,6 @@ const CustomerPaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     const data = {
       ...req.body,
       createdAt: new Date(req.body.createdAt),
-      updatedAt: new Date(req.body.createdAt),
     };
 
     const customerPayment = (

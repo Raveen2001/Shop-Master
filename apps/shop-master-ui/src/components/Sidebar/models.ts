@@ -1,9 +1,9 @@
-interface ISidebarItem {
+export interface ISidebarItem {
   name: string;
   items: ISidebarSubItem[];
 }
 
-interface ISidebarSubItem {
+export interface ISidebarSubItem {
   name: string;
   path: string;
   icon?: React.ReactElement;
