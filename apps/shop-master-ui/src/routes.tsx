@@ -1,17 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import RootLayout from "./layouts/RootLayout";
-import LoginPage from "./pages/Login";
-import ManageEmployee from "./pages/ManageEmployees/ManageEmployee";
-import RegisterPage from "./pages/Register";
-import ManageShops from "./pages/ManageShops/ManageShops";
-import EmployeeForm from "./pages/ManageEmployees/EmployeeForm";
 import Layout from "./layouts/Layout";
+
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
+
+import ManageEmployee from "./pages/ManageEmployees/ManageEmployee";
+import EmployeeForm from "./pages/EmployeeForm/EmployeeForm";
+
 import EmployeesPaymentHistory from "./pages/EmployeesPaymentHistory";
-import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
-import ShopForm from "./pages/ManageShops/ShopForm";
-import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 import EmployeePaymentForm from "./pages/EmployeePaymentForm";
+
+import ManageShops from "./pages/ManageShops";
+import ShopForm from "./pages/ManageShops/ShopForm";
+
+import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
+import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 
 export const router = createBrowserRouter([
   {

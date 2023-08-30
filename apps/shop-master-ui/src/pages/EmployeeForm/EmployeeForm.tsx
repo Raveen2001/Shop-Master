@@ -17,55 +17,23 @@ import {
   TextField,
   Typography,
 } from "ui";
-import { createEmployee } from "../../services/employee";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { EmployeeFormSchema, TEmployeeFormSchema } from "schema";
-import { useGlobalStore } from "../../store/globalStore";
-import { IRequestError } from "schema";
+
 import { EMPLOYEE_TYPES } from "../../../../../packages/database-drizzle/schema/employees";
+import useEmployeeForm from "./useEmployeeForm";
 
 const EmployeeForm = () => {
-  const navigate = useNavigate();
-  const [owner, shops, selectedShopId] = useGlobalStore((state) => [
-    state.owner,
-    state.shops,
-    state.selectedShopId,
-  ]);
-  const queryClient = useQueryClient();
-  const [profileImage, setProfileImage] = useState<File | null>(null);
-
-  const { mutate, isLoading, isError, error } = useMutation<
-    Awaited<ReturnType<typeof createEmployee>>,
-    IRequestError,
-    TEmployeeFormSchema
-  >({
-    mutationKey: ["employee", "create"],
-    mutationFn: createEmployee,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["employees"]);
-      navigate("/employees");
-    },
-  });
-
   const {
-    register,
+    formErrors,
     handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<TEmployeeFormSchema>({
-    defaultValues: {
-      image: null,
-    },
-    resolver: yupResolver(EmployeeFormSchema),
-  });
-
-  useEffect(() => {
-    setValue("shopId", selectedShopId ?? "");
-    setValue("ownerId", owner?.id ?? "");
-  }, [selectedShopId, owner?.id, setValue]);
-
+    isMutateError,
+    isMutateLoading,
+    mutate,
+    mutateError,
+    register,
+    setProfileImage,
+    shop,
+    owner,
+  } = useEmployeeForm();
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">Create a new Employee</Typography>
@@ -110,22 +78,22 @@ const EmployeeForm = () => {
                 <TextField
                   label="Name *"
                   {...register("name")}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!formErrors.name}
+                  helperText={formErrors.name?.message}
                 />
                 <TextField
                   label="Email"
                   {...register("email")}
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
+                  error={!!formErrors.email}
+                  helperText={formErrors.email?.message}
                 />
                 <TextField
                   label="Phone Number *"
                   {...register("phone")}
-                  error={!!errors.phone}
-                  helperText={errors.phone?.message}
+                  error={!!formErrors.phone}
+                  helperText={formErrors.phone?.message}
                 />
-                <FormControl error={!!errors.type}>
+                <FormControl error={!!formErrors.type}>
                   <InputLabel id="type-label">Type</InputLabel>
                   <Select
                     labelId="type-label"
@@ -140,34 +108,38 @@ const EmployeeForm = () => {
                     ))}
                   </Select>
 
-                  <FormHelperText>{errors.type?.message}</FormHelperText>
+                  <FormHelperText>{formErrors.type?.message}</FormHelperText>
                 </FormControl>
                 <TextField
                   label="Shop"
-                  disabled
-                  value={shops?.[selectedShopId ?? ""]?.name ?? ""}
+                  contentEditable={false}
+                  value={shop?.name ?? ""}
                 />
-                <TextField label="Owner" disabled value={owner?.name ?? ""} />
+                <TextField
+                  label="Owner"
+                  contentEditable={false}
+                  value={owner?.name ?? ""}
+                />
               </Box>
               <Box className="flex flex-col gap-4">
                 <TextField
                   label="Username *"
                   {...register("username")}
-                  error={!!errors.username}
-                  helperText={errors.username?.message}
+                  error={!!formErrors.username}
+                  helperText={formErrors.username?.message}
                 />
                 <TextField
                   label="Password *"
                   {...register("password")}
-                  error={!!errors.password}
-                  helperText={errors.password?.message}
+                  error={!!formErrors.password}
+                  helperText={formErrors.password?.message}
                   type="password"
                 />
                 <TextField
                   label="Address *"
                   {...register("address")}
-                  error={!!errors.address}
-                  helperText={errors.address?.message}
+                  error={!!formErrors.address}
+                  helperText={formErrors.address?.message}
                   multiline
                   rows={4}
                 />
@@ -175,7 +147,7 @@ const EmployeeForm = () => {
             </Box>
 
             <LoadingButton
-              loading={isLoading}
+              loading={isMutateLoading}
               variant="contained"
               className="float-right"
               type="submit"
@@ -187,7 +159,7 @@ const EmployeeForm = () => {
       </Box>
 
       <Snackbar
-        open={isError}
+        open={isMutateError}
         autoHideDuration={6000}
         anchorOrigin={{
           vertical: "bottom",
@@ -195,7 +167,7 @@ const EmployeeForm = () => {
         }}
       >
         <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
-          {error?.response?.data.error ??
+          {mutateError?.response?.data.error ??
             "Something went wrong, please try again later"}
         </Alert>
       </Snackbar>
