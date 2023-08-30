@@ -43,7 +43,7 @@ const useEmployeeForm = () => {
     defaultValues: {
       image: null,
     },
-    resolver: yupResolver(EmployeeFormSchema),
+    resolver: yupResolver(EmployeeFormSchema as any),
   });
 
   useEffect(() => {

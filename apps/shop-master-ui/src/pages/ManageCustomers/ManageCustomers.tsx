@@ -4,8 +4,10 @@ import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
 import { useGlobalStore } from "../../store/globalStore";
 import { getCustomersByShopId } from "../../services/customer";
+import { useNavigate } from "react-router-dom";
 
 const ManageCustomers = () => {
+  const navigate = useNavigate();
   const shopId = useGlobalStore((state) => state.selectedShop?.id ?? "");
   return (
     <Box>
@@ -14,7 +16,12 @@ const ManageCustomers = () => {
           <Typography variant="h6">Manage Customers</Typography>
         </Box>
 
-        <Button variant="contained" size="small" startIcon={<Add />}>
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<Add />}
+          onClick={() => navigate("/customers/create")}
+        >
           New Customer
         </Button>
       </Box>

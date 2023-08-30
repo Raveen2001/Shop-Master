@@ -43,3 +43,5 @@ export type TEmployeeData = TEmployeeFormSchema & {
   createdAt: string;
   updatedAt: string;
 };
+
+export { EMPLOYEE_TYPES };

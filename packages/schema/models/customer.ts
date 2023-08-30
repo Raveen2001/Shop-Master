@@ -19,7 +19,7 @@ export const CustomerFormSchema = object({
 
   shopId: string().required(),
   ownerId: string().required(),
-  createdByEmployeeId: string().required(),
+  createdByEmployeeId: string().nullable(),
 });
 
 export type TCustomerFormSchema = InferType<typeof CustomerFormSchema>;
@@ -28,3 +28,5 @@ export type TCustomerData = TCustomerFormSchema & {
   createdAt: string;
   updatedAt: string;
 };
+
+export { CUSTOMER_TYPES };

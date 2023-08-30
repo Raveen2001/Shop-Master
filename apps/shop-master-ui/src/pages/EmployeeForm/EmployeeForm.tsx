@@ -16,7 +16,7 @@ import {
   Typography,
 } from "ui";
 
-import { EMPLOYEE_TYPES } from "../../../../../packages/database-drizzle/schema/employees";
+import { EMPLOYEE_TYPES } from "schema";
 import useEmployeeForm from "./useEmployeeForm";
 
 const EmployeeForm = () => {
