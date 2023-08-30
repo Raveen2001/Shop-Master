@@ -18,6 +18,7 @@ import ShopForm from "./pages/ShopForm";
 import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
 import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 import CustomerForm from "./pages/CustomerForm/CustomerForm";
+import CustomerPaymentForm from "./pages/CustomerPaymentForm";
 
 export const router = createBrowserRouter([
   {
@@ -88,9 +89,20 @@ export const router = createBrowserRouter([
             path: "create",
             element: <CustomerForm />,
           },
+
           {
             path: "payment-history",
-            element: <CustomersPaymentHistory />,
+            element: <Layout />,
+            children: [
+              {
+                path: "",
+                element: <CustomersPaymentHistory />,
+              },
+              {
+                path: "create",
+                element: <CustomerPaymentForm />,
+              },
+            ],
           },
         ],
       },

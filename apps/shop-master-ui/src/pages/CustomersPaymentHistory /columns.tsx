@@ -5,28 +5,26 @@ import {
   createColumnHelper,
   formatCurrency,
 } from "ui";
-import { TEmployeePaymentData } from "schema";
-import { useGlobalStore } from "../../store/globalStore";
-import { subtract } from "lodash";
+import { TCustomerPaymentData } from "schema";
 
-const columnHelper = createColumnHelper<TEmployeePaymentData>();
+const columnHelper = createColumnHelper<TCustomerPaymentData>();
 
-export const columnsDefs: ColumnDef<TEmployeePaymentData, any>[] = [
-  columnHelper.accessor("employee.name", {
-    id: "employee",
-    header: "Employee",
+export const columnsDefs: ColumnDef<TCustomerPaymentData, any>[] = [
+  columnHelper.accessor("customer.name", {
+    id: "customer",
+    header: "Customer",
     enableSorting: false,
     cell: ({
       row: {
-        original: { employee, employeeId },
+        original: { customer, customerId },
       },
     }) => {
-      if (!employee) return employeeId;
+      if (!customer) return customerId;
       return (
         <TableProfileCell
-          name={employee.name}
-          subText={employee.username}
-          imageUrl={employee.image}
+          name={customer.name}
+          subText={customer.phone}
+          imageUrl={customer.image}
         />
       );
     },
@@ -54,7 +52,7 @@ export const columnsDefs: ColumnDef<TEmployeePaymentData, any>[] = [
     header: "Comment",
   }),
   columnHelper.accessor("createdByEmployee.name", {
-    id: "createdByEmployee",
+    id: "createdByCustomer",
     header: "Created By",
     enableSorting: false,
 

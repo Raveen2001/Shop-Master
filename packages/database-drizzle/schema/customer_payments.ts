@@ -13,8 +13,7 @@ import { customersDB } from "./customers";
 import { employeesDB } from "./employees";
 
 export const customerPaymentTypeEnum = pgEnum("customer_payment_type", [
-  "CREDIT",
-  "DEBIT",
+  "BALANCE",
 ]);
 
 export const customerPaymentsDB = pgTable("customer_payments", {

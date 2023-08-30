@@ -32,6 +32,7 @@ export const EmployeePaymentSchemaIn = Type.Omit(EmployeePaymentSchema, [
   "id",
   "updatedAt",
 ]);
+
 export const EmployeePaymentSchemaOut = Type.Intersect([
   EmployeePaymentSchema,
   Type.Object({

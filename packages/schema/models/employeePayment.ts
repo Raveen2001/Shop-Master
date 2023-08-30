@@ -39,3 +39,5 @@ export type TEmployeePaymentData = TEmployeePaymentFormSchema & {
 
 export type TPaginatedEmployeePaymentData =
   IPaginatedData<TEmployeePaymentData>;
+
+export type { TEMPLOYEE_PAYMENT_QUERY_BY_FIELDS } from "database-drizzle";
