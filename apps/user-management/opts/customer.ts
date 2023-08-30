@@ -1,5 +1,4 @@
 import { RouteShorthandOptions } from "fastify";
-import { LoginWithUsernamePropsSchema, LoginTokenSchema } from "../types/auth";
 import {
   CustomerQueryParamSchema,
   CustomerQueryStringSchema,

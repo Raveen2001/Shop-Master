@@ -20,7 +20,7 @@ export const CustomerSchema = Type.Object({
 
   shopId: Type.String(),
   ownerId: Type.String(),
-  createdByEmployeeId: optionalType(Type.String()),
+  createdByEmployeeId: optionalType(Type.String({ format: "uuid" })),
 });
 
 export const CustomerSchemaIn = Type.Omit(CustomerSchema, [

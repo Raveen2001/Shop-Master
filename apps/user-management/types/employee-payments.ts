@@ -20,7 +20,7 @@ export const EmployeePaymentSchema = Type.Object({
     format: "date-time",
   }),
   createdByEmployeeId: Type.Union([
-    Type.String({ format: "uri" }),
+    Type.String({ format: "uuid" }),
     Type.Null(),
   ]),
   employeeId: Type.String(),
