@@ -17,6 +17,7 @@ import {
   Select,
   DateTimePicker,
   TableProfileCell,
+  InputAdornment,
 } from "ui";
 import { EMPLOYEE_PAYEMENT_TYPES } from "schema";
 
@@ -97,6 +98,11 @@ const EmployeePaymentForm: FC = () => {
               <TextField
                 label="Amount *"
                 type="number"
+                inputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">kg</InputAdornment>
+                  ),
+                }}
                 {...register("amount")}
                 error={!!formErrors.amount}
                 helperText={formErrors.amount?.message}

@@ -43,7 +43,7 @@ const ShopForm = () => {
         <Card elevation={5} className="ml-10 p-6">
           <form
             onSubmit={handleSubmit((data) => {
-              if (!data.website) delete data.website;
+              if (!data.website) data.website = null;
               mutate(data);
             })}
             className="flex h-full flex-col gap-4"
@@ -56,6 +56,17 @@ const ShopForm = () => {
                   error={!!formErrors.name}
                   helperText={formErrors.name?.message}
                 />
+
+                <TextField
+                  label="Domain *"
+                  {...register("domain")}
+                  error={!!formErrors.domain}
+                  helperText={
+                    formErrors.domain?.message ??
+                    "Domain should be unique Eg: my-shop"
+                  }
+                />
+
                 <TextField
                   label="Email"
                   {...register("email")}

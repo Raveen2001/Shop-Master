@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   boolean,
   integer,
@@ -49,4 +49,5 @@ export const productVariantsRelation = relations(
   })
 );
 
-export type TProductVariantsDB = InferModel<typeof productVariantsDB>;
+export type TProductVariantsDB = typeof productVariantsDB.$inferSelect;
+export type TNewProductVariantsDB = typeof productVariantsDB.$inferInsert;

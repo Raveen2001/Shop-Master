@@ -1,4 +1,4 @@
-import { Shop, eq, shopsDB, sql } from "database-drizzle";
+import { TNewShopsDB, eq, shopsDB, sql } from "database-drizzle";
 import FastifyTypebox from "../types/fastify.types";
 import {
   TPagableShopQueryString,
@@ -40,7 +40,7 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
   // create shop
   fastify.post<{
     Querystring: TShopQueryString;
-    Body: Shop;
+    Body: TNewShopsDB;
   }>("/create", CreateShopOpts, async (req, reply) => {
     const { includeOwner, includeEmployees } = req.query;
     const { insertedId } = (

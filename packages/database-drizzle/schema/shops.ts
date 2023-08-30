@@ -15,7 +15,7 @@ export const shopsDB = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey(),
     name: text("name").notNull(),
-    domain: text("domain").notNull().default(""),
+    domain: text("domain").notNull(),
     phone: varchar("phone", { length: 10 }).notNull(),
     email: varchar("email", { length: 256 }),
     address: text("address").notNull(),
@@ -54,4 +54,5 @@ export const shopsRelations = relations(shopsDB, ({ many, one }) => ({
   }),
 }));
 
-export type Shop = InferModel<typeof shopsDB>;
+export type TShopsDB = typeof shopsDB.$inferSelect;
+export type TNewShopsDB = typeof shopsDB.$inferInsert;

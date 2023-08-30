@@ -7,6 +7,7 @@ import { SHOP_DB_COLUMNS } from "database-drizzle";
 export const ShopSchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3, maxLength: 50 }),
+  domain: Type.String({ minLength: 3, maxLength: 50 }),
   address: Type.String({ minLength: 3 }),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
   email: Type.Optional(Type.String({ format: "email" })),

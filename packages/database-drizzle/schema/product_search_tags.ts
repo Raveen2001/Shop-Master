@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { productsDB } from "./products";
-import { InferModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
 
@@ -44,3 +44,4 @@ export const productSearchTagsRelation = relations(
 );
 
 export type TProductSearchTagsDB = typeof productSearchTagsDB.$inferSelect;
+export type TNewProductSearchTagsDB = typeof productSearchTagsDB.$inferInsert;

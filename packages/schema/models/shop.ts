@@ -3,13 +3,21 @@ import { object, string, InferType } from "yup";
 export const ShopFormSchema = object({
   ownerId: string().required(),
   name: string()
+    .trim()
     .min(3, "Name must be at least 3 characters")
     .required("Name is required"),
 
+  domain: string()
+    .trim()
+    .lowercase()
+    .min(3, "Domain must be at least 3 characters")
+    .required("Domain is required"),
   phone: string()
+    .trim()
     .matches(/^\d{10}$/, "Phone must be 10 digits")
     .required("Phone is required"),
   email: string()
+    .trim()
     .email("Email should be valid")
     .required("Email is required")
     .lowercase(),

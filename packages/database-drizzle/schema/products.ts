@@ -71,3 +71,6 @@ export const productsRelations = relations(productsDB, ({ one, many }) => ({
     references: [ownersDB.id],
   }),
 }));
+
+export type TProductsDB = typeof productsDB.$inferSelect;
+export type TNewProductsDB = typeof productsDB.$inferInsert;
