@@ -3,7 +3,7 @@ import {
   LoginWithEmailPropsSchema,
   LoginTokenSchema,
   LoginWithUsernamePropsSchema,
-} from "../types/auth.types";
+} from "../types/auth";
 
 export const LoginWithEmailOpts: RouteShorthandOptions = {
   schema: {

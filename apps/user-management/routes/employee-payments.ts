@@ -8,7 +8,7 @@ import {
   TEmployeePaymentIn,
   TEmployeePaymentQueryParam,
   TPagableEmployeePaymentQueryString,
-} from "../types/employeePayments.types";
+} from "../types/employee-payments";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";

@@ -1,9 +1,9 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { ownersDB } from "database-drizzle";
-import { TLoginWithEmailIn, TLoginWithUsernameIn } from "../types/auth.types";
-import { CreateOwnerOpts, LoginOwnerOpts } from "../opts/owner.opts";
-import { TOwnerIn } from "../types/owner.types";
-import { LoginEmployeeOpts } from "../opts/employee.opts";
+import { TLoginWithEmailIn, TLoginWithUsernameIn } from "../types/auth";
+import { CreateOwnerOpts, LoginOwnerOpts } from "../opts/owner";
+import { TOwnerIn } from "../types/owner";
+import { LoginEmployeeOpts } from "../opts/employee";
 
 const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // Register as owner

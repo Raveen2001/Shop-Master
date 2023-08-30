@@ -1,8 +1,5 @@
 import { RouteShorthandOptions } from "fastify";
-import {
-  LoginWithUsernamePropsSchema,
-  LoginTokenSchema,
-} from "../types/auth.types";
+import { LoginWithUsernamePropsSchema, LoginTokenSchema } from "../types/auth";
 import {
   EmployeeQueryParamSchema,
   EmployeeQueryStringSchema,
@@ -10,7 +7,7 @@ import {
   PagableEmployeeQueryStringSchema,
   PagableEmployeeSchemaOut,
   EmployeeSchemaIn,
-} from "../types/employee.types";
+} from "../types/employee";
 
 export const QueryEmployeeOpts: RouteShorthandOptions = {
   schema: {

@@ -9,7 +9,7 @@ import {
   TEmployeeQueryParam,
   TEmployeeQueryString,
   TPagableEmployeeQueryString,
-} from "../types/employee.types";
+} from "../types/employee";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
@@ -18,7 +18,7 @@ import {
   QueryEmployeeOpts,
   QueryEmployeesByShopOpts,
   QueryEmployeesByOwnerOpts,
-} from "../opts/employee.opts";
+} from "../opts/employee";
 
 export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));

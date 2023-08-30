@@ -1,9 +1,9 @@
 import { EMPLOYEE_DB_COLUMNS } from "database-drizzle/schema/employees";
 import { EMPLOYEE_TYPES } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
-import { OwnerSchemaWithoutPassword } from "./owner.types";
-import { ShopSchema } from "./shop.types";
-import { PagableQueryStringSchema, PagableSchema } from "./common.types";
+import { OwnerSchemaWithoutPassword } from "./owner";
+import { ShopSchema } from "./shop";
+import { PagableQueryStringSchema, PagableSchema } from "./common";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),

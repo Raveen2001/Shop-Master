@@ -6,7 +6,7 @@ import {
   PagableShopQueryStringSchema,
   PagableShopSchemaOut,
   ShopSchemaIn,
-} from "../types/shop.types";
+} from "../types/shop";
 
 export const QueryShopOpts: RouteShorthandOptions = {
   schema: {

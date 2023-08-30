@@ -1,15 +1,12 @@
 import { RouteShorthandOptions } from "fastify";
-import {
-  LoginWithEmailPropsSchema,
-  LoginTokenSchema,
-} from "../types/auth.types";
+import { LoginWithEmailPropsSchema, LoginTokenSchema } from "../types/auth";
 import {
   OwnerSchemaIn,
   OwnerSchemaWithoutPassword,
   OwnerQueryParamSchema,
   OwnerQueryStringSchema,
   OwnerSchemaOut,
-} from "../types/owner.types";
+} from "../types/owner";
 
 export const CreateOwnerOpts: RouteShorthandOptions = {
   schema: {

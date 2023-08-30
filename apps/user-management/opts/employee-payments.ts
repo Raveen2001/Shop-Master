@@ -5,7 +5,7 @@ import {
   PagableEmployeePaymentsSchemaOut,
   EmployeePaymentSchemaIn,
   EmployeePaymentSchema,
-} from "../types/employeePayments.types";
+} from "../types/employee-payments";
 
 export const QueryEmployeesPaymentsByIdOpts: RouteShorthandOptions = {
   schema: {

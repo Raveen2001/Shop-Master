@@ -10,7 +10,7 @@ import SwaggerPlugin from "./plugins/swagger.plugin";
 import DrizzlePlugin from "./plugins/drizzle.plugin";
 import DecoratorPlugin from "./plugins/decorators.plugin";
 
-import FastifyTypebox from "./types/fastify.types";
+import FastifyTypebox from "./types/fastify";
 import HelperRoutes from "./routes/helper.routes";
 import OwnerRoutes from "./routes/owner.routes";
 import ShopRoutes from "./routes/shop.routes";
