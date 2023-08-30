@@ -6,8 +6,6 @@ import {
   formatCurrency,
 } from "ui";
 import { TEmployeePaymentData } from "schema";
-import { useGlobalStore } from "../../store/globalStore";
-import { subtract } from "lodash";
 
 const columnHelper = createColumnHelper<TEmployeePaymentData>();
 
@@ -67,7 +65,6 @@ export const columnsDefs: ColumnDef<TEmployeePaymentData, any>[] = [
         return <TableProfileCell name="Owner" subText={ownerId} />;
       }
       return (
-        
         <TableProfileCell
           name={createdByEmployee.name}
           subText={createdByEmployee.username}

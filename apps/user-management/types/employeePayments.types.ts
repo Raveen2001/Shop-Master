@@ -17,8 +17,8 @@ export const EmployeePaymentSchema = Type.Object({
     format: "date-time",
   }),
   createdByEmployeeId: Type.Union([
-    Type.Null(),
     Type.String({ format: "uri" }),
+    Type.Null(),
   ]),
   employeeId: Type.String(),
   shopId: Type.String(),
@@ -32,7 +32,9 @@ export const EmployeePaymentSchemaOut = Type.Intersect([
     owner: Type.Optional(OwnerSchemaWithoutPassword),
     shop: Type.Optional(ShopSchema),
     employee: Type.Optional(EmployeeSchemaWithoutPassword),
-    createdByEmployee: Type.Optional(EmployeeSchemaWithoutPassword),
+    createdByEmployee: Type.Optional(
+      Type.Union([EmployeeSchemaWithoutPassword, Type.Null()])
+    ),
   }),
 ]);
 export const PagableEmployeePaymentsSchemaOut = PagableSchema(

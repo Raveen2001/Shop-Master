@@ -11,7 +11,7 @@ import EmployeesPaymentHistory from "./pages/EmployeesPaymentHistory";
 import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
 import ShopForm from "./pages/ManageShops/ShopForm";
 import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
-import EmployeePaymentForm from "./pages/EmployeesPaymentHistory/EmployeePaymentForm";
+import EmployeePaymentForm from "./pages/EmployeePaymentForm";
 
 export const router = createBrowserRouter([
   {

@@ -12,7 +12,7 @@ export const EmployeeSchema = Type.Object({
   password: Type.String({ minLength: 8 }),
   email: Type.Optional(Type.String({ format: "email" })),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
-  image: Type.Union([Type.Null(), Type.String({ format: "uri" })]),
+  image: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
   address: Type.String({ minLength: 3 }),
   createdAt: Type.String({ format: "date-time" }),
   type: Type.Union(EMPLOYEE_TYPES.map((key) => Type.Literal(key))),

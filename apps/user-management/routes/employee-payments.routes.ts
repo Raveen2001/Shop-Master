@@ -52,29 +52,31 @@ const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
         orderBy,
       } = req.query as TPagableEmployeePaymentQueryString;
 
-      const offset = page && limit ? page * limit : undefined;
+      const offset =
+        page !== undefined && limit !== undefined ? page * limit : undefined;
 
-      const employees = await fastify.db.query.employeePaymentsDB.findMany({
-        where: (employeePaymentsDB, { eq }) =>
-          eq(employeePaymentsDB[queryBy], id),
+      const employeePayments =
+        await fastify.db.query.employeePaymentsDB.findMany({
+          where: (employeePaymentsDB, { eq }) =>
+            eq(employeePaymentsDB[queryBy], id),
 
-        with: {
-          createdByEmployee: includeCreatedByEmployee || undefined,
-          employee: includeEmployee || undefined,
-          owner: includeOwner || undefined,
-          shop: includeShop || undefined,
-        },
-        limit: limit,
-        offset: offset,
-        orderBy: (employeePaymentsDB, { asc, desc }) => {
-          if (orderBy && order == "asc") {
-            return asc(employeePaymentsDB[orderBy]);
-          } else if (orderBy && order == "desc") {
-            return desc(employeePaymentsDB[orderBy]);
-          }
-          return asc(employeePaymentsDB.createdAt);
-        },
-      });
+          with: {
+            createdByEmployee: includeCreatedByEmployee || undefined,
+            employee: includeEmployee || undefined,
+            owner: includeOwner || undefined,
+            shop: includeShop || undefined,
+          },
+          limit: limit,
+          offset: offset,
+          orderBy: (employeePaymentsDB, { asc, desc }) => {
+            if (orderBy && order == "asc") {
+              return asc(employeePaymentsDB[orderBy]);
+            } else if (orderBy && order == "desc") {
+              return desc(employeePaymentsDB[orderBy]);
+            }
+            return asc(employeePaymentsDB.createdAt);
+          },
+        });
 
       const { total } = (
         await fastify.db
@@ -85,7 +87,9 @@ const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
           .where(eq(employeePaymentsDB[queryBy], id))
       )[0];
 
-      reply.code(200).send({ rows: employees, total, page, limit });
+      const result = { rows: employeePayments, total, page, limit };
+
+      reply.code(200).send(result);
     };
   }
 

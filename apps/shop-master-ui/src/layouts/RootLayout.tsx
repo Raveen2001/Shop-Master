@@ -10,13 +10,21 @@ import Topbar from "../components/Topbar/Topbar";
 
 const RootLayout = () => {
   const navigate = useNavigate();
-  const [selectedShopId, setSelectedShopId, setShops, setOwner] =
-    useGlobalStore((state) => [
-      state.selectedShopId,
-      state.setSelectedShopId,
-      state.setShops,
-      state.setOwner,
-    ]);
+  const [
+    owner,
+    selectedShop,
+    selectedShopId,
+    setSelectedShopId,
+    setShops,
+    setOwner,
+  ] = useGlobalStore((state) => [
+    state.owner,
+    state.selectedShop,
+    state.selectedShopId,
+    state.setSelectedShopId,
+    state.setShops,
+    state.setOwner,
+  ]);
   const ownerQuery = useQuery({
     queryKey: ["owner", "me"],
     queryFn: getOwnerByToken,
@@ -65,6 +73,11 @@ const RootLayout = () => {
     [ownerQuery.isError, shopsQuery.isError]
   );
 
+  const isDataLoaded = useMemo(
+    () => !isLoading && !isError && !!selectedShop && !!owner,
+    [isError, isLoading, owner, selectedShop]
+  );
+
   return (
     <Box className="flex flex-row">
       <Sidebar />
@@ -74,7 +87,7 @@ const RootLayout = () => {
           <PageLoading message="Fetching your informations. Please wait..." />
         )}
 
-        {!isLoading && !isError && (
+        {isDataLoaded && (
           <>
             <Topbar />
             {/* <Box className="h-16" /> */}

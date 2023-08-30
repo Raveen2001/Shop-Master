@@ -27,8 +27,8 @@ const CustomersPaymentHistory = () => {
       <PaginatedTable
         columns={columnsDefs}
         queryFn={getEmployeePaymentsBy("shop", selectedShopId)}
-        queryKeys={["shop", "customers", "payments", selectedShopId]}
-        defaultSortColumn={{ id: "createdAt", desc: false }}
+        queryKeys={["shop", selectedShopId, "employees", "payments"]}
+        defaultSortColumn={{ id: "createdAt", desc: true }}
       />
     </Box>
   );

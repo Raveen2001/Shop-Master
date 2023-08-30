@@ -41,11 +41,16 @@ const useEmployeePaymentForm = () => {
     IRequestError,
     TEmployeePaymentFormSchema
   >({
-    mutationKey: ["shops", "create"],
+    mutationKey: ["employee-payment", "create"],
     mutationFn: createEmployeePayment,
     onSuccess: () => {
-      queryClient.invalidateQueries(["shops"]);
-      navigate("/shops");
+      queryClient.invalidateQueries([
+        "shop",
+        selectedShop?.id,
+        "employees",
+        "payments",
+      ]);
+      navigate("/employees/payment-history");
     },
   });
 

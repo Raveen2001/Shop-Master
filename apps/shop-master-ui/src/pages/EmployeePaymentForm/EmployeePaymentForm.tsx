@@ -19,7 +19,6 @@ import {
   TableProfileCell,
 } from "ui";
 import { EMPLOYEE_PAYEMENT_TYPES } from "schema";
-import { get } from "lodash";
 
 const EmployeePaymentForm: FC = () => {
   const {
@@ -144,7 +143,7 @@ const EmployeePaymentForm: FC = () => {
             className="float-right"
             type="submit"
           >
-            Create Employee
+            Create New Payment
           </LoadingButton>
         </form>
       </Card>
