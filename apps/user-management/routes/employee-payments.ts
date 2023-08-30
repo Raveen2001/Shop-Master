@@ -17,7 +17,7 @@ import {
   QueryEmployeesPaymentsByIdOpts,
 } from "../opts/employee-payments";
 
-const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
+const EmployeePaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
 
   // create employee payment
@@ -134,4 +134,4 @@ const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   );
 };
 
-export default EmployeeRoutes;
+export default EmployeePaymentRoutes;

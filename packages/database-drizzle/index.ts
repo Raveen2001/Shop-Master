@@ -6,6 +6,7 @@ import * as ownersSchema from "./schema/owners";
 import * as shopsSchema from "./schema/shops";
 import * as employeePaymentsSchema from "./schema/employee_payments";
 import * as customersSchema from "./schema/customers";
+import * as customerPaymentsSchema from "./schema/customer_payments";
 import * as brandsSchema from "./schema/brands";
 import * as productCategoriesSchema from "./schema/product_categories";
 
@@ -22,6 +23,7 @@ const db = drizzle(client, {
     ...employeesSchema,
     ...employeePaymentsSchema,
     ...customersSchema,
+    ...customerPaymentsSchema,
     ...brandsSchema,
     ...productCategoriesSchema,
   },

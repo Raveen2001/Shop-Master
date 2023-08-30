@@ -43,8 +43,8 @@ export const swaggerOptions: SwaggerOptions = {
       },
 
       {
-        name: "Employee-Payments",
-        description: "This has all the endpoints related to Employee-Payments",
+        name: "Customer-Payments",
+        description: "This has all the endpoints related to Customer-Payments",
       },
     ],
 

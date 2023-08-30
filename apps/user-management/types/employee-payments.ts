@@ -3,7 +3,7 @@ import { PagableQueryStringSchema, PagableSchema } from "./common";
 import {
   EMPLOYEE_PAYEMENT_DB_COLUMNS,
   EMPLOYEE_PAYEMENT_TYPES,
-} from "database-drizzle/schema/employee_payments";
+} from "database-drizzle";
 import { EmployeeSchemaWithoutPassword } from "./employee";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";

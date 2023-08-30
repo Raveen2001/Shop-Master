@@ -19,7 +19,7 @@ import {
   TableProfileCell,
   InputAdornment,
 } from "ui";
-import { EMPLOYEE_PAYEMENT_TYPES } from "schema";
+import { CUSTOMER_PAYEMENT_TYPES } from "schema";
 
 const CustomerPaymentForm: FC = () => {
   const {
@@ -86,7 +86,7 @@ const CustomerPaymentForm: FC = () => {
                   label="Type *"
                   defaultValue={getFormValue("type")}
                 >
-                  {EMPLOYEE_PAYEMENT_TYPES.map((type) => (
+                  {CUSTOMER_PAYEMENT_TYPES.map((type) => (
                     <MenuItem key={type} value={type}>
                       {type}
                     </MenuItem>
