@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   pgEnum,
   pgTable,

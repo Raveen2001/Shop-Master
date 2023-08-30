@@ -1,5 +1,5 @@
 import { EMPLOYEE_TYPES } from "../../database-drizzle/schema/employees";
-import { object, string, mixed, InferType } from "yup";
+import { object, string, InferType } from "yup";
 
 export const EmployeeFormSchema = object({
   ownerId: string().required(),
