@@ -70,7 +70,7 @@ fastify.register(AuthRoutes);
 // register authenticated routes
 fastify.register(OwnerRoutes, { prefix: "/owners" });
 fastify.register(ShopRoutes, { prefix: "/shops" });
-fastify.register(EmployeeRoutes, { prefix: "/employee" });
+fastify.register(EmployeeRoutes, { prefix: "/employees" });
 fastify.register(EmployeePaymentRoutes, { prefix: "/employee-payments" });
 fastify.register(CustomerRoutes, { prefix: "/customers" });
 

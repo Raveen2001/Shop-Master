@@ -12,7 +12,7 @@ export const CustomerSchema = Type.Object({
   type: Type.Union(CUSTOMER_TYPES.map((key) => Type.Literal(key))),
   email: Type.Optional(Type.String({ format: "email" })),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
-  image: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
+  image: optionalType(Type.String({ format: "uri" })),
   address: Type.String({ minLength: 3 }),
 
   createdAt: Type.String({ format: "date-time" }),
