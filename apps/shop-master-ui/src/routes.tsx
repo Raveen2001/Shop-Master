@@ -13,7 +13,7 @@ import EmployeesPaymentHistory from "./pages/EmployeesPaymentHistory";
 import EmployeePaymentForm from "./pages/EmployeePaymentForm";
 
 import ManageShops from "./pages/ManageShops";
-import ShopForm from "./pages/ManageShops/ShopForm";
+import ShopForm from "./pages/ShopForm";
 
 import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
 import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";

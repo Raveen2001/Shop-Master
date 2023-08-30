@@ -1,5 +1,3 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -11,50 +9,19 @@ import {
   TextField,
   Typography,
 } from "ui";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ShopFormSchema, TShopFormSchema } from "schema";
-import { useGlobalStore } from "../../store/globalStore";
-import { IRequestError } from "schema";
-import { createShop } from "../../services/shop";
+import useShopForm from "./useShopForm";
 
 const ShopForm = () => {
-  const navigate = useNavigate();
-  const ownerId = useGlobalStore((state) => state.owner?.id);
-  const queryClient = useQueryClient();
-  const [image, setImage] = useState<File | null>(null);
-
-  const { mutate, isLoading, isError, error } = useMutation<
-    Awaited<ReturnType<typeof createShop>>,
-    IRequestError,
-    TShopFormSchema
-  >({
-    mutationKey: ["shops", "create"],
-    mutationFn: createShop,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["shops"]);
-      navigate("/shops");
-    },
-  });
-
   const {
-    register,
+    formErrors,
     handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<TShopFormSchema>({
-    defaultValues: {
-      image: null,
-      website: null,
-    },
-    resolver: yupResolver(ShopFormSchema) as any,
-  });
-
-  useEffect(() => {
-    setValue("ownerId", ownerId ?? "");
-  }, [ownerId, setValue]);
-
+    isMutateError,
+    isMutateLoading,
+    mutate,
+    mutateError,
+    register,
+    setImage,
+  } = useShopForm();
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">Create a new Shop</Typography>
@@ -86,42 +53,42 @@ const ShopForm = () => {
                 <TextField
                   label="Name *"
                   {...register("name")}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!formErrors.name}
+                  helperText={formErrors.name?.message}
                 />
                 <TextField
                   label="Email"
                   {...register("email")}
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
+                  error={!!formErrors.email}
+                  helperText={formErrors.email?.message}
                 />
                 <TextField
                   label="Phone Number *"
                   {...register("phone")}
-                  error={!!errors.phone}
-                  helperText={errors.phone?.message}
+                  error={!!formErrors.phone}
+                  helperText={formErrors.phone?.message}
                 />
                 <TextField
                   label="Website"
                   {...register("website")}
-                  error={!!errors.website}
-                  helperText={errors.website?.message}
+                  error={!!formErrors.website}
+                  helperText={formErrors.website?.message}
                 />
               </Box>
               <Box className="flex flex-col gap-4">
                 <TextField
                   label="Description *"
                   {...register("description")}
-                  error={!!errors.description}
-                  helperText={errors.description?.message}
+                  error={!!formErrors.description}
+                  helperText={formErrors.description?.message}
                   multiline
                   rows={4}
                 />
                 <TextField
                   label="Address *"
                   {...register("address")}
-                  error={!!errors.address}
-                  helperText={errors.address?.message}
+                  error={!!formErrors.address}
+                  helperText={formErrors.address?.message}
                   multiline
                   rows={4}
                 />
@@ -129,7 +96,7 @@ const ShopForm = () => {
             </Box>
 
             <LoadingButton
-              loading={isLoading}
+              loading={isMutateLoading}
               variant="contained"
               className="float-right"
               type="submit"
@@ -141,7 +108,7 @@ const ShopForm = () => {
       </Box>
 
       <Snackbar
-        open={isError}
+        open={isMutateError}
         autoHideDuration={6000}
         anchorOrigin={{
           vertical: "bottom",
@@ -149,7 +116,7 @@ const ShopForm = () => {
         }}
       >
         <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
-          {error?.response?.data.error ??
+          {mutateError?.response?.data.error ??
             "Something went wrong, please try again later"}
         </Alert>
       </Snackbar>
