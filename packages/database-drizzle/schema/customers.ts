@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { employeesDB } from "./employees";
 import { shopsDB } from "./shops";
@@ -57,4 +57,7 @@ export const customerRelations = relations(customerDB, ({ one }) => ({
   }),
 }));
 
-export type TCustomerDB = InferModel<typeof customerDB>;
+export type TCustomerDB = typeof customerDB.$inferSelect;
+export type TNewCustomerDB = typeof customerDB.$inferInsert;
+
+export const CUSTOMER_TYPES = customerTypeEnum.enumValues;

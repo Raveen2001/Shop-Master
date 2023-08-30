@@ -7,6 +7,8 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { productsDB } from "./products";
+import { shopsDB } from "./shops";
+import { ownersDB } from "./owners";
 
 export const productVariantsDB = pgTable("product_variants", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -18,6 +20,13 @@ export const productVariantsDB = pgTable("product_variants", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   availability: boolean("availability").default(true),
+
+  shopId: uuid("shop_id")
+    .notNull()
+    .references(() => shopsDB.id),
+  ownerId: uuid("owner_id")
+    .notNull()
+    .references(() => ownersDB.id),
 });
 
 export const productVariantsRelation = relations(
@@ -26,6 +35,16 @@ export const productVariantsRelation = relations(
     product: one(productsDB, {
       fields: [productVariantsDB.productId],
       references: [productsDB.id],
+    }),
+
+    shop: one(shopsDB, {
+      fields: [productVariantsDB.shopId],
+      references: [shopsDB.id],
+    }),
+
+    owner: one(ownersDB, {
+      fields: [productVariantsDB.ownerId],
+      references: [ownersDB.id],
     }),
   })
 );

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import moment, { Moment } from "moment";
+import moment from "moment";
 
 import useEmployeePaymentForm from "./useEmployeePaymentForm";
 import {

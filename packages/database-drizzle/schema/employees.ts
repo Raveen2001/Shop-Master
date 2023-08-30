@@ -68,6 +68,7 @@ export const employeesRelations = relations(employeesDB, ({ one }) => ({
   }),
 }));
 
-export type TEmployeeDB = InferModel<typeof employeesDB>;
+export type TEmployeeDB = typeof employeesDB.$inferSelect;
+export type TNewEmployeeDB = typeof employeesDB.$inferInsert;
 
 export const EMPLOYEE_TYPES = employeeTypeEnum.enumValues;

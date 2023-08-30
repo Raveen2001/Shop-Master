@@ -41,4 +41,5 @@ export type TEmployeeFormSchema = InferType<typeof EmployeeFormSchema>;
 export type TEmployeeData = TEmployeeFormSchema & {
   id: string;
   createdAt: string;
+  updatedAt: string;
 };

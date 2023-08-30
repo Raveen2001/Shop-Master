@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   integer,
   pgEnum,
@@ -87,6 +87,7 @@ export const customerPaymentsRelations = relations(
   })
 );
 
-export type TCustomerPaymentDB = InferModel<typeof customerPaymentsDB>;
+export type TCustomerPaymentDB = typeof customerPaymentsDB.$inferSelect;
+export type TNewCustomerPaymentDB = typeof customerPaymentsDB.$inferInsert;
 
 export const CUSTOMER_PAYEMENT_TYPES = customerPaymentTypeEnum.enumValues;

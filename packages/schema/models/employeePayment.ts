@@ -31,6 +31,7 @@ export type TEmployeePaymentFormSchema = InferType<
 export type TEmployeePaymentData = TEmployeePaymentFormSchema & {
   id: string;
   createdAt: string;
+  updatedAt: string;
 
   employee?: TEmployeeData;
   createdByEmployee?: TEmployeeData;

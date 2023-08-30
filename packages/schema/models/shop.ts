@@ -28,4 +28,5 @@ export type TShopFormSchema = InferType<typeof ShopFormSchema>;
 export type TShopData = TShopFormSchema & {
   id: string;
   createdAt: string;
+  updatedAt: string;
 };

@@ -7,6 +7,8 @@ import { productImagesDB } from "./product_images";
 import { productReviewsDB } from "./product_reviews";
 import { productSearchTagsDB } from "./product_search_tags";
 import { productVariantsDB } from "./product_variants";
+import { shopsDB } from "./shops";
+import { ownersDB } from "./owners";
 
 export const productsDB = pgTable("products", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -26,6 +28,13 @@ export const productsDB = pgTable("products", {
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+
+  shopId: uuid("shop_id")
+    .notNull()
+    .references(() => shopsDB.id),
+  ownerId: uuid("owner_id")
+    .notNull()
+    .references(() => ownersDB.id),
 });
 
 export const productsRelations = relations(productsDB, ({ one, many }) => ({
@@ -51,4 +60,14 @@ export const productsRelations = relations(productsDB, ({ one, many }) => ({
   productReviews: many(productReviewsDB),
 
   productVariants: many(productVariantsDB),
+
+  shop: one(shopsDB, {
+    fields: [productsDB.shopId],
+    references: [shopsDB.id],
+  }),
+
+  owner: one(ownersDB, {
+    fields: [productsDB.ownerId],
+    references: [ownersDB.id],
+  }),
 }));

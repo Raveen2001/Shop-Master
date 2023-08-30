@@ -6,7 +6,7 @@ import {
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { InferModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { employeesDB } from "./employees";
 import { shopsDB } from "./shops";
 
@@ -32,4 +32,5 @@ export const ownersRelations = relations(ownersDB, ({ many }) => ({
   shops: many(shopsDB),
 }));
 
-export type Owner = InferModel<typeof ownersDB>;
+export type TOwnerDB = typeof ownersDB.$inferSelect;
+export type TNewOwnerDB = typeof ownersDB.$inferInsert;
