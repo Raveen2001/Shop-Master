@@ -12,6 +12,7 @@ const AUTH_URLS = ["/login", "/register"];
 function App() {
   // get the logged in status from local storage
   const isLoggedIn = useMemo(() => !!localStorage.getItem("token"), []);
+
   // redirect to login page if not logged in
   useEffect(() => {
     const location = window.location.pathname;
