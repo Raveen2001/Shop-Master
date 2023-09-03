@@ -11,16 +11,23 @@ import DrizzlePlugin from "./plugins/drizzle.plugin";
 import DecoratorPlugin from "./plugins/decorators.plugin";
 
 import FastifyTypebox from "./types/fastify";
+
 import HelperRoutes from "./routes/helper";
+
+import AuthRoutes from "./routes/auth";
+
 import OwnerRoutes from "./routes/owner";
 import ShopRoutes from "./routes/shop";
+
 import EmployeeRoutes from "./routes/employee";
-import AuthRoutes from "./routes/auth";
 import EmployeePaymentRoutes from "./routes/employee-payments";
+
 import CustomerRoutes from "./routes/customer";
 import CustomerPaymentRoutes from "./routes/customer-payments";
+
 import BrandRoutes from "./routes/brand";
 import CategoryRoutes from "./routes/category";
+import SubCategoryRoutes from "./routes/sub-category";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -73,12 +80,16 @@ fastify.register(AuthRoutes);
 // register authenticated routes
 fastify.register(OwnerRoutes, { prefix: "/owners" });
 fastify.register(ShopRoutes, { prefix: "/shops" });
+
 fastify.register(EmployeeRoutes, { prefix: "/employees" });
 fastify.register(EmployeePaymentRoutes, { prefix: "/employee-payments" });
+
 fastify.register(CustomerRoutes, { prefix: "/customers" });
 fastify.register(CustomerPaymentRoutes, { prefix: "/customer-payments" });
+
 fastify.register(BrandRoutes, { prefix: "/brands" });
 fastify.register(CategoryRoutes, { prefix: "/categories" });
+fastify.register(SubCategoryRoutes, { prefix: "/sub-categories" });
 
 // start the server
 fastify.listen({ port: 5000, host: "0.0.0.0" }, async (err) => {

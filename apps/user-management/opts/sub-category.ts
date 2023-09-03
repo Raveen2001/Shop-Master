@@ -9,7 +9,7 @@ import { Type } from "@sinclair/typebox";
 
 export const QuerySubCategoryOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["SubCategory"],
+    tags: ["Sub-Category"],
     summary: "Get SubCategory by subSubCategory_id",
     params: SubCategoryQueryParamSchema,
     querystring: SubCategoryQueryStringSchema,
@@ -21,7 +21,7 @@ export const QuerySubCategoryOpts: RouteShorthandOptions = {
 
 export const QuerySubCategoryByOwnerOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["SubCategory"],
+    tags: ["Sub-Category"],
     summary: "Get SubCategorys by owner_id",
     params: SubCategoryQueryParamSchema,
     querystring: SubCategoryQueryStringSchema,
@@ -33,7 +33,7 @@ export const QuerySubCategoryByOwnerOpts: RouteShorthandOptions = {
 
 export const QuerySubCategoryByShopOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["SubCategory"],
+    tags: ["Sub-Category"],
     summary: "Get SubCategorys by shop_id",
     params: SubCategoryQueryParamSchema,
     querystring: SubCategoryQueryStringSchema,
@@ -45,7 +45,7 @@ export const QuerySubCategoryByShopOpts: RouteShorthandOptions = {
 
 export const CreateSubCategoryOpts: RouteShorthandOptions = {
   schema: {
-    tags: ["SubCategory"],
+    tags: ["Sub-Category"],
     summary: "Create a new SubCategory",
     body: SubCategorySchemaIn,
     querystring: SubCategoryQueryStringSchema,

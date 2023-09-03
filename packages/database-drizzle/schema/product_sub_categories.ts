@@ -45,7 +45,6 @@ export const productSubCategoriesRelation = relations(
   })
 );
 
-export type TProductSubCategoriesDB =
-  typeof productSubCategoriesDB.$inferSelect;
-export type TNewProductSubCategoriesDB =
+export type TProductSubCategoryDB = typeof productSubCategoriesDB.$inferSelect;
+export type TNewProductSubCategoryDB =
   typeof productSubCategoriesDB.$inferInsert;
