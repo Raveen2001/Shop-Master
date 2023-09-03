@@ -7,12 +7,13 @@ import {
 import { EmployeeSchemaWithoutPassword } from "./employee";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";
+import { optionalType } from "./utils";
 
 export const EmployeePaymentSchema = Type.Object({
   id: Type.String(),
   type: Type.Union(EMPLOYEE_PAYEMENT_TYPES.map((key) => Type.Literal(key))),
   amount: Type.Number({ minimum: 1 }),
-  comment: Type.Optional(Type.String()),
+  comment: optionalType(Type.String()),
   createdAt: Type.String({
     format: "date-time",
   }),

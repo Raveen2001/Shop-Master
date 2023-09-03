@@ -21,11 +21,7 @@ export const EmployeeFormSchema = object({
     .trim()
     .matches(/^\d{10}$/, "Phone must be 10 digits")
     .required("Phone is required"),
-  email: string()
-    .trim()
-    .email("Email should be valid")
-    .required("Email is required")
-    .lowercase(),
+  email: string().trim().email("Email should be valid").lowercase().nullable(),
 
   image: string().url("Image should be valid").nullable(),
   type: string()

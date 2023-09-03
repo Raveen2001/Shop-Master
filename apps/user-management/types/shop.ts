@@ -3,6 +3,7 @@ import { OwnerSchemaWithoutPassword } from "./owner";
 import { EmployeeSchema } from "./employee";
 import { PagableQueryStringSchema, PagableSchema } from "./common";
 import { SHOP_DB_COLUMNS } from "database-drizzle";
+import { optionalType } from "./utils";
 
 export const ShopSchema = Type.Object({
   id: Type.String(),
@@ -10,9 +11,9 @@ export const ShopSchema = Type.Object({
   domain: Type.String({ minLength: 3, maxLength: 50 }),
   address: Type.String({ minLength: 3 }),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
-  email: Type.Optional(Type.String({ format: "email" })),
+  email: optionalType(Type.String({ format: "email" })),
   website: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
-  image: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
+  image: optionalType(Type.String({ format: "uri" })),
   description: Type.String({ minLength: 3 }),
   ownerId: Type.String(),
   createdAt: Type.String({ format: "date-time" }),

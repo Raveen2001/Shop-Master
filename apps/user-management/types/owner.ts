@@ -1,6 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { EmployeeSchema } from "./employee";
 import { ShopSchema } from "./shop";
+import { optionalType } from "./utils";
 
 export const OwnerSchema = Type.Object({
   id: Type.String(),
@@ -10,7 +11,7 @@ export const OwnerSchema = Type.Object({
   password: Type.String({
     minLength: 8,
   }),
-  image: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
+  image: optionalType(Type.String({ format: "uri" })),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
 });

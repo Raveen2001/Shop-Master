@@ -10,7 +10,7 @@ import {
   CreateShopOpts,
   QueryShopByOwnerOpts,
   QueryShopOpts,
-} from "../opts/shops";
+} from "../opts/shop";
 
 const ShopRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox

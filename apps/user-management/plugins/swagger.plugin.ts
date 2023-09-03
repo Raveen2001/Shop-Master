@@ -46,6 +46,11 @@ export const swaggerOptions: SwaggerOptions = {
         name: "Customer-Payments",
         description: "This has all the endpoints related to Customer-Payments",
       },
+
+      {
+        name: "Brand",
+        description: "This has all the endpoints related to Brands",
+      },
     ],
 
     securityDefinitions: {

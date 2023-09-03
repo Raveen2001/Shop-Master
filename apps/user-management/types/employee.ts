@@ -4,6 +4,7 @@ import { Static, Type } from "@sinclair/typebox";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";
 import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { optionalType } from "./utils";
 
 export const EmployeeSchema = Type.Object({
   id: Type.String(),
@@ -11,9 +12,9 @@ export const EmployeeSchema = Type.Object({
   type: Type.Union(EMPLOYEE_TYPES.map((key) => Type.Literal(key))),
   username: Type.String({ minLength: 3, maxLength: 100 }),
   password: Type.String({ minLength: 8 }),
-  email: Type.Optional(Type.String({ format: "email" })),
+  email: optionalType(Type.String({ format: "email" })),
   phone: Type.String({ format: "regex", pattern: "^\\d{10}$" }), // prettier-ignore
-  image: Type.Union([Type.String({ format: "uri" }), Type.Null()]),
+  image: optionalType(Type.String({ format: "uri" })),
   address: Type.String({ minLength: 3 }),
 
   createdAt: Type.String({ format: "date-time" }),

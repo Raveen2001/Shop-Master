@@ -9,7 +9,7 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // Register as owner
   fastify.post<{
     Body: TOwnerIn;
-  }>("/owner/register", CreateOwnerOpts, async (req, reply) => {
+  }>("/owners/register", CreateOwnerOpts, async (req, reply) => {
     // check if email already exists
     const existingOwner = await fastify.db.query.ownersDB.findFirst({
       where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
@@ -40,7 +40,7 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
 
   fastify.post<{
     Body: TLoginWithEmailIn;
-  }>("/owner/login", LoginOwnerOpts, async (req, reply) => {
+  }>("/owners/login", LoginOwnerOpts, async (req, reply) => {
     const owner = await fastify.db.query.ownersDB.findFirst({
       where: (ownersDB, { eq }) => eq(ownersDB.email, req.body.email),
     });
@@ -63,7 +63,7 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // login employee
   fastify.post<{
     Body: TLoginWithUsernameIn;
-  }>("/employee/login", LoginEmployeeOpts, async (req, reply) => {
+  }>("/employees/login", LoginEmployeeOpts, async (req, reply) => {
     const { username, password } = req.body;
     const employee = await fastify.db.query.employeesDB.findFirst({
       where: (employeesDB, { eq }) => eq(employeesDB.username, username),
