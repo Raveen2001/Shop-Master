@@ -8,7 +8,7 @@ export const brandsDB = pgTable("brands", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   image: text("image"),
-  created_at: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   shopId: uuid("shop_id")
     .notNull()
@@ -32,4 +32,4 @@ export const brandsRelation = relations(brandsDB, ({ many, one }) => ({
 }));
 
 export type TBrandsDB = typeof brandsDB.$inferSelect;
-export type TNewBrandDB = typeof brandsDB.$inferInsert;
+export type TNewBrandsDB = typeof brandsDB.$inferInsert;
