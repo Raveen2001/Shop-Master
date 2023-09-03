@@ -22,10 +22,9 @@ import { CUSTOMER_TYPES } from "schema";
 const CustomerForm: FC = () => {
   const {
     formErrors,
-    handleSubmit,
+    onSubmit,
     isMutateError,
     isMutateLoading,
-    mutate,
     mutateError,
     register,
     setProfileImage,
@@ -65,12 +64,7 @@ const CustomerForm: FC = () => {
         </Card>
 
         <Card elevation={5} className="ml-10 p-6">
-          <form
-            onSubmit={handleSubmit((data) => {
-              mutate(data);
-            })}
-            className="flex h-full flex-col gap-4"
-          >
+          <form onSubmit={onSubmit} className="flex h-full flex-col gap-4">
             <Box className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-2">
               <Box className="flex flex-col gap-4">
                 <TextField

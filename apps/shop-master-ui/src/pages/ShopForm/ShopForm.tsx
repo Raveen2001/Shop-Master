@@ -14,10 +14,9 @@ import useShopForm from "./useShopForm";
 const ShopForm = () => {
   const {
     formErrors,
-    handleSubmit,
+    onSubmit,
     isMutateError,
     isMutateLoading,
-    mutate,
     mutateError,
     register,
     setImage,
@@ -41,13 +40,7 @@ const ShopForm = () => {
         </Card>
 
         <Card elevation={5} className="ml-10 p-6">
-          <form
-            onSubmit={handleSubmit((data) => {
-              if (!data.website) data.website = null;
-              mutate(data);
-            })}
-            className="flex h-full flex-col gap-4"
-          >
+          <form onSubmit={onSubmit} className="flex h-full flex-col gap-4">
             <Box className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-2">
               <Box className="flex flex-col gap-4">
                 <TextField
@@ -112,7 +105,7 @@ const ShopForm = () => {
               className="float-right"
               type="submit"
             >
-              Create Employee
+              Create Shop
             </LoadingButton>
           </form>
         </Card>

@@ -52,9 +52,16 @@ const useCustomerForm = () => {
     setFormState("createdByEmployeeId", null);
   }, [owner?.id, setFormState, selectedShop?.id]);
 
+  const onSubmit = handleSubmit((data) => {
+    if (!data.email) delete data.email;
+    if (!data.phone) delete data.phone;
+
+    mutate(data);
+  });
+
   return {
     register,
-    handleSubmit,
+    onSubmit,
     formErrors,
     isMutateError,
     isMutateLoading,

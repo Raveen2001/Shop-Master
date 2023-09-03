@@ -44,16 +44,24 @@ const useShopForm = () => {
     resolver: yupResolver(ShopFormSchema) as any,
   });
 
+  const onSubmit = handleSubmit((data) => {
+    if (!data.website) data.website = null;
+    if (!data.email) data.email = null;
+
+    mutate(data);
+  });
+
   useEffect(() => {
     setValue("ownerId", ownerId ?? "");
   }, [ownerId, setValue]);
+
   return {
     mutate,
     isMutateError,
     isMutateLoading,
     mutateError,
     formErrors,
-    handleSubmit,
+    onSubmit,
     register,
     setImage,
   };

@@ -50,9 +50,15 @@ const useEmployeeForm = () => {
     setFormState("shopId", selectedShop?.id ?? "");
     setFormState("ownerId", owner?.id ?? "");
   }, [owner?.id, setFormState, selectedShop?.id]);
+
+  const onSubmit = handleSubmit((data) => {
+    if (!data.email) data.email = null;
+    mutate(data);
+  });
+
   return {
     register,
-    handleSubmit,
+    onSubmit,
     formErrors,
     isMutateError,
     isMutateLoading,
