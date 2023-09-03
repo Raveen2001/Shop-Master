@@ -67,6 +67,7 @@ const BrandRoutes: FastifyPluginAsyncTypebox = async (
     reply.code(201).send(brand);
   });
 
+  // query brands
   function getBrandsBy(queryBy: TBrandQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TBrandQueryParam;

@@ -35,5 +35,5 @@ export const productCategoriesRelation = relations(
   })
 );
 
-export type TProductCategoriesDB = typeof productCategoriesDB.$inferSelect;
+export type TProductCategoryDB = typeof productCategoriesDB.$inferSelect;
 export type TNewProductCategoryDB = typeof productCategoriesDB.$inferInsert;
