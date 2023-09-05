@@ -14,6 +14,7 @@ export const productVariantsDB = pgTable("product_variants", {
   id: uuid("id").defaultRandom().primaryKey(),
   productId: uuid("product_id").notNull(),
   name: uuid("name").notNull(),
+  onlyForBilling: boolean("only_for_billing").default(false),
   acquiredPrice: integer("acquired_price").notNull(),
   salePrice: integer("sale_price").notNull(),
   otherRetailerPrice: integer("other_retailer_price").notNull(),

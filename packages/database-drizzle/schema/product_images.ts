@@ -1,12 +1,14 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
-import { productsDB } from "./products";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
+import { productVariantsDB } from "./product_variants";
 
 export const productImagesDB = pgTable("product_images", {
   id: uuid("id").defaultRandom().primaryKey(),
-  productId: uuid("product_id").notNull(),
+  productVariantId: uuid("product_variant_id")
+    .notNull()
+    .references(() => productVariantsDB.id),
   image: text("image").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -20,9 +22,9 @@ export const productImagesDB = pgTable("product_images", {
 });
 
 export const productImagesRelation = relations(productImagesDB, ({ one }) => ({
-  product: one(productsDB, {
-    fields: [productImagesDB.productId],
-    references: [productsDB.id],
+  product: one(productVariantsDB, {
+    fields: [productImagesDB.productVariantId],
+    references: [productVariantsDB.id],
   }),
 
   shop: one(shopsDB, {
