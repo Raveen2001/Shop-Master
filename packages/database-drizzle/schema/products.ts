@@ -1,9 +1,8 @@
 import { relations } from "drizzle-orm";
-import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { brandsDB } from "./brands";
 import { productCategoriesDB } from "./product_categories";
 import { productSubCategoriesDB } from "./product_sub_categories";
-import { productImagesDB } from "./product_images";
 import { productReviewsDB } from "./product_reviews";
 import { productSearchTagsDB } from "./product_search_tags";
 import { productVariantsDB } from "./product_variants";
@@ -46,8 +45,6 @@ export const productsRelations = relations(productsDB, ({ one, many }) => ({
     fields: [productsDB.subCategoryId],
     references: [productSubCategoriesDB.id],
   }),
-
-  productImages: many(productImagesDB),
 
   productSearchTags: many(productSearchTagsDB),
 

@@ -28,6 +28,7 @@ import CustomerPaymentRoutes from "./routes/customer-payments";
 import BrandRoutes from "./routes/brand";
 import CategoryRoutes from "./routes/category";
 import SubCategoryRoutes from "./routes/sub-category";
+import ProductVariantRoutes from "./routes/product-variant";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -90,7 +91,7 @@ fastify.register(CustomerPaymentRoutes, { prefix: "/customer-payments" });
 fastify.register(BrandRoutes, { prefix: "/brands" });
 fastify.register(CategoryRoutes, { prefix: "/categories" });
 fastify.register(SubCategoryRoutes, { prefix: "/sub-categories" });
-
+fastify.register(ProductVariantRoutes, { prefix: "/product-variants" });
 // start the server
 fastify.listen({ port: 5000, host: "0.0.0.0" }, async (err) => {
   if (err) {
