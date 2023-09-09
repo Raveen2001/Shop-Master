@@ -17,7 +17,7 @@ export const productVariantsDB = pgTable("product_variants", {
   onlyForBilling: boolean("only_for_billing").default(false),
   acquiredPrice: integer("acquired_price").notNull(),
   salePrice: integer("sale_price").notNull(),
-  otherRetailerPrice: integer("other_retailer_price").notNull(),
+  mrp: integer("mrp").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   availability: boolean("availability").default(true),

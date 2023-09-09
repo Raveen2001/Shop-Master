@@ -6,7 +6,7 @@ export const ProductVariantSchema = Type.Object({
   name: Type.String({ minLength: 3, maxLength: 50 }),
   acquiredPrice: Type.Number(),
   salePrice: Type.Number(),
-  otherRetailerPrice: Type.Number(),
+  mrp: Type.Number(),
   onlyForBilling: Type.Boolean({ default: false }),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
