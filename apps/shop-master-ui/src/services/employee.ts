@@ -1,15 +1,14 @@
 import { IPaginatedData, TEmployeeData, TEmployeeFormSchema } from "schema";
 import { axiosClient } from "../utils/axios";
 import { QueryFunctionContext } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 
 export const getEmployeeByShopId = (shopId: string) => {
   const url = `/employees/shop/${shopId}`;
-  return async (
-    context: QueryFunctionContext
-  ): Promise<AxiosResponse<IPaginatedData<TEmployeeData>>> => {
+  return async (context: QueryFunctionContext) => {
     const queryParams = context.meta;
-    return axiosClient.get(url, { params: queryParams });
+    return axiosClient.get<IPaginatedData<TEmployeeData>>(url, {
+      params: queryParams,
+    });
   };
 };
 
