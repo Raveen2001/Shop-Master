@@ -1,16 +1,17 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { TShopData } from "schema";
+import { TOwnerData } from "../models/owner";
 
 interface IGlobalStore {
   shops?: Record<string, TShopData>;
   selectedShopId?: string;
   selectedShop?: TShopData;
-  owner?: IOwnerData;
+  owner?: TOwnerData;
 
   setShops: (shops: TShopData[]) => void;
   setSelectedShopId: (shopId: string) => void;
-  setOwner: (owner: IOwnerData) => void;
+  setOwner: (owner: TOwnerData) => void;
 }
 
 export const useGlobalStore = create(
@@ -36,7 +37,7 @@ export const useGlobalStore = create(
       });
     },
 
-    setOwner: (owner: IOwnerData) => {
+    setOwner: (owner: TOwnerData) => {
       set((state) => {
         state.owner = owner;
       });
