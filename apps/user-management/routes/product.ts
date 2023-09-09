@@ -67,7 +67,7 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
     reply.code(200).send(product);
   });
 
-  // query subCategories
+  // query products by
   function getProductsBy(queryBy: TProductQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TProductQueryParam;
