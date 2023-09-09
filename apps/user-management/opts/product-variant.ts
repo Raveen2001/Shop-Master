@@ -5,6 +5,19 @@ import {
   ProductVariantSchema,
   ProductVariantSchemaIn,
 } from "../types/product-variant";
+import { Type } from "@sinclair/typebox";
+
+export const CreateProductVariantOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Product-Variant"],
+    summary: "Create a new ProductVariant",
+    body: ProductVariantSchemaIn,
+    querystring: ProductVariantQueryStringSchema,
+    response: {
+      201: ProductVariantSchema,
+    },
+  },
+};
 
 export const QueryProductVariantOpts: RouteShorthandOptions = {
   schema: {
@@ -18,14 +31,14 @@ export const QueryProductVariantOpts: RouteShorthandOptions = {
   },
 };
 
-export const CreateProductVariantOpts: RouteShorthandOptions = {
+export const QueryProductVariantsByIdOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Product-Variant"],
-    summary: "Create a new ProductVariant",
-    body: ProductVariantSchemaIn,
+    summary: "Get ProductVariants by id",
+    params: ProductVariantQueryParamSchema,
     querystring: ProductVariantQueryStringSchema,
     response: {
-      201: ProductVariantSchema,
+      200: Type.Array(ProductVariantSchema),
     },
   },
 };

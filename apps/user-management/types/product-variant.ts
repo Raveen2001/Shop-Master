@@ -41,3 +41,5 @@ export type TProductVariantQueryParam = Static<
 export type TProductVariantQueryString = Static<
   typeof ProductVariantQueryStringSchema
 >;
+
+export type TProductVariantQueryByFields = "ownerId" | "shopId";
