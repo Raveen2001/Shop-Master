@@ -1,4 +1,5 @@
 import { object, string, InferType } from "yup";
+import { TProductVariantData } from "./product-variant";
 
 export const ProductFormSchema = object({
   ownerId: string().required(),
@@ -20,4 +21,5 @@ export type TProductData = TProductFormSchema & {
   id: string;
   createdAt: string;
   updatedAt: string;
+  variants?: TProductVariantData[];
 };
