@@ -7,6 +7,7 @@ import { useGlobalStore } from "./globalStore";
 import { getBrandsBy } from "../services/brand";
 import { getCategoriesBy } from "../services/category";
 import { getSubCategoriesBy } from "../services/sub-category";
+import { getProductsBy } from "../services/products";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
@@ -63,18 +64,47 @@ const useFetchDataForGlobalStore = () => {
 
   const productsQuery = useQuery({
     queryKey: ["shop", selectedShopId, "products"],
-    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
+    queryFn: getProductsBy("shop", selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!selectedShopId,
+    meta: {
+      includeVariants: true,
+    },
   });
 
   const isLoading = useMemo(
-    () => ownerQuery.isLoading || shopsQuery.isLoading,
-    [ownerQuery.isLoading, shopsQuery.isLoading]
+    () =>
+      ownerQuery.isLoading ||
+      shopsQuery.isLoading ||
+      productsQuery.isLoading ||
+      brandsQuery.isLoading ||
+      categoriesQuery.isLoading ||
+      subCategoriesQuery.isLoading,
+    [
+      brandsQuery.isLoading,
+      categoriesQuery.isLoading,
+      ownerQuery.isLoading,
+      productsQuery.isLoading,
+      shopsQuery.isLoading,
+      subCategoriesQuery.isLoading,
+    ]
   );
 
   const isError = useMemo(
-    () => ownerQuery.isError || shopsQuery.isError,
-    [ownerQuery.isError, shopsQuery.isError]
+    () =>
+      ownerQuery.isError ||
+      shopsQuery.isError ||
+      productsQuery.isError ||
+      brandsQuery.isError ||
+      categoriesQuery.isError ||
+      subCategoriesQuery.isError,
+    [
+      brandsQuery.isError,
+      categoriesQuery.isError,
+      ownerQuery.isError,
+      productsQuery.isError,
+      shopsQuery.isError,
+      subCategoriesQuery.isError,
+    ]
   );
 
   const hasNoShops = useMemo(() => {
@@ -92,6 +122,18 @@ const useFetchDataForGlobalStore = () => {
   const isAllDataLoaded = useMemo(() => {
     return !isLoading && !isError && !!owner && !!selectedShop;
   }, [isLoading, isError, owner, selectedShop]);
+
+  if (isAllDataLoaded) {
+    console.log("All data loaded");
+
+    console.log("Owner", owner);
+    console.log("Shops", shopsQuery.data?.data.rows);
+    console.log("Selected Shop", selectedShop);
+    console.log("Brands", brandsQuery.data?.data);
+    console.log("Categories", categoriesQuery.data?.data);
+    console.log("Sub Categories", subCategoriesQuery.data?.data);
+    console.log("Products", productsQuery.data?.data);
+  }
 
   return {
     isAllDataLoaded,
