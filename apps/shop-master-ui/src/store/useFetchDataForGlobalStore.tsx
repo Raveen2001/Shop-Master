@@ -5,6 +5,7 @@ import { getOwnerByToken } from "../services/owner";
 import { getShopsByOwnerId } from "../services/shop";
 import { useGlobalStore } from "./globalStore";
 import { getBrandsBy } from "../services/brand";
+import { getCategoriesBy } from "../services/category";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const useFetchDataForGlobalStore = () => {
 
   const categoriesQuery = useQuery({
     queryKey: ["shop", selectedShopId, "categories"],
-    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
+    queryFn: getCategoriesBy("shop", selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!selectedShopId,
   });
 
