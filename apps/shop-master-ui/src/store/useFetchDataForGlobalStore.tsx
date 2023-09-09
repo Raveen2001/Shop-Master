@@ -6,6 +6,7 @@ import { getShopsByOwnerId } from "../services/shop";
 import { useGlobalStore } from "./globalStore";
 import { getBrandsBy } from "../services/brand";
 import { getCategoriesBy } from "../services/category";
+import { getSubCategoriesBy } from "../services/sub-category";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const useFetchDataForGlobalStore = () => {
 
   const subCategoriesQuery = useQuery({
     queryKey: ["shop", selectedShopId, "subCategories"],
-    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
+    queryFn: getSubCategoriesBy("shop", selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!selectedShopId,
   });
 
