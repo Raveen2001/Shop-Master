@@ -7,6 +7,18 @@ import {
 } from "../types/category";
 import { Type } from "@sinclair/typebox";
 
+export const CreateCategoryOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Category"],
+    summary: "Create a new Category",
+    body: CategorySchemaIn,
+    querystring: CategoryQueryStringSchema,
+    response: {
+      201: CategorySchemaOut,
+    },
+  },
+};
+
 export const QueryCategoryOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Category"],
@@ -39,18 +51,6 @@ export const QueryCategoryByShopOpts: RouteShorthandOptions = {
     querystring: CategoryQueryStringSchema,
     response: {
       200: Type.Array(CategorySchemaOut),
-    },
-  },
-};
-
-export const CreateCategoryOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Category"],
-    summary: "Create a new Category",
-    body: CategorySchemaIn,
-    querystring: CategoryQueryStringSchema,
-    response: {
-      201: CategorySchemaOut,
     },
   },
 };

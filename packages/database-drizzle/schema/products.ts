@@ -46,11 +46,11 @@ export const productsRelations = relations(productsDB, ({ one, many }) => ({
     references: [productSubCategoriesDB.id],
   }),
 
-  productSearchTags: many(productSearchTagsDB),
+  searchTags: many(productSearchTagsDB),
 
-  productReviews: many(productReviewsDB),
+  reviews: many(productReviewsDB),
 
-  productVariants: many(productVariantsDB),
+  variants: many(productVariantsDB),
 
   shop: one(shopsDB, {
     fields: [productsDB.shopId],

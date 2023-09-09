@@ -62,6 +62,16 @@ export const swaggerOptions: SwaggerOptions = {
         description:
           "This has all the endpoints related to Product Sub-Categories",
       },
+
+      {
+        name: "Product",
+        description: "This has all the endpoints related to Products",
+      },
+
+      {
+        name: "Product-Variant",
+        description: "This has all the endpoints related to Product-Variants",
+      },
     ],
 
     securityDefinitions: {

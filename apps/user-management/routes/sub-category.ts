@@ -12,6 +12,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
   CreateSubCategoryOpts,
   QuerySubCategoryByOwnerOpts,
+  QuerySubCategoryByShopOpts,
   QuerySubCategoryOpts,
 } from "../opts/sub-category";
 import { RouteHandlerMethod } from "fastify";
@@ -110,7 +111,7 @@ const SubCategoryRoutes: FastifyPluginAsyncTypebox = async (
   fastify.get<{
     Params: TSubCategoryQueryParam;
     Querystring: TSubCategoryQueryString;
-  }>("/shop/:id", QuerySubCategoryByOwnerOpts, getSubCategorysBy("shopId"));
+  }>("/shop/:id", QuerySubCategoryByShopOpts, getSubCategorysBy("shopId"));
 };
 
 export default SubCategoryRoutes;
