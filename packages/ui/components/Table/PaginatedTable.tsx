@@ -1,0 +1,132 @@
+import React, { ChangeEvent } from "react";
+import clsx from "clsx";
+
+import {
+  Box,
+  Table as MUITable,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@mui/material";
+
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
+
+import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
+import { IColumnSort } from "./model";
+
+interface IReactQueryPaginatedTableProps<T, K> {
+  columns: ColumnDef<T, K>[];
+  data: T[];
+  defaultSortColumn?: IColumnSort<T>;
+  disableSorting?: boolean;
+}
+const ReactQueryPaginatedTable = <T, K>({
+  columns,
+  data,
+  defaultSortColumn,
+  disableSorting,
+}: IReactQueryPaginatedTableProps<T, K>) => {
+  const containsData = React.useMemo(() => {
+    return data.length > 0;
+  }, [data]);
+
+  const table = useReactTable({
+    data: data,
+    columns,
+    state: {
+      sorting: (defaultSortColumn ? [defaultSortColumn] : []) as SortingState,
+    },
+
+    getCoreRowModel: getCoreRowModel(),
+    enableSortingRemoval: false,
+  });
+
+  return (
+    <Box>
+      <Box className="relative w-full overflow-auto border border-dotted border-slate-400">
+        <MUITable className={`w-[${table.getTotalSize()}px]`}>
+          <TableHead className={`bg-slate-100 `}>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableCell key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder ? null : (
+                        <Box
+                          className={clsx("flex items-center text-slate-500", {
+                            "cursor-pointer select-none":
+                              header.column.getCanSort() && !disableSorting,
+                            "text-slate-900": header.column.getIsSorted(),
+                          })}
+                          onClick={
+                            disableSorting
+                              ? undefined
+                              : header.column.getToggleSortingHandler()
+                          }
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+
+                          {disableSorting
+                            ? null
+                            : {
+                                asc: <ArrowUpwardRounded fontSize="small" />,
+                                desc: <ArrowDownwardRounded fontSize="small" />,
+                              }[header.column.getIsSorted() as string] ?? null}
+                        </Box>
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {containsData &&
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow key={row.id} className="hover:bg-slate-50">
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </MUITable>
+      </Box>
+
+      <TablePagination
+        component="div"
+        count={data.length}
+        page={table.getState().pagination.pageIndex}
+        onPageChange={(e, page) => {
+          table.setPageIndex(page);
+        }}
+        rowsPerPage={table.getState().pagination.pageSize}
+        onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
+          table.setPageSize(Number(e.target.value));
+        }}
+      />
+    </Box>
+  );
+};
+
+export default ReactQueryPaginatedTable;
