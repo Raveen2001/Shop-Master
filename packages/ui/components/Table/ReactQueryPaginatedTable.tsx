@@ -25,7 +25,7 @@ import { AxiosResponse } from "axios";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import { IColumnSort } from "./model";
 
-interface IPaginatedTableProps<T, K> {
+interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
   queryFn: (
     context: QueryFunctionContext,
@@ -34,13 +34,13 @@ interface IPaginatedTableProps<T, K> {
   defaultSortColumn?: IColumnSort<T>;
   disableSorting?: boolean;
 }
-const PaginatedTable = <T, K>({
+const ReactQueryPaginatedTable = <T, K>({
   columns,
   queryFn,
   queryKeys,
   defaultSortColumn,
   disableSorting,
-}: IPaginatedTableProps<T, K>) => {
+}: IReactQueryPaginatedTableProps<T, K>) => {
   const [sorting, setSorting] = useState<SortingState>(
     (defaultSortColumn ? [defaultSortColumn] : []) as SortingState,
   );
@@ -184,4 +184,4 @@ const PaginatedTable = <T, K>({
   );
 };
 
-export default PaginatedTable;
+export default ReactQueryPaginatedTable;

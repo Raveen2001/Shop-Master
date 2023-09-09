@@ -1,4 +1,4 @@
-import { Box, Typography, Button, PaginatedTable } from "ui";
+import { Box, Typography, Button, ReactQueryPaginatedTable } from "ui";
 import { Add } from "ui/icons";
 import { getCustomerPaymentsBy } from "../../services/customer-payments";
 import { columnsDefs } from "./columns";
@@ -24,7 +24,7 @@ const CustomersPaymentHistory = () => {
           New Customer Payment
         </Button>
       </Box>
-      <PaginatedTable
+      <ReactQueryPaginatedTable
         columns={columnsDefs}
         queryFn={getCustomerPaymentsBy("shop", selectedShopId)}
         queryKeys={["shop", selectedShopId, "customers", "payments"]}

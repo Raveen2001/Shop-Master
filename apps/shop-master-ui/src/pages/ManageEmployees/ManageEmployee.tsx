@@ -1,4 +1,10 @@
-import { Box, Breadcrumbs, Button, PaginatedTable, Typography } from "ui";
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  ReactQueryPaginatedTable,
+  Typography,
+} from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
@@ -26,7 +32,7 @@ const ManageEmployee = () => {
           New Employee
         </Button>
       </Box>
-      <PaginatedTable
+      <ReactQueryPaginatedTable
         columns={columnsDefs}
         queryFn={getEmployeeByShopId(selectedShopId)}
         queryKeys={["shop", selectedShopId, "employees"]}
