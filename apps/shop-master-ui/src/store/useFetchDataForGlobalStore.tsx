@@ -1,9 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getOwnerByToken } from "../services/owner";
 import { getShopsByOwnerId } from "../services/shop";
 import { useGlobalStore } from "./globalStore";
+import { getBrandsBy } from "../services/brand";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
@@ -38,6 +39,30 @@ const useFetchDataForGlobalStore = () => {
         navigate("/shops/create");
       }
     },
+  });
+
+  const brandsQuery = useQuery({
+    queryKey: ["shop", selectedShopId, "brands"],
+    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!selectedShopId,
+  });
+
+  const categoriesQuery = useQuery({
+    queryKey: ["shop", selectedShopId, "categories"],
+    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!selectedShopId,
+  });
+
+  const subCategoriesQuery = useQuery({
+    queryKey: ["shop", selectedShopId, "subCategories"],
+    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!selectedShopId,
+  });
+
+  const productsQuery = useQuery({
+    queryKey: ["shop", selectedShopId, "products"],
+    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!selectedShopId,
   });
 
   const isLoading = useMemo(
