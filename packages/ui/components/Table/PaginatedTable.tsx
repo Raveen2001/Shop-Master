@@ -21,6 +21,8 @@ import {
 
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import { IColumnSort } from "./model";
+import { isError } from "lodash";
+import ShowStatus from "./ShowStatus";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
@@ -111,6 +113,13 @@ const ReactQueryPaginatedTable = <T, K>({
               })}
           </TableBody>
         </MUITable>
+
+        {/* Shows no data message */}
+        {!containsData && (
+          <Box className="w-full h-80 sticky inset-0 flex justify-center items-center p-4">
+            <ShowStatus />
+          </Box>
+        )}
       </Box>
 
       <TablePagination

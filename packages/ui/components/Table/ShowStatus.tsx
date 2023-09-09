@@ -3,8 +3,8 @@ import React from "react";
 import NoDataIcon from "../../assets/no-data";
 
 interface IShowStatusProps {
-  isLoading: boolean;
-  isError: boolean;
+  isLoading?: boolean;
+  isError?: boolean;
 }
 const ShowStatus: React.FC<IShowStatusProps> = ({ isLoading, isError }) => {
   return (
