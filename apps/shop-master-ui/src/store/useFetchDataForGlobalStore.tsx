@@ -11,20 +11,13 @@ import { getProductsBy } from "../services/products";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
-  const {
-    owner,
-    selectedShop,
-    selectedShopId,
-    setSelectedShopId,
-    setShops,
-    setOwner,
-  } = useGlobalStore();
+  const store = useGlobalStore();
 
   const ownerQuery = useQuery({
     queryKey: ["owner", "me"],
     queryFn: getOwnerByToken,
     onSuccess(data) {
-      setOwner(data.data);
+      store.setOwner(data.data);
     },
   });
 
@@ -36,8 +29,9 @@ const useFetchDataForGlobalStore = () => {
     onSuccess(data) {
       const shops = data.data.rows;
       if (shops.length) {
-        setShops(shops);
-        if (!selectedShopId) setSelectedShopId(data.data.rows[0]?.id);
+        store.setShops(shops);
+        if (!store.selectedShopId)
+          store.setSelectedShopId(data.data.rows[0]?.id);
       } else {
         navigate("/shops/create");
       }
@@ -45,29 +39,39 @@ const useFetchDataForGlobalStore = () => {
   });
 
   const brandsQuery = useQuery({
-    queryKey: ["shop", selectedShopId, "brands"],
-    queryFn: getBrandsBy("shop", selectedShopId ?? ""),
-    enabled: !!shopsQuery.data && !!selectedShopId,
+    queryKey: ["shop", store.selectedShopId, "brands"],
+    queryFn: getBrandsBy("shop", store.selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!store.selectedShopId,
+    onSuccess(data) {
+      store.setBrands(data.data);
+    },
   });
 
   const categoriesQuery = useQuery({
-    queryKey: ["shop", selectedShopId, "categories"],
-    queryFn: getCategoriesBy("shop", selectedShopId ?? ""),
-    enabled: !!shopsQuery.data && !!selectedShopId,
+    queryKey: ["shop", store.selectedShopId, "categories"],
+    queryFn: getCategoriesBy("shop", store.selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!store.selectedShopId,
+    onSuccess(data) {
+      store.setCategories(data.data);
+    },
   });
 
   const subCategoriesQuery = useQuery({
-    queryKey: ["shop", selectedShopId, "subCategories"],
-    queryFn: getSubCategoriesBy("shop", selectedShopId ?? ""),
-    enabled: !!shopsQuery.data && !!selectedShopId,
+    queryKey: ["shop", store.selectedShopId, "subCategories"],
+    queryFn: getSubCategoriesBy("shop", store.selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!store.selectedShopId,
   });
 
   const productsQuery = useQuery({
-    queryKey: ["shop", selectedShopId, "products"],
-    queryFn: getProductsBy("shop", selectedShopId ?? ""),
-    enabled: !!shopsQuery.data && !!selectedShopId,
+    queryKey: ["shop", store.selectedShopId, "products"],
+    queryFn: getProductsBy("shop", store.selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!store.selectedShopId,
     meta: {
       includeVariants: true,
+    },
+
+    onSuccess(data) {
+      store.setProducts(data.data);
     },
   });
 
@@ -120,15 +124,15 @@ const useFetchDataForGlobalStore = () => {
   ]);
 
   const isAllDataLoaded = useMemo(() => {
-    return !isLoading && !isError && !!owner && !!selectedShop;
-  }, [isLoading, isError, owner, selectedShop]);
+    return !isLoading && !isError && !!store.owner && !!store.selectedShop;
+  }, [isLoading, isError, store.owner, store.selectedShop]);
 
   if (isAllDataLoaded) {
     console.log("All data loaded");
 
-    console.log("Owner", owner);
+    console.log("Owner", store.owner);
     console.log("Shops", shopsQuery.data?.data.rows);
-    console.log("Selected Shop", selectedShop);
+    console.log("Selected Shop", store.selectedShop);
     console.log("Brands", brandsQuery.data?.data);
     console.log("Categories", categoriesQuery.data?.data);
     console.log("Sub Categories", subCategoriesQuery.data?.data);

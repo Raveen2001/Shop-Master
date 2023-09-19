@@ -1,45 +1,74 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { TShopData } from "schema";
+import { TBrandData, TShopData } from "schema";
 import { TOwnerData } from "../models/owner";
 
 interface IGlobalStore {
-  shops?: Record<string, TShopData>;
-  selectedShopId?: string;
-  selectedShop?: TShopData;
   owner?: TOwnerData;
-
-  setShops: (shops: TShopData[]) => void;
-  setSelectedShopId: (shopId: string) => void;
   setOwner: (owner: TOwnerData) => void;
+
+  shops: TShopData[];
+  setShops: (shops: TShopData[]) => void;
+
+  selectedShopId: string;
+  setSelectedShopId: (shopId: string) => void;
+
+  selectedShop?: TShopData;
+
+  brands: TBrandData[];
+  setBrands: (brands: TBrandData[]) => void;
+
+  categories: TBrandData[];
+  setCategories: (categories: TBrandData[]) => void;
+
+  products: TBrandData[];
+  setProducts: (products: TBrandData[]) => void;
 }
 
 export const useGlobalStore = create(
   immer<IGlobalStore>((set) => ({
-    shops: {},
-    selectedShopId: "",
     owner: undefined,
+    shops: [],
+    selectedShopId: "",
     selectedShop: undefined,
+    brands: [],
+    categories: [],
+    products: [],
 
     setShops: (shops: TShopData[]) => {
       set((state) => {
-        state.shops = shops.reduce((acc, shop) => {
-          acc[shop.id] = shop;
-          return acc;
-        }, {} as Record<string, TShopData>);
+        state.shops = shops;
       });
     },
 
     setSelectedShopId: (shopId: string) => {
       set((state) => {
         state.selectedShopId = shopId;
-        state.selectedShop = state.shops?.[shopId];
+        state.selectedShop = state.shops.find((shop) => shop.id === shopId);
       });
     },
 
     setOwner: (owner: TOwnerData) => {
       set((state) => {
         state.owner = owner;
+      });
+    },
+
+    setProducts: (products: TBrandData[]) => {
+      set((state) => {
+        state.products = products;
+      });
+    },
+
+    setCategories: (categories: TBrandData[]) => {
+      set((state) => {
+        state.categories = categories;
+      });
+    },
+
+    setBrands: (brands: TBrandData[]) => {
+      set((state) => {
+        state.brands = brands;
       });
     },
   }))

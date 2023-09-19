@@ -43,7 +43,6 @@ const SelectShop = () => {
       </Button>
       <Menu
         anchorEl={anchorEl}
-        key={selectedShopId}
         open={open}
         onClose={handleClose}
         className="backdrop-blur"
@@ -57,7 +56,7 @@ const SelectShop = () => {
         <Typography variant="caption" className="p-2 pt-1">
           Available shops
         </Typography>
-        {Object.values(shops ?? {}).map((shop) => (
+        {shops.map((shop) => (
           <MenuItem
             className="my-1 rounded p-2"
             key={shop.id}
