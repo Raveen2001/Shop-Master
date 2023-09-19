@@ -44,6 +44,9 @@ const useFetchDataForGlobalStore = () => {
     queryKey: ["shop", store.selectedShopId, "brands"],
     queryFn: getBrandsBy("shop", store.selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!store.selectedShopId,
+    meta: {
+      includeSubCategories: true,
+    },
     onSuccess(data) {
       store.setBrands(data.data);
     },

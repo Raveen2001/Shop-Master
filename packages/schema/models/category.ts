@@ -1,4 +1,5 @@
 import { object, string, InferType } from "yup";
+import { TSubCategoryData } from "./sub-category";
 
 export const CategoryFormSchema = object({
   ownerId: string().required(),
@@ -16,4 +17,6 @@ export type TCategoryData = TCategoryFormSchema & {
   id: string;
   createdAt: string;
   updatedAt: string;
+
+  subCategories?: TSubCategoryData[];
 };
