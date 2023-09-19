@@ -1,4 +1,4 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getOwnerByToken } from "../services/owner";
@@ -28,12 +28,14 @@ const useFetchDataForGlobalStore = () => {
 
     onSuccess(data) {
       const shops = data.data.rows;
-      if (shops.length) {
-        store.setShops(shops);
-        if (!store.selectedShopId)
-          store.setSelectedShopId(data.data.rows[0]?.id);
-      } else {
+
+      if (shops.length === 0) {
         navigate("/shops/create");
+      }
+
+      store.setShops(shops);
+      if (!store.selectedShopId) {
+        store.setSelectedShopId(data.data.rows[0]?.id);
       }
     },
   });

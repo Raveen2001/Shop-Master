@@ -1,13 +1,12 @@
-import { Box, Button, ReactQueryPaginatedTable, Typography } from "ui";
+import { Box, Button, PaginatedTable, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
-import { getShopsByOwnerId } from "../../services/shop";
 import { useGlobalStore } from "../../store/globalStore";
 import { useNavigate } from "react-router-dom";
 
 const ManageShops = () => {
-  const ownerId = useGlobalStore((state) => state.owner?.id ?? "");
+  const shops = useGlobalStore((state) => state.shops);
   const navigate = useNavigate();
   return (
     <Box>
@@ -25,10 +24,9 @@ const ManageShops = () => {
           New Shop
         </Button>
       </Box>
-      <ReactQueryPaginatedTable
+      <PaginatedTable
         columns={columnsDefs}
-        queryFn={getShopsByOwnerId(ownerId)}
-        queryKeys={["owner", ownerId, "shops"]}
+        data={shops}
         defaultSortColumn={{ id: "createdAt", desc: false }}
       />
     </Box>
