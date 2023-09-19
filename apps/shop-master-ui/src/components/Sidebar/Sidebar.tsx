@@ -2,7 +2,7 @@ import { Box, Typography } from "ui";
 
 import CollapsibleItem from "../CollapsibleItem/CollapsibleItem";
 import SidebarItem from "./SidebarItem";
-import { sidebarItems } from "./utils";
+import { SIDEBAR_ITEMS } from "./constant";
 
 const Sidebar = () => {
   return (
@@ -17,7 +17,7 @@ const Sidebar = () => {
         </Typography>
 
         <Box className={"flex flex-col gap-1"}>
-          {sidebarItems.map((item) => (
+          {SIDEBAR_ITEMS.map((item) => (
             <CollapsibleItem
               name={item.name}
               key={item.name}

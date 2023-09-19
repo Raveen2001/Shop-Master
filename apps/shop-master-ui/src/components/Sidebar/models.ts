@@ -1,11 +1,12 @@
-export interface ISidebarItem {
+export type TSidebarItem = {
   name: string;
-  items: ISidebarSubItem[];
-}
+  items: TSidebarSubItem[];
+};
 
-export interface ISidebarSubItem {
+export type TSidebarSubItem = {
   name: string;
   path: string;
   icon?: React.ReactElement;
-  items?: ISidebarSubItem[];
-}
+  additionalPathPattern: string;
+  items?: TSidebarSubItem[];
+};

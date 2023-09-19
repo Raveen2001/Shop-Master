@@ -1,27 +1,20 @@
 import clsx from "clsx";
-import React, { useMemo } from "react";
-import { matchPath, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "ui";
-import { sidebarItemParentForMatch } from "./utils";
+import { TSidebarSubItem } from "./models";
 
-const SidebarItem: React.FC<ISidebarSubItem> = ({
+const SidebarItem: React.FC<TSidebarSubItem> = ({
   name,
   path,
   icon,
+  additionalPathPattern,
   // items,
 }) => {
   const theme = useTheme();
+  const { pathname } = useLocation();
+  const isSelected = useMatch(path) || pathname.match(additionalPathPattern);
 
-  const location = useLocation();
-
-  const isSelected = useMemo(() => {
-    const sidebarParentPath =
-      sidebarItemParentForMatch[location.pathname] ?? "";
-    return (
-      !!matchPath(location.pathname, path) ||
-      !!matchPath(sidebarParentPath, path)
-    );
-  }, [location.pathname, path]);
   const navigate = useNavigate();
 
   return (

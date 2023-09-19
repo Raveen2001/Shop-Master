@@ -4,19 +4,15 @@ import {
   PaymentTwoTone,
   PeopleAltTwoTone,
   WorkTwoTone,
+  CategoryTwoTone,
+  FitbitTwoTone,
   StoreTwoTone,
   EngineeringTwoTone,
+  InventoryTwoTone,
 } from "ui/icons";
-import { ISidebarItem } from "./models";
+import { TSidebarItem } from "./models";
 
-export const sidebarItemParentForMatch: Record<string, string> = {
-  "/employees/create": "/employees",
-  "/employees/edit": "/employees",
-  "/shops/create": "/shops",
-  "/shops/edit": "/shops",
-};
-
-export const sidebarItems: ISidebarItem[] = [
+export const SIDEBAR_ITEMS: TSidebarItem[] = [
   // {
   //   name: "Overview",
   //   items: [
@@ -44,11 +40,13 @@ export const sidebarItems: ISidebarItem[] = [
         name: "Manage Employees",
         path: "/employees",
         icon: <EngineeringTwoTone />,
+        additionalPathPattern: "^/employees/(edit|create)$",
       },
       {
         name: "Payment History",
         path: "/employees/payment-history",
         icon: <PaymentTwoTone />,
+        additionalPathPattern: "^/employees/payment-history/(edit|create)$",
       },
     ],
   },
@@ -59,11 +57,37 @@ export const sidebarItems: ISidebarItem[] = [
         name: "Manage Customers",
         path: "/customers",
         icon: <ManageAccountsTwoTone />,
+        additionalPathPattern: "^/customers/(edit|create)$",
       },
       {
         name: "Payment History",
         path: "/customers/payment-history",
         icon: <PaymentTwoTone />,
+        additionalPathPattern: "^/customers/payment-history/(edit|create)$",
+      },
+    ],
+  },
+
+  {
+    name: "Product",
+    items: [
+      {
+        name: "Manage Brands",
+        path: "/brands",
+        icon: <FitbitTwoTone />,
+        additionalPathPattern: "^/brands/(edit|create)$",
+      },
+      {
+        name: "Manage Categories",
+        path: "/categories",
+        icon: <CategoryTwoTone />,
+        additionalPathPattern: "^/categories/(edit|create)$",
+      },
+      {
+        name: "Manage Products",
+        path: "/products",
+        icon: <InventoryTwoTone />,
+        additionalPathPattern: "^/products/(edit|create)$",
       },
     ],
   },
@@ -74,6 +98,7 @@ export const sidebarItems: ISidebarItem[] = [
         name: "Manage Shops",
         path: "/shops",
         icon: <StoreTwoTone />,
+        additionalPathPattern: "^/cutomers/(edit|create)$",
       },
     ],
   },
