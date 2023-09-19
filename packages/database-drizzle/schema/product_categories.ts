@@ -3,6 +3,7 @@ import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { productsDB } from "./products";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
+import { productSubCategoriesDB } from "./product_sub_categories";
 
 export const productCategoriesDB = pgTable("product_categories", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -23,6 +24,7 @@ export const productCategoriesRelation = relations(
   productCategoriesDB,
   ({ many, one }) => ({
     products: many(productsDB),
+    subCategories: many(productSubCategoriesDB),
     shop: one(shopsDB, {
       fields: [productCategoriesDB.shopId],
       references: [shopsDB.id],

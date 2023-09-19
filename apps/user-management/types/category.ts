@@ -2,6 +2,7 @@ import { Static, Type } from "@sinclair/typebox";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { optionalType } from "./utils";
 import { ShopSchemaOut } from "./shop";
+import { SubCategorySchema } from "./sub-category";
 
 export const CategorySchema = Type.Object({
   id: Type.String(),
@@ -24,6 +25,7 @@ export const CategorySchemaOut = Type.Intersect([
   Type.Object({
     shop: Type.Optional(ShopSchemaOut),
     owner: Type.Optional(OwnerSchemaWithoutPassword),
+    subCategories: Type.Optional(Type.Array(SubCategorySchema)),
     // TODO: add products
     // products: Type.Optional(Type.Array(EmployeeSchema)),
   }),
@@ -41,6 +43,7 @@ export const CategoryQueryStringSchema = Type.Object({
   includeOwner: Type.Boolean({ default: false }),
   includeShop: Type.Boolean({ default: false }),
   includeProducts: Type.Boolean({ default: false }),
+  includeSubCategories: Type.Boolean({ default: false }),
 });
 
 export type TCategoryQueryParam = Static<typeof CategoryQueryParamSchema>;

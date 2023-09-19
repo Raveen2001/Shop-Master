@@ -21,7 +21,8 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
     Params: TCategoryQueryParam;
     Querystring: TCategoryQueryString;
   }>("/:id", QueryCategoryOpts, async (req, reply) => {
-    const { includeOwner, includeProducts, includeShop } = req.query;
+    const { includeOwner, includeProducts, includeShop, includeSubCategories } =
+      req.query;
 
     const category = await fastify.db.query.productCategoriesDB.findFirst({
       where: (productCategoriesDB, { eq }) =>
@@ -31,6 +32,7 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
         owner: includeOwner || undefined,
         shop: includeShop || undefined,
         products: includeProducts || undefined,
+        subCategories: includeSubCategories || undefined,
       },
     });
 
@@ -73,8 +75,12 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
   function getCategorysBy(queryBy: TCategoryQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TCategoryQueryParam;
-      const { includeOwner, includeProducts, includeShop } =
-        req.query as TCategoryQueryString;
+      const {
+        includeOwner,
+        includeProducts,
+        includeShop,
+        includeSubCategories,
+      } = req.query as TCategoryQueryString;
 
       const categorys = await fastify.db.query.productCategoriesDB.findMany({
         where: (productCategoriesDB, { eq }) =>
@@ -83,6 +89,7 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
           owner: includeOwner || undefined,
           products: includeProducts || undefined,
           shop: includeShop || undefined,
+          subCategories: includeSubCategories || undefined,
         },
       });
 
