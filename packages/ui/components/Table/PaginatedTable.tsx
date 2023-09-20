@@ -13,49 +13,55 @@ import {
 
 import {
   ColumnDef,
+  ColumnSort,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import { IColumnSort } from "./model";
-import { isError } from "lodash";
 import ShowStatus from "./ShowStatus";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
   data: T[];
-  defaultSortColumn?: IColumnSort<T>;
-  disableSorting?: boolean;
+  defaultSortColumn?: ColumnSort;
 }
 const ReactQueryPaginatedTable = <T, K>({
   columns,
   data,
   defaultSortColumn,
-  disableSorting,
 }: IReactQueryPaginatedTableProps<T, K>) => {
   const containsData = React.useMemo(() => {
     return data.length > 0;
   }, [data]);
 
+  const [sorting, setSorting] = React.useState<SortingState>(
+    defaultSortColumn ? [defaultSortColumn] : [],
+  );
+
   const table = useReactTable({
     data: data,
     columns,
     state: {
-      sorting: (defaultSortColumn ? [defaultSortColumn] : []) as SortingState,
+      sorting,
     },
-
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     enableSortingRemoval: false,
   });
 
   return (
     <Box>
-      <Box className="relative w-full overflow-auto border border-dotted border-slate-400">
+      <Box className="relative w-full overflow-auto border border-dotted border-slate-400 max-h-[50vh]">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
-          <TableHead className={`bg-slate-100 `}>
+          <TableHead className={`bg-slate-100 sticky top-0 z-10`}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -65,26 +71,21 @@ const ReactQueryPaginatedTable = <T, K>({
                         <Box
                           className={clsx("flex items-center text-slate-500", {
                             "cursor-pointer select-none":
-                              header.column.getCanSort() && !disableSorting,
+                              header.column.getCanSort(),
                             "text-slate-900": header.column.getIsSorted(),
                           })}
-                          onClick={
-                            disableSorting
-                              ? undefined
-                              : header.column.getToggleSortingHandler()
-                          }
+                          onClick={header.column.getToggleSortingHandler()}
                         >
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
 
-                          {disableSorting
-                            ? null
-                            : {
-                                asc: <ArrowUpwardRounded fontSize="small" />,
-                                desc: <ArrowDownwardRounded fontSize="small" />,
-                              }[header.column.getIsSorted() as string] ?? null}
+                          {header.column.getCanSort() &&
+                            {
+                              asc: <ArrowUpwardRounded fontSize="small" />,
+                              desc: <ArrowDownwardRounded fontSize="small" />,
+                            }[header.column.getIsSorted() as string]}
                         </Box>
                       )}
                     </TableCell>

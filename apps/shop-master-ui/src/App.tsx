@@ -32,7 +32,7 @@ function App() {
       <RouterProvider router={router} />
       <ReactQueryDevtools
         initialIsOpen={false}
-        position="bottom-right"
+        position="bottom-left"
         panelPosition="right"
       />
     </QueryClientProvider>
