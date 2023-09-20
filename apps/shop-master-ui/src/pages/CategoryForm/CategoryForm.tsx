@@ -1,5 +1,5 @@
 import { FC } from "react";
-import useBrandForm from "./useBrandForm";
+import useBrandForm from "./useCategoryForm";
 import {
   Box,
   Typography,
@@ -26,7 +26,7 @@ const CustomerForm: FC = () => {
   } = useBrandForm();
   return (
     <Box className="px-8 py-4">
-      <Typography variant="h5">Create a new Brand</Typography>
+      <Typography variant="h5">Create a new Category</Typography>
 
       <Box className="h-8" />
 
@@ -38,7 +38,7 @@ const CustomerForm: FC = () => {
           <ProfileImagePicker onImageChange={setProfileImage} />
 
           <Button color="error" variant="outlined">
-            Delete Brand
+            Delete Category
           </Button>
         </Card>
 
@@ -71,7 +71,7 @@ const CustomerForm: FC = () => {
               className="float-right"
               type="submit"
             >
-              Create Brand
+              Create Category
             </LoadingButton>
           </form>
         </Card>

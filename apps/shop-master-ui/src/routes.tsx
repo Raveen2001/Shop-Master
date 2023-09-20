@@ -22,6 +22,7 @@ import CustomerPaymentForm from "./pages/CustomerPaymentForm";
 import ManageBrands from "./pages/ManageBrands";
 import BrandForm from "./pages/BrandForm";
 import ManageCategories from "./pages/ManageCategories";
+import CategoryForm from "./pages/CategoryForm";
 
 export const router = createBrowserRouter([
   {
@@ -132,6 +133,11 @@ export const router = createBrowserRouter([
           {
             path: "",
             element: <ManageCategories />,
+          },
+
+          {
+            path: "create",
+            element: <CategoryForm />,
           },
         ],
       },
