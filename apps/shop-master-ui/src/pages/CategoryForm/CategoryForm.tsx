@@ -1,5 +1,5 @@
 import { FC } from "react";
-import useBrandForm from "./useCategoryForm";
+import useCategoryForm from "./useCategoryForm";
 import {
   Box,
   Typography,
@@ -12,7 +12,7 @@ import {
   Alert,
 } from "ui";
 
-const CustomerForm: FC = () => {
+const CategoryForm: FC = () => {
   const {
     formErrors,
     onSubmit,
@@ -23,7 +23,7 @@ const CustomerForm: FC = () => {
     setProfileImage,
     shop,
     owner,
-  } = useBrandForm();
+  } = useCategoryForm();
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">Create a new Category</Typography>
@@ -94,4 +94,4 @@ const CustomerForm: FC = () => {
   );
 };
 
-export default CustomerForm;
+export default CategoryForm;

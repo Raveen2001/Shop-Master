@@ -12,7 +12,7 @@ import {
   Alert,
 } from "ui";
 
-const CustomerForm: FC = () => {
+const BrandForm: FC = () => {
   const {
     formErrors,
     onSubmit,
@@ -94,4 +94,4 @@ const CustomerForm: FC = () => {
   );
 };
 
-export default CustomerForm;
+export default BrandForm;
