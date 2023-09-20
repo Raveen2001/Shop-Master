@@ -21,6 +21,7 @@ import CustomerForm from "./pages/CustomerForm/CustomerForm";
 import CustomerPaymentForm from "./pages/CustomerPaymentForm";
 import ManageBrands from "./pages/ManageBrands";
 import BrandForm from "./pages/BrandForm";
+import ManageCategories from "./pages/ManageCategories";
 
 export const router = createBrowserRouter([
   {
@@ -130,7 +131,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <h1>Categories</h1>,
+            element: <ManageCategories />,
           },
         ],
       },
