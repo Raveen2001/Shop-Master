@@ -1,27 +1,25 @@
+import { IconButton } from "@mui/material";
 import { ColumnDef } from "@tanstack/react-table";
+import ChevronRightTwoToneIcon from "@mui/icons-material/ChevronRightTwoTone";
+import clsx from "clsx";
 
-export const SUBROW_COLUMN_OPTION: ColumnDef<unknown> = {
+export const getSubRowColumnOption = <T,>(): ColumnDef<T> => ({
   id: "expand",
+  size: 20,
+
   header: ({ table }) => (
-    <button
-      {...{
-        onClick: table.getToggleAllRowsExpandedHandler(),
-      }}
-    >
-      {table.getIsAllRowsExpanded() ? "👇" : "👉"}
-    </button>
+    <IconButton onClick={table.getToggleAllRowsExpandedHandler()}>
+      <ChevronRightTwoToneIcon
+        className={clsx({ "rotate-90": table.getIsAllRowsExpanded() })}
+      />
+    </IconButton>
   ),
   cell: ({ row }) =>
     row.getCanExpand() ? (
-      <button
-        {...{
-          onClick: row.getToggleExpandedHandler(),
-          style: { cursor: "pointer" },
-        }}
-      >
-        {row.getIsExpanded() ? "👇" : "👉"}
-      </button>
-    ) : (
-      "🔵"
-    ),
-};
+      <IconButton aria-label="delete" onClick={row.getToggleExpandedHandler()}>
+        <ChevronRightTwoToneIcon
+          className={clsx({ "rotate-90": row.getIsExpanded() })}
+        />
+      </IconButton>
+    ) : null,
+});

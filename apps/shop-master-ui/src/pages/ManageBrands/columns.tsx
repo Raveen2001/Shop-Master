@@ -1,9 +1,15 @@
 import { TBrandData } from "schema";
-import { TableDateTimeCell, TableProfileCell, createColumnHelper } from "ui";
+import {
+  getSubRowColumnOption,
+  TableDateTimeCell,
+  TableProfileCell,
+  createColumnHelper,
+} from "ui";
 
 const columnHelper = createColumnHelper<TBrandData>();
 
 export const columnsDefs = [
+  getSubRowColumnOption<TBrandData>(),
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",

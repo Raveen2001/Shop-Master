@@ -79,6 +79,9 @@ const ReactQueryPaginatedTable = <T, K>({
                             "text-slate-900": header.column.getIsSorted(),
                           })}
                           onClick={header.column.getToggleSortingHandler()}
+                          sx={{
+                            width: header.column.getSize(),
+                          }}
                         >
                           {flexRender(
                             header.column.columnDef.header,
