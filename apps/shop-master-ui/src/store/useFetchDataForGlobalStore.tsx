@@ -132,18 +132,6 @@ const useFetchDataForGlobalStore = () => {
     return !isLoading && !isError && !!store.owner && !!store.selectedShop;
   }, [isLoading, isError, store.owner, store.selectedShop]);
 
-  if (isAllDataLoaded) {
-    console.log("All data loaded");
-
-    console.log("Owner", store.owner);
-    console.log("Shops", shopsQuery.data?.data.rows);
-    console.log("Selected Shop", store.selectedShop);
-    console.log("Brands", brandsQuery.data?.data);
-    console.log("Categories", categoriesQuery.data?.data);
-    console.log("Sub Categories", subCategoriesQuery.data?.data);
-    console.log("Products", productsQuery.data?.data);
-  }
-
   return {
     isAllDataLoaded,
     hasNoShops,

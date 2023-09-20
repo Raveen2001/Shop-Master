@@ -13,16 +13,16 @@ const ManageBrands = () => {
     <Box>
       <Box className="mb-8 flex">
         <Box className="flex-1">
-          <Typography variant="h6">Manage Customers</Typography>
+          <Typography variant="h6">Manage Brands</Typography>
         </Box>
 
         <Button
           variant="contained"
           size="small"
           startIcon={<Add />}
-          onClick={() => navigate("/customers/create")}
+          onClick={() => navigate("/brands/create")}
         >
-          New Customer
+          New Brand
         </Button>
       </Box>
       <PaginatedTable

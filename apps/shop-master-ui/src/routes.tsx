@@ -20,6 +20,7 @@ import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 import CustomerForm from "./pages/CustomerForm/CustomerForm";
 import CustomerPaymentForm from "./pages/CustomerPaymentForm";
 import ManageBrands from "./pages/ManageBrands";
+import BrandForm from "./pages/BrandForm";
 
 export const router = createBrowserRouter([
   {
@@ -114,6 +115,11 @@ export const router = createBrowserRouter([
           {
             path: "",
             element: <ManageBrands />,
+          },
+
+          {
+            path: "create",
+            element: <BrandForm />,
           },
         ],
       },
