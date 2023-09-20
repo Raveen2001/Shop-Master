@@ -139,6 +139,11 @@ export const router = createBrowserRouter([
             path: "create",
             element: <CategoryForm />,
           },
+
+          {
+            path: ":id/sub-category/create",
+            element: <h1>SubCategory</h1>,
+          },
         ],
       },
 

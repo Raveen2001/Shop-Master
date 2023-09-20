@@ -59,6 +59,9 @@ const useFetchDataForGlobalStore = () => {
     onSuccess(data) {
       store.setCategories(data.data);
     },
+    meta: {
+      includeSubCategories: true,
+    },
   });
 
   const subCategoriesQuery = useQuery({
