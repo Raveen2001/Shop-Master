@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useMemo } from "react";
 import clsx from "clsx";
 
 import {
@@ -16,6 +16,7 @@ import {
   ColumnSort,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -23,18 +24,19 @@ import {
 } from "@tanstack/react-table";
 
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
-import { IColumnSort } from "./model";
 import ShowStatus from "./ShowStatus";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
   data: T[];
   defaultSortColumn?: ColumnSort;
+  getSubRows?: (originalRow: T, index: number) => T[];
 }
 const ReactQueryPaginatedTable = <T, K>({
   columns,
   data,
   defaultSortColumn,
+  getSubRows,
 }: IReactQueryPaginatedTableProps<T, K>) => {
   const containsData = React.useMemo(() => {
     return data.length > 0;
@@ -50,10 +52,12 @@ const ReactQueryPaginatedTable = <T, K>({
     state: {
       sorting,
     },
+    getSubRows: getSubRows,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     enableSortingRemoval: false,
   });
 
