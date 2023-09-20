@@ -3,6 +3,7 @@ import { object, string, InferType } from "yup";
 export const SubCategoryFormSchema = object({
   ownerId: string().required(),
   shopId: string().required(),
+  categoryId: string().required(),
   name: string()
     .trim()
     .min(3, "Name must be at least 3 characters")

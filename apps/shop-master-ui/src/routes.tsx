@@ -23,6 +23,7 @@ import ManageBrands from "./pages/ManageBrands";
 import BrandForm from "./pages/BrandForm";
 import ManageCategories from "./pages/ManageCategories";
 import CategoryForm from "./pages/CategoryForm";
+import SubCategoryForm from "./pages/SubCategoryForm";
 
 export const router = createBrowserRouter([
   {
@@ -142,7 +143,7 @@ export const router = createBrowserRouter([
 
           {
             path: ":id/sub-category/create",
-            element: <h1>SubCategory</h1>,
+            element: <SubCategoryForm />,
           },
         ],
       },
