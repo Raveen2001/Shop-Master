@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { TCategoryData } from "schema";
 import {
   getSubRowColumnOption,
@@ -8,13 +9,12 @@ import {
   IconButton,
 } from "ui";
 
-import { EditTwoTone } from "ui/icons";
+import { EditTwoTone, AddCircleTwoTone } from "ui/icons";
 
 const columnHelper = createColumnHelper<TCategoryData>();
 
 //! depth decides if it is category or subCategory
-//! depth 1 - category, 2 - subCategory.
-
+//! depth 0 - category, 1 - subCategory.
 export const columnsDefs = [
   getSubRowColumnOption<TCategoryData>(),
   columnHelper.accessor("name", {
@@ -86,10 +86,19 @@ export const columnsDefs = [
           sx={{
             paddingLeft: `${depth * 2}rem`,
           }}
+          className="flex gap-2"
         >
           <IconButton>
             <EditTwoTone />
           </IconButton>
+
+          {depth === 0 && (
+            <Link to={`${id}/sub-category/create`}>
+              <IconButton>
+                <AddCircleTwoTone />
+              </IconButton>
+            </Link>
+          )}
         </Box>
       );
     },
