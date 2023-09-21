@@ -41,6 +41,7 @@ const ManageProducts = () => {
         columns={columnsDefs}
         data={updatedProducts}
         defaultSortColumn={{ id: "createdAt", desc: false }}
+        getRowCanExpand={(row) => (row.original.variants ?? []).length > 0}
       />
     </Box>
   );

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useMemo } from "react";
+import React, { ChangeEvent, Fragment } from "react";
 import clsx from "clsx";
 
 import {
@@ -19,6 +19,7 @@ import {
   getExpandedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Row,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -30,13 +31,17 @@ interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
   data: T[];
   defaultSortColumn?: ColumnSort;
+  renderSubComponent?: (props: { row: Row<T> }) => React.ReactElement;
   getSubRows?: (originalRow: T, index: number) => T[];
+  getRowCanExpand?: (row: Row<T>) => boolean;
 }
 const ReactQueryPaginatedTable = <T, K>({
   columns,
   data,
   defaultSortColumn,
   getSubRows,
+  getRowCanExpand,
+  renderSubComponent,
 }: IReactQueryPaginatedTableProps<T, K>) => {
   const containsData = React.useMemo(() => {
     return data.length > 0;
@@ -53,6 +58,7 @@ const ReactQueryPaginatedTable = <T, K>({
       sorting,
     },
     getSubRows: getSubRows,
+    getRowCanExpand: getRowCanExpand,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -105,18 +111,30 @@ const ReactQueryPaginatedTable = <T, K>({
             {containsData &&
               table.getRowModel().rows.map((row) => {
                 return (
-                  <TableRow key={row.id} className="hover:bg-slate-50">
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
+                  <Fragment key={row.id}>
+                    <TableRow className="hover:bg-slate-50">
+                      {row.getVisibleCells().map((cell) => {
+                        return (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                    {renderSubComponent && row.getIsExpanded() && (
+                      <TableRow>
+                        {/* 2nd row is a custom 1 cell row */}
+                        <TableCell colSpan={row.getVisibleCells().length}>
+                          {renderSubComponent({
+                            row,
+                          })}
                         </TableCell>
-                      );
-                    })}
-                  </TableRow>
+                      </TableRow>
+                    )}
+                  </Fragment>
                 );
               })}
           </TableBody>
