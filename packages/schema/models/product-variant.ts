@@ -3,6 +3,7 @@ import { object, string, InferType, number, boolean } from "yup";
 export const ProductVariantFormSchema = object({
   ownerId: string().required(),
   shopId: string().required(),
+  productId: string().required(),
   name: string()
     .trim()
     .min(3, "Name must be at least 3 characters")
