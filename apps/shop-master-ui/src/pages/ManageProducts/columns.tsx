@@ -28,6 +28,55 @@ export const columnsDefs = [
     },
   }),
 
+  columnHelper.accessor("brand.name", {
+    id: "brand",
+    header: "Brand",
+
+    cell: ({
+      row: {
+        original: { brand },
+      },
+    }) => {
+      if (!brand) return "-";
+      return <TableProfileCell name={brand.name} imageUrl={brand.image} />;
+    },
+  }),
+
+  columnHelper.accessor("category.name", {
+    id: "category",
+    header: "Category",
+
+    cell: ({
+      row: {
+        original: { category },
+      },
+    }) => {
+      if (!category) return "-";
+      return (
+        <TableProfileCell name={category.name} imageUrl={category.image} />
+      );
+    },
+  }),
+
+  columnHelper.accessor("subCategory.name", {
+    id: "subCategory",
+    header: "Sub-category",
+
+    cell: ({
+      row: {
+        original: { subCategory },
+      },
+    }) => {
+      if (!subCategory) return "-";
+      return (
+        <TableProfileCell
+          name={subCategory.name}
+          imageUrl={subCategory.image}
+        />
+      );
+    },
+  }),
+
   columnHelper.accessor("createdAt", {
     id: "createdAt",
     header: "Created At",
