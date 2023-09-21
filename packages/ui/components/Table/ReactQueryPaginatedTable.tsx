@@ -13,6 +13,7 @@ import {
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
+  ColumnSort,
   flexRender,
   getCoreRowModel,
   SortingState,
@@ -23,7 +24,6 @@ import { IPaginatedData } from "schema";
 import ShowStatus from "./ShowStatus";
 import { AxiosResponse } from "axios";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
-import { IColumnSort } from "./model";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
@@ -31,7 +31,7 @@ interface IReactQueryPaginatedTableProps<T, K> {
     context: QueryFunctionContext,
   ) => Promise<AxiosResponse<IPaginatedData<T>>>;
   queryKeys: string[];
-  defaultSortColumn?: IColumnSort<T>;
+  defaultSortColumn?: ColumnSort;
   disableSorting?: boolean;
 }
 const ReactQueryPaginatedTable = <T, K>({

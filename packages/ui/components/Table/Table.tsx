@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Fragment } from "react";
+import React, { Fragment } from "react";
 import clsx from "clsx";
 
 import {
@@ -7,7 +7,6 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
 } from "@mui/material";
 
@@ -16,10 +15,7 @@ import {
   ColumnSort,
   flexRender,
   getCoreRowModel,
-  getExpandedRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
-  Row,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -31,17 +27,11 @@ interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
   data: T[];
   defaultSortColumn?: ColumnSort;
-  renderSubComponent?: React.FC<{ row: Row<T> }>;
-  getSubRows?: (originalRow: T, index: number) => T[];
-  getRowCanExpand?: (row: Row<T>) => boolean;
 }
 const ReactQueryPaginatedTable = <T, K>({
   columns,
   data,
   defaultSortColumn,
-  getSubRows,
-  getRowCanExpand,
-  renderSubComponent,
 }: IReactQueryPaginatedTableProps<T, K>) => {
   const containsData = React.useMemo(() => {
     return data.length > 0;
@@ -57,13 +47,9 @@ const ReactQueryPaginatedTable = <T, K>({
     state: {
       sorting,
     },
-    getSubRows: getSubRows,
-    getRowCanExpand: getRowCanExpand,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
     enableSortingRemoval: false,
   });
 
@@ -124,16 +110,6 @@ const ReactQueryPaginatedTable = <T, K>({
                         );
                       })}
                     </TableRow>
-                    {renderSubComponent && row.getIsExpanded() && (
-                      <TableRow>
-                        {/* 2nd row is a custom 1 cell row */}
-                        <TableCell colSpan={row.getVisibleCells().length}>
-                          {renderSubComponent({
-                            row,
-                          })}
-                        </TableCell>
-                      </TableRow>
-                    )}
                   </Fragment>
                 );
               })}
@@ -147,19 +123,6 @@ const ReactQueryPaginatedTable = <T, K>({
           </Box>
         )}
       </Box>
-
-      <TablePagination
-        component="div"
-        count={data.length}
-        page={table.getState().pagination.pageIndex}
-        onPageChange={(e, page) => {
-          table.setPageIndex(page);
-        }}
-        rowsPerPage={table.getState().pagination.pageSize}
-        onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
-          table.setPageSize(Number(e.target.value));
-        }}
-      />
     </Box>
   );
 };
