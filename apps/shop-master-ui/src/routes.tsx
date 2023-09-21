@@ -25,6 +25,7 @@ import ManageCategories from "./pages/ManageCategories";
 import CategoryForm from "./pages/CategoryForm";
 import SubCategoryForm from "./pages/SubCategoryForm";
 import ManageProducts from "./pages/ManageProducts";
+import ProductForm from "./pages/ProductForm";
 
 export const router = createBrowserRouter([
   {
@@ -157,6 +158,11 @@ export const router = createBrowserRouter([
           {
             path: "",
             element: <ManageProducts />,
+          },
+
+          {
+            path: "create",
+            element: <ProductForm />,
           },
         ],
       },

@@ -1,6 +1,13 @@
 {
   "configurations": [
     {
+      "command": "pnpm dev",
+      "name": "Debug Shop Master API",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/apps/user-management"
+    },
+    {
       "name": "Edge 5173",
       "request": "launch",
       "type": "msedge",

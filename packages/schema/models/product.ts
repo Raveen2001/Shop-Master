@@ -14,9 +14,9 @@ export const ProductFormSchema = object({
 
   description: string().trim().nullable(),
 
-  brandId: string().required("Product is required"),
-  categoryId: string().required("Category is required"),
-  subCategoryId: string().required("Sub Category is required"),
+  brandId: string().trim().nullable(),
+  categoryId: string().trim().nullable(),
+  subCategoryId: string().trim().nullable(),
 });
 
 export type TProductFormSchema = InferType<typeof ProductFormSchema>;

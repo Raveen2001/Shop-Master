@@ -1,6 +1,6 @@
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { axiosClient } from "../utils/axios";
-import { TProductData } from "schema";
+import { TProductData, TProductFormSchema } from "schema";
 
 export const getProductsBy = (by: "owner" | "shop", id: string) => {
   const url = `/products/${by}/${id}`;
@@ -9,4 +9,9 @@ export const getProductsBy = (by: "owner" | "shop", id: string) => {
 
     return axiosClient.get<TProductData[]>(url, { params: queryParams });
   };
+};
+
+export const createProduct = (brand: TProductFormSchema) => {
+  const url = "/products/create";
+  return axiosClient.post<TProductData>(url, brand);
 };

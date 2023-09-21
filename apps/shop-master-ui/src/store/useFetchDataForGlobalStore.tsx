@@ -7,7 +7,7 @@ import { useGlobalStore } from "./globalStore";
 import { getBrandsBy } from "../services/brand";
 import { getCategoriesBy } from "../services/category";
 import { getSubCategoriesBy } from "../services/sub-category";
-import { getProductsBy } from "../services/products";
+import { getProductsBy } from "../services/product";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
