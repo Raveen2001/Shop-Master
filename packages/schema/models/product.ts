@@ -1,5 +1,8 @@
 import { object, string, InferType } from "yup";
 import { TProductVariantData } from "./product-variant";
+import { TCategoryData } from "./category";
+import { TSubCategoryData } from "./sub-category";
+import { TBrandData } from "./brand";
 
 export const ProductFormSchema = object({
   ownerId: string().required(),
@@ -22,4 +25,7 @@ export type TProductData = TProductFormSchema & {
   createdAt: string;
   updatedAt: string;
   variants?: TProductVariantData[];
+  category?: TCategoryData;
+  subCategory?: TSubCategoryData;
+  brand?: TBrandData;
 };

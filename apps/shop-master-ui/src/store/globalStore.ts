@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { TBrandData, TShopData } from "schema";
+import { TBrandData, TCategoryData, TProductData, TShopData } from "schema";
 import { TOwnerData } from "../models/owner";
 
 interface IGlobalStore {
@@ -18,11 +18,11 @@ interface IGlobalStore {
   brands: TBrandData[];
   setBrands: (brands: TBrandData[]) => void;
 
-  categories: TBrandData[];
-  setCategories: (categories: TBrandData[]) => void;
+  categories: TCategoryData[];
+  setCategories: (categories: TCategoryData[]) => void;
 
-  products: TBrandData[];
-  setProducts: (products: TBrandData[]) => void;
+  products: TProductData[];
+  setProducts: (products: TProductData[]) => void;
 }
 
 export const useGlobalStore = create(
@@ -54,19 +54,19 @@ export const useGlobalStore = create(
       });
     },
 
-    setProducts: (products: TBrandData[]) => {
+    setProducts: (products) => {
       set((state) => {
         state.products = products;
       });
     },
 
-    setCategories: (categories: TBrandData[]) => {
+    setCategories: (categories) => {
       set((state) => {
         state.categories = categories;
       });
     },
 
-    setBrands: (brands: TBrandData[]) => {
+    setBrands: (brands) => {
       set((state) => {
         state.brands = brands;
       });

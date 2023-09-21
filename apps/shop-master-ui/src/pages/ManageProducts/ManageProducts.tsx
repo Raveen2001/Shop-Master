@@ -5,10 +5,22 @@ import { Add } from "ui/icons";
 import { useGlobalStore } from "../../store/globalStore";
 
 import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import { mergeProductData } from "../../utils/product";
 
 const ManageProducts = () => {
   const navigate = useNavigate();
-  const products = useGlobalStore((state) => state.products);
+  const [products, brands, categories] = useGlobalStore((state) => [
+    state.products,
+    state.brands,
+    state.categories,
+  ]);
+
+  const updatedProducts = useMemo(
+    () => mergeProductData(products, brands, categories),
+    [brands, categories, products]
+  );
+
   return (
     <Box>
       <Box className="mb-8 flex">
@@ -27,7 +39,7 @@ const ManageProducts = () => {
       </Box>
       <PaginatedTable
         columns={columnsDefs}
-        data={products}
+        data={updatedProducts}
         defaultSortColumn={{ id: "createdAt", desc: false }}
       />
     </Box>

@@ -21,52 +21,28 @@ export const columnsDefs = [
 
     cell: ({
       row: {
-        depth,
         original: { name },
       },
     }) => {
-      return (
-        <Box
-          sx={{
-            paddingLeft: `${depth * 2}rem`,
-          }}
-        >
-          <TableProfileCell name={name} />
-        </Box>
-      );
+      return <TableProfileCell name={name} />;
     },
   }),
 
   columnHelper.accessor("createdAt", {
     id: "createdAt",
     header: "Created At",
-    cell: ({ getValue, row: { depth } }) => {
+    cell: ({ getValue }) => {
       const date = getValue();
-      return (
-        <Box
-          sx={{
-            paddingLeft: `${depth * 2}rem`,
-          }}
-        >
-          <TableDateTimeCell date={date} />
-        </Box>
-      );
+      return <TableDateTimeCell date={date} />;
     },
   }),
+
   columnHelper.accessor("updatedAt", {
     id: "updatedAt",
     header: "Updated At",
-    cell: ({ getValue, row: { depth } }) => {
+    cell: ({ getValue }) => {
       const date = getValue();
-      return (
-        <Box
-          sx={{
-            paddingLeft: `${depth * 2}rem`,
-          }}
-        >
-          <TableDateTimeCell date={date} />
-        </Box>
-      );
+      return <TableDateTimeCell date={date} />;
     },
   }),
 
@@ -75,28 +51,20 @@ export const columnsDefs = [
     header: "Actions",
     cell: ({
       row: {
-        depth,
         original: { id },
       },
     }) => {
       return (
-        <Box
-          sx={{
-            paddingLeft: `${depth * 2}rem`,
-          }}
-          className="flex gap-2"
-        >
+        <Box className="flex gap-2">
           <IconButton>
             <EditTwoTone />
           </IconButton>
 
-          {depth === 0 && (
-            <Link to={`${id}/product-variant/create`}>
-              <IconButton>
-                <AddCircleTwoTone />
-              </IconButton>
-            </Link>
-          )}
+          <Link to={`${id}/product-variant/create`}>
+            <IconButton>
+              <AddCircleTwoTone />
+            </IconButton>
+          </Link>
         </Box>
       );
     },
