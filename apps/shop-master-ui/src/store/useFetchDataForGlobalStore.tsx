@@ -132,8 +132,8 @@ const useFetchDataForGlobalStore = () => {
   ]);
 
   const isAllDataLoaded = useMemo(() => {
-    return !isLoading && !isError && !!store.owner && !!store.selectedShop;
-  }, [isLoading, isError, store.owner, store.selectedShop]);
+    return !isLoading && !isError && !!store.isAllDataLoaded();
+  }, [isLoading, isError, store]);
 
   return {
     isAllDataLoaded,
