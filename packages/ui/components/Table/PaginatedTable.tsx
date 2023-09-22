@@ -69,7 +69,7 @@ const ReactQueryPaginatedTable = <T, K>({
     enableSortingRemoval: false,
   });
   return (
-    <Box className={clsx("flex flex-col w-full h-full", className)}>
+    <Box className={clsx("flex flex-col w-full h-full isolate", className)}>
       <Box className="relative w-full overflow-auto border border-dotted border-slate-400 flex-1">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100 sticky top-0 z-10`}>
