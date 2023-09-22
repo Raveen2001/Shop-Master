@@ -23,7 +23,7 @@ const ManageProducts = () => {
   );
 
   return (
-    <Box>
+    <>
       <Box className="mb-8 flex">
         <Box className="flex-1">
           <Typography variant="h6">Manage Products</Typography>
@@ -38,14 +38,16 @@ const ManageProducts = () => {
           New Product
         </Button>
       </Box>
+
       <PaginatedTable
+        className="max-h-[70vh]"
         columns={columnsDefs}
         data={updatedProducts}
         defaultSortColumn={{ id: "createdAt", desc: false }}
-        getRowCanExpand={(row) => (row.original.variants ?? []).length > 0}
-        renderSubComponent={ProductVariantList}
+        // getRowCanExpand={(row) => (row.original.variants ?? []).length > 0}
+        // renderSubComponent={ProductVariantList}
       />
-    </Box>
+    </>
   );
 };
 

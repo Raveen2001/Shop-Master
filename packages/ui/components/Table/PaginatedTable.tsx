@@ -27,7 +27,8 @@ import {
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import ShowStatus from "./ShowStatus";
 
-interface IReactQueryPaginatedTableProps<T, K> {
+interface IReactQueryPaginatedTableProps<T, K>
+  extends React.HTMLAttributes<HTMLElement> {
   columns: ColumnDef<T, K>[];
   data: T[];
   defaultSortColumn?: ColumnSort;
@@ -42,6 +43,7 @@ const ReactQueryPaginatedTable = <T, K>({
   getSubRows,
   getRowCanExpand,
   renderSubComponent,
+  className,
 }: IReactQueryPaginatedTableProps<T, K>) => {
   const containsData = React.useMemo(() => {
     return data.length > 0;
@@ -66,10 +68,9 @@ const ReactQueryPaginatedTable = <T, K>({
     getExpandedRowModel: getExpandedRowModel(),
     enableSortingRemoval: false,
   });
-
   return (
-    <Box>
-      <Box className="relative w-full overflow-auto border border-dotted border-slate-400">
+    <Box className={clsx("flex flex-col w-full h-full", className)}>
+      <Box className="relative w-full overflow-auto border border-dotted border-slate-400 flex-1">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100 sticky top-0 z-10`}>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -124,16 +125,18 @@ const ReactQueryPaginatedTable = <T, K>({
                         );
                       })}
                     </TableRow>
-                    {renderSubComponent && row.getIsExpanded() && (
-                      <TableRow>
-                        {/* 2nd row is a custom 1 cell row */}
-                        <TableCell colSpan={row.getVisibleCells().length}>
-                          {renderSubComponent({
-                            row,
-                          })}
-                        </TableCell>
-                      </TableRow>
-                    )}
+                    {renderSubComponent &&
+                      row.getIsExpanded() &&
+                      row.getCanExpand() && (
+                        <TableRow>
+                          {/* 2nd row is a custom 1 cell row */}
+                          <TableCell colSpan={row.getVisibleCells().length}>
+                            {renderSubComponent({
+                              row,
+                            })}
+                          </TableCell>
+                        </TableRow>
+                      )}
                   </Fragment>
                 );
               })}
@@ -147,9 +150,9 @@ const ReactQueryPaginatedTable = <T, K>({
           </Box>
         )}
       </Box>
-
       <TablePagination
         component="div"
+        className="overflow-hidden"
         count={data.length}
         page={table.getState().pagination.pageIndex}
         onPageChange={(e, page) => {
