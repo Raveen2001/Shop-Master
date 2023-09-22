@@ -10,7 +10,7 @@ const ManageBrands = () => {
   const navigate = useNavigate();
   const brands = useGlobalStore((state) => state.brands);
   return (
-    <Box>
+    <>
       <Box className="mb-8 flex">
         <Box className="flex-1">
           <Typography variant="h6">Manage Brands</Typography>
@@ -25,12 +25,14 @@ const ManageBrands = () => {
           New Brand
         </Button>
       </Box>
+
       <PaginatedTable
+        className="h-[80vh]"
         columns={columnsDefs}
         data={brands}
         defaultSortColumn={{ id: "createdAt", desc: false }}
       />
-    </Box>
+    </>
   );
 };
 

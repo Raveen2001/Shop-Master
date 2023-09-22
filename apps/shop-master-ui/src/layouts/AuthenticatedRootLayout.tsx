@@ -11,7 +11,7 @@ const AuthenticatedRootLayout = () => {
     useFetchDataForGlobalStore();
 
   return (
-    <Box className="flex flex-row">
+    <Box className="flex h-screen flex-row">
       <Sidebar />
       <Box className="relative flex-1 overflow-auto">
         <PageStatus
