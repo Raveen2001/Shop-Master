@@ -69,7 +69,7 @@ const ReactQueryPaginatedTable = <T, K>({
 
   return (
     <Box>
-      <Box className="relative w-full overflow-auto border border-dotted border-slate-400 max-h-[50vh]">
+      <Box className="relative w-full overflow-auto border border-dotted border-slate-400">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100 sticky top-0 z-10`}>
             {table.getHeaderGroups().map((headerGroup) => (
