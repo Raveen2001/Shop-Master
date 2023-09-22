@@ -6,6 +6,7 @@ import {
   formatCurrency,
 } from "ui";
 import { TEmployeePaymentData } from "schema";
+import OwnerTableCell from "../../components/OwnerTableCell";
 
 const columnHelper = createColumnHelper<TEmployeePaymentData>();
 
@@ -58,19 +59,19 @@ export const columnsDefs: ColumnDef<TEmployeePaymentData, any>[] = [
 
     cell: ({
       row: {
-        original: { createdByEmployee, ownerId },
+        original: { createdByEmployee },
       },
     }) => {
-      if (!createdByEmployee) {
-        return <TableProfileCell name="Owner" subText={ownerId} />;
+      if (createdByEmployee) {
+        return (
+          <TableProfileCell
+            name={createdByEmployee.name}
+            subText={createdByEmployee.username}
+            imageUrl={createdByEmployee.image}
+          />
+        );
       }
-      return (
-        <TableProfileCell
-          name={createdByEmployee.name}
-          subText={createdByEmployee.username}
-          imageUrl={createdByEmployee.image}
-        />
-      );
+      return <OwnerTableCell />;
     },
   }),
 ];
