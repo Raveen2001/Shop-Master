@@ -25,6 +25,7 @@ const ManageCategories = () => {
           New Category
         </Button>
       </Box>
+
       <PaginatedTable
         columns={columnsDefs}
         data={categories}

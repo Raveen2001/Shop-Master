@@ -27,7 +27,7 @@ const ManageBrands = () => {
       </Box>
 
       <PaginatedTable
-        className="h-[80vh]"
+        className="max-h-[80vh]"
         columns={columnsDefs}
         data={brands}
         defaultSortColumn={{ id: "createdAt", desc: false }}
