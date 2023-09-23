@@ -5,12 +5,14 @@ import {
   CreateOrderOpts,
   QueryOrderOpts,
   QueryOrdersByIdOpts,
+  QueryPagedOrdersByIdOpts,
 } from "../opts/order";
 import FastifyTypebox from "../types/fastify";
 import {
   TOrderQueryByFields,
   TOrderQueryParam,
   TOrderQueryString,
+  TPagableOrderQueryString,
 } from "../types/order";
 import { TIDStringQueryParam } from "../types/common";
 
@@ -128,6 +130,54 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
     Params: TIDStringQueryParam;
     Querystring: TOrderQueryString;
   }>("/created-by-employee/:id", QueryOrdersByIdOpts, getOrdersBy("ownerId"));
+
+  // query orders by
+  function getPagedOrdersBy(queryBy: TOrderQueryByFields): RouteHandlerMethod {
+    return async (req, reply) => {
+      const { id } = req.params as TIDStringQueryParam;
+      const {
+        includeCreatedByEmployee,
+        includeCustomer,
+        includeOwner,
+        includeShop,
+        limit,
+        order,
+        orderBy,
+        page,
+      } = req.query as TPagableOrderQueryString;
+
+      const offset =
+        page !== undefined && limit !== undefined ? page * limit : undefined;
+
+      const orders = await fastify.db.query.ordersDB.findMany({
+        where: (ordersDB, { eq }) => eq(ordersDB[queryBy], id),
+        with: {
+          owner: includeOwner || undefined,
+          shop: includeShop || undefined,
+          customer: includeCustomer || undefined,
+          createdByEmployee: includeCreatedByEmployee || undefined,
+        },
+        limit: limit,
+        offset: offset,
+        orderBy: (ordersDB, { asc, desc }) => {
+          if (orderBy && order == "asc") {
+            return asc(ordersDB[orderBy]);
+          } else if (orderBy && order == "desc") {
+            return desc(ordersDB[orderBy]);
+          }
+          return asc(ordersDB.createdAt);
+        },
+      });
+
+      reply.code(200).send(orders);
+    };
+  }
+
+  // get paged orders by shop id
+  fastify.get<{
+    Params: TIDStringQueryParam;
+    Querystring: TPagableOrderQueryString;
+  }>("/shop/:id/paged", QueryPagedOrdersByIdOpts, getPagedOrdersBy("shopId"));
 };
 
 export default OrderRoutes;

@@ -4,6 +4,8 @@ import {
   OrderQueryStringSchema,
   OrderSchema,
   OrderSchemaIn,
+  PagableOrderQueryStringSchema,
+  PagableOrderSchema,
 } from "../types/order";
 import { Type } from "@sinclair/typebox";
 import { IDStringQueryParamSchema } from "../types/common";
@@ -40,6 +42,18 @@ export const QueryOrdersByIdOpts: RouteShorthandOptions = {
     querystring: OrderQueryStringSchema,
     response: {
       200: Type.Array(OrderSchema),
+    },
+  },
+};
+
+export const QueryPagedOrdersByIdOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Order"],
+    summary: "Get Paged Orders by id",
+    params: IDStringQueryParamSchema,
+    querystring: PagableOrderQueryStringSchema,
+    response: {
+      200: PagableOrderSchema,
     },
   },
 };
