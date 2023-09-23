@@ -1,8 +1,8 @@
 export * from "./employee";
 export * from "./shop";
-export * from "./employeePayment";
+export * from "./employee-payment";
 export * from "./customer";
-export * from "./customerPayment";
+export * from "./customer-payment";
 
 export * from "./brand";
 export * from "./category";
