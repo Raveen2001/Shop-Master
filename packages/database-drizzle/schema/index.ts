@@ -15,3 +15,6 @@ export * from "./product_variants";
 export * from "./product_reviews";
 export * from "./product_images";
 export * from "./product_search_tags";
+
+export * from "./orders";
+export * from "./order_items";

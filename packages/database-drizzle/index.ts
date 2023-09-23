@@ -1,23 +1,26 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-import * as ownersSchema from "./schema/owners";
-import * as shopsSchema from "./schema/shops";
+import * as OwnersSchema from "./schema/owners";
+import * as ShopsSchema from "./schema/shops";
 
-import * as employeesSchema from "./schema/employees";
-import * as employeePaymentsSchema from "./schema/employee_payments";
+import * as EmployeesSchema from "./schema/employees";
+import * as EmployeePaymentsSchema from "./schema/employee_payments";
 
-import * as customersSchema from "./schema/customers";
-import * as customerPaymentsSchema from "./schema/customer_payments";
+import * as CustomersSchema from "./schema/customers";
+import * as CustomerPaymentsSchema from "./schema/customer_payments";
 
-import * as brandsSchema from "./schema/brands";
-import * as productCategoriesSchema from "./schema/product_categories";
-import * as productSubCategoriesSchema from "./schema/product_sub_categories";
-import * as productsSchema from "./schema/products";
-import * as productImagesSchema from "./schema/product_images";
-import * as productSearchTagsSchema from "./schema/product_search_tags";
-import * as productReviewsSchema from "./schema/product_reviews";
-import * as productVariantsSchema from "./schema/product_variants";
+import * as BrandsSchema from "./schema/brands";
+import * as ProductCategoriesSchema from "./schema/product_categories";
+import * as ProductSubCategoriesSchema from "./schema/product_sub_categories";
+import * as ProductsSchema from "./schema/products";
+import * as ProductImagesSchema from "./schema/product_images";
+import * as ProductSearchTagsSchema from "./schema/product_search_tags";
+import * as ProductReviewsSchema from "./schema/product_reviews";
+import * as ProductVariantsSchema from "./schema/product_variants";
+
+import * as OrdersSchema from "./schema/orders";
+import * as OrderItemsSchema from "./schema/order_items";
 
 if (!process.env.DATABASE_URL) {
   console.log("Database url is not available");
@@ -27,24 +30,27 @@ if (!process.env.DATABASE_URL) {
 const client = postgres(process.env.DATABASE_URL);
 const db = drizzle(client, {
   schema: {
-    ...shopsSchema,
-    ...ownersSchema,
+    ...ShopsSchema,
+    ...OwnersSchema,
 
-    ...employeesSchema,
-    ...employeePaymentsSchema,
+    ...EmployeesSchema,
+    ...EmployeePaymentsSchema,
 
-    ...customersSchema,
-    ...customerPaymentsSchema,
+    ...CustomersSchema,
+    ...CustomerPaymentsSchema,
 
-    ...brandsSchema,
-    ...productCategoriesSchema,
-    ...productSubCategoriesSchema,
+    ...BrandsSchema,
+    ...ProductCategoriesSchema,
+    ...ProductSubCategoriesSchema,
 
-    ...productsSchema,
-    ...productVariantsSchema,
-    ...productReviewsSchema,
-    ...productImagesSchema,
-    ...productSearchTagsSchema,
+    ...ProductsSchema,
+    ...ProductVariantsSchema,
+    ...ProductReviewsSchema,
+    ...ProductImagesSchema,
+    ...ProductSearchTagsSchema,
+
+    ...OrdersSchema,
+    ...OrderItemsSchema,
   },
   //   logger: true,
 });
