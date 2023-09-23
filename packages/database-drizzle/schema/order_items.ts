@@ -1,12 +1,12 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uuid, integer } from "drizzle-orm/pg-core";
+import { pgTable, uuid, integer, serial } from "drizzle-orm/pg-core";
 import { ordersDB } from "./orders";
 import { productVariantsDB } from "./product_variants";
 
 export const orderItemsDB = pgTable("order_items", {
   id: uuid("id").defaultRandom().primaryKey(),
 
-  orderId: uuid("order_id")
+  orderId: serial("order_id")
     .notNull()
     .references(() => ordersDB.id),
 

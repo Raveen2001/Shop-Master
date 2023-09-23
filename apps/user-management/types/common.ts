@@ -1,4 +1,4 @@
-import { TSchema, Type } from "@sinclair/typebox";
+import { Static, TSchema, Type } from "@sinclair/typebox";
 
 export const PagableSchema = <T extends TSchema>(schema: T) => {
   return Type.Object({
@@ -27,3 +27,13 @@ export const PagableQueryStringSchema = <T extends TSchema, V extends string>(
     }),
   ]);
 };
+
+export const IDNumberQueryParamSchema = Type.Object({
+  id: Type.Number(),
+});
+export const IDStringQueryParamSchema = Type.Object({
+  id: Type.String(),
+});
+
+export type TIDNumberQueryParam = Static<typeof IDNumberQueryParamSchema>;
+export type TIDStringQueryParam = Static<typeof IDStringQueryParamSchema>;

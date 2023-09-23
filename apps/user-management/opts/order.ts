@@ -6,6 +6,7 @@ import {
   OrderSchemaIn,
 } from "../types/order";
 import { Type } from "@sinclair/typebox";
+import { IDStringQueryParamSchema } from "../types/common";
 
 export const CreateOrderOpts: RouteShorthandOptions = {
   schema: {
@@ -35,7 +36,7 @@ export const QueryOrdersByIdOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Order"],
     summary: "Get Orders by id",
-    params: OrderQueryParamSchema,
+    params: IDStringQueryParamSchema,
     querystring: OrderQueryStringSchema,
     response: {
       200: Type.Array(OrderSchema),

@@ -21,7 +21,7 @@ export type TOrderSchema = Static<typeof OrderSchema>;
 export type TOrderSchemaIn = Static<typeof OrderSchemaIn>;
 
 export const OrderQueryParamSchema = Type.Object({
-  id: Type.String(),
+  id: Type.Integer(),
 });
 
 export const OrderQueryStringSchema = Type.Object({
@@ -34,3 +34,9 @@ export const OrderQueryStringSchema = Type.Object({
 export type TOrderQueryParam = Static<typeof OrderQueryParamSchema>;
 
 export type TOrderQueryString = Static<typeof OrderQueryStringSchema>;
+
+export type TOrderQueryByFields =
+  | "shopId"
+  | "customerId"
+  | "ownerId"
+  | "createdByEmployeeId";

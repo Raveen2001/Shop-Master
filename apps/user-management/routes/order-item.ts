@@ -11,6 +11,7 @@ import {
   TOrderItemQueryParam,
   TOrderItemQueryString,
 } from "../types/order-item";
+import { TIDNumberQueryParam } from "../types/common";
 
 const OrderItemRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
@@ -67,7 +68,7 @@ const OrderItemRoutes: FastifyPluginAsyncTypebox = async (
   // query orderItems by
   function getOrderItemsBy(queryBy: "orderId"): RouteHandlerMethod {
     return async (req, reply) => {
-      const { id } = req.params as TOrderItemQueryParam;
+      const { id } = req.params as TIDNumberQueryParam;
       const { includeOrder, includeProductVariant } =
         req.query as TOrderItemQueryString;
 
@@ -85,7 +86,7 @@ const OrderItemRoutes: FastifyPluginAsyncTypebox = async (
 
   // get orderItems by order id
   fastify.get<{
-    Params: TOrderItemQueryParam;
+    Params: TIDNumberQueryParam;
     Querystring: TOrderItemQueryString;
   }>("/order/:id", QueryOrderItemsByIdOpts, getOrderItemsBy("orderId"));
 };
