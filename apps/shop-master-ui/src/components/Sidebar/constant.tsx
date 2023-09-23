@@ -9,6 +9,8 @@ import {
   StoreTwoTone,
   EngineeringTwoTone,
   InventoryTwoTone,
+  NoteTwoTone,
+  NoteAddTwoTone,
 } from "ui/icons";
 import { TSidebarItem } from "./models";
 
@@ -33,6 +35,23 @@ export const SIDEBAR_ITEMS: TSidebarItem[] = [
   //     },
   //   ],
   // },
+  {
+    name: "Order",
+    items: [
+      {
+        name: "Manage Orders",
+        path: "/orders",
+        icon: <NoteTwoTone className="rotate-90 -scale-x-100" />,
+        additionalPathPattern: "^/orders/(edit|create)$",
+      },
+      {
+        name: "New Order",
+        path: "/orders/new",
+        icon: <NoteAddTwoTone />,
+        additionalPathPattern: "^/orders/(edit|create)$",
+      },
+    ],
+  },
   {
     name: "Employee",
     items: [
