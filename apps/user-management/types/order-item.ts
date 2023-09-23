@@ -9,9 +9,15 @@ export const OrderItemSchema = Type.Object({
 });
 
 export const OrderItemSchemaIn = Type.Omit(OrderItemSchema, ["id"]);
+export const OrderItemWithoutOrderIdSchemaIn = Type.Omit(OrderItemSchemaIn, [
+  "orderId",
+]);
 
 export type TOrderItemSchema = Static<typeof OrderItemSchema>;
 export type TOrderItemSchemaIn = Static<typeof OrderItemSchemaIn>;
+export type TOrderItemWithoutOrderIdSchemaIn = Static<
+  typeof OrderItemWithoutOrderIdSchemaIn
+>;
 
 export const OrderItemQueryParamSchema = Type.Object({
   id: Type.String(),
