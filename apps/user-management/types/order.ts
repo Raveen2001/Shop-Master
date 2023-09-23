@@ -1,6 +1,11 @@
 import { Static, Type } from "@sinclair/typebox";
 import { PagableQueryStringSchema, PagableSchema } from "./common";
 import { ORDERS_DB_COLUMNS, ORDER_PAYMENT_TYPES } from "database-drizzle";
+import { OwnerSchemaWithoutPassword } from "./owner";
+import { ShopSchemaOut } from "./shop";
+import { OrderItemSchema } from "./order-item";
+import { CustomerSchema } from "./customer";
+import { EmployeeSchemaWithoutPassword } from "./employee";
 
 export const OrderSchema = Type.Object({
   id: Type.String(),
@@ -19,11 +24,24 @@ export const OrderSchemaIn = Type.Omit(OrderSchema, [
   "updatedAt",
 ]);
 
-export const PagableOrderSchema = PagableSchema(OrderSchema);
+export const OrderSchemaOut = Type.Intersect([
+  OrderSchema,
+  Type.Object({
+    shop: Type.Optional(ShopSchemaOut),
+    owner: Type.Optional(OwnerSchemaWithoutPassword),
+    customer: Type.Optional(CustomerSchema),
+    createdByEmployee: Type.Optional(EmployeeSchemaWithoutPassword),
+    items: Type.Optional(Type.Array(OrderItemSchema)),
+  }),
+]);
+
+export const PagableOrderSchemaOut = PagableSchema(OrderSchemaOut);
 
 export type TOrderSchema = Static<typeof OrderSchema>;
 export type TOrderSchemaIn = Static<typeof OrderSchemaIn>;
-export type TPagableOrderSchema = Static<typeof PagableOrderSchema>;
+export type TOrderSchemaOut = Static<typeof OrderSchemaOut>;
+
+export type TPagableOrderSchemaOut = Static<typeof PagableOrderSchemaOut>;
 
 export const OrderQueryParamSchema = Type.Object({
   id: Type.Integer(),

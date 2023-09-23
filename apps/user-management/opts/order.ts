@@ -4,8 +4,9 @@ import {
   OrderQueryStringSchema,
   OrderSchema,
   OrderSchemaIn,
+  OrderSchemaOut,
   PagableOrderQueryStringSchema,
-  PagableOrderSchema,
+  PagableOrderSchemaOut,
 } from "../types/order";
 import { Type } from "@sinclair/typebox";
 import { IDStringQueryParamSchema } from "../types/common";
@@ -17,7 +18,7 @@ export const CreateOrderOpts: RouteShorthandOptions = {
     body: OrderSchemaIn,
     querystring: OrderQueryStringSchema,
     response: {
-      201: OrderSchema,
+      201: OrderSchemaOut,
     },
   },
 };
@@ -29,7 +30,7 @@ export const QueryOrderOpts: RouteShorthandOptions = {
     params: OrderQueryParamSchema,
     querystring: OrderQueryStringSchema,
     response: {
-      200: OrderSchema,
+      200: OrderSchemaOut,
     },
   },
 };
@@ -41,7 +42,7 @@ export const QueryOrdersByIdOpts: RouteShorthandOptions = {
     params: IDStringQueryParamSchema,
     querystring: OrderQueryStringSchema,
     response: {
-      200: Type.Array(OrderSchema),
+      200: Type.Array(OrderSchemaOut),
     },
   },
 };
@@ -53,7 +54,7 @@ export const QueryPagedOrdersByIdOpts: RouteShorthandOptions = {
     params: IDStringQueryParamSchema,
     querystring: PagableOrderQueryStringSchema,
     response: {
-      200: PagableOrderSchema,
+      200: PagableOrderSchemaOut,
     },
   },
 };
