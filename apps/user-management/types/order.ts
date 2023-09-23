@@ -1,4 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
+import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { ORDERS_DB_COLUMNS } from "database-drizzle";
 
 export const OrderSchema = Type.Object({
   id: Type.String(),
@@ -17,8 +19,11 @@ export const OrderSchemaIn = Type.Omit(OrderSchema, [
   "updatedAt",
 ]);
 
+export const OrderPagableSchema = PagableSchema(OrderSchema);
+
 export type TOrderSchema = Static<typeof OrderSchema>;
 export type TOrderSchemaIn = Static<typeof OrderSchemaIn>;
+export type TPagableOrderSchema = Static<typeof OrderPagableSchema>;
 
 export const OrderQueryParamSchema = Type.Object({
   id: Type.Integer(),
@@ -31,9 +36,16 @@ export const OrderQueryStringSchema = Type.Object({
   includeCreatedByEmployee: Type.Boolean({ default: false }),
 });
 
-export type TOrderQueryParam = Static<typeof OrderQueryParamSchema>;
+export const PagableOrderQueryStringSchema = PagableQueryStringSchema(
+  OrderQueryStringSchema,
+  ORDERS_DB_COLUMNS
+);
 
+export type TOrderQueryParam = Static<typeof OrderQueryParamSchema>;
 export type TOrderQueryString = Static<typeof OrderQueryStringSchema>;
+export type TPagableOrderQueryString = Static<
+  typeof PagableOrderQueryStringSchema
+>;
 
 export type TOrderQueryByFields =
   | "shopId"
