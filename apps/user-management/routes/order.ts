@@ -178,6 +178,32 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
     Params: TIDStringQueryParam;
     Querystring: TPagableOrderQueryString;
   }>("/shop/:id/paged", QueryPagedOrdersByIdOpts, getPagedOrdersBy("shopId"));
+
+  // get paged orders by customer id
+  fastify.get<{
+    Params: TIDStringQueryParam;
+    Querystring: TPagableOrderQueryString;
+  }>(
+    "/customer/:id/paged",
+    QueryPagedOrdersByIdOpts,
+    getPagedOrdersBy("customerId")
+  );
+
+  // get paged orders by owner id
+  fastify.get<{
+    Params: TIDStringQueryParam;
+    Querystring: TPagableOrderQueryString;
+  }>("/owner/:id/paged", QueryPagedOrdersByIdOpts, getPagedOrdersBy("ownerId"));
+
+  // get paged orders by created by employee id
+  fastify.get<{
+    Params: TIDStringQueryParam;
+    Querystring: TPagableOrderQueryString;
+  }>(
+    "/created-by-employee/:id/paged",
+    QueryPagedOrdersByIdOpts,
+    getPagedOrdersBy("ownerId")
+  );
 };
 
 export default OrderRoutes;
