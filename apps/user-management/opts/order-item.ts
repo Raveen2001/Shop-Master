@@ -2,8 +2,8 @@ import { RouteShorthandOptions } from "fastify";
 import {
   OrderItemQueryParamSchema,
   OrderItemQueryStringSchema,
-  OrderItemSchema,
   OrderItemSchemaIn,
+  OrderItemSchemaOut,
 } from "../types/order-item";
 import { Type } from "@sinclair/typebox";
 import { IDNumberQueryParamSchema } from "../types/common";
@@ -15,7 +15,7 @@ export const CreateOrderItemOpts: RouteShorthandOptions = {
     body: OrderItemSchemaIn,
     querystring: OrderItemQueryStringSchema,
     response: {
-      201: OrderItemSchema,
+      201: OrderItemSchemaOut,
     },
   },
 };
@@ -27,7 +27,7 @@ export const QueryOrderItemOpts: RouteShorthandOptions = {
     params: OrderItemQueryParamSchema,
     querystring: OrderItemQueryStringSchema,
     response: {
-      200: OrderItemSchema,
+      200: OrderItemSchemaOut,
     },
   },
 };
@@ -39,7 +39,7 @@ export const QueryOrderItemsByIdOpts: RouteShorthandOptions = {
     params: IDNumberQueryParamSchema,
     querystring: OrderItemQueryStringSchema,
     response: {
-      200: Type.Array(OrderItemSchema),
+      200: Type.Array(OrderItemSchemaOut),
     },
   },
 };

@@ -1,4 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
+import { OrderSchema } from "./order";
+import { ProductVariantSchema } from "./product-variant";
 
 export const OrderItemSchema = Type.Object({
   id: Type.String(),
@@ -11,6 +13,13 @@ export const OrderItemSchema = Type.Object({
 export const OrderItemSchemaIn = Type.Omit(OrderItemSchema, ["id"]);
 export const OrderItemWithoutOrderIdSchemaIn = Type.Omit(OrderItemSchemaIn, [
   "orderId",
+]);
+export const OrderItemSchemaOut = Type.Intersect([
+  OrderSchema,
+  Type.Object({
+    productVariant: Type.Optional(ProductVariantSchema),
+    order: Type.Optional(OrderSchema),
+  }),
 ]);
 
 export type TOrderItemSchema = Static<typeof OrderItemSchema>;
