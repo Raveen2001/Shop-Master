@@ -31,6 +31,8 @@ import SubCategoryRoutes from "./routes/sub-category";
 import ProductVariantRoutes from "./routes/product-variant";
 import ProductRoutes from "./routes/product";
 
+import OrderItemRoutes from "./routes/order-item";
+
 const fastify: FastifyTypebox = Fastify({
   logger: {
     transport: {
@@ -75,6 +77,8 @@ fastify.register(DrizzlePlugin);
 // register decorators
 fastify.register(DecoratorPlugin);
 
+// ---- register routes ----
+
 // register unauthenticated routes
 fastify.register(HelperRoutes);
 fastify.register(AuthRoutes);
@@ -94,6 +98,9 @@ fastify.register(CategoryRoutes, { prefix: "/categories" });
 fastify.register(SubCategoryRoutes, { prefix: "/sub-categories" });
 fastify.register(ProductRoutes, { prefix: "/products" });
 fastify.register(ProductVariantRoutes, { prefix: "/product-variants" });
+
+fastify.register(OrderItemRoutes, { prefix: "/order-items" });
+
 // start the server
 fastify.listen({ port: 5000, host: "0.0.0.0" }, async (err) => {
   if (err) {

@@ -31,7 +31,7 @@ export const orderItemsRelations = relations(orderItemsDB, ({ one }) => ({
     fields: [orderItemsDB.orderId],
     references: [ordersDB.id],
   }),
-  productVariantsDB: one(productVariantsDB, {
+  productVariant: one(productVariantsDB, {
     fields: [orderItemsDB.productVariantId],
     references: [productVariantsDB.id],
   }),

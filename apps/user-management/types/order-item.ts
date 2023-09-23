@@ -18,7 +18,7 @@ export const OrderItemQueryParamSchema = Type.Object({
 });
 
 export const OrderItemQueryStringSchema = Type.Object({
-  includeOrderItem: Type.Boolean({ default: false }),
+  includeProductVariant: Type.Boolean({ default: false }),
   includeOrder: Type.Boolean({ default: false }),
 });
 
