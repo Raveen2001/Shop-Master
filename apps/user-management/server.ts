@@ -31,6 +31,7 @@ import SubCategoryRoutes from "./routes/sub-category";
 import ProductVariantRoutes from "./routes/product-variant";
 import ProductRoutes from "./routes/product";
 
+import OrderRoutes from "./routes/order";
 import OrderItemRoutes from "./routes/order-item";
 
 const fastify: FastifyTypebox = Fastify({
@@ -99,6 +100,7 @@ fastify.register(SubCategoryRoutes, { prefix: "/sub-categories" });
 fastify.register(ProductRoutes, { prefix: "/products" });
 fastify.register(ProductVariantRoutes, { prefix: "/product-variants" });
 
+fastify.register(OrderRoutes, { prefix: "/orders" });
 fastify.register(OrderItemRoutes, { prefix: "/order-items" });
 
 // start the server
