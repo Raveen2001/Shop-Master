@@ -1,5 +1,6 @@
-import { ORDER_PAYMENT_TYPES } from "database-drizzle";
 import { object, string, InferType } from "yup";
+
+const ORDER_PAYMENT_TYPES = ["CASH", "UPI", "CARD"] as const;
 
 export const OrderFormSchema = object({
   ownerId: string().required(),

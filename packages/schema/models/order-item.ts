@@ -1,4 +1,3 @@
-import { ORDER_PAYMENT_TYPES } from "database-drizzle";
 import { object, string, InferType, number } from "yup";
 
 export const OrderItemFormSchema = object({
@@ -16,5 +15,3 @@ export type TOrderItemData = TOrderItemFormSchema & {
   id: string;
   orderId: number;
 };
-
-export { ORDER_PAYMENT_TYPES };

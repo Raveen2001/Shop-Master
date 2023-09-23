@@ -1,5 +1,14 @@
-import { EMPLOYEE_TYPES } from "../../database-drizzle/schema/employees";
 import { object, string, InferType } from "yup";
+
+const EMPLOYEE_TYPES = [
+  "MANAGER",
+  "CASHIER",
+  "ACCOUNTANT",
+  "SALESMAN",
+  "DELIVERY_PERSON",
+  "PARCEL_COUNTER_DEVICE",
+  "BILLING_DEVICE",
+] as const;
 
 export const EmployeeFormSchema = object({
   ownerId: string().required(),

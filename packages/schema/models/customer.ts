@@ -1,5 +1,6 @@
-import { CUSTOMER_TYPES } from "./../../database-drizzle/schema/customers";
 import { object, string, InferType } from "yup";
+
+const CUSTOMER_TYPES = ["SHOP", "INDIVIDUAL"] as const;
 
 export const CustomerFormSchema = object({
   name: string()

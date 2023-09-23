@@ -9,3 +9,6 @@ export * from "./category";
 export * from "./product";
 export * from "./sub-category";
 export * from "./product-variant";
+
+export * from "./order";
+export * from "./order-item";
