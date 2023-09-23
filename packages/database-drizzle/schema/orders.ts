@@ -4,6 +4,7 @@ import { ownersDB } from "./owners";
 import { shopsDB } from "./shops";
 import { customersDB } from "./customers";
 import { employeesDB } from "./employees";
+import { orderItemsDB } from "./order_items";
 
 export const paymentTypeEnum = pgEnum("payment_type", ["CASH", "UPI", "CARD"]);
 
@@ -37,7 +38,7 @@ export const ORDERS_DB_COLUMNS = [
   "createdByEmployeeId",
 ] as const;
 
-export const ordersRelations = relations(ordersDB, ({ one }) => ({
+export const ordersRelations = relations(ordersDB, ({ one, many }) => ({
   shop: one(shopsDB, {
     fields: [ordersDB.shopId],
     references: [shopsDB.id],
@@ -54,6 +55,8 @@ export const ordersRelations = relations(ordersDB, ({ one }) => ({
     fields: [ordersDB.createdByEmployeeId],
     references: [employeesDB.id],
   }),
+
+  items: many(orderItemsDB),
 }));
 
 export type TOrderDB = typeof ordersDB.$inferSelect;

@@ -29,6 +29,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
       includeCustomer,
       includeOwner,
       includeShop,
+      includeItems,
     } = req.query;
     const { insertedId } = (
       await fastify.db
@@ -45,6 +46,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
         shop: includeShop || undefined,
         customer: includeCustomer || undefined,
         createdByEmployee: includeCreatedByEmployee || undefined,
+        items: includeItems || undefined,
       },
     });
 
@@ -61,6 +63,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
       includeCustomer,
       includeOwner,
       includeShop,
+      includeItems,
     } = req.query;
 
     const order = await fastify.db.query.ordersDB.findFirst({
@@ -71,6 +74,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
         shop: includeShop || undefined,
         customer: includeCustomer || undefined,
         createdByEmployee: includeCreatedByEmployee || undefined,
+        items: includeItems || undefined,
       },
     });
 
@@ -91,6 +95,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
         includeCustomer,
         includeOwner,
         includeShop,
+        includeItems,
       } = req.query as TOrderQueryString;
 
       const orders = await fastify.db.query.ordersDB.findMany({
@@ -100,6 +105,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
           shop: includeShop || undefined,
           customer: includeCustomer || undefined,
           createdByEmployee: includeCreatedByEmployee || undefined,
+          items: includeItems || undefined,
         },
       });
 

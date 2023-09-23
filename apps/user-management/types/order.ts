@@ -34,6 +34,7 @@ export const OrderQueryStringSchema = Type.Object({
   includeOwner: Type.Boolean({ default: false }),
   includeCustomer: Type.Boolean({ default: false }),
   includeCreatedByEmployee: Type.Boolean({ default: false }),
+  includeItems: Type.Boolean({ default: false }),
 });
 
 export const PagableOrderQueryStringSchema = PagableQueryStringSchema(
