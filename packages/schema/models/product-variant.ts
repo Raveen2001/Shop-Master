@@ -1,3 +1,4 @@
+import { TProductData } from "./product";
 import { object, string, InferType, number, boolean } from "yup";
 
 export const ProductVariantFormSchema = object({
@@ -24,6 +25,7 @@ export type TProductVariantFormSchema = InferType<
 >;
 export type TProductVariantData = TProductVariantFormSchema & {
   id: string;
-  createdAt: string;
-  updatedAt: string;
 };
+
+export type TProductVariantWithProductDetails = TProductVariantData &
+  TProductData;

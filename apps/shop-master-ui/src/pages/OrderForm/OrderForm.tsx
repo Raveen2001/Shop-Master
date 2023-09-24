@@ -10,6 +10,7 @@ import {
   LoadingButton,
   Snackbar,
   Alert,
+  SingleSelectSearch,
 } from "ui";
 
 const OrderForm: FC = () => {
@@ -23,6 +24,7 @@ const OrderForm: FC = () => {
     setProfileImage,
     shop,
     owner,
+    productVariants,
   } = useOrderForm();
   return (
     <Box className="px-8 py-4">
@@ -30,22 +32,17 @@ const OrderForm: FC = () => {
 
       <Box className="h-8" />
 
-      <Box className="grid grid-cols-1 grid-rows-2 lg:grid-cols-[300px_2fr] lg:grid-rows-1">
-        <Card
-          elevation={5}
-          className="flex flex-col items-center justify-center gap-8 px-6 py-10"
-        >
-          <ProfileImagePicker onImageChange={setProfileImage} />
-
-          <Button color="error" variant="outlined">
-            Delete Brand
-          </Button>
-        </Card>
-
-        <Card elevation={5} className="ml-10 p-6">
+      <Box className="grid grid-cols-1 grid-rows-2 gap-4 lg:grid-cols-[2fr_300px] lg:grid-rows-1">
+        <Card elevation={5} className="p-6">
           <form onSubmit={onSubmit} className="flex h-full flex-col gap-4">
             <Box className="grid flex-1 grid-cols-1 gap-6 ">
               <Box className="flex flex-col gap-4">
+                <SingleSelectSearch
+                  data={productVariants}
+                  labelKey="name"
+                  valueKey="id"
+                  subLabelKey="brand.name"
+                />
                 <TextField
                   label="Name *"
                   {...register("name")}
@@ -74,6 +71,17 @@ const OrderForm: FC = () => {
               Create Brand
             </LoadingButton>
           </form>
+        </Card>
+
+        <Card
+          elevation={5}
+          className="flex flex-col items-center justify-center gap-8 px-6 py-10"
+        >
+          <ProfileImagePicker onImageChange={setProfileImage} />
+
+          <Button color="error" variant="outlined">
+            Delete Brand
+          </Button>
         </Card>
       </Box>
 

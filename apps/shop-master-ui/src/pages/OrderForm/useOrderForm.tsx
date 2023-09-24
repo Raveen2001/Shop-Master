@@ -9,10 +9,12 @@ import { useGlobalStore } from "../../store/globalStore";
 
 const useOrderForm = () => {
   const navigate = useNavigate();
-  const [owner, selectedShop] = useGlobalStore((state) => [
+  const [owner, selectedShop, productVariants] = useGlobalStore((state) => [
     state.owner,
     state.selectedShop,
+    state.getAllProductVariantsWithDetails(),
   ]);
+
   const queryClient = useQueryClient();
   const [image, setImage] = useState<File | null>(null);
 
@@ -66,6 +68,7 @@ const useOrderForm = () => {
     setProfileImage: setImage,
     shop: selectedShop,
     owner,
+    productVariants,
   };
 };
 

@@ -1,7 +1,14 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { TBrandData, TCategoryData, TProductData, TShopData } from "schema";
+import {
+  TBrandData,
+  TCategoryData,
+  TProductData,
+  TProductVariantWithProductDetails,
+  TShopData,
+} from "schema";
 import { TOwnerData } from "../models/owner";
+import { mergeProductData } from "../utils/product";
 
 interface IGlobalStore {
   isOwnerDataFetched: boolean;
@@ -31,6 +38,7 @@ interface IGlobalStore {
   setProducts: (products: TProductData[]) => void;
 
   isAllDataLoaded: () => boolean;
+  getAllProductVariantsWithDetails: () => TProductVariantWithProductDetails[];
 }
 
 export const useGlobalStore = create(
@@ -103,6 +111,22 @@ export const useGlobalStore = create(
         state.isBrandDataFetched &&
         state.isProductDataFetched
       );
+    },
+
+    getAllProductVariantsWithDetails() {
+      const { products, brands, categories } = get();
+      const mergedProduct = mergeProductData(products, brands, categories);
+      const productVariants = mergedProduct
+        .map((product) => {
+          const currentVariants = product.variants?.map((v) => ({
+            ...product,
+            ...v,
+          }));
+          return currentVariants ?? [];
+        })
+        .flat();
+
+      return productVariants;
     },
   }))
 );
