@@ -7,6 +7,6 @@ export type TSidebarSubItem = {
   name: string;
   path: string;
   icon?: React.ReactElement;
-  additionalPathPattern: string;
+  highlightPathPattern: RegExp;
   items?: TSidebarSubItem[];
 };

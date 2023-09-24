@@ -16,17 +16,24 @@ import ManageShops from "./pages/ManageShops";
 import ShopForm from "./pages/ShopForm";
 
 import ManageCustomers from "./pages/ManageCustomers/ManageCustomers";
-import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 import CustomerForm from "./pages/CustomerForm/CustomerForm";
+
+import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 import CustomerPaymentForm from "./pages/CustomerPaymentForm";
+
 import ManageBrands from "./pages/ManageBrands";
 import BrandForm from "./pages/BrandForm";
+
 import ManageCategories from "./pages/ManageCategories";
 import CategoryForm from "./pages/CategoryForm";
 import SubCategoryForm from "./pages/SubCategoryForm";
+
 import ManageProducts from "./pages/ManageProducts";
 import ProductForm from "./pages/ProductForm";
 import ProductVariantForm from "./pages/ProductVariantForm";
+
+import ManageOrders from "./pages/ManageOrders";
+import OrderForm from "./pages/OrderForm";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +49,20 @@ export const router = createBrowserRouter([
     element: <AuthenticatedRootLayout />,
 
     children: [
+      {
+        path: "orders",
+        element: <Layout />,
+        children: [
+          {
+            path: "",
+            element: <ManageOrders />,
+          },
+          {
+            path: "create",
+            element: <OrderForm />,
+          },
+        ],
+      },
       {
         path: "employees",
         element: <Layout />,
