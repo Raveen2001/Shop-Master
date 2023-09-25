@@ -1,4 +1,4 @@
-import { useTheme } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import { useMemo } from "react";
 import Select, { OptionProps, Props, components } from "react-select";
 import { TReactSelectOptions } from "./models";
@@ -14,15 +14,19 @@ type TSingleSelectSearchProps = Props & {
 
 const SelectOption = (props: OptionProps<TReactSelectOptions>) => {
   return (
-    <components.Option {...props}>
-      <div>{props.data.label}</div>
-      <div>{props.data.subLabel}</div>
+    <components.Option
+      {...props}
+      className="border-slate-300 border-b-[1px] border-dotted min-h-[56px] flex flex-col justify-center"
+    >
+      <Typography variant="subtitle1">{props.data.label}</Typography>
+      <Typography variant="body1">{props.data.subLabel}</Typography>
     </components.Option>
   );
 };
 
 const SingleSelectSearch = ({
   data,
+  className,
   searchKeys,
   labelKey,
   subLabelKey,
@@ -41,11 +45,15 @@ const SingleSelectSearch = ({
     });
     return options;
   }, [data, labelKey, subLabelKey, valueKey]);
+
   return (
     <Select
       options={options}
       {...props}
-      className="isolate z-10"
+      className={`isolate z-10 ${className}`}
+      classNames={{
+        control: () => `h-[56px] rounded-[${muiTheme.shape.borderRadius}px]`,
+      }}
       components={{
         Option: SelectOption as any,
       }}
@@ -54,6 +62,7 @@ const SingleSelectSearch = ({
         colors: {
           ...theme.colors,
           primary: muiTheme.palette.primary.main,
+          primary25: muiTheme.palette.primary.light,
         },
       })}
     />
