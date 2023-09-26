@@ -24,6 +24,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
     focusFieldOnEnter,
     addNextItemOnEnter,
     setFocus,
+    totalAmount,
   } = useOrderItem({
     idx: orderIdx,
     item: orderItem,
@@ -72,7 +73,8 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           <TextField
             label="Quantity"
             type="number"
-            {...register("quantity")}
+            error={!!formErrors.quantity}
+            {...register("quantity", { min: 1, required: true })}
             onFocus={(event) => {
               event.target.select();
             }}
@@ -90,12 +92,13 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           <TextField
             label="Discount"
             type="number"
-            {...register("discount")}
+            error={!!formErrors.discount}
+            {...register("discount", { min: 0, required: true })}
             onFocus={(event) => {
               event.target.select();
             }}
           />
-          <TextField label="Total" type="number" defaultValue={0} disabled />
+          <TextField label="Total" type="number" value={totalAmount} disabled />
         </Box>
       </form>
       <Box className="mt-2 flex justify-end">

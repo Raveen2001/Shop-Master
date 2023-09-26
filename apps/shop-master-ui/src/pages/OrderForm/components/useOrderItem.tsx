@@ -1,9 +1,10 @@
 import { KeyboardEvent, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { TOrderItemForm } from "schema";
+import { OrderFormSchema, TOrderItemForm } from "schema";
 import { useOrderContext } from "../OrderContext";
 import { createOptions } from "ui";
 import { useGlobalStore } from "../../../store/globalStore";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface useOrderItemProps {
   idx: number;
@@ -73,6 +74,14 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     }
   };
 
+  const [quantity = 0, unitPrice = 0, discount = 0] = watch([
+    "quantity",
+    "productVariant.salePrice",
+    "discount",
+  ]);
+
+  const totalAmount = quantity * unitPrice - discount;
+
   return {
     register,
     formErrors,
@@ -83,6 +92,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     focusFieldOnEnter,
     addNextItemOnEnter: addNewOrderItemOnEnter,
     setFocus,
+    totalAmount,
   };
 };
 
