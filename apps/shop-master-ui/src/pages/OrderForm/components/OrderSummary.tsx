@@ -75,7 +75,7 @@ const OrderSummary: FC = () => {
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body1" align="right">
+                <Typography variant="body1" align="right" color={"error"}>
                   {formatCurrency(-discount)}
                 </Typography>
               </TableCell>
