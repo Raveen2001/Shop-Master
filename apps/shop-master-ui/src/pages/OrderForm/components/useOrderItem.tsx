@@ -1,10 +1,9 @@
 import { KeyboardEvent, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { OrderFormSchema, TOrderItemForm } from "schema";
+import { TOrderItemForm } from "schema";
 import { useOrderContext } from "../OrderContext";
-import { createOptions } from "ui";
 import { useGlobalStore } from "../../../store/globalStore";
-import { yupResolver } from "@hookform/resolvers/yup";
+import Fuse from "fuse.js";
 
 interface useOrderItemProps {
   idx: number;
@@ -15,16 +14,6 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
   const { setOrderItem, addNewOrderItem, orderItems } = useOrderContext();
   const productVariants = useGlobalStore((state) =>
     state.getAllProductVariantsWithDetails()
-  );
-
-  const productOptions = useMemo(
-    () =>
-      createOptions(productVariants, {
-        label: "name",
-        value: "id",
-        subLabel: "brand.name",
-      }),
-    [productVariants]
   );
 
   const {
@@ -82,17 +71,25 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
 
   const totalAmount = quantity * unitPrice - discount;
 
+  const fuse = useMemo(
+    () =>
+      new Fuse(productVariants, {
+        keys: ["product.name", "name", "brand.name"],
+      }),
+    [productVariants]
+  );
+
   return {
     register,
     formErrors,
     control,
     selectedVariant,
-    productOptions,
     productVariants,
     focusFieldOnEnter,
     addNextItemOnEnter: addNewOrderItemOnEnter,
     setFocus,
     totalAmount,
+    fuse,
   };
 };
 

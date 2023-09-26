@@ -18,13 +18,13 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
     control,
     register,
     formErrors,
-    productOptions,
     selectedVariant,
     productVariants,
     focusFieldOnEnter,
     addNextItemOnEnter,
     setFocus,
     totalAmount,
+    fuse,
   } = useOrderItem({
     idx: orderIdx,
     item: orderItem,
@@ -46,6 +46,11 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                   onChange={(e, data) => {
                     onChange(data);
                     setFocus("quantity");
+                  }}
+                  filterOptions={(_, state) => {
+                    return fuse
+                      .search(state.inputValue)
+                      .map((result) => result.item);
                   }}
                   getOptionLabel={(option) => option.name}
                   autoHighlight

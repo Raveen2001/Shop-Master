@@ -71,6 +71,9 @@ importers:
       clsx:
         specifier: ^1.2.1
         version: 1.2.1
+      fuse.js:
+        specifier: ^6.6.2
+        version: 6.6.2
       immer:
         specifier: ^10.0.2
         version: 10.0.2
@@ -1912,7 +1915,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.11
+      '@babel/runtime': 7.22.6
       '@emotion/react': 11.10.6(@types/react@18.0.27)(react@18.2.0)
       '@emotion/styled': 11.10.6(@emotion/react@11.10.6)(@types/react@18.0.27)(react@18.2.0)
       '@mui/private-theming': 5.13.7(@types/react@18.0.27)(react@18.2.0)
@@ -4247,6 +4250,11 @@ packages:
 
   /functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
+    dev: false
+
+  /fuse.js@6.6.2:
+    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
+    engines: {node: '>=10'}
     dev: false
 
   /gauge@3.0.2:

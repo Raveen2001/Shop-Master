@@ -21,7 +21,7 @@ export const OrderItemFormSchema = object({
 
 export type TOrderItemForm = {
   clientId: string;
-  productVariant?: TProductVariantWithDetails;
+  productVariant?: TProductVariantWithDetails | null;
   quantity?: number;
   discount?: number;
 };

@@ -4,7 +4,7 @@ import {
   TBrandData,
   TCategoryData,
   TProductData,
-  TProductVariantWithProductDetails,
+  TProductVariantWithDetails,
   TShopData,
 } from "schema";
 import { TOwnerData } from "../models/owner";
@@ -38,7 +38,7 @@ interface IGlobalStore {
   setProducts: (products: TProductData[]) => void;
 
   isAllDataLoaded: () => boolean;
-  getAllProductVariantsWithDetails: () => TProductVariantWithProductDetails[];
+  getAllProductVariantsWithDetails: () => TProductVariantWithDetails[];
 }
 
 export const useGlobalStore = create(
@@ -119,7 +119,7 @@ export const useGlobalStore = create(
       const productVariants = mergedProduct
         .map((product) => {
           const currentVariants = product.variants?.map((v) => ({
-            ...product,
+            product,
             ...v,
           }));
           return currentVariants ?? [];

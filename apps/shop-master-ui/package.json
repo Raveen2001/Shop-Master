@@ -19,6 +19,7 @@
     "@vitejs/plugin-react-swc": "^3.0.0",
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
+    "fuse.js": "^6.6.2",
     "immer": "^10.0.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
