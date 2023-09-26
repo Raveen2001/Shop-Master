@@ -1,9 +1,9 @@
 import { FC } from "react";
-import useOrderForm from "./useOrderForm";
-import { Box, Typography, Card, Button, Snackbar, Alert } from "ui";
-import { OrderProvider, useOrderContext } from "./OrderContext";
+import { Alert, Box, Card, Snackbar, Typography } from "ui";
+import { OrderProvider } from "./OrderContext";
 import OrderItems from "./components/OrderItems";
-import { AddTwoTone } from "ui/icons";
+import useOrderForm from "./useOrderForm";
+import OrderSummary from "./components/OrderSummary";
 
 const OrderForm: FC = () => {
   return (
@@ -14,7 +14,6 @@ const OrderForm: FC = () => {
 };
 
 const _OrderForm: FC = () => {
-  const { addNewOrderItem } = useOrderContext();
   const { isMutateError, isMutateLoading, mutateError } = useOrderForm();
   return (
     <Box className="px-8 py-4">
@@ -27,15 +26,7 @@ const _OrderForm: FC = () => {
         className="isolate flex flex-col items-start gap-4 overflow-visible p-6"
       >
         <OrderItems />
-
-        <Button
-          variant="text"
-          color="success"
-          startIcon={<AddTwoTone />}
-          onClick={addNewOrderItem}
-        >
-          Add item
-        </Button>
+        <OrderSummary />
       </Card>
 
       <Snackbar

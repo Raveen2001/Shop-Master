@@ -70,12 +70,14 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           />
 
           <TextField
+            className="w-72"
             label="Variant"
             disabled
             value={selectedVariant?.name ?? ""}
           />
 
           <TextField
+            className="w-48"
             label="Quantity"
             type="number"
             error={!!formErrors.quantity}
@@ -86,6 +88,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
             onKeyDown={addNextItemOnEnter}
           />
           <TextField
+            className="w-48"
             label="Price"
             type="number"
             disabled
@@ -95,6 +98,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
             }}
           />
           <TextField
+            className="w-48"
             label="Discount"
             type="number"
             error={!!formErrors.discount}
@@ -103,7 +107,13 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
               event.target.select();
             }}
           />
-          <TextField label="Total" type="number" value={totalAmount} disabled />
+          <TextField
+            className="w-72"
+            label="Total"
+            type="number"
+            value={totalAmount}
+            disabled
+          />
         </Box>
       </form>
       <Box className="mt-2 flex justify-end">

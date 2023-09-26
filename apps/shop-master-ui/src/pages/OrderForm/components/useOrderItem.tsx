@@ -36,7 +36,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
 
   useEffect(() => {
     const subscription = watch((data) => {
-      console.log(data);
+      setOrderItem(idx, data as any);
     });
 
     return () => {

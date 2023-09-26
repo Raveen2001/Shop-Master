@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useMemo,
   useState,
 } from "react";
 import { TOrderItemForm } from "schema";
@@ -14,6 +15,12 @@ type TOrderContext = {
   setOrderItem: (orderItemIdx: number, orderItem: TOrderItemForm) => void;
   addNewOrderItem: () => void;
   removeOrderItem: (orderItemIdx: number) => void;
+
+  subTotal: number;
+  delivery: number;
+  discount: number;
+  tax: number;
+  total: number;
 };
 
 const OrderContext = createContext<TOrderContext | null>(null);
@@ -59,6 +66,26 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     [setOrderItems]
   );
+
+  const subTotal = useMemo(() => {
+    let subTotal = 0;
+    orderItems.forEach((item) => {
+      if (item.productVariant) {
+        subTotal += item.productVariant.salePrice * (item.quantity ?? 0);
+        subTotal -= item.discount ?? 0;
+      }
+    });
+    return subTotal;
+  }, [orderItems]);
+
+  const delivery = 0;
+  const discount = 0;
+  const tax = 0;
+
+  const total = useMemo(() => {
+    return subTotal + delivery - discount + tax;
+  }, [subTotal, delivery, discount, tax]);
+
   return (
     <OrderContext.Provider
       value={{
@@ -66,6 +93,11 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
         setOrderItem,
         addNewOrderItem,
         removeOrderItem,
+        subTotal,
+        delivery,
+        discount,
+        tax,
+        total,
       }}
     >
       {children}
