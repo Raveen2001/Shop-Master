@@ -1,17 +1,6 @@
 import { FC } from "react";
 import useOrderForm from "./useOrderForm";
-import {
-  Box,
-  Typography,
-  Card,
-  ProfileImagePicker,
-  Button,
-  TextField,
-  LoadingButton,
-  Snackbar,
-  Alert,
-  SingleSelectSearch,
-} from "ui";
+import { Box, Typography, Card, Button, Snackbar, Alert } from "ui";
 import { OrderProvider, useOrderContext } from "./OrderContext";
 import OrderItems from "./components/OrderItems";
 import { AddTwoTone } from "ui/icons";
@@ -26,18 +15,7 @@ const OrderForm: FC = () => {
 
 const _OrderForm: FC = () => {
   const { addNewOrderItem } = useOrderContext();
-  const {
-    formErrors,
-    onSubmit,
-    isMutateError,
-    isMutateLoading,
-    mutateError,
-    register,
-    setProfileImage,
-    shop,
-    owner,
-    productVariants,
-  } = useOrderForm();
+  const { isMutateError, isMutateLoading, mutateError } = useOrderForm();
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">Create a new Order</Typography>
