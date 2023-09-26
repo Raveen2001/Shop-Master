@@ -30,9 +30,9 @@ export const customerPaymentsDB = pgTable("customer_payments", {
     () => employeesDB.id
   ),
 
-  customerId: uuid("customer_id")
+  customerPhone: text("customer_phone")
     .notNull()
-    .references(() => customersDB.id),
+    .references(() => customersDB.phone),
 
   shopId: uuid("shop_id")
     .notNull()
@@ -51,13 +51,13 @@ export const CUSTOMER_PAYEMENT_DB_COLUMNS = [
   "createdAt",
   "updatedAt",
   "createdByEmployeeId",
-  "customerId",
+  "customerPhone",
   "shopId",
   "ownerId",
 ] as const;
 
 export type TCUSTOMER_PAYMENT_QUERY_BY_FIELDS =
-  | "customerId"
+  | "customerPhone"
   | "ownerId"
   | "shopId"
   | "createdByEmployeeId";
@@ -71,8 +71,8 @@ export const customerPaymentsRelations = relations(
     }),
 
     customer: one(customersDB, {
-      fields: [customerPaymentsDB.customerId],
-      references: [customersDB.id],
+      fields: [customerPaymentsDB.customerPhone],
+      references: [customersDB.phone],
     }),
 
     shop: one(shopsDB, {

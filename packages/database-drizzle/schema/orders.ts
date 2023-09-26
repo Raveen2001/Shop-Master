@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { pgEnum, pgTable, timestamp, uuid, serial } from "drizzle-orm/pg-core";
+import {
+  pgEnum,
+  pgTable,
+  timestamp,
+  uuid,
+  serial,
+  text,
+} from "drizzle-orm/pg-core";
 import { ownersDB } from "./owners";
 import { shopsDB } from "./shops";
 import { customersDB } from "./customers";
@@ -21,7 +28,7 @@ export const ordersDB = pgTable("orders", {
   ownerId: uuid("owner_id")
     .notNull()
     .references(() => ownersDB.id),
-  customerId: uuid("customer_id").references(() => customersDB.id),
+  customerPhone: text("customer_phone"),
   createdByEmployeeId: uuid("created_by_employee_id").references(
     () => employeesDB.id
   ),
@@ -48,8 +55,8 @@ export const ordersRelations = relations(ordersDB, ({ one, many }) => ({
     references: [ownersDB.id],
   }),
   customer: one(customersDB, {
-    fields: [ordersDB.customerId],
-    references: [customersDB.id],
+    fields: [ordersDB.customerPhone],
+    references: [customersDB.phone],
   }),
   createdByEmployee: one(employeesDB, {
     fields: [ordersDB.createdByEmployeeId],

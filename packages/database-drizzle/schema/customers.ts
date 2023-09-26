@@ -7,9 +7,8 @@ import { ownersDB } from "./owners";
 export const customerTypeEnum = pgEnum("customer_type", ["SHOP", "INDIVIDUAL"]);
 
 export const customersDB = pgTable("customers", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  phone: text("phone").primaryKey(),
   name: text("name").notNull(),
-  phone: text("phone"),
   email: text("email"),
   image: text("image"),
   type: customerTypeEnum("type").notNull(),
@@ -30,7 +29,6 @@ export const customersDB = pgTable("customers", {
 });
 
 export const CUSTOMER_DB_COLUMNS = [
-  "id",
   "name",
   "phone",
   "email",
