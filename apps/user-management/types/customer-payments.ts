@@ -21,8 +21,8 @@ export const CustomerPaymentSchema = Type.Object({
   updatedAt: Type.String({
     format: "date-time",
   }),
-  createdByEmployeeId: optionalType(Type.String({ format: "uuid" })),
-  customerId: Type.String(),
+  createdByEmployeeId: optionalType(Type.String()),
+  customerPhone: Type.String(),
   shopId: Type.String(),
   ownerId: Type.String(),
 });

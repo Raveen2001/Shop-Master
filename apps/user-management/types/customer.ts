@@ -7,7 +7,6 @@ import { optionalType } from "./utils";
 import { EmployeeSchemaWithoutPassword } from "./employee";
 
 export const CustomerSchema = Type.Object({
-  id: Type.String(),
   name: Type.String({ minLength: 3 }),
   type: Type.Union(CUSTOMER_TYPES.map((key) => Type.Literal(key))),
   email: optionalType(Type.String({ format: "email" })),
@@ -24,7 +23,6 @@ export const CustomerSchema = Type.Object({
 });
 
 export const CustomerSchemaIn = Type.Omit(CustomerSchema, [
-  "id",
   "createdAt",
   "updatedAt",
 ]);
@@ -43,6 +41,10 @@ export type TCustomerIn = Static<typeof CustomerSchemaIn>;
 export type TPagedCustomerOut = Static<typeof PagableCustomerSchemaOut>;
 
 export const CustomerQueryParamSchema = Type.Object({
+  phone: Type.String(),
+});
+
+export const CustomerQueryParamIDSchema = Type.Object({
   id: Type.String(),
 });
 
@@ -58,6 +60,7 @@ export const PagableCustomerQueryStringSchema = PagableQueryStringSchema(
 );
 
 export type TCustomerQueryParam = Static<typeof CustomerQueryParamSchema>;
+export type TCustomerQueryParamID = Static<typeof CustomerQueryParamIDSchema>;
 export type TCustomerQueryString = Static<typeof CustomerQueryStringSchema>;
 export type TPagableCustomerQueryString = Static<
   typeof PagableCustomerQueryStringSchema
@@ -66,5 +69,4 @@ export type TPagableCustomerQueryString = Static<
 export type TCustomerQueryByFields =
   | "shopId"
   | "ownerId"
-  | "createdByEmployeeId"
-  | "id";
+  | "createdByEmployeeId";

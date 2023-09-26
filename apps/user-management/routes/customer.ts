@@ -3,6 +3,7 @@ import {
   TCustomerIn,
   TCustomerQueryByFields,
   TCustomerQueryParam,
+  TCustomerQueryParamID,
   TCustomerQueryString,
   TPagableCustomerQueryString,
 } from "../types/customer";
@@ -11,7 +12,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
 import {
   CreateCustomerOpts,
-  QueryCustomerByIdOpts,
+  QueryCustomerByPhoneOpts,
   QueryCustomersByShopOpts,
   QueryCustomersByOwnerOpts,
 } from "../opts/customer";
@@ -35,18 +36,18 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
       return;
     }
 
-    const { insertedId } = (
+    const { insertedPhone } = (
       await fastify.db
         .insert(customersDB)
         .values(req.body)
         .onConflictDoNothing()
         .returning({
-          insertedId: customersDB.id,
+          insertedPhone: customersDB.phone,
         })
     )[0];
 
     const customer = await fastify.db.query.customersDB.findFirst({
-      where: (customers, { eq }) => eq(customers.id, insertedId),
+      where: (customers, { eq }) => eq(customers.phone, insertedPhone),
       with: {
         owner: includeOwner || undefined,
         shop: includeShop || undefined,
@@ -56,12 +57,12 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     reply.code(201).send(customer);
   });
 
-  // query customer by id
+  // query customer by phone
   fastify.get<{
     Querystring: TCustomerQueryString;
     Params: TCustomerQueryParam;
-  }>("/:id", QueryCustomerByIdOpts, async (req, reply) => {
-    const { id } = req.params;
+  }>("/:phone", QueryCustomerByPhoneOpts, async (req, reply) => {
+    const { phone } = req.params;
     const { includeOwner, includeShop, includeCreatedByEmployee } = req.query;
 
     const customer = await fastify.db.query.customersDB.findFirst({
@@ -70,7 +71,7 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
         shop: includeShop || undefined,
         createdByEmployee: includeCreatedByEmployee || undefined,
       },
-      where: (customersDB, { eq }) => eq(customersDB.id, id),
+      where: (customersDB, { eq }) => eq(customersDB.phone, phone),
     });
 
     if (!customer) {
@@ -85,7 +86,7 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     queryBy: TCustomerQueryByFields
   ): RouteHandlerMethod {
     return async (req, reply) => {
-      const { id } = req.params as TCustomerQueryParam;
+      const { id } = req.params as TCustomerQueryParamID;
       const {
         includeOwner,
         includeShop,
@@ -133,19 +134,19 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // query customers by shop id
   fastify.get<{
     Querystring: TPagableCustomerQueryString;
-    Params: TCustomerQueryParam;
+    Params: TCustomerQueryParamID;
   }>("/shop/:id", QueryCustomersByShopOpts, queryCustomerBy("shopId"));
 
   // query customers by owner id
   fastify.get<{
     Querystring: TPagableCustomerQueryString;
-    Params: TCustomerQueryParam;
+    Params: TCustomerQueryParamID;
   }>("/owner/:id", QueryCustomersByOwnerOpts, queryCustomerBy("ownerId"));
 
   // query customers by created employee id
   fastify.get<{
     Querystring: TPagableCustomerQueryString;
-    Params: TCustomerQueryParam;
+    Params: TCustomerQueryParamID;
   }>(
     "/created-by-employee/:id",
     QueryCustomersByOwnerOpts,

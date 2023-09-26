@@ -6,12 +6,13 @@ import {
   PagableCustomerQueryStringSchema,
   PagableCustomerSchemaOut,
   CustomerSchemaIn,
+  CustomerQueryParamIDSchema,
 } from "../types/customer";
 
-export const QueryCustomerByIdOpts: RouteShorthandOptions = {
+export const QueryCustomerByPhoneOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Customer"],
-    summary: "Get a customer by customer_id",
+    summary: "Get a customer by phone",
     params: CustomerQueryParamSchema,
     querystring: CustomerQueryStringSchema,
     response: {
@@ -24,7 +25,7 @@ export const QueryCustomersByOwnerOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Customer"],
     summary: "Get all customers by owner_id",
-    params: CustomerQueryParamSchema,
+    params: CustomerQueryParamIDSchema,
     querystring: PagableCustomerQueryStringSchema,
     response: {
       200: PagableCustomerSchemaOut,
@@ -36,7 +37,7 @@ export const QueryCustomersByShopOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Customer"],
     summary: "Get all customers by shop_id",
-    params: CustomerQueryParamSchema,
+    params: CustomerQueryParamIDSchema,
     querystring: PagableCustomerQueryStringSchema,
     response: {
       200: PagableCustomerSchemaOut,
@@ -48,7 +49,7 @@ export const QueryCustomersByCreatedEmployeeOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Customer"],
     summary: "Get all customers by created_by_employee_id",
-    params: CustomerQueryParamSchema,
+    params: CustomerQueryParamIDSchema,
     querystring: PagableCustomerQueryStringSchema,
     response: {
       200: PagableCustomerSchemaOut,

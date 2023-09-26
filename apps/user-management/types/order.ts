@@ -14,7 +14,7 @@ export const OrderSchema = Type.Object({
   updatedAt: Type.String(),
   shopId: Type.String(),
   ownerId: Type.String(),
-  customerId: Type.String(),
+  customerPhone: Type.String(),
   createdByEmployeeId: Type.String(),
 });
 
