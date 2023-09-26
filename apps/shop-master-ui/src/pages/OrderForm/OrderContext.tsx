@@ -4,11 +4,20 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
-import { TOrderItemForm } from "schema";
+import { OrderFormSchema, TOrderFormSchema, TOrderItemForm } from "schema";
 import { createNewEmptyOrderItem } from "./utils";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormWatch,
+  useForm,
+} from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useGlobalStore } from "../../store/globalStore";
 
 type TOrderContext = {
   orderItems: TOrderItemForm[];
@@ -16,11 +25,9 @@ type TOrderContext = {
   addNewOrderItem: () => void;
   removeOrderItem: (orderItemIdx: number) => void;
 
-  subTotal: number;
-  delivery: number;
-  discount: number;
-  tax: number;
-  total: number;
+  register: UseFormRegister<TOrderFormSchema>;
+  watch: UseFormWatch<TOrderFormSchema>;
+  formErrors: FieldErrors<TOrderFormSchema>;
 };
 
 const OrderContext = createContext<TOrderContext | null>(null);
@@ -34,6 +41,10 @@ export const useOrderContext = () => {
 };
 
 export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [owner, selectedShop] = useGlobalStore((state) => [
+    state.owner,
+    state.selectedShop,
+  ]);
   const [orderItems, setOrderItems] = useState<TOrderContext["orderItems"]>([
     createNewEmptyOrderItem(),
   ]);
@@ -67,6 +78,25 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     [setOrderItems]
   );
 
+  const {
+    register,
+    setValue: setFormValue,
+    watch,
+    formState: { errors: formErrors },
+  } = useForm<TOrderFormSchema>({
+    resolver: yupResolver(OrderFormSchema as any),
+    defaultValues: {
+      ownerId: owner?.id,
+      shopId: selectedShop?.id,
+      createdByEmployeeId: null,
+      totalAmount: 0,
+      subTotal: 0,
+      delivery: 0,
+      discount: 0,
+      tax: 0,
+    },
+  });
+
   const subTotal = useMemo(() => {
     let subTotal = 0;
     orderItems.forEach((item) => {
@@ -77,14 +107,15 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     });
     return subTotal;
   }, [orderItems]);
+  const delivery = watch("delivery");
+  const discount = watch("discount");
+  const tax = watch("tax");
 
-  const delivery = 0;
-  const discount = 0;
-  const tax = 0;
-
-  const total = useMemo(() => {
-    return subTotal + delivery - discount + tax;
-  }, [subTotal, delivery, discount, tax]);
+  useEffect(() => {
+    const total = subTotal + Number(delivery) - Number(discount) + Number(tax);
+    setFormValue("subTotal", subTotal);
+    setFormValue("totalAmount", total);
+  }, [delivery, discount, orderItems, setFormValue, subTotal, tax, watch]);
 
   return (
     <OrderContext.Provider
@@ -93,11 +124,9 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
         setOrderItem,
         addNewOrderItem,
         removeOrderItem,
-        subTotal,
-        delivery,
-        discount,
-        tax,
-        total,
+        register,
+        watch,
+        formErrors,
       }}
     >
       {children}

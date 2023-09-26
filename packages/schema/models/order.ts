@@ -18,6 +18,7 @@ export const OrderFormSchema = object({
   discount: number().required(),
   tax: number().required(),
   delivery: number().required(),
+  subTotal: number().required(),
 });
 
 export type TOrderFormSchema = InferType<typeof OrderFormSchema>;

@@ -5,7 +5,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableRow,
   TextField,
   Typography,
@@ -15,8 +14,7 @@ import { AddTwoTone } from "ui/icons";
 import { useOrderContext } from "../OrderContext";
 
 const OrderSummary: FC = () => {
-  const { addNewOrderItem, subTotal, delivery, discount, tax, total } =
-    useOrderContext();
+  const { addNewOrderItem, register, watch, formErrors } = useOrderContext();
 
   return (
     <Box className="flex w-full flex-col">
@@ -30,9 +28,36 @@ const OrderSummary: FC = () => {
           Add item
         </Button>
         <Box className="flex-1 " />
-        <TextField label="Delivery" type="number" className="w-32" />
-        <TextField label="Discount" type="number" className="w-32" />
-        <TextField label="Tax" type="number" className="w-32" />
+        <TextField
+          label="Delivery"
+          type="number"
+          className="w-32"
+          error={!!formErrors.delivery}
+          onFocus={(event) => {
+            event.target.select();
+          }}
+          {...register("delivery")}
+        />
+        <TextField
+          label="Discount"
+          type="number"
+          className="w-32"
+          error={!!formErrors.discount}
+          onFocus={(event) => {
+            event.target.select();
+          }}
+          {...register("discount")}
+        />
+        <TextField
+          label="Tax"
+          type="number"
+          className="w-32"
+          error={!!formErrors.tax}
+          onFocus={(event) => {
+            event.target.select();
+          }}
+          {...register("tax")}
+        />
       </Box>
       <Box className="mt-12 flex justify-end">
         <Table
@@ -52,7 +77,7 @@ const OrderSummary: FC = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="body1" align="right">
-                  {formatCurrency(subTotal)}
+                  {formatCurrency(watch("subTotal"))}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -64,7 +89,7 @@ const OrderSummary: FC = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="body1" align="right">
-                  {formatCurrency(delivery)}
+                  {formatCurrency(watch("delivery"))}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -76,7 +101,7 @@ const OrderSummary: FC = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="body1" align="right" color={"error"}>
-                  {formatCurrency(-discount)}
+                  {formatCurrency(-watch("discount"))}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -88,7 +113,7 @@ const OrderSummary: FC = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="body1" align="right">
-                  {formatCurrency(tax)}
+                  {formatCurrency(watch("tax"))}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -100,7 +125,7 @@ const OrderSummary: FC = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" align="right">
-                  {formatCurrency(total)}
+                  {formatCurrency(watch("totalAmount"))}
                 </Typography>
               </TableCell>
             </TableRow>
