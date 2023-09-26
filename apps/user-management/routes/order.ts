@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { TNewOrderDB, ordersDB } from "database-drizzle";
+import { TNewOrderDB, eq, ordersDB, sql } from "database-drizzle";
 import { RouteHandlerMethod } from "fastify";
 import {
   CreateOrderOpts,
@@ -165,7 +165,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
     getOrdersByCustomerPhone("ownerId")
   );
 
-  // query orders by
+  // query paginated orders by
   function getPagedOrdersBy(queryBy: TOrderQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TIDStringQueryParam;
@@ -203,7 +203,18 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
         },
       });
 
-      reply.code(200).send(orders);
+      const { total } = (
+        await fastify.db
+          .select({
+            total: sql<number>`count(*)`.mapWith(Number),
+          })
+          .from(ordersDB)
+          .where(eq(ordersDB[queryBy], id))
+      )[0];
+
+      const result = { rows: orders, total, page, limit };
+
+      reply.code(200).send(result);
     };
   }
 
@@ -253,7 +264,18 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
       },
     });
 
-    reply.code(200).send(orders);
+    const { total } = (
+      await fastify.db
+        .select({
+          total: sql<number>`count(*)`.mapWith(Number),
+        })
+        .from(ordersDB)
+        .where(eq(ordersDB["customerPhone"], phone))
+    )[0];
+
+    const result = { rows: orders, total, page, limit };
+
+    reply.code(200).send(result);
   });
 
   // get paged orders by owner id
