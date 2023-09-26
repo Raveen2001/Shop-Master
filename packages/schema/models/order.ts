@@ -6,7 +6,7 @@ export const OrderFormSchema = object({
   ownerId: string().required(),
   shopId: string().required(),
   customerId: string().nullable(),
-  createdByOrderId: string().nullable(),
+  createdByEmployeeId: string().nullable(),
 
   paymentType: string()
     .oneOf(ORDER_PAYMENT_TYPES, "Payment type is invalid")

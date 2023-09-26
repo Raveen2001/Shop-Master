@@ -27,5 +27,6 @@ export type TProductVariantData = TProductVariantFormSchema & {
   id: string;
 };
 
-export type TProductVariantWithProductDetails = TProductVariantData &
-  TProductData;
+export type TProductVariantWithDetails = TProductVariantData & {
+  product: TProductData;
+};

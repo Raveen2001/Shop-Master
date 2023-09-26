@@ -12,8 +12,9 @@ import {
   Alert,
   SingleSelectSearch,
 } from "ui";
-import { OrderProvider } from "./OrderContext";
+import { OrderProvider, useOrderContext } from "./OrderContext";
 import OrderItems from "./components/OrderItems";
+import { AddTwoTone } from "ui/icons";
 
 const OrderForm: FC = () => {
   return (
@@ -24,6 +25,7 @@ const OrderForm: FC = () => {
 };
 
 const _OrderForm: FC = () => {
+  const { addNewOrderItem } = useOrderContext();
   const {
     formErrors,
     onSubmit,
@@ -42,8 +44,20 @@ const _OrderForm: FC = () => {
 
       <Box className="h-8" />
 
-      <Card elevation={5} className="isolate overflow-visible p-6">
+      <Card
+        elevation={5}
+        className="isolate flex flex-col items-start gap-4 overflow-visible p-6"
+      >
         <OrderItems />
+
+        <Button
+          variant="text"
+          color="success"
+          startIcon={<AddTwoTone />}
+          onClick={addNewOrderItem}
+        >
+          Add item
+        </Button>
       </Card>
 
       <Snackbar

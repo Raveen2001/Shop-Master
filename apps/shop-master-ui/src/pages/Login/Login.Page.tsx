@@ -97,7 +97,6 @@ const LoginPage = () => {
 
         <form
           onSubmit={handleSubmit((data) => {
-            console.log(data);
             mutate(data);
           })}
           className="form"

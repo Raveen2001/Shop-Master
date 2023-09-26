@@ -1,1 +1,2 @@
-export {default as SingleSelectSearch} from './SingleSelectSearch';
+export { default as ReactSelect } from "./ReactSelect";
+export * from "./utils";

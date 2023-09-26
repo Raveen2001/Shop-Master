@@ -1,40 +1,110 @@
 import { FC } from "react";
-import { Box, Button, SingleSelectSearch, TextField } from "ui";
+import { Box, Button, TextField, Autocomplete } from "ui";
 import { DeleteTwoTone } from "ui/icons";
 import { useOrderContext } from "../OrderContext";
-import { useGlobalStore } from "../../../store/globalStore";
+import useOrderItem from "./useOrderItem";
+import { TOrderItemForm } from "schema";
+import { Controller } from "react-hook-form";
 
 interface OrderItemProps {
   orderIdx: number;
+  orderItem: TOrderItemForm;
 }
 
-const OrderItem: FC<OrderItemProps> = ({ orderIdx }) => {
-  const productVariants = useGlobalStore((state) =>
-    state.getAllProductVariantsWithDetails()
-  );
+const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
+  const { removeOrderItem } = useOrderContext();
+
+  const {
+    control,
+    register,
+    formErrors,
+    productOptions,
+    selectedVariant,
+    productVariants,
+    focusFieldOnEnter,
+    addNextItemOnEnter,
+    setFocus,
+  } = useOrderItem({
+    idx: orderIdx,
+    item: orderItem,
+  });
+
   return (
     <Box className="border-b-2 border-dotted border-stone-300">
-      <Box className="flex w-full gap-2">
-        <SingleSelectSearch
-          className="w-[40%] flex-shrink-0"
-          data={productVariants}
-          labelKey="name"
-          valueKey="id"
-          subLabelKey="brand.name"
-        />
-        <TextField
-          label="Variant"
-          contentEditable={false}
-          value={"hello" ?? ""}
-        />
+      <form>
+        <Box className="flex w-full gap-2">
+          <Controller
+            name="productVariant"
+            control={control}
+            render={({ field: { onChange, ...field } }) => {
+              return (
+                <Autocomplete
+                  options={productVariants}
+                  fullWidth
+                  {...field}
+                  onChange={(e, data) => {
+                    onChange(data);
+                    setFocus("quantity");
+                  }}
+                  getOptionLabel={(option) => option.name}
+                  autoHighlight
+                  renderInput={(params: any) => (
+                    <TextField
+                      {...params}
+                      autoFocus
+                      placeholder="Search ..."
+                      onFocus={(event) => {
+                        event.target.select();
+                      }}
+                    />
+                  )}
+                />
+              );
+            }}
+          />
 
-        <TextField label="Quantity" defaultValue={0} />
-        <TextField label="Price" defaultValue={0} />
-        <TextField label="Discount" defaultValue={0} />
-        <TextField label="Total" defaultValue={0} />
-      </Box>
+          <TextField
+            label="Variant"
+            disabled
+            value={selectedVariant?.name ?? ""}
+          />
+
+          <TextField
+            label="Quantity"
+            type="number"
+            {...register("quantity")}
+            onFocus={(event) => {
+              event.target.select();
+            }}
+            onKeyDown={addNextItemOnEnter}
+          />
+          <TextField
+            label="Price"
+            type="number"
+            disabled
+            value={selectedVariant?.salePrice ?? 0}
+            onFocus={(event) => {
+              event.target.select();
+            }}
+          />
+          <TextField
+            label="Discount"
+            type="number"
+            {...register("discount")}
+            onFocus={(event) => {
+              event.target.select();
+            }}
+          />
+          <TextField label="Total" type="number" defaultValue={0} disabled />
+        </Box>
+      </form>
       <Box className="mt-2 flex justify-end">
-        <Button variant="text" color="error" startIcon={<DeleteTwoTone />}>
+        <Button
+          variant="text"
+          color="error"
+          startIcon={<DeleteTwoTone />}
+          onClick={() => removeOrderItem(orderIdx)}
+        >
           Delete
         </Button>
       </Box>
@@ -47,7 +117,11 @@ const OrderItems: FC = () => {
   return (
     <Box className="flex w-full flex-col gap-4">
       {orderItems.map((orderItem, idx) => (
-        <OrderItem key={idx} orderIdx={idx} />
+        <OrderItem
+          key={orderItem.clientId ?? `order ${idx}`}
+          orderIdx={idx}
+          orderItem={orderItem}
+        />
       ))}
     </Box>
   );

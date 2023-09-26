@@ -114,7 +114,6 @@ const CustomerPaymentForm: FC = () => {
                   defaultValue={moment(getFormValue("createdAt"))}
                   onAccept={(date) => {
                     if (!date) return;
-                    console.log(date);
                     setFormValue("createdAt", date.toDate());
                   }}
                 />

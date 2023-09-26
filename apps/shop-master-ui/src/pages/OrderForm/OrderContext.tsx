@@ -6,15 +6,12 @@ import {
   useContext,
   useState,
 } from "react";
-import {
-  TOrderItemFormSchema,
-  TProductVariantWithProductDetails,
-} from "schema";
-import { useGlobalStore } from "../../store/globalStore";
+import { TOrderItemForm } from "schema";
+import { createNewEmptyOrderItem } from "./utils";
 
 type TOrderContext = {
-  orderItems: (TOrderItemFormSchema | null)[];
-  setOrderItem: (orderItemIdx: number, orderItem: TOrderItemFormSchema) => void;
+  orderItems: TOrderItemForm[];
+  setOrderItem: (orderItemIdx: number, orderItem: TOrderItemForm) => void;
   addNewOrderItem: () => void;
   removeOrderItem: (orderItemIdx: number) => void;
 };
@@ -31,7 +28,7 @@ export const useOrderContext = () => {
 
 export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
   const [orderItems, setOrderItems] = useState<TOrderContext["orderItems"]>([
-    null,
+    createNewEmptyOrderItem(),
   ]);
   const setOrderItem = useCallback<TOrderContext["setOrderItem"]>(
     (orderItemIds, orderItem) => {
@@ -45,7 +42,7 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const addNewOrderItem = useCallback(() => {
-    setOrderItems((prev) => [...prev, null]);
+    setOrderItems((prev) => [...prev, createNewEmptyOrderItem()]);
   }, []);
 
   const removeOrderItem = useCallback(
@@ -53,6 +50,10 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
       setOrderItems((prev) => {
         const newOrderItems = [...prev];
         newOrderItems.splice(orderItemIdx, 1);
+
+        if (newOrderItems.length === 0) {
+          newOrderItems.push(createNewEmptyOrderItem());
+        }
         return newOrderItems;
       });
     },

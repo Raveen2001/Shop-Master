@@ -13,7 +13,7 @@ const SidebarItem: React.FC<TSidebarSubItem> = ({
 }) => {
   const theme = useTheme();
   const { pathname } = useLocation();
-  console.log(pathname);
+
   const isSelected = pathname.match(highlightPathPattern);
 
   const navigate = useNavigate();

@@ -8,4 +8,4 @@ export { default as TableDateTimeCell } from "./TableDateTimeCell";
 export { default as MyLink } from "./MyLink";
 
 export * from "./Table";
-export * from './SearchSelect'
+export * from "./SearchSelect";
