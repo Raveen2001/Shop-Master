@@ -19,9 +19,16 @@ export const OrderItemFormSchema = object({
 //   cliendItemId: string;
 // };
 
-export type TOrderItemForm = {
+export type TTempOrderItemForm = {
   clientId: string;
   productVariant?: TProductVariantWithDetails | null;
   quantity?: number;
   discount?: number;
+};
+
+export type TOrderItemForm = {
+  productVariantId: string;
+  unitPrice: number;
+  quantity: number;
+  discount: number;
 };

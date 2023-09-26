@@ -8,7 +8,12 @@ import {
   useMemo,
   useState,
 } from "react";
-import { OrderFormSchema, TOrderFormSchema, TOrderItemForm } from "schema";
+import {
+  OrderFormSchema,
+  TOrderFormSchema,
+  TOrderItemForm,
+  TTempOrderItemForm,
+} from "schema";
 import { createNewEmptyOrderItem } from "./utils";
 import {
   FieldErrors,
@@ -20,14 +25,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useGlobalStore } from "../../store/globalStore";
 
 type TOrderContext = {
-  orderItems: TOrderItemForm[];
-  setOrderItem: (orderItemIdx: number, orderItem: TOrderItemForm) => void;
+  orderItems: TTempOrderItemForm[];
+  setOrderItem: (orderItemIdx: number, orderItem: TTempOrderItemForm) => void;
   addNewOrderItem: () => void;
   removeOrderItem: (orderItemIdx: number) => void;
 
   register: UseFormRegister<TOrderFormSchema>;
   watch: UseFormWatch<TOrderFormSchema>;
   formErrors: FieldErrors<TOrderFormSchema>;
+  onSubmit: () => Promise<void>;
 };
 
 const OrderContext = createContext<TOrderContext | null>(null);
@@ -83,6 +89,7 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     setValue: setFormValue,
     watch,
     formState: { errors: formErrors },
+    handleSubmit,
   } = useForm<TOrderFormSchema>({
     resolver: yupResolver(OrderFormSchema as any),
     defaultValues: {
@@ -94,19 +101,37 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
       delivery: 0,
       discount: 0,
       tax: 0,
+      customerPhone: "123",
+      amountPaid: 100,
+      isDraft: false,
+      paymentType: "CARD",
     },
   });
 
-  const subTotal = useMemo(() => {
-    let subTotal = 0;
+  const validOrderItems = useMemo(() => {
+    const validOrderItems: TOrderItemForm[] = [];
     orderItems.forEach((item) => {
-      if (item.productVariant) {
-        subTotal += item.productVariant.salePrice * (item.quantity ?? 0);
-        subTotal -= item.discount ?? 0;
+      if (item.productVariant && item.quantity && item.quantity > 0) {
+        validOrderItems.push({
+          productVariantId: item.productVariant.id,
+          unitPrice: item.productVariant.salePrice,
+          quantity: item.quantity,
+          discount: item.discount ?? 0,
+        });
       }
     });
-    return subTotal;
+    return validOrderItems;
   }, [orderItems]);
+
+  const subTotal = useMemo(() => {
+    let subTotal = 0;
+    validOrderItems.forEach((item) => {
+      subTotal += item.unitPrice * item.quantity;
+      subTotal -= item.discount;
+    });
+    return subTotal;
+  }, [validOrderItems]);
+
   const delivery = watch("delivery");
   const discount = watch("discount");
   const tax = watch("tax");
@@ -117,6 +142,9 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     setFormValue("totalAmount", total);
   }, [delivery, discount, orderItems, setFormValue, subTotal, tax, watch]);
 
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  });
   return (
     <OrderContext.Provider
       value={{
@@ -127,6 +155,7 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
         register,
         watch,
         formErrors,
+        onSubmit,
       }}
     >
       {children}

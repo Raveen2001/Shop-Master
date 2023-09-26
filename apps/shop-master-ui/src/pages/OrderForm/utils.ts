@@ -1,6 +1,6 @@
 import moment from "moment";
-import { TOrderItemForm } from "schema";
+import { TTempOrderItemForm } from "schema";
 
-export const createNewEmptyOrderItem = (): TOrderItemForm => ({
+export const createNewEmptyOrderItem = (): TTempOrderItemForm => ({
   clientId: moment().toString(),
 });

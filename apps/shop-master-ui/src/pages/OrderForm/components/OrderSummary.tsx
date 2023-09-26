@@ -14,7 +14,8 @@ import { AddTwoTone } from "ui/icons";
 import { useOrderContext } from "../OrderContext";
 
 const OrderSummary: FC = () => {
-  const { addNewOrderItem, register, watch, formErrors } = useOrderContext();
+  const { addNewOrderItem, register, watch, formErrors, onSubmit } =
+    useOrderContext();
 
   return (
     <Box className="flex w-full flex-col">
@@ -137,7 +138,7 @@ const OrderSummary: FC = () => {
         <Button variant="outlined" color="primary">
           Save as draft
         </Button>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={onSubmit}>
           Save and Print
         </Button>
       </Box>

@@ -1,13 +1,13 @@
 import { KeyboardEvent, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { TOrderItemForm } from "schema";
+import { TTempOrderItemForm } from "schema";
 import { useOrderContext } from "../OrderContext";
 import { useGlobalStore } from "../../../store/globalStore";
 import Fuse from "fuse.js";
 
 interface useOrderItemProps {
   idx: number;
-  item: TOrderItemForm;
+  item: TTempOrderItemForm;
 }
 
 const useOrderItem = ({ idx, item }: useOrderItemProps) => {
@@ -22,7 +22,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     watch,
     setFocus,
     formState: { errors: formErrors },
-  } = useForm<TOrderItemForm>({
+  } = useForm<TTempOrderItemForm>({
     defaultValues: {
       // default values
       quantity: 0,
@@ -46,7 +46,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
 
   const selectedVariant = watch("productVariant");
 
-  const focusFieldOnEnter = (field: keyof TOrderItemForm) => {
+  const focusFieldOnEnter = (field: keyof TTempOrderItemForm) => {
     return (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter") {
         setFocus(field);

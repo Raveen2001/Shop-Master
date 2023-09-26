@@ -5,7 +5,7 @@ const ORDER_PAYMENT_TYPES = ["CASH", "UPI", "CARD"] as const;
 export const OrderFormSchema = object({
   ownerId: string().required(),
   shopId: string().required(),
-  customerPhone: string().nullable(),
+  customerPhone: string().required(),
   createdByEmployeeId: string().nullable(),
 
   paymentType: string()
