@@ -35,5 +35,10 @@ export const IDStringQueryParamSchema = Type.Object({
   id: Type.String(),
 });
 
+export const PhoneQueryParamSchema = Type.Object({
+  phone: Type.String(),
+});
+
 export type TIDNumberQueryParam = Static<typeof IDNumberQueryParamSchema>;
 export type TIDStringQueryParam = Static<typeof IDStringQueryParamSchema>;
+export type TPhoneQueryParam = Static<typeof PhoneQueryParamSchema>;

@@ -41,7 +41,7 @@ export const ORDERS_DB_COLUMNS = [
   "updatedAt",
   "shopId",
   "ownerId",
-  "customerId",
+  "customerPhone",
   "createdByEmployeeId",
 ] as const;
 

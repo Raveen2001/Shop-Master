@@ -4,7 +4,7 @@ import { RouteHandlerMethod } from "fastify";
 import {
   CreateOrderOpts,
   QueryOrderOpts,
-  QueryOrdersByIdOpts,
+  QueryOrdersByPhoneOpts,
   QueryPagedOrdersByIdOpts,
 } from "../opts/order";
 import FastifyTypebox from "../types/fastify";
@@ -14,7 +14,7 @@ import {
   TOrderQueryString,
   TPagableOrderQueryString,
 } from "../types/order";
-import { TIDStringQueryParam } from "../types/common";
+import { TIDStringQueryParam, TPhoneQueryParam } from "../types/common";
 
 const OrderRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
@@ -87,7 +87,9 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
   });
 
   // query orders by
-  function getOrdersBy(queryBy: TOrderQueryByFields): RouteHandlerMethod {
+  function getOrdersByCustomerPhone(
+    queryBy: TOrderQueryByFields
+  ): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TIDStringQueryParam;
       const {
@@ -117,25 +119,51 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
   fastify.get<{
     Params: TIDStringQueryParam;
     Querystring: TOrderQueryString;
-  }>("/shop/:id", QueryOrdersByIdOpts, getOrdersBy("shopId"));
+  }>("/shop/:id", QueryOrdersByPhoneOpts, getOrdersByCustomerPhone("shopId"));
 
-  // get orders by customer id
+  // get orders by customer phone
   fastify.get<{
-    Params: TIDStringQueryParam;
+    Params: TPhoneQueryParam;
     Querystring: TOrderQueryString;
-  }>("/customer/:id", QueryOrdersByIdOpts, getOrdersBy("customerId"));
+  }>("/customer/:id", QueryOrdersByPhoneOpts, async (req, reply) => {
+    const { phone } = req.params as TPhoneQueryParam;
+    const {
+      includeCreatedByEmployee,
+      includeCustomer,
+      includeOwner,
+      includeShop,
+      includeItems,
+    } = req.query as TOrderQueryString;
+
+    const orders = await fastify.db.query.ordersDB.findMany({
+      where: (ordersDB, { eq }) => eq(ordersDB["customerPhone"], phone),
+      with: {
+        owner: includeOwner || undefined,
+        shop: includeShop || undefined,
+        customer: includeCustomer || undefined,
+        createdByEmployee: includeCreatedByEmployee || undefined,
+        items: includeItems || undefined,
+      },
+    });
+
+    reply.code(200).send(orders);
+  });
 
   // get orders by owner id
   fastify.get<{
     Params: TIDStringQueryParam;
     Querystring: TOrderQueryString;
-  }>("/owner/:id", QueryOrdersByIdOpts, getOrdersBy("ownerId"));
+  }>("/owner/:id", QueryOrdersByPhoneOpts, getOrdersByCustomerPhone("ownerId"));
 
   // get orders by created by employee id
   fastify.get<{
     Params: TIDStringQueryParam;
     Querystring: TOrderQueryString;
-  }>("/created-by-employee/:id", QueryOrdersByIdOpts, getOrdersBy("ownerId"));
+  }>(
+    "/created-by-employee/:id",
+    QueryOrdersByPhoneOpts,
+    getOrdersByCustomerPhone("ownerId")
+  );
 
   // query orders by
   function getPagedOrdersBy(queryBy: TOrderQueryByFields): RouteHandlerMethod {
@@ -187,13 +215,46 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
 
   // get paged orders by customer id
   fastify.get<{
-    Params: TIDStringQueryParam;
+    Params: TPhoneQueryParam;
     Querystring: TPagableOrderQueryString;
-  }>(
-    "/customer/:id/paged",
-    QueryPagedOrdersByIdOpts,
-    getPagedOrdersBy("customerId")
-  );
+  }>("/customer/:id/paged", QueryPagedOrdersByIdOpts, async (req, reply) => {
+    const { phone } = req.params;
+    const {
+      includeCreatedByEmployee,
+      includeCustomer,
+      includeOwner,
+      includeShop,
+      limit,
+      order,
+      orderBy,
+      page,
+    } = req.query;
+
+    const offset =
+      page !== undefined && limit !== undefined ? page * limit : undefined;
+
+    const orders = await fastify.db.query.ordersDB.findMany({
+      where: (ordersDB, { eq }) => eq(ordersDB["customerPhone"], phone),
+      with: {
+        owner: includeOwner || undefined,
+        shop: includeShop || undefined,
+        customer: includeCustomer || undefined,
+        createdByEmployee: includeCreatedByEmployee || undefined,
+      },
+      limit: limit,
+      offset: offset,
+      orderBy: (ordersDB, { asc, desc }) => {
+        if (orderBy && order == "asc") {
+          return asc(ordersDB[orderBy]);
+        } else if (orderBy && order == "desc") {
+          return desc(ordersDB[orderBy]);
+        }
+        return asc(ordersDB.createdAt);
+      },
+    });
+
+    reply.code(200).send(orders);
+  });
 
   // get paged orders by owner id
   fastify.get<{

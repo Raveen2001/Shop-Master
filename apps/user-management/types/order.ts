@@ -66,8 +66,4 @@ export type TPagableOrderQueryString = Static<
   typeof PagableOrderQueryStringSchema
 >;
 
-export type TOrderQueryByFields =
-  | "shopId"
-  | "customerId"
-  | "ownerId"
-  | "createdByEmployeeId";
+export type TOrderQueryByFields = "shopId" | "ownerId" | "createdByEmployeeId";

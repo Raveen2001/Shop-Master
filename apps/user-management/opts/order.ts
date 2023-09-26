@@ -2,14 +2,16 @@ import { RouteShorthandOptions } from "fastify";
 import {
   OrderQueryParamSchema,
   OrderQueryStringSchema,
-  OrderSchema,
   OrderSchemaIn,
   OrderSchemaOut,
   PagableOrderQueryStringSchema,
   PagableOrderSchemaOut,
 } from "../types/order";
 import { Type } from "@sinclair/typebox";
-import { IDStringQueryParamSchema } from "../types/common";
+import {
+  IDStringQueryParamSchema,
+  PhoneQueryParamSchema,
+} from "../types/common";
 
 export const CreateOrderOpts: RouteShorthandOptions = {
   schema: {
@@ -40,6 +42,18 @@ export const QueryOrdersByIdOpts: RouteShorthandOptions = {
     tags: ["Order"],
     summary: "Get Orders by id",
     params: IDStringQueryParamSchema,
+    querystring: OrderQueryStringSchema,
+    response: {
+      200: Type.Array(OrderSchemaOut),
+    },
+  },
+};
+
+export const QueryOrdersByPhoneOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Order"],
+    summary: "Get Orders by customer phone",
+    params: PhoneQueryParamSchema,
     querystring: OrderQueryStringSchema,
     response: {
       200: Type.Array(OrderSchemaOut),
