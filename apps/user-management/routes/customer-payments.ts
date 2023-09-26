@@ -15,7 +15,9 @@ import { RouteHandlerMethod } from "fastify";
 import {
   CreateCustomerPaymentOpts,
   QueryCustomersPaymentsByIdOpts,
+  QueryCustomersPaymentsByPhoneOpts,
 } from "../opts/customer-payments";
+import { TPhoneQueryParam } from "../types/common";
 
 const CustomerPaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
@@ -116,12 +118,60 @@ const CustomerPaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // query customers payments by employee id
   fastify.get<{
     Querystring: TPagableCustomerPaymentQueryString;
-    Params: TCustomerPaymentQueryParam;
-  }>(
-    "/customer/:id",
-    QueryCustomersPaymentsByIdOpts,
-    queryCustomerPaymentsBy("customerId")
-  );
+    Params: TPhoneQueryParam;
+  }>("/customer/:id", QueryCustomersPaymentsByPhoneOpts, async (req, reply) => {
+    const { phone } = req.params;
+    const {
+      includeCreatedByEmployee,
+      includeCustomer,
+      includeOwner,
+      includeShop,
+      limit,
+      page,
+      order,
+      orderBy,
+    } = req.query as TPagableCustomerPaymentQueryString;
+
+    const offset =
+      page !== undefined && limit !== undefined ? page * limit : undefined;
+
+    const customerPayments = await fastify.db.query.customerPaymentsDB.findMany(
+      {
+        where: (customerPaymentsDB, { eq }) =>
+          eq(customerPaymentsDB["customerPhone"], phone),
+
+        with: {
+          createdByEmployee: includeCreatedByEmployee || undefined,
+          customer: includeCustomer || undefined,
+          owner: includeOwner || undefined,
+          shop: includeShop || undefined,
+        },
+        limit: limit,
+        offset: offset,
+        orderBy: (customerPaymentsDB, { asc, desc }) => {
+          if (orderBy && order == "asc") {
+            return asc(customerPaymentsDB[orderBy]);
+          } else if (orderBy && order == "desc") {
+            return desc(customerPaymentsDB[orderBy]);
+          }
+          return asc(customerPaymentsDB.createdAt);
+        },
+      }
+    );
+
+    const { total } = (
+      await fastify.db
+        .select({
+          total: sql<number>`count(*)`.mapWith(Number),
+        })
+        .from(customerPaymentsDB)
+        .where(eq(customerPaymentsDB["customerPhone"], phone))
+    )[0];
+
+    const result = { rows: customerPayments, total, page, limit };
+
+    reply.code(200).send(result);
+  });
 
   // query customers payments by created by employee id
   fastify.get<{
