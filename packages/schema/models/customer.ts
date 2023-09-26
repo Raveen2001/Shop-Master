@@ -7,9 +7,7 @@ export const CustomerFormSchema = object({
     .min(3, "Name must be at least 3 characters")
     .required("Name is required"),
 
-  phone: string()
-    .matches(/^\d{10}$/, "Phone must be 10 digits")
-    .nullable(),
+  phone: string().matches(/^\d{10}$/, "Phone must be 10 digits"),
   email: string().email("Email should be valid").lowercase().nullable(),
   image: string().url("Image should be valid").nullable(),
 
