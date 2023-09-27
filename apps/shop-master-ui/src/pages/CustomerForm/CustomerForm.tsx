@@ -33,7 +33,7 @@ const CustomerForm: FC = () => {
   } = useCustomerForm();
   return (
     <Box className="px-8 py-4">
-      <Typography variant="h5">Create a new Employee</Typography>
+      <Typography variant="h5">Create a new Customer</Typography>
 
       <Box className="h-8" />
 
@@ -59,7 +59,7 @@ const CustomerForm: FC = () => {
           </Box>
 
           <Button color="error" variant="outlined">
-            Delete Employee
+            Delete Customer
           </Button>
         </Card>
 
