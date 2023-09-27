@@ -17,7 +17,6 @@ import {
   Select,
   DateTimePicker,
   TableProfileCell,
-  InputAdornment,
 } from "ui";
 import { CUSTOMER_PAYEMENT_TYPES } from "schema";
 
@@ -52,17 +51,17 @@ const CustomerPaymentForm: FC = () => {
         >
           <Box className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-2">
             <Box className="flex flex-col gap-4">
-              <FormControl error={!!formErrors.customerId}>
+              <FormControl error={!!formErrors.customerPhone}>
                 <InputLabel id="customer-label">Customer *</InputLabel>
                 <Select
                   labelId="customer-label"
                   id="customerId"
-                  {...register("customerId")}
+                  {...register("customerPhone")}
                   label="Customer *"
-                  defaultValue={getFormValue("customerId")}
+                  defaultValue={""}
                 >
                   {customers.map((customer) => (
-                    <MenuItem key={customer.id} value={customer.id}>
+                    <MenuItem key={customer.phone} value={customer.phone}>
                       <TableProfileCell
                         name={customer.name}
                         subText={customer.type}
@@ -73,7 +72,7 @@ const CustomerPaymentForm: FC = () => {
                 </Select>
 
                 <FormHelperText>
-                  {formErrors.customerId?.message}
+                  {formErrors.customerPhone?.message}
                 </FormHelperText>
               </FormControl>
 
@@ -84,7 +83,7 @@ const CustomerPaymentForm: FC = () => {
                   id="type"
                   {...register("type")}
                   label="Type *"
-                  defaultValue={getFormValue("type")}
+                  defaultValue={""}
                 >
                   {CUSTOMER_PAYEMENT_TYPES.map((type) => (
                     <MenuItem key={type} value={type}>
@@ -98,11 +97,6 @@ const CustomerPaymentForm: FC = () => {
               <TextField
                 label="Amount *"
                 type="number"
-                inputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">kg</InputAdornment>
-                  ),
-                }}
                 {...register("amount")}
                 error={!!formErrors.amount}
                 helperText={formErrors.amount?.message}

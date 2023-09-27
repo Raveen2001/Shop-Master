@@ -92,7 +92,7 @@ const CustomerForm: FC = () => {
                     id="type"
                     {...register("type")}
                     label="Type"
-                    defaultValue={"INDIVIDUAL"}
+                    defaultValue={""}
                   >
                     {CUSTOMER_TYPES.map((type) => (
                       <MenuItem key={type} value={type}>

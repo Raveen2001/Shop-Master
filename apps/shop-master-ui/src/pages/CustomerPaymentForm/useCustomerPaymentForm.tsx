@@ -64,8 +64,6 @@ const useCustomerPaymentForm = () => {
     resolver: yupResolver(CustomerPaymentFormSchema) as any,
     defaultValues: {
       createdAt: moment().toDate(),
-      customerId: "",
-      type: "",
       amount: 1,
     },
   });

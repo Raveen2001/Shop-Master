@@ -44,7 +44,6 @@ const useCustomerForm = () => {
       shopId: selectedShop?.id,
       ownerId: owner?.id,
       createdByEmployeeId: null,
-      type: "INDIVIDUAL",
     },
     resolver: yupResolver(CustomerFormSchema as any),
   });

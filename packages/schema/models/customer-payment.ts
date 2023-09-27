@@ -11,11 +11,11 @@ export const CustomerPaymentFormSchema = object({
     .required("Amount is required"),
   comment: string(),
   createdAt: date().required("Created at is required"),
-  type: mixed()
+  type: string()
     .oneOf(CUSTOMER_PAYEMENT_TYPES, "Payment Type should be valid")
     .required("Payment Type is required"),
   createdByCustomerId: string().nullable(),
-  customerId: string().required("Customer is required"),
+  customerPhone: string().required("Phone is required"),
   shopId: string().required(),
   ownerId: string().required(),
 });
@@ -34,5 +34,3 @@ export type TCustomerPaymentData = TCustomerPaymentFormSchema & {
 
 export type TPaginatedCustomerPaymentData =
   IPaginatedData<TCustomerPaymentData>;
-
-export type { TCUSTOMER_PAYMENT_QUERY_BY_FIELDS } from "database-drizzle";
