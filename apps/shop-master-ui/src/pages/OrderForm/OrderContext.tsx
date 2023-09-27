@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   FC,
   PropsWithChildren,
@@ -6,33 +7,28 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
 } from "react";
 import {
-  OrderFormSchema,
-  TOrderFormSchema,
-  TOrderItemForm,
-  TTempOrderItemForm,
-} from "schema";
-import { createNewEmptyOrderItem } from "./utils";
-import {
+  FieldArrayWithId,
   FieldErrors,
   UseFormRegister,
   UseFormWatch,
+  useFieldArray,
   useForm,
 } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { OrderFormSchema, TOrderData1, TOrderItemFormSchema } from "schema";
 import { useGlobalStore } from "../../store/globalStore";
+import { createNewEmptyOrderItem } from "./utils";
 
 type TOrderContext = {
-  orderItems: TTempOrderItemForm[];
-  setOrderItem: (orderItemIdx: number, orderItem: TTempOrderItemForm) => void;
+  orderItems: FieldArrayWithId<TOrderData1, "items", "id">[];
   addNewOrderItem: () => void;
-  removeOrderItem: (orderItemIdx: number) => void;
+  updateOrderItem: (idx: number, data: TOrderItemFormSchema) => void;
+  removeOrderItem: (index: number) => void;
 
-  register: UseFormRegister<TOrderFormSchema>;
-  watch: UseFormWatch<TOrderFormSchema>;
-  formErrors: FieldErrors<TOrderFormSchema>;
+  register: UseFormRegister<TOrderData1>;
+  watch: UseFormWatch<TOrderData1>;
+  formErrors: FieldErrors<TOrderData1>;
   onSubmit: () => Promise<void>;
 };
 
@@ -51,46 +47,15 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     state.owner,
     state.selectedShop,
   ]);
-  const [orderItems, setOrderItems] = useState<TOrderContext["orderItems"]>([
-    createNewEmptyOrderItem(),
-  ]);
-  const setOrderItem = useCallback<TOrderContext["setOrderItem"]>(
-    (orderItemIds, orderItem) => {
-      setOrderItems((prev) => {
-        const newOrderItems = [...prev];
-        newOrderItems[orderItemIds] = orderItem;
-        return newOrderItems;
-      });
-    },
-    []
-  );
-
-  const addNewOrderItem = useCallback(() => {
-    setOrderItems((prev) => [...prev, createNewEmptyOrderItem()]);
-  }, []);
-
-  const removeOrderItem = useCallback(
-    (orderItemIdx: number) => {
-      setOrderItems((prev) => {
-        const newOrderItems = [...prev];
-        newOrderItems.splice(orderItemIdx, 1);
-
-        if (newOrderItems.length === 0) {
-          newOrderItems.push(createNewEmptyOrderItem());
-        }
-        return newOrderItems;
-      });
-    },
-    [setOrderItems]
-  );
 
   const {
+    control,
     register,
+    handleSubmit,
+    formState: { errors: formErrors },
     setValue: setFormValue,
     watch,
-    formState: { errors: formErrors },
-    handleSubmit,
-  } = useForm<TOrderFormSchema>({
+  } = useForm<TOrderData1>({
     resolver: yupResolver(OrderFormSchema as any),
     defaultValues: {
       ownerId: owner?.id,
@@ -104,37 +69,34 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
       customerPhone: "123",
       amountPaid: 100,
       isDraft: false,
-      paymentType: "CARD",
+      paymentType: "CASH",
+      items: [createNewEmptyOrderItem()],
     },
   });
 
-  const validOrderItems = useMemo(() => {
-    const validOrderItems: TOrderItemForm[] = [];
-    orderItems.forEach((item) => {
-      if (item.productVariant && item.quantity && item.quantity > 0) {
-        validOrderItems.push({
-          productVariantId: item.productVariant.id,
-          unitPrice: item.productVariant.salePrice,
-          quantity: item.quantity,
-          discount: item.discount ?? 0,
-        });
-      }
-    });
-    return validOrderItems;
-  }, [orderItems]);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "items",
+    keyName: "id",
+  });
+
+  const onSubmit = handleSubmit((data) => {
+    data;
+  });
+
+  const orderItems = watch("items", []);
 
   const subTotal = useMemo(() => {
     let subTotal = 0;
-    validOrderItems.forEach((item) => {
-      subTotal += item.unitPrice * item.quantity;
-      subTotal -= item.discount;
+    orderItems.forEach((item) => {
+      subTotal += item.unitPrice * item.quantity - item.discount;
     });
     return subTotal;
-  }, [validOrderItems]);
+  }, [orderItems]);
 
-  const delivery = watch("delivery");
-  const discount = watch("discount");
-  const tax = watch("tax");
+  const delivery = watch("delivery", 0);
+  const discount = watch("discount", 0);
+  const tax = watch("tax", 0);
 
   useEffect(() => {
     const total = subTotal + Number(delivery) - Number(discount) + Number(tax);
@@ -142,16 +104,36 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     setFormValue("totalAmount", total);
   }, [delivery, discount, orderItems, setFormValue, subTotal, tax, watch]);
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-  });
+  const addNewOrderItem = useCallback(() => {
+    append(createNewEmptyOrderItem());
+  }, [append]);
+
+  const updateOrderItem = useCallback(
+    (idx: number, data: TOrderItemFormSchema) => {
+      setFormValue(`items.${idx}`, data);
+    },
+    [setFormValue]
+  );
+  const removeOrderItem = useCallback(
+    (index: number) => {
+      remove(index);
+
+      // if it is the last item, add new item
+      if (fields.length === 1) {
+        addNewOrderItem();
+      }
+    },
+    [addNewOrderItem, fields.length, remove]
+  );
+
   return (
     <OrderContext.Provider
       value={{
-        orderItems,
-        setOrderItem,
+        orderItems: fields,
         addNewOrderItem,
         removeOrderItem,
+        updateOrderItem,
+
         register,
         watch,
         formErrors,

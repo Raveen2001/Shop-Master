@@ -1,17 +1,28 @@
-import { KeyboardEvent, useEffect, useMemo } from "react";
+import { KeyboardEvent, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { TTempOrderItemForm } from "schema";
+import {
+  OrderItemFormSchema,
+  TOrderItemFormSchema,
+  TProductVariantWithDetails,
+} from "schema";
 import { useOrderContext } from "../OrderContext";
 import { useGlobalStore } from "../../../store/globalStore";
 import Fuse from "fuse.js";
+import { createNewEmptyOrderItem } from "../utils";
 
 interface useOrderItemProps {
   idx: number;
-  item: TTempOrderItemForm;
+  item: TOrderItemFormSchema;
 }
 
 const useOrderItem = ({ idx, item }: useOrderItemProps) => {
-  const { setOrderItem, addNewOrderItem, orderItems } = useOrderContext();
+  const [selectedProductVariant, setSelectedProductVariant] =
+    useState<TProductVariantWithDetails | null>(null);
+
+  const [total, setTotal] = useState(0);
+
+  const { addNewOrderItem, orderItems, updateOrderItem } = useOrderContext();
+
   const productVariants = useGlobalStore((state) =>
     state.getAllProductVariantsWithDetails()
   );
@@ -21,32 +32,34 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     control,
     watch,
     setFocus,
+    setValue: setFormValue,
     formState: { errors: formErrors },
-  } = useForm<TTempOrderItemForm>({
-    defaultValues: {
-      // default values
-      quantity: 0,
-      discount: 0,
-
-      // override default values
-      ...item,
-    },
+  } = useForm<TOrderItemFormSchema>({
+    defaultValues: item,
     mode: "onChange",
   });
 
   useEffect(() => {
     const subscription = watch((data) => {
-      setOrderItem(idx, data as any);
+      try {
+        const item = OrderItemFormSchema.validateSync(data);
+        setTotal(item.quantity * item.unitPrice - item.discount);
+        updateOrderItem(idx, item);
+      } catch (e) {
+        // if there is an error set total to 0
+        setTotal(0);
+
+        // if there is an error set the item to empty
+        updateOrderItem(idx, createNewEmptyOrderItem());
+      }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [idx, item, setOrderItem, watch]);
+  }, [idx, updateOrderItem, watch]);
 
-  const selectedVariant = watch("productVariant");
-
-  const focusFieldOnEnter = (field: keyof TTempOrderItemForm) => {
+  const focusFieldOnEnter = (field: keyof TOrderItemFormSchema) => {
     return (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter") {
         setFocus(field);
@@ -63,14 +76,6 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     }
   };
 
-  const [quantity = 0, unitPrice = 0, discount = 0] = watch([
-    "quantity",
-    "productVariant.salePrice",
-    "discount",
-  ]);
-
-  const totalAmount = quantity * unitPrice - discount;
-
   const fuse = useMemo(
     () =>
       new Fuse(productVariants, {
@@ -83,13 +88,16 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     register,
     formErrors,
     control,
-    selectedVariant,
     productVariants,
     focusFieldOnEnter,
     addNextItemOnEnter: addNewOrderItemOnEnter,
     setFocus,
-    totalAmount,
+    total,
     fuse,
+    watch,
+    setFormValue,
+    selectedProductVariant,
+    setSelectedProductVariant,
   };
 };
 

@@ -1,14 +1,14 @@
 import { FC } from "react";
-import { Box, Button, TextField, Autocomplete } from "ui";
+import { Controller } from "react-hook-form";
+import { Autocomplete, Box, Button, TextField } from "ui";
 import { DeleteTwoTone } from "ui/icons";
 import { useOrderContext } from "../OrderContext";
 import useOrderItem from "./useOrderItem";
-import { TTempOrderItemForm } from "schema";
-import { Controller } from "react-hook-form";
+import { TOrderItemFormSchema } from "schema";
 
 interface OrderItemProps {
   orderIdx: number;
-  orderItem: TTempOrderItemForm;
+  orderItem: TOrderItemFormSchema;
 }
 
 const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
@@ -18,13 +18,16 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
     control,
     register,
     formErrors,
-    selectedVariant,
     productVariants,
     focusFieldOnEnter,
     addNextItemOnEnter,
     setFocus,
-    totalAmount,
+    total,
     fuse,
+    selectedProductVariant,
+    setSelectedProductVariant,
+    setFormValue,
+    watch,
   } = useOrderItem({
     idx: orderIdx,
     item: orderItem,
@@ -34,16 +37,19 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
     <Box className="border-b-2 border-dotted border-stone-300">
       <Box className="flex w-full gap-2">
         <Controller
-          name="productVariant"
+          name="productVariantId"
           control={control}
-          render={({ field: { onChange, ...field } }) => {
+          render={({ field: { onChange, value, ...field } }) => {
             return (
               <Autocomplete
                 options={productVariants}
                 fullWidth
                 {...field}
-                onChange={(e, data) => {
-                  onChange(data);
+                onChange={(e, productVariant) => {
+                  if (!productVariant) return;
+                  setSelectedProductVariant(productVariant);
+                  onChange(productVariant.id);
+                  setFormValue("unitPrice", productVariant.salePrice);
                   setFocus("quantity");
                 }}
                 filterOptions={(_, state) => {
@@ -51,6 +57,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                     .search(state.inputValue)
                     .map((result) => result.item);
                 }}
+                value={selectedProductVariant}
                 getOptionLabel={(option) => option.name}
                 autoHighlight
                 renderInput={(params: any) => (
@@ -72,7 +79,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           className="w-72"
           label="Variant"
           disabled
-          value={selectedVariant?.name ?? ""}
+          value={selectedProductVariant?.name ?? ""}
         />
 
         <TextField
@@ -91,10 +98,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           label="Price"
           type="number"
           disabled
-          value={selectedVariant?.salePrice ?? 0}
-          onFocus={(event) => {
-            event.target.select();
-          }}
+          value={watch("unitPrice")}
         />
         <TextField
           className="w-48"
@@ -110,7 +114,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           className="w-72"
           label="Total"
           type="number"
-          value={totalAmount}
+          value={total}
           disabled
         />
       </Box>
@@ -133,11 +137,7 @@ const OrderItems: FC = () => {
   return (
     <Box className="flex w-full flex-col gap-4">
       {orderItems.map((orderItem, idx) => (
-        <OrderItem
-          key={orderItem.clientId ?? `order ${idx}`}
-          orderIdx={idx}
-          orderItem={orderItem}
-        />
+        <OrderItem key={orderItem.id} orderIdx={idx} orderItem={orderItem} />
       ))}
     </Box>
   );
