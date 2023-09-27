@@ -138,7 +138,7 @@ const OrderSummary: FC = () => {
         <Button variant="outlined" color="primary">
           Save as draft
         </Button>
-        <Button variant="contained" color="primary" onClick={onSubmit}>
+        <Button variant="contained" color="primary" type="submit">
           Save and Print
         </Button>
       </Box>

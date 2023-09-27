@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Controller } from "react-hook-form";
-import { Autocomplete, Box, Button, TextField } from "ui";
+import { Autocomplete, Box, Button, TextField, Typography } from "ui";
 import { DeleteTwoTone } from "ui/icons";
 import { useOrderContext } from "../OrderContext";
 import useOrderItem from "./useOrderItem";
@@ -12,22 +12,24 @@ interface OrderItemProps {
 }
 
 const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
-  const { removeOrderItem } = useOrderContext();
+  const {
+    removeOrderItem,
+    register,
+    control,
+    watch,
+    formErrors,
+    setFormValue,
+    setFormFocus,
+  } = useOrderContext();
 
   const {
-    control,
-    register,
-    formErrors,
     productVariants,
     focusFieldOnEnter,
     addNextItemOnEnter,
-    setFocus,
     total,
     fuse,
     selectedProductVariant,
     setSelectedProductVariant,
-    setFormValue,
-    watch,
   } = useOrderItem({
     idx: orderIdx,
     item: orderItem,
@@ -37,8 +39,11 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
     <Box className="border-b-2 border-dotted border-stone-300">
       <Box className="flex w-full gap-2">
         <Controller
-          name="productVariantId"
+          name={`items.${orderIdx}.productVariantId`}
           control={control}
+          rules={{
+            required: true,
+          }}
           render={({ field: { onChange, value, ...field } }) => {
             return (
               <Autocomplete
@@ -49,12 +54,15 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                   if (productVariant) {
                     setSelectedProductVariant(productVariant);
                     onChange(productVariant.id);
-                    setFormValue("unitPrice", productVariant.salePrice);
-                    setFocus("quantity");
+                    setFormValue(
+                      `items.${orderIdx}.unitPrice`,
+                      productVariant.salePrice
+                    );
+                    setFormFocus(`items.${orderIdx}.unitPrice`);
                   } else {
                     setSelectedProductVariant(null);
                     onChange("");
-                    setFormValue("unitPrice", 0);
+                    setFormValue(`items.${orderIdx}.unitPrice`, 0);
                   }
                 }}
                 filterOptions={(_, state) => {
@@ -62,13 +70,13 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                     .search(state.inputValue)
                     .map((result) => result.item);
                 }}
-                value={selectedProductVariant}
                 getOptionLabel={(option) => option.name}
                 autoHighlight
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
                     autoFocus
+                    error={!!formErrors.items?.[orderIdx]?.productVariantId}
                     placeholder="Search ..."
                     onFocus={(event) => {
                       event.target.select();
@@ -91,26 +99,26 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           className="w-48"
           label="Quantity"
           type="number"
-          error={!!formErrors.quantity}
-          {...register("quantity", { min: 1, required: true })}
+          error={!!formErrors.items?.[orderIdx]?.quantity}
           onFocus={(event) => {
             event.target.select();
           }}
           onKeyDown={addNextItemOnEnter}
+          {...register(`items.${orderIdx}.quantity`)}
         />
         <TextField
           className="w-48"
           label="Price"
           type="number"
           disabled
-          value={watch("unitPrice")}
+          value={watch(`items.${orderIdx}.unitPrice`)}
         />
         <TextField
           className="w-48"
           label="Discount"
           type="number"
-          error={!!formErrors.discount}
-          {...register("discount", { min: 0, required: true })}
+          error={!!formErrors.items?.[orderIdx]?.discount}
+          {...register(`items.${orderIdx}.discount`)}
           onFocus={(event) => {
             event.target.select();
           }}
@@ -123,7 +131,13 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           disabled
         />
       </Box>
-      <Box className="mt-2 flex justify-end">
+      <Box className="mt-2 flex items-center">
+        {!!formErrors.items?.[orderIdx] && (
+          <Typography variant="caption" color={"error"}>
+            There is a error in this item. Please fix it before proceeding.
+          </Typography>
+        )}
+        <Box className="flex-1" />
         <Button
           variant="text"
           color="error"

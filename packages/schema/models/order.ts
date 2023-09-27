@@ -1,5 +1,5 @@
-import { object, string, InferType, boolean, number } from "yup";
-import { TOrderItemFormSchema } from "./order-item";
+import { object, string, InferType, boolean, number, array } from "yup";
+import { OrderItemFormSchema, TOrderItemFormSchema } from "./order-item";
 
 const ORDER_PAYMENT_TYPES = ["CASH", "UPI", "CARD"] as const;
 
@@ -20,6 +20,8 @@ export const OrderFormSchema = object({
   tax: number().required(),
   delivery: number().required(),
   subTotal: number().required(),
+
+  items: array().of(OrderItemFormSchema).min(1).required(),
 });
 
 export type TOrderFormSchema = InferType<typeof OrderFormSchema>;
@@ -27,10 +29,6 @@ export type TOrderData = TOrderFormSchema & {
   id: number;
   createdAt: string;
   updatedAt: string;
-};
-
-export type TOrderData1 = TOrderData & {
-  items: TOrderItemFormSchema[];
 };
 
 export { ORDER_PAYMENT_TYPES };
