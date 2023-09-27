@@ -16,16 +16,16 @@ interface useOrderItemProps {
 }
 
 const useOrderItem = ({ idx, item }: useOrderItemProps) => {
-  const [selectedProductVariant, setSelectedProductVariant] =
-    useState<TProductVariantWithDetails | null>(null);
-
-  const [total, setTotal] = useState(0);
-
   const { addNewOrderItem, orderItems, updateOrderItem } = useOrderContext();
 
   const productVariants = useGlobalStore((state) =>
     state.getAllProductVariantsWithDetails()
   );
+
+  const [selectedProductVariant, setSelectedProductVariant] =
+    useState<TProductVariantWithDetails | null>(null);
+
+  const [total, setTotal] = useState(0);
 
   const {
     register,
@@ -39,6 +39,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     mode: "onChange",
   });
 
+  // watch for changes in the form and update the total
   useEffect(() => {
     const subscription = watch((data) => {
       try {
@@ -62,6 +63,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     };
   }, [idx, updateOrderItem, watch]);
 
+  // focus on the next field when enter is pressed
   const focusFieldOnEnter = (field: keyof TOrderItemFormSchema) => {
     return (e: KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter") {
@@ -70,6 +72,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     };
   };
 
+  // add new item when enter is pressed
   const addNewOrderItemOnEnter = (e: KeyboardEvent<HTMLDivElement>) => {
     // if it is not the last item don't add new item
     if (orderItems.length != idx + 1) return;
@@ -79,6 +82,7 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
     }
   };
 
+  // search for product variant - fuzzy search
   const fuse = useMemo(
     () =>
       new Fuse(productVariants, {
