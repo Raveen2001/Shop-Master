@@ -38,23 +38,19 @@ const useCustomerForm = () => {
     register,
     handleSubmit,
     formState: { errors: formErrors },
-    setValue: setFormState,
   } = useForm<TCustomerFormSchema>({
     defaultValues: {
       image: null,
+      shopId: selectedShop?.id,
+      ownerId: owner?.id,
+      createdByEmployeeId: null,
+      type: "INDIVIDUAL",
     },
     resolver: yupResolver(CustomerFormSchema as any),
   });
 
-  useEffect(() => {
-    setFormState("shopId", selectedShop?.id ?? "");
-    setFormState("ownerId", owner?.id ?? "");
-    setFormState("createdByEmployeeId", null);
-  }, [owner?.id, setFormState, selectedShop?.id]);
-
   const onSubmit = handleSubmit((data) => {
-    if (!data.email) delete data.email;
-    if (!data.phone) delete data.phone;
+    if (!data.email) data.email = null;
 
     mutate(data);
   });
