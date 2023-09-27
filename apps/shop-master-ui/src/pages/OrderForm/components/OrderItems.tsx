@@ -46,11 +46,16 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                 fullWidth
                 {...field}
                 onChange={(e, productVariant) => {
-                  if (!productVariant) return;
-                  setSelectedProductVariant(productVariant);
-                  onChange(productVariant.id);
-                  setFormValue("unitPrice", productVariant.salePrice);
-                  setFocus("quantity");
+                  if (productVariant) {
+                    setSelectedProductVariant(productVariant);
+                    onChange(productVariant.id);
+                    setFormValue("unitPrice", productVariant.salePrice);
+                    setFocus("quantity");
+                  } else {
+                    setSelectedProductVariant(null);
+                    onChange("");
+                    setFormValue("unitPrice", 0);
+                  }
                 }}
                 filterOptions={(_, state) => {
                   return fuse

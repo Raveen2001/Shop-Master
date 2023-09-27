@@ -44,8 +44,11 @@ const useOrderItem = ({ idx, item }: useOrderItemProps) => {
       try {
         const item = OrderItemFormSchema.validateSync(data);
         setTotal(item.quantity * item.unitPrice - item.discount);
+        console.log("item", item);
         updateOrderItem(idx, item);
       } catch (e) {
+        // errors are expected but it will get fixed on next render
+
         // if there is an error set total to 0
         setTotal(0);
 

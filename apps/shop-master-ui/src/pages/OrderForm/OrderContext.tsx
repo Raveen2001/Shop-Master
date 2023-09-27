@@ -7,6 +7,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import {
   FieldArrayWithId,
@@ -48,12 +49,15 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     state.selectedShop,
   ]);
 
+  const [subTotal, setSubTotal] = useState(0);
+
   const {
     control,
     register,
     handleSubmit,
     formState: { errors: formErrors },
     setValue: setFormValue,
+    getValues: getFormValues,
     watch,
   } = useForm<TOrderData1>({
     resolver: yupResolver(OrderFormSchema as any),
@@ -84,25 +88,26 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     data;
   });
 
-  const orderItems = watch("items", []);
-
-  const subTotal = useMemo(() => {
+  const updateSubTotal = useCallback(() => {
+    const items = getFormValues("items");
     let subTotal = 0;
-    orderItems.forEach((item) => {
+    items.forEach((item) => {
       subTotal += item.unitPrice * item.quantity - item.discount;
     });
-    return subTotal;
-  }, [orderItems]);
+
+    setSubTotal(subTotal);
+  }, [getFormValues]);
 
   const delivery = watch("delivery", 0);
   const discount = watch("discount", 0);
   const tax = watch("tax", 0);
 
   useEffect(() => {
+    console.log("subTotal", subTotal);
     const total = subTotal + Number(delivery) - Number(discount) + Number(tax);
     setFormValue("subTotal", subTotal);
     setFormValue("totalAmount", total);
-  }, [delivery, discount, orderItems, setFormValue, subTotal, tax, watch]);
+  }, [delivery, discount, setFormValue, subTotal, tax, watch]);
 
   const addNewOrderItem = useCallback(() => {
     append(createNewEmptyOrderItem());
@@ -111,8 +116,9 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
   const updateOrderItem = useCallback(
     (idx: number, data: TOrderItemFormSchema) => {
       setFormValue(`items.${idx}`, data);
+      updateSubTotal();
     },
-    [setFormValue]
+    [setFormValue, updateSubTotal]
   );
   const removeOrderItem = useCallback(
     (index: number) => {
