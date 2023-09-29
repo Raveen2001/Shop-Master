@@ -4,6 +4,7 @@ import {
   TBrandData,
   TCategoryData,
   TCustomerData,
+  TEmployeeData,
   TProductData,
   TProductVariantWithDetails,
   TShopData,
@@ -17,6 +18,8 @@ interface IGlobalStore {
   isBrandDataFetched: boolean;
   isProductDataFetched: boolean;
   isShopsDataFetched: boolean;
+  isEmployeeDataFetched: boolean;
+  isCustomerDataFetched: boolean;
 
   owner?: TOwnerData;
   setOwner: (owner: TOwnerData) => void;
@@ -38,6 +41,9 @@ interface IGlobalStore {
   categories: TCategoryData[];
   setCategories: (categories: TCategoryData[]) => void;
 
+  employees: TEmployeeData[];
+  setEmployees: (employees: TEmployeeData[]) => void;
+
   products: TProductData[];
   setProducts: (products: TProductData[]) => void;
 
@@ -51,6 +57,8 @@ export const useGlobalStore = create(
     shops: [],
     selectedShopId: "",
     selectedShop: undefined,
+    customers: [],
+    employees: [],
     brands: [],
     categories: [],
     products: [],
@@ -59,6 +67,8 @@ export const useGlobalStore = create(
     isBrandDataFetched: false,
     isProductDataFetched: false,
     isShopsDataFetched: false,
+    isEmployeeDataFetched: false,
+    isCustomerDataFetched: false,
 
     setShops: (shops: TShopData[]) => {
       set((state) => {
@@ -82,6 +92,20 @@ export const useGlobalStore = create(
       set((state) => {
         state.owner = owner;
         state.isOwnerDataFetched = true;
+      });
+    },
+
+    setEmployees: (employees) => {
+      set((state) => {
+        state.employees = employees;
+        state.isEmployeeDataFetched = true;
+      });
+    },
+
+    setCustomers: (customers) => {
+      set((state) => {
+        state.customers = customers;
+        state.isCustomerDataFetched = true;
       });
     },
 
