@@ -1,7 +1,8 @@
-import { object, string, InferType, boolean, number, array } from "yup";
-import { OrderItemFormSchema, TOrderItemFormSchema } from "./order-item";
+import { object, string, InferType, number, array } from "yup";
+import { OrderItemFormSchema } from "./order-item";
 
-const ORDER_PAYMENT_TYPES = ["CASH", "UPI", "CARD"] as const;
+const ORDER_TYPES = ["ONLINE", "OFFLINE"] as const;
+const ORDER_STATUS = ["DRAFT", "COMPLETED"] as const;
 
 export const OrderFormSchema = object({
   ownerId: string().required(),
@@ -9,18 +10,19 @@ export const OrderFormSchema = object({
   customerPhone: string().required(),
   createdByEmployeeId: string().nullable(),
 
-  paymentType: string()
-    .oneOf(ORDER_PAYMENT_TYPES, "Payment type is invalid")
-    .required("Payment type is required"),
+  type: string()
+    .oneOf(ORDER_TYPES, "Type is invalid")
+    .required("Type is required"),
 
-  isDraft: boolean().required(),
-  amountPaid: number().required(),
-  totalAmount: number().required(),
-  discount: number().required(),
+  status: string()
+    .oneOf(ORDER_STATUS, "Status is invalid")
+    .required("Status is required"),
+
   tax: number().required(),
   delivery: number().required(),
+  discount: number().required(),
   subTotal: number().required(),
-
+  total: number().required(),
   items: array().of(OrderItemFormSchema).min(1).required(),
 });
 
@@ -31,4 +33,4 @@ export type TOrderData = TOrderFormSchema & {
   updatedAt: string;
 };
 
-export { ORDER_PAYMENT_TYPES };
+export { ORDER_TYPES };

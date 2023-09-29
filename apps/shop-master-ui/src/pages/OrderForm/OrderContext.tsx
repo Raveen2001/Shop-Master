@@ -68,15 +68,14 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
       ownerId: owner?.id,
       shopId: selectedShop?.id,
       createdByEmployeeId: null,
-      totalAmount: 0,
+      total: 0,
       subTotal: 0,
       delivery: 0,
       discount: 0,
       tax: 0,
-      customerPhone: "123",
-      amountPaid: 100,
-      isDraft: false,
-      paymentType: "CASH",
+      customerPhone: "",
+      type: "OFFLINE",
+
       items: [createNewEmptyOrderItem()],
     },
   });
@@ -87,7 +86,6 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    // removeOrderItemsWithoutProduct();
     console.log(data);
   });
 
@@ -100,8 +98,8 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
       let subTotal = 0;
       items.forEach((item) => {
         subTotal +=
-          Number(item?.unitPrice ?? 0) * Number(item?.quantity ?? 0) -
-          Number(item?.discount ?? 0);
+          (Number(item?.unitPrice ?? 0) - Number(item?.discount ?? 0)) *
+          Number(item?.quantity ?? 0);
       });
 
       setSubTotal(subTotal);
@@ -117,11 +115,14 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const total = subTotal + Number(delivery) - Number(discount) + Number(tax);
     setFormValue("subTotal", subTotal);
-    setFormValue("totalAmount", total);
+    setFormValue("total", total);
   }, [delivery, discount, setFormValue, subTotal, tax, watch]);
 
   const addNewOrderItem = useCallback(() => {
-    append(createNewEmptyOrderItem());
+    append(createNewEmptyOrderItem(), {
+      // workaround for disabling focus on quantity field, "productVariantId" is not a valid field name
+      focusName: "productVariantId",
+    });
   }, [append]);
 
   const removeOrderItem = useCallback(

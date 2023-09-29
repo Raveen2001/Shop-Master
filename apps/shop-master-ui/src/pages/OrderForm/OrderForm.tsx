@@ -4,6 +4,7 @@ import { OrderProvider, useOrderContext } from "./OrderContext";
 import OrderItems from "./components/OrderItems";
 import useOrderForm from "./useOrderForm";
 import OrderSummary from "./components/OrderSummary";
+import OrderHeader from "./components/OrderHeader";
 
 const OrderForm: FC = () => {
   return (
@@ -21,12 +22,19 @@ const _OrderForm: FC = () => {
       <Typography variant="h5">Create a new Order</Typography>
 
       <Box className="h-8" />
-
-      <form onSubmit={onSubmit}>
+      <form>
         <Card
           elevation={5}
           className="isolate flex flex-col items-start gap-4 overflow-visible p-6"
         >
+          <Typography variant="h6" color={"GrayText"}>
+            Order Information:
+          </Typography>
+
+          <OrderHeader />
+          <Typography variant="h6" color={"GrayText"}>
+            Details:
+          </Typography>
           <OrderItems />
           <OrderSummary />
         </Card>

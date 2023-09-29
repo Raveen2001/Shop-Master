@@ -1,5 +1,11 @@
 import Fuse from "fuse.js";
-import { KeyboardEvent, useCallback, useMemo, useState } from "react";
+import {
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { TOrderItemFormSchema, TProductVariantWithDetails } from "schema";
 import { useGlobalStore } from "../../../store/globalStore";
 import { useOrderContext } from "../OrderContext";
@@ -31,7 +37,7 @@ const useOrderItem = ({ idx }: useOrderItemProps) => {
   // reference is not changing so we can't use useMemo
   const orderItem = watch(`items.${idx}`);
   const { quantity, unitPrice, discount } = orderItem;
-  const total = Number(quantity) * Number(unitPrice) - Number(discount);
+  const total = Number(quantity) * (Number(unitPrice) - Number(discount));
 
   // focus on the next field when enter is pressed
   const focusFieldOnEnter = (field: keyof TOrderItemFormSchema) => {
@@ -60,6 +66,12 @@ const useOrderItem = ({ idx }: useOrderItemProps) => {
       }),
     [productVariants]
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFormFocus("items.0.productVariantId");
+    }, 100);
+  }, [setFormFocus]);
 
   return {
     productVariants,

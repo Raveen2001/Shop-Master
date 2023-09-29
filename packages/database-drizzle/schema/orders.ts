@@ -13,11 +13,14 @@ import { customersDB } from "./customers";
 import { employeesDB } from "./employees";
 import { orderItemsDB } from "./order_items";
 
-export const paymentTypeEnum = pgEnum("payment_type", ["CASH", "UPI", "CARD"]);
+export const orderTypeEnum = pgEnum("order_type", ["OFFLINE", "ONLINE"]);
+export const orderStatusEnum = pgEnum("order_status", ["COMPLETED", "DRAFT"]);
 
 export const ordersDB = pgTable("orders", {
   id: serial("id").primaryKey(),
-  paymentType: paymentTypeEnum("type").notNull(),
+
+  status: orderStatusEnum("status").default("DRAFT").notNull(),
+  type: orderTypeEnum("type").default("OFFLINE").notNull(),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -36,7 +39,8 @@ export const ordersDB = pgTable("orders", {
 
 export const ORDERS_DB_COLUMNS = [
   "id",
-  "paymentType",
+  "type",
+  "status",
   "createdAt",
   "updatedAt",
   "shopId",
@@ -69,4 +73,5 @@ export const ordersRelations = relations(ordersDB, ({ one, many }) => ({
 export type TOrderDB = typeof ordersDB.$inferSelect;
 export type TNewOrderDB = typeof ordersDB.$inferInsert;
 
-export const ORDER_PAYMENT_TYPES = paymentTypeEnum.enumValues;
+export const ORDER_TYPES = orderTypeEnum.enumValues;
+export const ORDER_STATUS = orderStatusEnum.enumValues;

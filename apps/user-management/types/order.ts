@@ -1,6 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { PagableQueryStringSchema, PagableSchema } from "./common";
-import { ORDERS_DB_COLUMNS, ORDER_PAYMENT_TYPES } from "database-drizzle";
+import { ORDERS_DB_COLUMNS, ORDER_TYPES } from "database-drizzle";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchemaOut } from "./shop";
 import { OrderItemSchema } from "./order-item";
@@ -9,7 +9,7 @@ import { EmployeeSchemaWithoutPassword } from "./employee";
 
 export const OrderSchema = Type.Object({
   id: Type.String(),
-  paymentType: Type.Union(ORDER_PAYMENT_TYPES.map((col) => Type.Literal(col))),
+  paymentType: Type.Union(ORDER_TYPES.map((col) => Type.Literal(col))),
   createdAt: Type.String(),
   updatedAt: Type.String(),
   shopId: Type.String(),

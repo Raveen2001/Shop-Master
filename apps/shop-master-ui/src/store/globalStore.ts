@@ -3,6 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import {
   TBrandData,
   TCategoryData,
+  TCustomerData,
   TProductData,
   TProductVariantWithDetails,
   TShopData,
@@ -27,6 +28,9 @@ interface IGlobalStore {
   setSelectedShopId: (shopId: string) => void;
 
   selectedShop?: TShopData;
+
+  customers: TCustomerData[];
+  setCustomers: (customers: TCustomerData[]) => void;
 
   brands: TBrandData[];
   setBrands: (brands: TBrandData[]) => void;

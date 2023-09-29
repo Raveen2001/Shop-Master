@@ -126,7 +126,7 @@ const OrderSummary: FC = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" align="right">
-                  {formatCurrency(watch("totalAmount"))}
+                  {formatCurrency(watch("total"))}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -138,7 +138,7 @@ const OrderSummary: FC = () => {
         <Button variant="outlined" color="primary">
           Save as draft
         </Button>
-        <Button variant="contained" color="primary" type="submit">
+        <Button variant="contained" color="primary" onClick={onSubmit}>
           Save and Print
         </Button>
       </Box>

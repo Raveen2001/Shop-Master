@@ -41,9 +41,6 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
         <Controller
           name={`items.${orderIdx}.productVariantId`}
           control={control}
-          rules={{
-            required: true,
-          }}
           render={({ field: { onChange, value, ...field } }) => {
             return (
               <Autocomplete
@@ -58,7 +55,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                       `items.${orderIdx}.unitPrice`,
                       productVariant.salePrice
                     );
-                    setFormFocus(`items.${orderIdx}.unitPrice`);
+                    setFormFocus(`items.${orderIdx}.quantity`);
                   } else {
                     setSelectedProductVariant(null);
                     onChange("");
@@ -70,17 +67,32 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                     .search(state.inputValue)
                     .map((result) => result.item);
                 }}
-                getOptionLabel={(option) => option.name}
+                renderOption={(props, option) => {
+                  return (
+                    <Box component={"li"} {...(props as any)} key={option.id}>
+                      <Box className="flex flex-col">
+                        <Typography variant="body2" className="font-semibold">
+                          {option.product.name}
+                        </Typography>
+                        <Typography variant="caption" className="text-gray-500">
+                          {option.name}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  );
+                }}
+                getOptionLabel={(option) => option.product.name}
                 autoHighlight
+                autoFocus
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
-                    autoFocus
                     error={!!formErrors.items?.[orderIdx]?.productVariantId}
                     placeholder="Search ..."
                     onFocus={(event) => {
                       event.target.select();
                     }}
+                    autoFocus
                   />
                 )}
               />
