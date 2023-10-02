@@ -135,6 +135,7 @@ export const useGlobalStore = create(
       return (
         state.isOwnerDataFetched &&
         state.isShopsDataFetched &&
+        state.isCustomerDataFetched &&
         state.isCategoryDataFetched &&
         state.isBrandDataFetched &&
         state.isProductDataFetched

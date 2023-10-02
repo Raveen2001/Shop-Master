@@ -8,6 +8,7 @@ import { getBrandsBy } from "../services/brand";
 import { getCategoriesBy } from "../services/category";
 import { getSubCategoriesBy } from "../services/sub-category";
 import { getProductsBy } from "../services/product";
+import { getCustomersBy } from "../services/customer";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
@@ -40,13 +41,19 @@ const useFetchDataForGlobalStore = () => {
     },
   });
 
+  const customersQuery = useQuery({
+    queryKey: ["shop", store.selectedShopId, "customers"],
+    queryFn: getCustomersBy("shop", store.selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!store.selectedShopId,
+    onSuccess(data) {
+      store.setCustomers(data.data);
+    },
+  });
+
   const brandsQuery = useQuery({
     queryKey: ["shop", store.selectedShopId, "brands"],
     queryFn: getBrandsBy("shop", store.selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!store.selectedShopId,
-    meta: {
-      includeSubCategories: true,
-    },
     onSuccess(data) {
       store.setBrands(data.data);
     },
