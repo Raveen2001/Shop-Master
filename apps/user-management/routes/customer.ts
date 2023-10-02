@@ -160,7 +160,7 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   }>(
     "/shop/:id",
     getOptsForQueryCustomerBy("shopId"),
-    queryPaginatedCustomerBy("shopId")
+    queryCustomerBy("shopId")
   );
 
   // query customers by owner id
@@ -170,7 +170,7 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   }>(
     "/owner/:id",
     getOptsForQueryCustomerBy("ownerId"),
-    queryPaginatedCustomerBy("ownerId")
+    queryCustomerBy("ownerId")
   );
 
   // query customers by created employee id
@@ -180,7 +180,7 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   }>(
     "/created-by-employee/:id",
     getOptsForQueryCustomerBy("createdByEmployeeId"),
-    queryPaginatedCustomerBy("createdByEmployeeId")
+    queryCustomerBy("createdByEmployeeId")
   );
 
   // query paged customers by shop id

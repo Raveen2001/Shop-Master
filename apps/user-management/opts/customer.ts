@@ -23,17 +23,6 @@ export const QueryCustomerByPhoneOpts: RouteShorthandOptions = {
   },
 };
 
-export const CreateCustomerOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Customer"],
-    summary: "Create a new customer",
-    body: CustomerSchemaIn,
-    response: {
-      201: CustomerSchemaOut,
-    },
-  },
-};
-
 export const getOptsForQueryCustomerBy = (by: TCustomerQueryByFields) => {
   return {
     schema: {
@@ -60,4 +49,15 @@ export const getOptsForQueryPagedCustomerBy = (by: TCustomerQueryByFields) => {
       },
     },
   };
+};
+
+export const CreateCustomerOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Customer"],
+    summary: "Create a new customer",
+    body: CustomerSchemaIn,
+    response: {
+      201: CustomerSchemaOut,
+    },
+  },
 };

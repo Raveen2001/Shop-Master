@@ -6,15 +6,13 @@ import {
   Box,
   Dialog,
   DialogContent,
-  DialogTitle,
+  IconButton,
   TextField,
   Typography,
-  createFilterOptions,
 } from "ui";
+import { CloseTwoTone } from "ui/icons";
 import CustomerForm from "../../pages/CustomerForm";
 import UseCustomerAutoComplete from "./UseCustomerAutoComplete";
-
-const filter = createFilterOptions<TCustomerDataForSelect>({});
 
 type TCustomerAutoCompleteProps = {
   control: Control<any>;
@@ -42,6 +40,10 @@ export default function CustomerAutoComplete({
         render={({ field: { onChange, ...field } }) => (
           <Autocomplete
             fullWidth
+            freeSolo
+            selectOnFocus
+            clearOnBlur
+            autoHighlight
             {...field}
             onChange={(event, newValue) => {
               if (typeof newValue === "string") {
@@ -82,13 +84,11 @@ export default function CustomerAutoComplete({
               if (option.inputValue) {
                 return option.inputValue;
               }
-              return option.name;
+              return `${option.name}(${option.phone})`;
             }}
-            selectOnFocus
-            clearOnBlur
             handleHomeEndKeys
             renderOption={(props, option) => (
-              <Box component={"li"} {...(props as any)} key={option.id}>
+              <Box component={"li"} {...(props as any)} key={option.phone}>
                 <Box className="flex flex-col">
                   <Typography variant="body2" className="font-semibold">
                     {option.name}
@@ -99,7 +99,6 @@ export default function CustomerAutoComplete({
                 </Box>
               </Box>
             )}
-            freeSolo
             renderInput={(params) => (
               <TextField
                 {...(params as any)}
@@ -111,6 +110,17 @@ export default function CustomerAutoComplete({
         )}
       />
       <Dialog open={open} onClose={() => toggleOpen(false)} maxWidth="lg">
+        <IconButton
+          aria-label="close"
+          onClick={() => toggleOpen(false)}
+          sx={{
+            position: "absolute",
+            right: 16,
+            top: 16,
+          }}
+        >
+          <CloseTwoTone />
+        </IconButton>
         <DialogContent>
           <CustomerForm
             onCustomerAdded={(customer) => {
