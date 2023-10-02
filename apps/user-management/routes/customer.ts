@@ -13,9 +13,10 @@ import { RouteHandlerMethod } from "fastify";
 import {
   CreateCustomerOpts,
   QueryCustomerByPhoneOpts,
-  QueryCustomersByShopOpts,
-  QueryCustomersByOwnerOpts,
+  getOptsForQueryCustomerBy,
+  getOptsForQueryPagedCustomerBy,
 } from "../opts/customer";
+import { get } from "http";
 
 export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
@@ -87,6 +88,27 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   ): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TCustomerQueryParamID;
+      const { includeOwner, includeShop, includeCreatedByEmployee } =
+        req.query as TCustomerQueryString;
+
+      const customers = await fastify.db.query.customersDB.findMany({
+        where: (customersDB, { eq }) => eq(customersDB[queryBy], id),
+        with: {
+          owner: includeOwner || undefined,
+          shop: includeShop || undefined,
+          createdByEmployee: includeCreatedByEmployee || undefined,
+        },
+      });
+
+      reply.code(200).send(customers);
+    };
+  }
+
+  function queryPaginatedCustomerBy(
+    queryBy: TCustomerQueryByFields
+  ): RouteHandlerMethod {
+    return async (req, reply) => {
+      const { id } = req.params as TCustomerQueryParamID;
       const {
         includeOwner,
         includeShop,
@@ -133,24 +155,62 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
 
   // query customers by shop id
   fastify.get<{
-    Querystring: TPagableCustomerQueryString;
+    Querystring: TCustomerQueryString;
     Params: TCustomerQueryParamID;
-  }>("/shop/:id", QueryCustomersByShopOpts, queryCustomerBy("shopId"));
+  }>(
+    "/shop/:id",
+    getOptsForQueryCustomerBy("shopId"),
+    queryPaginatedCustomerBy("shopId")
+  );
 
   // query customers by owner id
   fastify.get<{
-    Querystring: TPagableCustomerQueryString;
+    Querystring: TCustomerQueryString;
     Params: TCustomerQueryParamID;
-  }>("/owner/:id", QueryCustomersByOwnerOpts, queryCustomerBy("ownerId"));
+  }>(
+    "/owner/:id",
+    getOptsForQueryCustomerBy("ownerId"),
+    queryPaginatedCustomerBy("ownerId")
+  );
 
   // query customers by created employee id
+  fastify.get<{
+    Querystring: TCustomerQueryString;
+    Params: TCustomerQueryParamID;
+  }>(
+    "/created-by-employee/:id",
+    getOptsForQueryCustomerBy("createdByEmployeeId"),
+    queryPaginatedCustomerBy("createdByEmployeeId")
+  );
+
+  // query paged customers by shop id
   fastify.get<{
     Querystring: TPagableCustomerQueryString;
     Params: TCustomerQueryParamID;
   }>(
-    "/created-by-employee/:id",
-    QueryCustomersByOwnerOpts,
-    queryCustomerBy("createdByEmployeeId")
+    "/shop/:id/paged",
+    getOptsForQueryPagedCustomerBy("shopId"),
+    queryPaginatedCustomerBy("shopId")
+  );
+
+  // query paged customers by owner id
+  fastify.get<{
+    Querystring: TPagableCustomerQueryString;
+    Params: TCustomerQueryParamID;
+  }>(
+    "/owner/:id/paged",
+    getOptsForQueryPagedCustomerBy("ownerId"),
+    queryPaginatedCustomerBy("ownerId")
+  );
+
+  // query paged customers by created employee id
+  fastify.get<{
+    Querystring: TPagableCustomerQueryString;
+    Params: TCustomerQueryParamID;
+  }>(
+    "/created-by-employee/:id/paged",
+    getOptsForQueryPagedCustomerBy("createdByEmployeeId"),
+    queryPaginatedCustomerBy("createdByEmployeeId")
   );
 };
 

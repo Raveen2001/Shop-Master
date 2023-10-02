@@ -7,7 +7,9 @@ import {
   PagableCustomerSchemaOut,
   CustomerSchemaIn,
   CustomerQueryParamIDSchema,
+  TCustomerQueryByFields,
 } from "../types/customer";
+import { Type } from "@sinclair/typebox";
 
 export const QueryCustomerByPhoneOpts: RouteShorthandOptions = {
   schema: {
@@ -21,42 +23,6 @@ export const QueryCustomerByPhoneOpts: RouteShorthandOptions = {
   },
 };
 
-export const QueryCustomersByOwnerOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Customer"],
-    summary: "Get all customers by owner_id",
-    params: CustomerQueryParamIDSchema,
-    querystring: PagableCustomerQueryStringSchema,
-    response: {
-      200: PagableCustomerSchemaOut,
-    },
-  },
-};
-
-export const QueryCustomersByShopOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Customer"],
-    summary: "Get all customers by shop_id",
-    params: CustomerQueryParamIDSchema,
-    querystring: PagableCustomerQueryStringSchema,
-    response: {
-      200: PagableCustomerSchemaOut,
-    },
-  },
-};
-
-export const QueryCustomersByCreatedEmployeeOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Customer"],
-    summary: "Get all customers by created_by_employee_id",
-    params: CustomerQueryParamIDSchema,
-    querystring: PagableCustomerQueryStringSchema,
-    response: {
-      200: PagableCustomerSchemaOut,
-    },
-  },
-};
-
 export const CreateCustomerOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Customer"],
@@ -66,4 +32,32 @@ export const CreateCustomerOpts: RouteShorthandOptions = {
       201: CustomerSchemaOut,
     },
   },
+};
+
+export const getOptsForQueryCustomerBy = (by: TCustomerQueryByFields) => {
+  return {
+    schema: {
+      tags: ["Customer"],
+      summary: `Get customers by ${by}`,
+      params: CustomerQueryParamIDSchema,
+      querystring: CustomerQueryStringSchema,
+      response: {
+        200: Type.Array(CustomerSchemaOut),
+      },
+    },
+  };
+};
+
+export const getOptsForQueryPagedCustomerBy = (by: TCustomerQueryByFields) => {
+  return {
+    schema: {
+      tags: ["Customer"],
+      summary: `Get customers by ${by}`,
+      params: CustomerQueryParamIDSchema,
+      querystring: PagableCustomerQueryStringSchema,
+      response: {
+        200: PagableCustomerSchemaOut,
+      },
+    },
+  };
 };
