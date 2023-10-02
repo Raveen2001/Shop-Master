@@ -17,9 +17,15 @@ import {
   Snackbar,
   Alert,
 } from "ui";
-import { CUSTOMER_TYPES } from "schema";
+import { CUSTOMER_TYPES, TCustomerData, TCustomerFormSchema } from "schema";
+import { Controller } from "react-hook-form";
 
-const CustomerForm: FC = () => {
+export type TCustomerFormProps = {
+  onCustomerAdded?: (customer: TCustomerData) => void;
+  initalData?: Partial<TCustomerFormSchema>;
+};
+
+const CustomerForm: FC<TCustomerFormProps> = (props) => {
   const {
     formErrors,
     onSubmit,
@@ -30,7 +36,8 @@ const CustomerForm: FC = () => {
     setProfileImage,
     shop,
     owner,
-  } = useCustomerForm();
+    control,
+  } = useCustomerForm(props);
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">Create a new Customer</Typography>
@@ -85,24 +92,33 @@ const CustomerForm: FC = () => {
                   error={!!formErrors.phone}
                   helperText={formErrors.phone?.message}
                 />
-                <FormControl error={!!formErrors.type}>
-                  <InputLabel id="type-label">Type</InputLabel>
-                  <Select
-                    labelId="type-label"
-                    id="type"
-                    {...register("type")}
-                    label="Type"
-                    defaultValue={""}
-                  >
-                    {CUSTOMER_TYPES.map((type) => (
-                      <MenuItem key={type} value={type}>
-                        {type}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                <Controller
+                  control={control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormControl error={!!formErrors.type} required>
+                      <InputLabel id="type-label" required>
+                        Type
+                      </InputLabel>
+                      <Select
+                        labelId="type-label"
+                        id="type"
+                        {...(field as any)}
+                        label="Type"
+                      >
+                        {CUSTOMER_TYPES.map((type) => (
+                          <MenuItem key={type} value={type}>
+                            {type}
+                          </MenuItem>
+                        ))}
+                      </Select>
 
-                  <FormHelperText>{formErrors.type?.message}</FormHelperText>
-                </FormControl>
+                      <FormHelperText>
+                        {formErrors.type?.message}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                />
               </Box>
               <Box className="flex flex-col gap-4">
                 <TextField

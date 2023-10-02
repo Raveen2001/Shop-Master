@@ -1,11 +1,5 @@
 import Fuse from "fuse.js";
-import {
-  KeyboardEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { KeyboardEvent, useCallback, useMemo, useState } from "react";
 import { TOrderItemFormSchema, TProductVariantWithDetails } from "schema";
 import { useGlobalStore } from "../../../store/globalStore";
 import { useOrderContext } from "../OrderContext";
@@ -66,12 +60,6 @@ const useOrderItem = ({ idx }: useOrderItemProps) => {
       }),
     [productVariants]
   );
-
-  useEffect(() => {
-    setTimeout(() => {
-      setFormFocus("items.0.productVariantId");
-    }, 100);
-  }, [setFormFocus]);
 
   return {
     productVariants,

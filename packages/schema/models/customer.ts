@@ -27,9 +27,12 @@ export const CustomerFormSchema = object({
 
 export type TCustomerFormSchema = InferType<typeof CustomerFormSchema>;
 export type TCustomerData = TCustomerFormSchema & {
-  id: string;
   createdAt: string;
   updatedAt: string;
+};
+
+export type TCustomerDataForSelect = Pick<TCustomerData, "name" | "phone"> & {
+  inputValue?: string;
 };
 
 export { CUSTOMER_TYPES };

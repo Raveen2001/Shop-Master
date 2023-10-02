@@ -1,13 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { IRequestError, TCustomerFormSchema, CustomerFormSchema } from "schema";
+import { CustomerFormSchema, IRequestError, TCustomerFormSchema } from "schema";
 import { createCustomer } from "../../services/customer";
 import { useGlobalStore } from "../../store/globalStore";
+import { TCustomerFormProps } from "./CustomerForm";
 
-const useCustomerForm = () => {
+const useCustomerForm = (props: TCustomerFormProps) => {
   const navigate = useNavigate();
   const [owner, selectedShop] = useGlobalStore((state) => [
     state.owner,
@@ -28,18 +29,27 @@ const useCustomerForm = () => {
   >({
     mutationKey: ["customer", "create"],
     mutationFn: createCustomer,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries(["customers"]);
-      navigate("/customers");
+      if (props.onCustomerAdded) {
+        props.onCustomerAdded(data.data);
+      } else {
+        navigate("/customers");
+      }
     },
   });
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors: formErrors },
   } = useForm<TCustomerFormSchema>({
     defaultValues: {
+      // default values to make field controlled
+      type: "INDIVIDUAL",
+
+      ...(props.initalData || {}),
       image: null,
       shopId: selectedShop?.id,
       ownerId: owner?.id,
@@ -65,6 +75,7 @@ const useCustomerForm = () => {
     setProfileImage,
     shop: selectedShop,
     owner,
+    control,
   };
 };
 
