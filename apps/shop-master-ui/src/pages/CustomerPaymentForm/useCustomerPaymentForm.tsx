@@ -1,35 +1,26 @@
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
   CustomerPaymentFormSchema,
   IRequestError,
-  TCustomerData,
   TCustomerPaymentFormSchema,
 } from "schema";
 import { createCustomerPayment } from "../../services/customer-payments";
 
-import { useGlobalStore } from "../../store/globalStore";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { getCustomersByShopId } from "../../services/customer";
 import moment from "moment";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useGlobalStore } from "../../store/globalStore";
 
 const useCustomerPaymentForm = () => {
   const navigate = useNavigate();
-  const [customers, setCustomers] = useState<TCustomerData[]>([]);
-  const [owner, selectedShop] = useGlobalStore((state) => [
+  const [owner, selectedShop, customers] = useGlobalStore((state) => [
     state.owner,
     state.selectedShop,
+    state.customers,
   ]);
   const queryClient = useQueryClient();
-
-  const { data: customersResponse, isError: isFetchError } = useQuery({
-    // TCustomerData
-    queryKey: ["shop", selectedShop?.id, "customers"],
-    queryFn: getCustomersByShopId(selectedShop?.id ?? ""),
-    enabled: !!selectedShop?.id,
-  });
 
   const {
     mutate,
@@ -74,16 +65,10 @@ const useCustomerPaymentForm = () => {
     setFormValue("createdByCustomerId", null);
   }, [owner?.id, selectedShop?.id, setFormValue]);
 
-  useEffect(() => {
-    if (!customersResponse) return;
-
-    setCustomers(customersResponse.data.rows);
-  }, [customersResponse]);
-
   return {
     mutate,
     isMutateLoading,
-    isError: isFetchError || isMutateError,
+    isError: isMutateError,
     networkError,
 
     register,

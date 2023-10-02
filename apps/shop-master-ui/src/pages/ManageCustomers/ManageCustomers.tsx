@@ -1,14 +1,13 @@
-import { Box, Button, ReactQueryPaginatedTable, Typography } from "ui";
+import { Box, Button, ReactTable, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
 import { useGlobalStore } from "../../store/globalStore";
-import { getCustomersByShopId } from "../../services/customer";
 import { useNavigate } from "react-router-dom";
 
 const ManageCustomers = () => {
   const navigate = useNavigate();
-  const shopId = useGlobalStore((state) => state.selectedShop?.id ?? "");
+  const customers = useGlobalStore((state) => state.customers);
   return (
     <Box>
       <Box className="mb-8 flex">
@@ -25,12 +24,8 @@ const ManageCustomers = () => {
           New Customer
         </Button>
       </Box>
-      <ReactQueryPaginatedTable
-        columns={columnsDefs}
-        queryFn={getCustomersByShopId(shopId)}
-        queryKeys={["shop", shopId, "customers"]}
-        defaultSortColumn={{ id: "createdAt", desc: false }}
-      />
+
+      <ReactTable columns={columnsDefs} data={customers} />
     </Box>
   );
 };
