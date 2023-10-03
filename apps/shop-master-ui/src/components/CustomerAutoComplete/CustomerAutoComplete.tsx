@@ -56,7 +56,7 @@ export default function CustomerAutoComplete({
                 toggleOpen(true);
                 setCustomerPhone(newValue.inputValue);
               } else {
-                onChange(newValue);
+                onChange(newValue.phone);
               }
             }}
             filterOptions={(options, params) => {

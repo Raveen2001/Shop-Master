@@ -105,6 +105,7 @@ const CustomerPaymentForm: FC = () => {
               <FormControl error={!!formErrors.createdAt}>
                 <DateTimePicker
                   label="Created at *"
+                  format="DD/MM/YYYY hh:mm A"
                   defaultValue={moment(getFormValue("createdAt"))}
                   onAccept={(date) => {
                     if (!date) return;

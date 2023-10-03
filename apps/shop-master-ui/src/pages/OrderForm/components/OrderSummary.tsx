@@ -135,10 +135,14 @@ const OrderSummary: FC = () => {
       </Box>
 
       <Box className="mt-12 flex justify-end gap-4">
-        <Button variant="outlined" color="primary">
+        <Button variant="outlined" color="primary" onClick={onSubmit("DRAFT")}>
           Save as draft
         </Button>
-        <Button variant="contained" color="primary" onClick={onSubmit}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onSubmit("COMPLETED")}
+        >
           Save and Print
         </Button>
       </Box>

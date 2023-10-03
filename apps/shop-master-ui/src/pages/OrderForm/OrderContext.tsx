@@ -33,7 +33,7 @@ type TOrderContext = {
   formErrors: FieldErrors<TOrderFormSchema>;
   setFormValue: UseFormSetValue<TOrderFormSchema>;
   setFormFocus: UseFormSetFocus<TOrderFormSchema>;
-  onSubmit: () => Promise<void>;
+  onSubmit: (status: TOrderFormSchema["status"]) => () => void;
 };
 
 const OrderContext = createContext<TOrderContext | null>(null);
@@ -75,6 +75,7 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
       tax: 0,
       customerPhone: "",
       type: "OFFLINE",
+      createdAt: new Date(),
 
       items: [createNewEmptyOrderItem()],
     },
@@ -85,9 +86,14 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     name: "items",
   });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-  });
+  const onSubmit = (status: TOrderFormSchema["status"]) => {
+    return () => {
+      setFormValue("status", status);
+      handleSubmit((data) => {
+        console.log(data);
+      })();
+    };
+  };
 
   useEffect(() => {
     const sub = watch((data) => {
@@ -136,6 +142,8 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     [addNewOrderItem, fields.length, remove]
   );
+
+  console.log(formErrors);
 
   return (
     <OrderContext.Provider

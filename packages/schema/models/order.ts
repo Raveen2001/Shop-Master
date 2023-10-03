@@ -1,4 +1,4 @@
-import { object, string, InferType, number, array } from "yup";
+import { object, string, InferType, number, array, date } from "yup";
 import { OrderItemFormSchema } from "./order-item";
 
 const ORDER_TYPES = ["ONLINE", "OFFLINE"] as const;
@@ -24,6 +24,7 @@ export const OrderFormSchema = object({
   subTotal: number().required(),
   total: number().required(),
   items: array().of(OrderItemFormSchema).min(1).required(),
+  createdAt: date().required("Created at is required"),
 });
 
 export type TOrderFormSchema = InferType<typeof OrderFormSchema>;
