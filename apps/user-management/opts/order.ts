@@ -37,16 +37,40 @@ export const QueryOrderOpts: RouteShorthandOptions = {
   },
 };
 
-export const QueryOrdersByIdOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Order"],
-    summary: "Get Orders by id",
-    params: IDStringQueryParamSchema,
-    querystring: OrderQueryStringSchema,
-    response: {
-      200: Type.Array(OrderSchemaOut),
+export const getOptsForQueryOrderBy = (
+  by: "shop_id" | "owner_id" | "created_by_employee_id"
+) => {
+  return {
+    schema: {
+      tags: ["Order"],
+      summary: `Get Orders by ${by}`,
+      params: Type.Object({
+        [by]: Type.String(),
+      }),
+      querystring: OrderQueryStringSchema,
+      response: {
+        200: Type.Array(OrderSchemaOut),
+      },
     },
-  },
+  };
+};
+
+export const getOptsForQueryPagedOrderBy = (
+  by: "shop_id" | "owner_id" | "created_by_employee_id"
+) => {
+  return {
+    schema: {
+      tags: ["Order"],
+      summary: `Get Paged Orders by ${by}`,
+      params: Type.Object({
+        [by]: Type.String(),
+      }),
+      querystring: PagableOrderQueryStringSchema,
+      response: {
+        200: PagableOrderSchemaOut,
+      },
+    },
+  };
 };
 
 export const QueryOrdersByPhoneOpts: RouteShorthandOptions = {
@@ -61,11 +85,11 @@ export const QueryOrdersByPhoneOpts: RouteShorthandOptions = {
   },
 };
 
-export const QueryPagedOrdersByIdOpts: RouteShorthandOptions = {
+export const QueryPagedOrdersByPhoneOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Order"],
-    summary: "Get Paged Orders by id",
-    params: IDStringQueryParamSchema,
+    summary: "Get Paged Orders by customer phone",
+    params: PhoneQueryParamSchema,
     querystring: PagableOrderQueryStringSchema,
     response: {
       200: PagableOrderSchemaOut,
