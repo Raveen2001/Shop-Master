@@ -6,11 +6,12 @@ import {
   OrderSchemaOut,
   PagableOrderQueryStringSchema,
   PagableOrderSchemaOut,
+  TOrderQueryByFields,
 } from "../types/order";
 import { Type } from "@sinclair/typebox";
 import {
-  IDStringQueryParamSchema,
   PhoneQueryParamSchema,
+  IDStringQueryParamSchema,
 } from "../types/common";
 
 export const CreateOrderOpts: RouteShorthandOptions = {
@@ -37,16 +38,12 @@ export const QueryOrderOpts: RouteShorthandOptions = {
   },
 };
 
-export const getOptsForQueryOrderBy = (
-  by: "shop_id" | "owner_id" | "created_by_employee_id"
-) => {
+export const getOptsForQueryOrderBy = (by: TOrderQueryByFields) => {
   return {
     schema: {
       tags: ["Order"],
       summary: `Get Orders by ${by}`,
-      params: Type.Object({
-        [by]: Type.String(),
-      }),
+      params: IDStringQueryParamSchema,
       querystring: OrderQueryStringSchema,
       response: {
         200: Type.Array(OrderSchemaOut),
@@ -55,16 +52,12 @@ export const getOptsForQueryOrderBy = (
   };
 };
 
-export const getOptsForQueryPagedOrderBy = (
-  by: "shop_id" | "owner_id" | "created_by_employee_id"
-) => {
+export const getOptsForQueryPagedOrderBy = (by: TOrderQueryByFields) => {
   return {
     schema: {
       tags: ["Order"],
       summary: `Get Paged Orders by ${by}`,
-      params: Type.Object({
-        [by]: Type.String(),
-      }),
+      params: IDStringQueryParamSchema,
       querystring: PagableOrderQueryStringSchema,
       response: {
         200: PagableOrderSchemaOut,
