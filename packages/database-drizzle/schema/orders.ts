@@ -38,7 +38,7 @@ export const ordersDB = pgTable("orders", {
   ownerId: uuid("owner_id")
     .notNull()
     .references(() => ownersDB.id),
-  customerPhone: text("customer_phone"),
+  customerPhone: text("customer_phone").references(() => customersDB.phone),
   createdByEmployeeId: uuid("created_by_employee_id").references(
     () => employeesDB.id
   ),

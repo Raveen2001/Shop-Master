@@ -7,7 +7,7 @@ const ORDER_STATUS = ["DRAFT", "COMPLETED"] as const;
 export const OrderFormSchema = object({
   ownerId: string().required(),
   shopId: string().required(),
-  customerPhone: string().required(),
+  customerPhone: string().nullable(),
   createdByEmployeeId: string().nullable(),
 
   type: string()

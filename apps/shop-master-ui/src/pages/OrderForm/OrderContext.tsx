@@ -118,7 +118,7 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       setFormValue("status", status);
       handleSubmit((data) => {
-        console.log(data);
+        if (!data.customerPhone) delete data.customerPhone;
         mutate(data);
       })();
     };
