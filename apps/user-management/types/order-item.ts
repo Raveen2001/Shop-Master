@@ -4,14 +4,15 @@ import { ProductVariantSchema } from "./product-variant";
 
 export const OrderItemSchema = Type.Object({
   id: Type.String(),
+  orderId: Type.String(),
   productVariantId: Type.String(),
   quantity: Type.Number(),
   unitPrice: Type.Number(),
-  orderId: Type.String(),
+  discount: Type.Number(),
 });
 
 export const OrderItemSchemaIn = Type.Omit(OrderItemSchema, ["id"]);
-export const OrderItemWithoutOrderIdSchemaIn = Type.Omit(OrderItemSchemaIn, [
+export const OrderItemForOrderSchema = Type.Omit(OrderItemSchemaIn, [
   "orderId",
 ]);
 export const OrderItemSchemaOut = Type.Intersect([
@@ -24,9 +25,7 @@ export const OrderItemSchemaOut = Type.Intersect([
 
 export type TOrderItemSchema = Static<typeof OrderItemSchema>;
 export type TOrderItemSchemaIn = Static<typeof OrderItemSchemaIn>;
-export type TOrderItemWithoutOrderIdSchemaIn = Static<
-  typeof OrderItemWithoutOrderIdSchemaIn
->;
+export type TOrderItemForOrderSchema = Static<typeof OrderItemForOrderSchema>;
 
 export const OrderItemQueryParamSchema = Type.Object({
   id: Type.String(),
