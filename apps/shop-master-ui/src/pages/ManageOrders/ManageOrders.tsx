@@ -6,11 +6,11 @@ import {
   Typography,
 } from "ui";
 
-import { columnsDefs } from "./columns";
-import { Add } from "ui/icons";
-import { getEmployeeByShopId } from "../../services/employee";
-import { useGlobalStore } from "../../store/globalStore";
 import { useNavigate } from "react-router-dom";
+import { Add } from "ui/icons";
+import { getPagedOrdersBy } from "../../services/order";
+import { useGlobalStore } from "../../store/globalStore";
+import { columnsDefs } from "./columns";
 
 const ManageOrders = () => {
   const selectedShopId = useGlobalStore((state) => state.selectedShopId) ?? "";
@@ -27,16 +27,18 @@ const ManageOrders = () => {
           variant="contained"
           size="small"
           startIcon={<Add />}
-          onClick={() => navigate("/employees/create")}
+          onClick={() => navigate("/orders/create")}
         >
           New Order
         </Button>
       </Box>
       <ReactQueryPaginatedTable
         columns={columnsDefs}
-        queryFn={getEmployeeByShopId(selectedShopId)}
-        queryKeys={["shop", selectedShopId, "employees"]}
-        defaultSortColumn={{ id: "createdAt", desc: false }}
+        queryFn={getPagedOrdersBy("shop", selectedShopId, {
+          includeItems: true,
+        })}
+        queryKeys={["shop", selectedShopId, "orders"]}
+        defaultSortColumn={{ id: "createdAt", desc: true }}
       />
     </Box>
   );

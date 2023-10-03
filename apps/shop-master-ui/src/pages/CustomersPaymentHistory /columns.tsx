@@ -17,10 +17,10 @@ export const columnsDefs: ColumnDef<TCustomerPaymentData, any>[] = [
     enableSorting: false,
     cell: ({
       row: {
-        original: { customer, customerId },
+        original: { customer, customerPhone },
       },
     }) => {
-      if (!customer) return customerId;
+      if (!customer) return customerPhone;
       return (
         <TableProfileCell
           name={customer.name}

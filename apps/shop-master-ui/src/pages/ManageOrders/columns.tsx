@@ -1,37 +1,29 @@
-import { TableDateTimeCell, TableProfileCell, createColumnHelper } from "ui";
-import { TEmployeeData } from "schema";
+import { TOrderData } from "schema";
+import {
+  Chip,
+  ColumnDef,
+  TableDateTimeCell,
+  createColumnHelper,
+  formatCurrency,
+} from "ui";
 
-const columnHelper = createColumnHelper<TEmployeeData>();
+const columnHelper = createColumnHelper<TOrderData>();
 
-export const columnsDefs = [
-  columnHelper.accessor("name", {
-    id: "name",
-    header: "Name",
-    cell: ({
-      row: {
-        original: { name, username, image },
-      },
-    }) => {
-      return (
-        <TableProfileCell name={name} subText={username} imageUrl={image} />
-      );
-    },
+export const columnsDefs: ColumnDef<TOrderData, any>[] = [
+  columnHelper.accessor("id", {
+    id: "id",
+    header: "ID",
   }),
-  columnHelper.accessor("email", {
-    id: "email",
-    header: "Email",
+  columnHelper.accessor("customerPhone", {
+    id: "customerPhone",
+    header: "Customer",
+    enableSorting: false,
   }),
-
-  columnHelper.accessor("phone", {
-    id: "phone",
-    header: "Phone",
+  columnHelper.accessor((data) => data.items.length, {
+    id: "itemsCount",
+    header: "Items Count",
+    enableSorting: false,
   }),
-
-  columnHelper.accessor("type", {
-    id: "type",
-    header: "Type",
-  }),
-
   columnHelper.accessor("createdAt", {
     id: "createdAt",
     header: "Created At",
@@ -40,8 +32,23 @@ export const columnsDefs = [
       return <TableDateTimeCell date={date} />;
     },
   }),
-  columnHelper.accessor("address", {
-    id: "address",
-    header: "Address",
+  columnHelper.accessor(({ total }) => formatCurrency(total), {
+    id: "total",
+    header: "Total",
+  }),
+
+  columnHelper.accessor("status", {
+    id: "status",
+    header: "Status",
+    cell: ({ getValue }) => {
+      const status = getValue();
+      return (
+        <Chip
+          label={status}
+          color={status === "COMPLETED" ? "success" : "warning"}
+          variant="outlined"
+        />
+      );
+    },
   }),
 ];
