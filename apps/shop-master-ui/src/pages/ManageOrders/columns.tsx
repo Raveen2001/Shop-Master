@@ -6,6 +6,7 @@ import {
   createColumnHelper,
   formatCurrency,
 } from "ui";
+import CustomerTableCell from "../../components/CustomerTableCell";
 
 const columnHelper = createColumnHelper<TOrderData>();
 
@@ -18,6 +19,11 @@ export const columnsDefs: ColumnDef<TOrderData, any>[] = [
     id: "customerPhone",
     header: "Customer",
     enableSorting: false,
+
+    cell: ({ getValue }) => {
+      const phone = getValue();
+      return <CustomerTableCell phone={phone} />;
+    },
   }),
   columnHelper.accessor((data) => data.items.length, {
     id: "itemsCount",
