@@ -6,6 +6,7 @@ import { ShopSchemaOut } from "./shop";
 import { OrderItemForOrderSchema, OrderItemSchema } from "./order-item";
 import { CustomerSchema } from "./customer";
 import { EmployeeSchemaWithoutPassword } from "./employee";
+import { optionalType } from "./utils";
 
 export const OrderSchema = Type.Object({
   id: Type.String(),
@@ -21,27 +22,28 @@ export const OrderSchema = Type.Object({
   subTotal: Type.Number(),
   total: Type.Number(),
 
-  createdAt: Type.String(),
-  updatedAt: Type.String(),
+  createdAt: Type.String({
+    format: "date-time",
+  }),
+  updatedAt: Type.String({
+    format: "date-time",
+  }),
+
   shopId: Type.String(),
   ownerId: Type.String(),
   customerPhone: Type.String(),
-  createdByEmployeeId: Type.String(),
+  createdByEmployeeId: optionalType(Type.String()),
 });
 
-export const OrderSchemaIn = Type.Omit(OrderSchema, [
-  "id",
-  "createdAt",
-  "updatedAt",
-]);
+export const OrderSchemaIn = Type.Omit(OrderSchema, ["id", "updatedAt"]);
 
 export const OrderSchemaOut = Type.Intersect([
-  OrderSchema,
+  Type.Omit(OrderSchema, ["items"]),
   Type.Object({
     shop: Type.Optional(ShopSchemaOut),
     owner: Type.Optional(OwnerSchemaWithoutPassword),
     customer: Type.Optional(CustomerSchema),
-    createdByEmployee: Type.Optional(EmployeeSchemaWithoutPassword),
+    createdByEmployee: optionalType(EmployeeSchemaWithoutPassword),
     items: Type.Optional(Type.Array(OrderItemSchema)),
   }),
 ]);

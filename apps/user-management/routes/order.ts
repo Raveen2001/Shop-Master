@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { TNewOrderDB, eq, orderItemsDB, ordersDB, sql } from "database-drizzle";
+import { eq, orderItemsDB, ordersDB, sql } from "database-drizzle";
 import { RouteHandlerMethod } from "fastify";
 import {
   CreateOrderOpts,
@@ -34,15 +34,20 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
       includeShop,
       includeItems,
     } = req.query;
+
+    const data = {
+      ...req.body,
+      createdAt: new Date(req.body.createdAt),
+    };
     const { insertedId } = (
       await fastify.db
         .insert(ordersDB)
-        .values(req.body)
+        .values(data)
         .onConflictDoNothing()
         .returning({ insertedId: ordersDB.id })
     )[0];
 
-    const orderItems = req.body.items.map((item) => ({
+    const orderItems = data.items.map((item) => ({
       ...item,
       orderId: insertedId,
     }));

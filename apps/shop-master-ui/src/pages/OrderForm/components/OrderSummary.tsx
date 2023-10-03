@@ -2,6 +2,7 @@ import { FC } from "react";
 import {
   Box,
   Button,
+  LoadingButton,
   Table,
   TableBody,
   TableCell,
@@ -14,8 +15,15 @@ import { AddTwoTone } from "ui/icons";
 import { useOrderContext } from "../OrderContext";
 
 const OrderSummary: FC = () => {
-  const { addNewOrderItem, register, watch, formErrors, onSubmit } =
-    useOrderContext();
+  const {
+    addNewOrderItem,
+    register,
+    watch,
+    formErrors,
+
+    onSubmit,
+    isMutateLoading,
+  } = useOrderContext();
 
   return (
     <Box className="flex w-full flex-col">
@@ -135,16 +143,22 @@ const OrderSummary: FC = () => {
       </Box>
 
       <Box className="mt-12 flex justify-end gap-4">
-        <Button variant="outlined" color="primary" onClick={onSubmit("DRAFT")}>
+        <LoadingButton
+          loading={isMutateLoading && watch("status") === "DRAFT"}
+          variant="outlined"
+          color="primary"
+          onClick={onSubmit("DRAFT")}
+        >
           Save as draft
-        </Button>
-        <Button
+        </LoadingButton>
+        <LoadingButton
+          loading={isMutateLoading && watch("status") === "COMPLETED"}
           variant="contained"
           color="primary"
           onClick={onSubmit("COMPLETED")}
         >
           Save and Print
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );

@@ -30,7 +30,6 @@ export const OrderFormSchema = object({
 export type TOrderFormSchema = InferType<typeof OrderFormSchema>;
 export type TOrderData = TOrderFormSchema & {
   id: number;
-  createdAt: string;
   updatedAt: string;
 };
 

@@ -19,11 +19,17 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
-import { OrderFormSchema, TOrderFormSchema } from "schema";
+import { IRequestError, OrderFormSchema, TOrderFormSchema } from "schema";
 import { useGlobalStore } from "../../store/globalStore";
 import { createNewEmptyOrderItem } from "./utils";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { createOrder } from "../../services/order";
 
 type TOrderContext = {
+  isMutateLoading: boolean;
+  isMutateError: boolean;
+  mutateError: IRequestError | null;
   orderItems: FieldArrayWithId<TOrderFormSchema, "items", "id">[];
   addNewOrderItem: () => void;
   removeOrderItem: (index: number) => void;
@@ -53,6 +59,28 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
   ]);
 
   const [subTotal, setSubTotal] = useState(0);
+
+  const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+
+  const {
+    mutate,
+    isLoading: isMutateLoading,
+    isError: isMutateError,
+    error: mutateError,
+  } = useMutation<
+    Awaited<ReturnType<typeof createOrder>>,
+    IRequestError,
+    TOrderFormSchema
+  >({
+    mutationKey: ["order", "create"],
+    mutationFn: createOrder,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["shop", selectedShop?.id, "orders"]);
+      navigate("/orders");
+    },
+  });
 
   const {
     control,
@@ -91,6 +119,7 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
       setFormValue("status", status);
       handleSubmit((data) => {
         console.log(data);
+        mutate(data);
       })();
     };
   };
@@ -143,11 +172,12 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     [addNewOrderItem, fields.length, remove]
   );
 
-  console.log(formErrors);
-
   return (
     <OrderContext.Provider
       value={{
+        isMutateLoading,
+        isMutateError,
+        mutateError,
         orderItems: fields,
         addNewOrderItem,
         removeOrderItem,
