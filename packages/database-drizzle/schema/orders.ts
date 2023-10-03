@@ -6,6 +6,7 @@ import {
   uuid,
   serial,
   text,
+  numeric,
 } from "drizzle-orm/pg-core";
 import { ownersDB } from "./owners";
 import { shopsDB } from "./shops";
@@ -21,6 +22,12 @@ export const ordersDB = pgTable("orders", {
 
   status: orderStatusEnum("status").default("DRAFT").notNull(),
   type: orderTypeEnum("type").default("OFFLINE").notNull(),
+
+  tax: numeric("tax").notNull(),
+  delivery: numeric("delivery").notNull(),
+  discount: numeric("discount").notNull(),
+  subTotal: numeric("sub_total").notNull(),
+  total: numeric("total").notNull(),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -39,10 +46,19 @@ export const ordersDB = pgTable("orders", {
 
 export const ORDERS_DB_COLUMNS = [
   "id",
+
   "type",
   "status",
+
+  "tax",
+  "delivery",
+  "discount",
+  "subTotal",
+  "total",
+
   "createdAt",
   "updatedAt",
+
   "shopId",
   "ownerId",
   "customerPhone",
