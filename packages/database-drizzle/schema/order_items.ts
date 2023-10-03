@@ -16,6 +16,7 @@ export const orderItemsDB = pgTable("order_items", {
 
   quantity: integer("quantity").notNull(),
   unitPrice: integer("unit_price").notNull(),
+  discount: integer("discount").notNull(),
 });
 
 export const ORDER_ITEMS_DB_COLUMNS = [
@@ -24,6 +25,7 @@ export const ORDER_ITEMS_DB_COLUMNS = [
   "productVariantId",
   "quantity",
   "unitPrice",
+  "discount",
 ] as const;
 
 export const orderItemsRelations = relations(orderItemsDB, ({ one }) => ({
