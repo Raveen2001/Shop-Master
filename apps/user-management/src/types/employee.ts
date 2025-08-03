@@ -1,5 +1,4 @@
-import { EMPLOYEE_DB_COLUMNS } from "database-drizzle/schema/employees";
-import { EMPLOYEE_TYPES } from "database-drizzle";
+import { EMPLOYEE_DB_COLUMNS, EMPLOYEE_TYPES } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { OwnerSchemaWithoutPassword } from "./owner";
 import { ShopSchema } from "./shop";

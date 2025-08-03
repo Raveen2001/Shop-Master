@@ -2,8 +2,8 @@
   "name": "database-drizzle",
   "version": "1.0.0",
   "description": "",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.js",
   "scripts": {
     "pull": "dotenv -e ../../.env -- drizzle-kit introspect:pg",
     "push": "dotenv -e ../../.env -- drizzle-kit push:pg",
@@ -27,6 +27,7 @@
     "@types/node": "20.5.7",
     "drizzle-kit": "^0.19.13",
     "pg": "^8.11.3",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "tsconfig": "*"
   }
 }
