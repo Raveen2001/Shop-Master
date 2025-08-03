@@ -10,7 +10,7 @@ export const swaggerOptions: SwaggerOptions = {
       description: "This is a fastify API docs for managing users",
       version: "1.0.0",
     },
-    host: "127.0.0.1:5000",
+    host: "127.0.0.1:9000",
     schemes: ["http"],
     consumes: ["application/json"],
     produces: ["application/json"],

@@ -104,7 +104,7 @@ fastify.register(OrderRoutes, { prefix: "/orders" });
 fastify.register(OrderItemRoutes, { prefix: "/order-items" });
 
 // start the server
-fastify.listen({ port: 5000, host: "0.0.0.0" }, async (err) => {
+fastify.listen({ port: 9000, host: "0.0.0.0" }, async (err) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
