@@ -15,7 +15,7 @@ const useShopForm = () => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: mutateError,
   } = useMutation<
@@ -26,7 +26,9 @@ const useShopForm = () => {
     mutationKey: ["shops", "create"],
     mutationFn: createShop,
     onSuccess: () => {
-      queryClient.invalidateQueries(["shops"]);
+      queryClient.invalidateQueries({
+        queryKey: ["shops"],
+      });
       navigate("/shops");
     },
   });

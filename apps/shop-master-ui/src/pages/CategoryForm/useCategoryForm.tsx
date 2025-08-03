@@ -18,7 +18,7 @@ const useCategoryForm = () => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: mutateError,
   } = useMutation<
@@ -29,7 +29,9 @@ const useCategoryForm = () => {
     mutationKey: ["category", "create"],
     mutationFn: createCategory,
     onSuccess: () => {
-      queryClient.invalidateQueries(["shop", selectedShop?.id, "categories"]);
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "categories"],
+      });
       navigate("/categories");
     },
   });

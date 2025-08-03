@@ -7,6 +7,7 @@ import {
   createColumnHelper,
   Box,
   IconButton,
+  ColumnDef,
 } from "ui";
 
 import { EditTwoTone, AddCircleTwoTone } from "ui/icons";
@@ -15,7 +16,7 @@ const columnHelper = createColumnHelper<TCategoryData>();
 
 //! depth decides if it is category or subCategory
 //! depth 0 - category, 1 - subCategory.
-export const columnsDefs = [
+export const columnsDefs: ColumnDef<TCategoryData, any>[] = [
   getSubRowColumnOption<TCategoryData>(),
   columnHelper.accessor("name", {
     id: "name",

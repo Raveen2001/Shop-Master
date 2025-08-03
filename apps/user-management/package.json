@@ -2,11 +2,12 @@
   "name": "user-management",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
-  "types": "server.ts",
+  "main": "dist/server.js",
+  "types": "dist/server.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "dotenv -e ../../.env -- node server.ts",
+    "build": "tsc",
+    "start": "dotenv -e ../../.env -- node dist/server.js",
     "dev": "dotenv -e ../../.env -- nodemon server.ts",
     "lint": "eslint . *.ts --fix"
   },

@@ -24,7 +24,7 @@ const useCustomerPaymentForm = () => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: networkError,
   } = useMutation<
@@ -35,12 +35,9 @@ const useCustomerPaymentForm = () => {
     mutationKey: ["customer-payment", "create"],
     mutationFn: createCustomerPayment,
     onSuccess: () => {
-      queryClient.invalidateQueries([
-        "shop",
-        selectedShop?.id,
-        "customers",
-        "payments",
-      ]);
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "customers", "payments"],
+      });
       navigate("/customers/payment-history");
     },
   });

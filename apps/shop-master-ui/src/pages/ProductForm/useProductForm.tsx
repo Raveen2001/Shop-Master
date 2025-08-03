@@ -25,7 +25,7 @@ const useProductForm = () => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: mutateError,
   } = useMutation<
@@ -36,7 +36,9 @@ const useProductForm = () => {
     mutationKey: ["product", "create"],
     mutationFn: createProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries(["shop", selectedShop?.id, "products"]);
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "products"],
+      });
       navigate("/products");
     },
   });

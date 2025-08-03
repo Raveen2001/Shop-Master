@@ -24,7 +24,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const { control, handleSubmit } = useForm<IRegisterData>();
-  const { mutate, isLoading, isError, error } = useMutation<
+  const { mutate, isPending, isError, error } = useMutation<
     unknown,
     IRequestError,
     IRegisterData
@@ -204,7 +204,7 @@ const RegisterPage = () => {
             </Link>
           </Typography>
 
-          <LoadingButton type="submit" variant="contained" loading={isLoading}>
+          <LoadingButton type="submit" variant="contained" loading={isPending}>
             Create Account
           </LoadingButton>
         </form>

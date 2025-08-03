@@ -32,7 +32,7 @@ interface IReactQueryPaginatedTableProps<T, K>
   columns: ColumnDef<T, K>[];
   data: T[];
   defaultSortColumn?: ColumnSort;
-  renderSubComponent?: React.FC<{ row: Row<T> }>;
+  renderSubComponent?: (props: { row: Row<T> }) => React.ReactElement;
   getSubRows?: (originalRow: T, index: number) => T[];
   getRowCanExpand?: (row: Row<T>) => boolean;
 }
@@ -131,9 +131,10 @@ const ReactQueryPaginatedTable = <T, K>({
                         <TableRow>
                           {/* 2nd row is a custom 1 cell row */}
                           <TableCell colSpan={row.getVisibleCells().length}>
-                            {renderSubComponent({
-                              row,
-                            })}
+                            {renderSubComponent &&
+                              renderSubComponent({
+                                row,
+                              })}
                           </TableCell>
                         </TableRow>
                       )}

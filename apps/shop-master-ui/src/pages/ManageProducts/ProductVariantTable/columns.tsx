@@ -6,13 +6,14 @@ import {
   Box,
   IconButton,
   formatCurrency,
+  ColumnDef,
 } from "ui";
 
 import { EditTwoTone } from "ui/icons";
 
 const columnHelper = createColumnHelper<TProductVariantData>();
 
-export const columnsDefs = [
+export const columnsDefs: ColumnDef<TProductVariantData, any>[] = [
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",

@@ -7,9 +7,7 @@ type TProductVariantListProps = {
   row: Row<TProductData>;
 };
 
-const ProductVariantList: FC<TProductVariantListProps> = ({
-  row,
-}: TProductVariantListProps) => {
+const ProductVariantList = ({ row }: TProductVariantListProps) => {
   const variants = row.original.variants ?? [];
   return <ReactTable columns={columnsDefs} data={variants} />;
 };

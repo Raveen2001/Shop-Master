@@ -11,8 +11,8 @@
     "drop": "dotenv -e ../../.env -- drizzle-kit drop",
     "up": "dotenv -e ../../.env -- drizzle-kit up:pg",
     "check": "dotenv -e ../../.env -- drizzle-kit check:pg",
-    "studio": "dotenv -e ../../.env -- drizzle-kit studio --port 9000 --verbose",
-    "migrate": "dotenv -e ../../.env -- ts-node migrate"
+    "studio": "dotenv -e ../../.env -- drizzle-kit studio --port 9010 --verbose",
+    "migrate": "dotenv -e ../../.env -- ts-node migrate.ts"
   },
   "keywords": [],
   "author": "",

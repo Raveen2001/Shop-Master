@@ -25,6 +25,8 @@ export type TProductVariantFormSchema = InferType<
 >;
 export type TProductVariantData = TProductVariantFormSchema & {
   id: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type TProductVariantWithDetails = TProductVariantData & {

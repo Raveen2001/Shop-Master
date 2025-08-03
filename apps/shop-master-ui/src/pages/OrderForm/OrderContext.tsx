@@ -66,7 +66,7 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: mutateError,
   } = useMutation<
@@ -77,7 +77,9 @@ export const OrderProvider: FC<PropsWithChildren> = ({ children }) => {
     mutationKey: ["order", "create"],
     mutationFn: createOrder,
     onSuccess: () => {
-      queryClient.invalidateQueries(["shop", selectedShop?.id, "orders"]);
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "orders"],
+      });
       navigate("/orders");
     },
   });

@@ -26,7 +26,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const { control, handleSubmit } = useForm<ILoginData>();
-  const { mutate, isError, isLoading, error } = useMutation<
+  const { mutate, isError, isPending, error } = useMutation<
     ILoginResponse,
     IRequestError,
     ILoginData
@@ -162,7 +162,7 @@ const LoginPage = () => {
             </Link>
           </Typography>
 
-          <LoadingButton variant="contained" type="submit" loading={isLoading}>
+          <LoadingButton variant="contained" type="submit" loading={isPending}>
             Login
           </LoadingButton>
         </form>

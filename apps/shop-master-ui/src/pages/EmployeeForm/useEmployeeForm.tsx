@@ -18,7 +18,7 @@ const useEmployeeForm = () => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: mutateError,
   } = useMutation<
@@ -29,7 +29,9 @@ const useEmployeeForm = () => {
     mutationKey: ["employee", "create"],
     mutationFn: createEmployee,
     onSuccess: () => {
-      queryClient.invalidateQueries(["employees"]);
+      queryClient.invalidateQueries({
+        queryKey: ["employees"],
+      });
       navigate("/employees");
     },
   });

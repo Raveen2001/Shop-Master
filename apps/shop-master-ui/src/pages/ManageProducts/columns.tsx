@@ -7,13 +7,14 @@ import {
   createColumnHelper,
   Box,
   IconButton,
+  ColumnDef,
 } from "ui";
 
 import { EditTwoTone, AddCircleTwoTone } from "ui/icons";
 
 const columnHelper = createColumnHelper<TProductData>();
 
-export const columnsDefs = [
+export const columnsDefs: ColumnDef<TProductData, any>[] = [
   getSubRowColumnOption<TProductData>(),
   columnHelper.accessor("name", {
     id: "name",

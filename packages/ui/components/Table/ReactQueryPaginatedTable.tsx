@@ -69,7 +69,12 @@ const ReactQueryPaginatedTable = <T, K>({
   });
 
   const containsData = React.useMemo(() => {
-    return !isLoading && !isError && axiosResponse.data.rows.length > 0;
+    return (
+      !isLoading &&
+      !isError &&
+      axiosResponse &&
+      axiosResponse.data.rows.length > 0
+    );
   }, [axiosResponse, isError, isLoading]);
 
   const table = useReactTable({
@@ -122,10 +127,10 @@ const ReactQueryPaginatedTable = <T, K>({
 
                           {disableSorting
                             ? null
-                            : {
+                            : ({
                                 asc: <ArrowUpwardRounded fontSize="small" />,
                                 desc: <ArrowDownwardRounded fontSize="small" />,
-                              }[header.column.getIsSorted() as string] ?? null}
+                              }[header.column.getIsSorted() as string] ?? null)}
                         </Box>
                       )}
                     </TableCell>

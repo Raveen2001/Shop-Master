@@ -33,7 +33,7 @@ const useEmployeePaymentForm = () => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: networkError,
   } = useMutation<
@@ -44,12 +44,9 @@ const useEmployeePaymentForm = () => {
     mutationKey: ["employee-payment", "create"],
     mutationFn: createEmployeePayment,
     onSuccess: () => {
-      queryClient.invalidateQueries([
-        "shop",
-        selectedShop?.id,
-        "employees",
-        "payments",
-      ]);
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "employees", "payments"],
+      });
       navigate("/employees/payment-history");
     },
   });

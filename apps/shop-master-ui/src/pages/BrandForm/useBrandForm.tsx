@@ -18,7 +18,7 @@ const useBrandForm = () => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: mutateError,
   } = useMutation<
@@ -29,7 +29,9 @@ const useBrandForm = () => {
     mutationKey: ["brand", "create"],
     mutationFn: createBrand,
     onSuccess: () => {
-      queryClient.invalidateQueries(["shop", selectedShop?.id, "brands"]);
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "brands"],
+      });
       navigate("/brands");
     },
   });

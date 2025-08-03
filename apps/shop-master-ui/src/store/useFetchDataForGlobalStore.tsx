@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getOwnerByToken } from "../services/owner";
 import { getShopsByOwnerId } from "../services/shop";
@@ -17,64 +17,79 @@ const useFetchDataForGlobalStore = () => {
   const ownerQuery = useQuery({
     queryKey: ["owner", "me"],
     queryFn: getOwnerByToken,
-    onSuccess(data) {
-      store.setOwner(data.data);
-    },
+    select: (data) => data.data,
   });
+
+  useEffect(() => {
+    if (!ownerQuery.isSuccess) return;
+
+    store.setOwner(ownerQuery.data);
+  }, [ownerQuery, store]);
 
   const shopsQuery = useQuery({
     queryKey: ["shops"],
-    queryFn: getShopsByOwnerId(ownerQuery.data?.data.id ?? ""),
+    queryFn: getShopsByOwnerId(ownerQuery.data?.id ?? ""),
     enabled: !!ownerQuery.data,
-
-    onSuccess(data) {
-      const shops = data.data.rows;
-
-      if (shops.length === 0) {
-        navigate("/shops/create");
-      }
-
-      store.setShops(shops);
-      if (!store.selectedShopId) {
-        store.setSelectedShopId(data.data.rows[0]?.id);
-      }
-    },
+    select: (data) => data.data.rows,
   });
+
+  useEffect(() => {
+    if (!shopsQuery.isSuccess) return;
+    store.setShops(shopsQuery.data);
+
+    if (!store.selectedShopId) {
+      store.setSelectedShopId(shopsQuery.data[0]?.id);
+    }
+
+    if (shopsQuery.data.length === 0) {
+      navigate("/shops/create");
+    }
+  }, [navigate, shopsQuery, store]);
 
   const customersQuery = useQuery({
     queryKey: ["shop", store.selectedShopId, "customers"],
     queryFn: getCustomersBy("shop", store.selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!store.selectedShopId,
-    onSuccess(data) {
-      store.setCustomers(data.data);
-    },
+    select: (data) => data.data,
   });
+
+  useEffect(() => {
+    if (!customersQuery.isSuccess) return;
+    store.setCustomers(customersQuery.data);
+  }, [customersQuery, store]);
 
   const brandsQuery = useQuery({
     queryKey: ["shop", store.selectedShopId, "brands"],
     queryFn: getBrandsBy("shop", store.selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!store.selectedShopId,
-    onSuccess(data) {
-      store.setBrands(data.data);
-    },
+    select: (data) => data.data,
   });
+
+  useEffect(() => {
+    if (!brandsQuery.isSuccess) return;
+    store.setBrands(brandsQuery.data);
+  }, [brandsQuery, store]);
 
   const categoriesQuery = useQuery({
     queryKey: ["shop", store.selectedShopId, "categories"],
     queryFn: getCategoriesBy("shop", store.selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!store.selectedShopId,
-    onSuccess(data) {
-      store.setCategories(data.data);
-    },
+    select: (data) => data.data,
     meta: {
       includeSubCategories: true,
     },
   });
 
+  useEffect(() => {
+    if (!categoriesQuery.isSuccess) return;
+    store.setCategories(categoriesQuery.data);
+  }, [categoriesQuery, store]);
+
   const subCategoriesQuery = useQuery({
     queryKey: ["shop", store.selectedShopId, "subCategories"],
     queryFn: getSubCategoriesBy("shop", store.selectedShopId ?? ""),
     enabled: !!shopsQuery.data && !!store.selectedShopId,
+    select: (data) => data.data,
   });
 
   const productsQuery = useQuery({
@@ -84,11 +99,13 @@ const useFetchDataForGlobalStore = () => {
     meta: {
       includeVariants: true,
     },
-
-    onSuccess(data) {
-      store.setProducts(data.data);
-    },
+    select: (data) => data.data,
   });
+
+  useEffect(() => {
+    if (!productsQuery.isSuccess) return;
+    store.setProducts(productsQuery.data);
+  }, [productsQuery, store]);
 
   const isLoading = useMemo(
     () =>
@@ -127,16 +144,8 @@ const useFetchDataForGlobalStore = () => {
   );
 
   const hasNoShops = useMemo(() => {
-    return (
-      !shopsQuery.isError &&
-      !shopsQuery.isLoading &&
-      !shopsQuery.data.data.rows.length
-    );
-  }, [
-    shopsQuery.isError,
-    shopsQuery.isLoading,
-    shopsQuery.data?.data.rows.length,
-  ]);
+    return shopsQuery.isSuccess && shopsQuery.data.length === 0;
+  }, [shopsQuery.data, shopsQuery.isSuccess]);
 
   const isAllDataLoaded = useMemo(() => {
     return !isLoading && !isError && !!store.isAllDataLoaded();

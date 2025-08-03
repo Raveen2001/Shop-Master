@@ -19,7 +19,7 @@ const useCustomerForm = (props: TCustomerFormProps) => {
 
   const {
     mutate,
-    isLoading: isMutateLoading,
+    isPending: isMutateLoading,
     isError: isMutateError,
     error: mutateError,
   } = useMutation<
@@ -30,7 +30,9 @@ const useCustomerForm = (props: TCustomerFormProps) => {
     mutationKey: ["customer", "create"],
     mutationFn: createCustomer,
     onSuccess: (data) => {
-      queryClient.invalidateQueries(["customers"]);
+      queryClient.invalidateQueries({
+        queryKey: ["customers"],
+      });
       if (props.onCustomerAdded) {
         props.onCustomerAdded(data.data);
       } else {
