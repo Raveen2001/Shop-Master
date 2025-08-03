@@ -2,13 +2,13 @@
   "name": "user-management",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/server.js",
-  "types": "dist/server.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "dotenv -e ../../.env -- node dist/index.js",
     "build": "tsc",
-    "start": "dotenv -e ../../.env -- node dist/server.js",
-    "dev": "dotenv -e ../../.env -- nodemon server.ts",
+    "dev": "dotenv -e ../../.env -- nodemon src/index.ts",
     "lint": "eslint . *.ts --fix"
   },
   "keywords": [],
