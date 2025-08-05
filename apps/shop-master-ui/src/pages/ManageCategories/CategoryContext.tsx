@@ -18,7 +18,7 @@ interface CategoryContextType {
   filteredCategories: TCategoryData[];
   breadcrumbPath: Array<{ id: string; name: string }>;
   isCreateModalOpen: boolean;
-
+  isCreateProductModalOpen: boolean;
   // Methods
   setCurrentCategoryId: (id: string | null) => void;
   setBreadcrumbPath: (path: Array<{ id: string; name: string }>) => void;
@@ -29,6 +29,8 @@ interface CategoryContextType {
   createNewCategory: (data: TCategoryFormSchema) => Promise<void>;
   navigateToCategory: (category: { id: string; name: string }) => void;
   navigateBack: () => void;
+  openCreateProductModal: () => void;
+  closeCreateProductModal: () => void;
 }
 
 const CategoryContext = createContext<CategoryContextType | undefined>(
@@ -64,6 +66,9 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
   >([]);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const [isCreateProductModalOpen, setIsCreateProductModalOpen] =
+    useState(false);
 
   const queryClient = useQueryClient();
 
@@ -133,6 +138,14 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
     }
   };
 
+  const openCreateProductModal = () => {
+    setIsCreateProductModalOpen(true);
+  };
+
+  const closeCreateProductModal = () => {
+    setIsCreateProductModalOpen(false);
+  };
+
   const contextValue: CategoryContextType = {
     // State
     categories,
@@ -141,7 +154,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
     breadcrumbPath,
     isCreateModalOpen,
     filteredCategories,
-
+    isCreateProductModalOpen,
     // Methods
     setCurrentCategoryId,
     setBreadcrumbPath,
@@ -152,6 +165,8 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
     createNewCategory,
     navigateToCategory,
     navigateBack,
+    openCreateProductModal,
+    closeCreateProductModal,
   };
 
   return (

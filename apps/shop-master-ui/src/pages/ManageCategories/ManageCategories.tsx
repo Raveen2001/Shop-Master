@@ -1,22 +1,25 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, LinearProgress } from "ui";
+import { Box, Dialog, LinearProgress } from "ui";
 import { useCategoryContext } from "./CategoryContext";
-import CreateCategoryModal from "./CreateCategoryModal";
 import CategoryHeader from "./CategoryHeader";
 import CategoryGrid from "./CategoryGrid";
+import CategoryForm from "../../components/CategoryForm";
+import ProductForm from "../../components/ProductForm";
 
 const ManageCategories = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
 
   const {
-    isLoading,
     currentCategoryId,
     breadcrumbPath,
     isCreateModalOpen,
+    isCreateProductModalOpen,
     openCreateModal,
     closeCreateModal,
+    openCreateProductModal,
+    closeCreateProductModal,
     navigateToCategory,
     navigateBack,
     setCurrentCategoryId,
@@ -42,10 +45,6 @@ const ManageCategories = () => {
     }
   };
 
-  const handleCreateProduct = () => {
-    navigate(`/products/create?categoryId=${currentCategoryId}`);
-  };
-
   const handleBack = () => {
     navigateBack();
     if (breadcrumbPath.length === 0) {
@@ -64,22 +63,38 @@ const ManageCategories = () => {
       <CategoryHeader
         onBack={handleBack}
         onCreateCategory={openCreateModalHandler}
-        onCreateProduct={handleCreateProduct}
+        onCreateProduct={openCreateProductModal}
         onBreadcrumbClick={handleBreadcrumbClick}
       />
-
-      {/* Loading Progress */}
-      {isLoading && (
-        <Box className="mb-4">
-          <LinearProgress />
-        </Box>
-      )}
 
       {/* Category Grid */}
       <CategoryGrid onCategoryClick={handleCategoryClick} />
 
       {/* Create Category Modal */}
-      <CreateCategoryModal open={isCreateModalOpen} />
+      <Dialog
+        open={isCreateModalOpen}
+        onClose={closeCreateModal}
+        maxWidth="lg"
+        fullWidth
+      >
+        <CategoryForm
+          onSuccess={closeCreateModal}
+          parentCategoryId={categoryId}
+        />
+      </Dialog>
+
+      {/* Create Product Modal */}
+      <Dialog
+        open={isCreateProductModalOpen}
+        onClose={closeCreateProductModal}
+        maxWidth="lg"
+        fullWidth
+      >
+        <ProductForm
+          onSuccess={closeCreateProductModal}
+          categoryId={currentCategoryId}
+        />
+      </Dialog>
     </Box>
   );
 };

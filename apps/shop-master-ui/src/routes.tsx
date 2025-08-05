@@ -26,7 +26,7 @@ import { CategoryProvider } from "./pages/ManageCategories/CategoryContext";
 import CategoryForm from "./pages/CategoryForm";
 
 import ManageProducts from "./pages/ManageProducts";
-import ProductForm from "./pages/ProductForm";
+import ProductForm from "./components/ProductForm";
 import ProductVariantForm from "./pages/ProductVariantForm";
 
 import ManageOrders from "./pages/ManageOrders";
@@ -154,22 +154,6 @@ export const router = createBrowserRouter([
           },
         ],
       },
-
-      // {
-      //   path: "categories",
-      //   element: <Layout />,
-      //   children: [
-      //     {
-      //       path: "",
-      //       element: <ManageCategories />,
-      //     },
-
-      //     {
-      //       path: "create",
-      //       element: <CategoryForm />,
-      //     },
-      //   ],
-      // },
 
       {
         path: "products",

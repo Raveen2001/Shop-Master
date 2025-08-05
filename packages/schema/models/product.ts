@@ -1,7 +1,6 @@
 import { object, string, InferType } from "yup";
 import { TProductVariantData } from "./product-variant.js";
 import { TCategoryData } from "./category.js";
-import { TBrandData } from "./brand.js";
 
 export const ProductFormSchema = object({
   ownerId: string().required(),
@@ -12,10 +11,7 @@ export const ProductFormSchema = object({
     .required("Name is required"),
 
   description: string().trim().nullable(),
-
-  brandId: string().trim().nullable(),
   categoryId: string().trim().nullable(),
-  subCategoryId: string().trim().nullable(),
 });
 
 export type TProductFormSchema = InferType<typeof ProductFormSchema>;
@@ -25,5 +21,4 @@ export type TProductData = TProductFormSchema & {
   updatedAt: string;
   variants?: TProductVariantData[];
   category?: TCategoryData;
-  brand?: TBrandData;
 };

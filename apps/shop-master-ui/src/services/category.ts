@@ -10,8 +10,8 @@ export const getCategoriesBy = (by: "owner" | "shop", id: string) => {
   };
 };
 
-export const createCategory = (brand: TCategoryFormSchema) => {
+export const createCategory = (category: TCategoryFormSchema) => {
   const url = "/categories/create";
 
-  return axiosClient.post<TCategoryData>(url, brand);
+  return axiosClient.post<TCategoryData>(url, category);
 };

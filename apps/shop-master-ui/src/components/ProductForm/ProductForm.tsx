@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { useSearchParams } from "react-router-dom";
 import useProductForm from "./useProductForm";
 import {
   Box,
@@ -16,10 +15,15 @@ import {
   Snackbar,
   Alert,
   TableProfileCell,
+  ProfileImagePicker,
 } from "ui";
 
-const ProductForm: FC = () => {
-  const [searchParams] = useSearchParams();
+export type TProductFormProps = {
+  categoryId?: string | null;
+  onSuccess?: () => void;
+};
+
+const ProductForm: FC<TProductFormProps> = (props) => {
   const {
     formErrors,
     onSubmit,
@@ -28,20 +32,27 @@ const ProductForm: FC = () => {
     mutateError,
     register,
     categories,
-    brands,
     shop,
     owner,
-    selectedCategoryId,
-    subCategories,
-  } = useProductForm();
+    setProductImage,
+  } = useProductForm(props);
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">Create a new Product</Typography>
 
       <Box className="h-8" />
 
-      <form onSubmit={onSubmit} className="flex h-full flex-col gap-4">
-        <Card elevation={5} className="ml-10 p-6">
+      <form onSubmit={onSubmit} className="flex h-full flex-row gap-4">
+        <Card
+          elevation={5}
+          className="flex flex-col items-center justify-between gap-4 p-6"
+        >
+          <ProfileImagePicker onImageChange={setProductImage} />
+          <Button color="error" variant="outlined">
+            Delete Product
+          </Button>
+        </Card>
+        <Card elevation={5} className="flex-1 p-6">
           <Box className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <Box className="flex flex-col gap-4">
               <TextField
@@ -50,27 +61,6 @@ const ProductForm: FC = () => {
                 error={!!formErrors.name}
                 helperText={formErrors.name?.message}
               />
-              <FormControl error={!!formErrors.brandId}>
-                <InputLabel id="brand-label">Brand *</InputLabel>
-                <Select
-                  labelId="brand-label"
-                  id="brand"
-                  {...register("brandId")}
-                  label="Brand"
-                  defaultValue={""}
-                >
-                  {brands.map((brand: any) => (
-                    <MenuItem key={brand.id} value={brand.id}>
-                      <TableProfileCell
-                        name={brand.name}
-                        imageUrl={brand.image}
-                      />
-                    </MenuItem>
-                  ))}
-                </Select>
-
-                <FormHelperText>{formErrors.brandId?.message}</FormHelperText>
-              </FormControl>
 
               <FormControl error={!!formErrors.categoryId}>
                 <InputLabel id="category-label">Category *</InputLabel>
@@ -79,11 +69,15 @@ const ProductForm: FC = () => {
                   id="category"
                   {...register("categoryId")}
                   label="Category"
-                  defaultValue={""}
-                  disabled={!!searchParams.get("categoryId")}
+                  defaultValue={props.categoryId ?? ""}
+                  disabled={props.categoryId != null}
                 >
                   {categories.map((category: any) => (
-                    <MenuItem key={category.id} value={category.id}>
+                    <MenuItem
+                      key={category.id}
+                      value={category.id}
+                      selected={category.id === props.categoryId}
+                    >
                       <TableProfileCell
                         name={category.name}
                         imageUrl={category.image}
@@ -96,33 +90,14 @@ const ProductForm: FC = () => {
                   {formErrors.categoryId?.message}
                 </FormHelperText>
               </FormControl>
-
-              <FormControl
-                error={!!formErrors.subCategoryId}
-                disabled={!selectedCategoryId}
-              >
-                <InputLabel id="subCategory-label">Sub-category *</InputLabel>
-                <Select
-                  labelId="subCategory-label"
-                  id="subCategory"
-                  {...register("subCategoryId")}
-                  label="Sub-category"
-                  defaultValue={""}
-                >
-                  {subCategories.map((subCategory: any) => (
-                    <MenuItem key={subCategory.id} value={subCategory.id}>
-                      <TableProfileCell
-                        name={subCategory.name}
-                        imageUrl={subCategory.image}
-                      />
-                    </MenuItem>
-                  ))}
-                </Select>
-
-                <FormHelperText>
-                  {formErrors.subCategoryId?.message}
-                </FormHelperText>
-              </FormControl>
+              <TextField
+                label="Description"
+                {...register("description")}
+                error={!!formErrors.description}
+                helperText={formErrors.description?.message}
+                multiline
+                rows={4}
+              />
             </Box>
             <Box className="flex flex-col gap-4">
               <TextField
@@ -135,20 +110,11 @@ const ProductForm: FC = () => {
                 contentEditable={false}
                 value={owner?.name ?? ""}
               />
-              <TextField
-                label="Description"
-                {...register("description")}
-                error={!!formErrors.description}
-                helperText={formErrors.description?.message}
-                multiline
-                rows={4}
-              />
             </Box>
           </Box>
 
-          <Button color="error" variant="outlined">
-            Delete Product
-          </Button>
+          <Box className="h-8" />
+
           <LoadingButton
             loading={isMutateLoading}
             variant="contained"

@@ -16,6 +16,8 @@ import { RouteHandlerMethod } from "fastify";
 const ProductRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
 ) => {
+  fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+
   // create product
   fastify.post<{
     Querystring: TProductQueryString;

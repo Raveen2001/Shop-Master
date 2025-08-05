@@ -2,17 +2,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { IRequestError, TCategoryFormSchema, CategoryFormSchema } from "schema";
 import { createCategory } from "../../services/category";
 import { useGlobalStore } from "../../store/globalStore";
+import { TCategoryFormProps } from "./CategoryForm";
 
-const useCategoryForm = () => {
-  const navigate = useNavigate();
-  const [owner, selectedShop] = useGlobalStore((state) => [
-    state.owner,
-    state.selectedShop,
-  ]);
+type TUseCategoryFormProps = TCategoryFormProps;
+
+const useCategoryForm = (props: TUseCategoryFormProps) => {
+  const [owner, selectedShop, setIsCategoryDataFetching] = useGlobalStore(
+    (state) => [
+      state.owner,
+      state.selectedShop,
+      state.setIsCategoryDataFetching,
+    ]
+  );
   const queryClient = useQueryClient();
   const [categoryImage, setCategoryImage] = useState<File | null>(null);
 
@@ -29,10 +33,12 @@ const useCategoryForm = () => {
     mutationKey: ["category", "create"],
     mutationFn: createCategory,
     onSuccess: () => {
+      setIsCategoryDataFetching(true);
       queryClient.invalidateQueries({
-        queryKey: ["categories"],
+        queryKey: ["shop", selectedShop?.id, "categories"],
       });
-      navigate("/categories");
+
+      props.onSuccess?.();
     },
   });
 
@@ -44,7 +50,7 @@ const useCategoryForm = () => {
   } = useForm<TCategoryFormSchema>({
     defaultValues: {
       image: null,
-      parentId: null,
+      parentId: props.parentCategoryId ?? null,
     },
     resolver: yupResolver(CategoryFormSchema as any),
   });

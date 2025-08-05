@@ -1,26 +1,21 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  IRequestError,
-  TProductFormSchema,
-  ProductFormSchema,
-  TCategoryData,
-} from "schema";
+import { IRequestError, TProductFormSchema, ProductFormSchema } from "schema";
 import { createProduct } from "../../services/product";
 import { useGlobalStore } from "../../store/globalStore";
+import { TProductFormProps } from "./ProductForm";
 
-const useProductForm = () => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [owner, selectedShop, brands, categories] = useGlobalStore((state) => [
+type TUseProductFormProps = TProductFormProps;
+
+const useProductForm = (props: TUseProductFormProps) => {
+  const [owner, selectedShop, categories] = useGlobalStore((state) => [
     state.owner,
     state.selectedShop,
-    state.brands,
     state.categories,
   ]);
+  const [productImage, setProductImage] = useState<File | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -40,7 +35,7 @@ const useProductForm = () => {
       queryClient.invalidateQueries({
         queryKey: ["shop", selectedShop?.id, "products"],
       });
-      navigate("/products");
+      props.onSuccess?.();
     },
   });
 
@@ -48,12 +43,14 @@ const useProductForm = () => {
     register,
     handleSubmit,
 
-    watch: formWatch,
     formState: { errors: formErrors },
     getValues: getFormValues,
     setValue: setFormState,
   } = useForm<TProductFormSchema>({
     resolver: yupResolver(ProductFormSchema as any),
+    defaultValues: {
+      categoryId: props.categoryId,
+    },
   });
 
   useEffect(() => {
@@ -61,32 +58,15 @@ const useProductForm = () => {
     setFormState("ownerId", owner?.id ?? "");
 
     // Set categoryId from URL params if available
-    const categoryIdFromUrl = searchParams.get("categoryId");
-    if (categoryIdFromUrl) {
-      setFormState("categoryId", categoryIdFromUrl);
+    if (props.categoryId) {
+      console.log("props.categoryId", props.categoryId);
+      setFormState("categoryId", props.categoryId);
     }
-  }, [owner?.id, setFormState, selectedShop?.id, searchParams]);
+  }, [owner?.id, setFormState, selectedShop?.id, props.categoryId]);
 
   const onSubmit = handleSubmit((data) => {
-    if (!data.brandId) data.brandId = null;
-    if (!data.categoryId) data.categoryId = null;
-    if (!data.subCategoryId) data.subCategoryId = null;
-
     mutate(data);
   });
-
-  const selectedCategoryId = formWatch("categoryId");
-  const subCategories = useMemo(() => {
-    setFormState("subCategoryId", null);
-    if (!selectedCategoryId) {
-      return [];
-    }
-    const category = categories.find(
-      (category) => category.id === selectedCategoryId
-    ) as TCategoryData;
-
-    return category.subCategories ?? [];
-  }, [categories, selectedCategoryId, setFormState]);
 
   return {
     register,
@@ -99,10 +79,10 @@ const useProductForm = () => {
     mutate,
     shop: selectedShop,
     owner,
-    brands,
     categories,
-    subCategories,
-    selectedCategoryId,
+
+    productImage,
+    setProductImage,
   };
 };
 

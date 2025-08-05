@@ -11,15 +11,14 @@ import ProductVariantList from "./ProductVariantTable/ProductVariantTable";
 
 const ManageProducts = () => {
   const navigate = useNavigate();
-  const [products, brands, categories] = useGlobalStore((state) => [
+  const [products, categories] = useGlobalStore((state) => [
     state.products,
-    state.brands,
     state.categories,
   ]);
 
   const updatedProducts = useMemo(
-    () => mergeProductData(products, brands, categories),
-    [brands, categories, products]
+    () => mergeProductData(products, categories),
+    [categories, products]
   );
 
   return (
