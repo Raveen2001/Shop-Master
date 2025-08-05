@@ -13,6 +13,9 @@ import { TOwnerData } from "../models/owner";
 import { mergeProductData } from "../utils/product";
 
 interface IGlobalStore {
+  isCategoryDataFetching: boolean;
+  setIsCategoryDataFetching: (isFetching: boolean) => void;
+
   isOwnerDataFetched: boolean;
   isCategoryDataFetched: boolean;
   isProductDataFetched: boolean;
@@ -43,7 +46,7 @@ interface IGlobalStore {
   products: TProductData[];
   setProducts: (products: TProductData[]) => void;
 
-  isAllDataLoaded: () => boolean;
+  getIsAllDataLoaded: () => boolean;
   getAllProductVariantsWithDetails: () => TProductVariantWithDetails[];
 }
 
@@ -63,6 +66,8 @@ export const useGlobalStore = create(
     isShopsDataFetched: false,
     isEmployeeDataFetched: false,
     isCustomerDataFetched: false,
+
+    isCategoryDataFetching: false,
 
     setShops: (shops: TShopData[]) => {
       set((state) => {
@@ -112,11 +117,12 @@ export const useGlobalStore = create(
     setCategories: (categories) => {
       set((state) => {
         state.categories = categories;
+        state.isCategoryDataFetching = false;
         state.isCategoryDataFetched = true;
       });
     },
 
-    isAllDataLoaded: () => {
+    getIsAllDataLoaded: () => {
       const state = get();
       return (
         state.isOwnerDataFetched &&
@@ -141,6 +147,13 @@ export const useGlobalStore = create(
         .flat();
 
       return productVariants;
+    },
+
+    setIsCategoryDataFetching: (isFetching: boolean) => {
+      console.log("isFetching", isFetching);
+      set((state) => {
+        state.isCategoryDataFetching = true;
+      });
     },
   }))
 );

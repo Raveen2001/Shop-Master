@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   IRequestError,
   TProductFormSchema,
@@ -14,6 +14,7 @@ import { useGlobalStore } from "../../store/globalStore";
 
 const useProductForm = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [owner, selectedShop, brands, categories] = useGlobalStore((state) => [
     state.owner,
     state.selectedShop,
@@ -58,7 +59,13 @@ const useProductForm = () => {
   useEffect(() => {
     setFormState("shopId", selectedShop?.id ?? "");
     setFormState("ownerId", owner?.id ?? "");
-  }, [owner?.id, setFormState, selectedShop?.id]);
+
+    // Set categoryId from URL params if available
+    const categoryIdFromUrl = searchParams.get("categoryId");
+    if (categoryIdFromUrl) {
+      setFormState("categoryId", categoryIdFromUrl);
+    }
+  }, [owner?.id, setFormState, selectedShop?.id, searchParams]);
 
   const onSubmit = handleSubmit((data) => {
     if (!data.brandId) data.brandId = null;

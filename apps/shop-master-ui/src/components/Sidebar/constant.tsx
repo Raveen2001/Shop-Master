@@ -94,17 +94,12 @@ export const SIDEBAR_ITEMS: TSidebarItem[] = [
     name: "Product",
     items: [
       {
-        name: "Manage Brands",
-        path: "/brands",
-        icon: <FitbitTwoTone />,
-        highlightPathPattern: /^\/brands(\/(edit|create))?$/,
-      },
-      {
         name: "Manage Categories",
         path: "/categories",
         icon: <CategoryTwoTone />,
-        highlightPathPattern: /^\/categories(\/(edit|create))?$/,
+        highlightPathPattern: /^\/categories(\/.*)?$/,
       },
+
       {
         name: "Manage Products",
         path: "/products",

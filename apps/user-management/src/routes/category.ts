@@ -69,6 +69,7 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
   // query categorys
   function getCategorysBy(queryBy: TCategoryQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       const { id } = req.params as TCategoryQueryParam;
       const { includeProducts, includeSubCategories } =
         req.query as TCategoryQueryString;

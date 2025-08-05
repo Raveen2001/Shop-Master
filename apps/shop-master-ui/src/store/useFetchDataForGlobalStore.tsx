@@ -10,7 +10,17 @@ import { getCustomersBy } from "../services/customer";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
-  const store = useGlobalStore();
+  const {
+    setOwner,
+    setShops,
+    setCustomers,
+    setCategories,
+    setProducts,
+    setIsCategoryDataFetching,
+    selectedShopId,
+    setSelectedShopId,
+    getIsAllDataLoaded,
+  } = useGlobalStore();
 
   const ownerQuery = useQuery({
     queryKey: ["owner"],
@@ -21,8 +31,8 @@ const useFetchDataForGlobalStore = () => {
   useEffect(() => {
     if (!ownerQuery.isSuccess) return;
 
-    store.setOwner(ownerQuery.data);
-  }, [ownerQuery, store]);
+    setOwner(ownerQuery.data);
+  }, [ownerQuery.isSuccess, ownerQuery.data, setOwner]);
 
   const shopsQuery = useQuery({
     queryKey: ["shops", ownerQuery.data?.id],
@@ -33,33 +43,40 @@ const useFetchDataForGlobalStore = () => {
 
   useEffect(() => {
     if (!shopsQuery.isSuccess) return;
-    store.setShops(shopsQuery.data);
+    setShops(shopsQuery.data);
 
-    if (!store.selectedShopId) {
-      store.setSelectedShopId(shopsQuery.data[0]?.id);
+    if (!selectedShopId) {
+      setSelectedShopId(shopsQuery.data[0]?.id);
     }
 
     if (shopsQuery.data.length === 0) {
       navigate("/shops/create");
     }
-  }, [navigate, shopsQuery, store]);
+  }, [
+    navigate,
+    shopsQuery.isSuccess,
+    shopsQuery.data,
+    setShops,
+    selectedShopId,
+    setSelectedShopId,
+  ]);
 
   const customersQuery = useQuery({
-    queryKey: ["shop", store.selectedShopId, "customers"],
-    queryFn: getCustomersBy("shop", store.selectedShopId ?? ""),
-    enabled: !!shopsQuery.data && !!store.selectedShopId,
+    queryKey: ["shop", selectedShopId, "customers"],
+    queryFn: getCustomersBy("shop", selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!selectedShopId,
     select: (data) => data.data,
   });
 
   useEffect(() => {
     if (!customersQuery.isSuccess) return;
-    store.setCustomers(customersQuery.data);
-  }, [customersQuery, store]);
+    setCustomers(customersQuery.data);
+  }, [customersQuery.isSuccess, customersQuery.data, setCustomers]);
 
   const categoriesQuery = useQuery({
-    queryKey: ["shop", store.selectedShopId, "categories"],
-    queryFn: getCategoriesBy("shop", store.selectedShopId ?? ""),
-    enabled: !!shopsQuery.data && !!store.selectedShopId,
+    queryKey: ["shop", selectedShopId, "categories"],
+    queryFn: getCategoriesBy("shop", selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!selectedShopId,
     select: (data) => data.data,
     meta: {
       includeSubCategories: true,
@@ -68,13 +85,13 @@ const useFetchDataForGlobalStore = () => {
 
   useEffect(() => {
     if (!categoriesQuery.isSuccess) return;
-    store.setCategories(categoriesQuery.data);
-  }, [categoriesQuery, store]);
+    setCategories(categoriesQuery.data);
+  }, [categoriesQuery.isSuccess, categoriesQuery.data, setCategories]);
 
   const productsQuery = useQuery({
-    queryKey: ["shop", store.selectedShopId, "products"],
-    queryFn: getProductsBy("shop", store.selectedShopId ?? ""),
-    enabled: !!shopsQuery.data && !!store.selectedShopId,
+    queryKey: ["shop", selectedShopId, "products"],
+    queryFn: getProductsBy("shop", selectedShopId ?? ""),
+    enabled: !!shopsQuery.data && !!selectedShopId,
     meta: {
       includeVariants: true,
     },
@@ -83,8 +100,8 @@ const useFetchDataForGlobalStore = () => {
 
   useEffect(() => {
     if (!productsQuery.isSuccess) return;
-    store.setProducts(productsQuery.data);
-  }, [productsQuery, store]);
+    setProducts(productsQuery.data);
+  }, [productsQuery.isSuccess, productsQuery.data, setProducts]);
 
   const isLoading = useMemo(
     () =>
@@ -119,8 +136,8 @@ const useFetchDataForGlobalStore = () => {
   }, [shopsQuery.data, shopsQuery.isSuccess]);
 
   const isAllDataLoaded = useMemo(() => {
-    return !isLoading && !isError && !!store.isAllDataLoaded();
-  }, [isLoading, isError, store]);
+    return !isLoading && !isError && !!getIsAllDataLoaded();
+  }, [isLoading, isError, getIsAllDataLoaded]);
 
   return {
     isAllDataLoaded,

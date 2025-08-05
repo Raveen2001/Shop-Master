@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useSearchParams } from "react-router-dom";
 import useProductForm from "./useProductForm";
 import {
   Box,
@@ -18,6 +19,7 @@ import {
 } from "ui";
 
 const ProductForm: FC = () => {
+  const [searchParams] = useSearchParams();
   const {
     formErrors,
     onSubmit,
@@ -57,7 +59,7 @@ const ProductForm: FC = () => {
                   label="Brand"
                   defaultValue={""}
                 >
-                  {brands.map((brand) => (
+                  {brands.map((brand: any) => (
                     <MenuItem key={brand.id} value={brand.id}>
                       <TableProfileCell
                         name={brand.name}
@@ -78,8 +80,9 @@ const ProductForm: FC = () => {
                   {...register("categoryId")}
                   label="Category"
                   defaultValue={""}
+                  disabled={!!searchParams.get("categoryId")}
                 >
-                  {categories.map((category) => (
+                  {categories.map((category: any) => (
                     <MenuItem key={category.id} value={category.id}>
                       <TableProfileCell
                         name={category.name}
@@ -106,7 +109,7 @@ const ProductForm: FC = () => {
                   label="Sub-category"
                   defaultValue={""}
                 >
-                  {subCategories.map((subCategory) => (
+                  {subCategories.map((subCategory: any) => (
                     <MenuItem key={subCategory.id} value={subCategory.id}>
                       <TableProfileCell
                         name={subCategory.name}

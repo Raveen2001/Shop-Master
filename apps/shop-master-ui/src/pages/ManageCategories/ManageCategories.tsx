@@ -1,6 +1,5 @@
 import { Box, Button, PaginatedTable, Typography } from "ui";
 
-import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
 import { useGlobalStore } from "../../store/globalStore";
 
