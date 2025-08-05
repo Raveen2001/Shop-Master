@@ -1,9 +1,7 @@
 import { pgTable, uuid, integer, text, timestamp } from "drizzle-orm/pg-core";
 import { productsDB } from "./products";
-import { brandsDB } from "./brands";
 import { productCategoriesDB } from "./product_categories";
-import { productSubCategoriesDB } from "./product_sub_categories";
-import { InferModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
 
@@ -18,15 +16,10 @@ export const productReviewsDB = pgTable("product_reviews", {
   productId: uuid("product_id")
     .notNull()
     .references(() => productsDB.id),
-  brandId: uuid("brand_id")
-    .notNull()
-    .references(() => brandsDB.id),
+
   categoryId: uuid("category_id")
     .notNull()
     .references(() => productCategoriesDB.id),
-  subCategoryId: uuid("sub_category_id")
-    .notNull()
-    .references(() => productSubCategoriesDB.id),
 
   shopId: uuid("shop_id")
     .notNull()
@@ -43,18 +36,10 @@ export const productReviewsRelations = relations(
       fields: [productReviewsDB.productId],
       references: [productsDB.id],
     }),
-    brand: one(brandsDB, {
-      fields: [productReviewsDB.brandId],
-      references: [brandsDB.id],
-    }),
+
     category: one(productCategoriesDB, {
       fields: [productReviewsDB.categoryId],
       references: [productCategoriesDB.id],
-    }),
-
-    subCategory: one(productSubCategoriesDB, {
-      fields: [productReviewsDB.subCategoryId],
-      references: [productSubCategoriesDB.id],
     }),
 
     shop: one(shopsDB, {

@@ -1,14 +1,14 @@
-export * from "./employee";
-export * from "./shop";
-export * from "./employee-payment";
-export * from "./customer";
-export * from "./customer-payment";
+export * from "./employee.js";
+export * from "./shop.js";
+export * from "./employee-payment.js";
+export * from "./customer.js";
+export * from "./customer-payment.js";
 
-export * from "./brand";
-export * from "./category";
-export * from "./product";
-export * from "./sub-category";
-export * from "./product-variant";
+export * from "./brand.js";
+export * from "./category.js";
+export * from "./product.js";
+export * from "./sub-category.js";
+export * from "./product-variant.js";
 
-export * from "./order";
-export * from "./order-item";
+export * from "./order.js";
+export * from "./order-item.js";

@@ -8,6 +8,15 @@ export const ProductVariantSchema = Type.Object({
   salePrice: Type.Number(),
   mrp: Type.Number(),
   onlyForBilling: Type.Boolean({ default: false }),
+  isLoose: Type.Boolean({ default: false }),
+  noOfUnits: Type.Number(),
+  unit: Type.Union([
+    Type.Literal("KG"),
+    Type.Literal("L"),
+    Type.Literal("G"),
+    Type.Literal("ML"),
+    Type.Literal("PCS"),
+  ]),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
   availability: Type.Boolean({ default: true }),
@@ -19,6 +28,7 @@ export const ProductVariantSchemaIn = Type.Omit(ProductVariantSchema, [
   "id",
   "createdAt",
   "updatedAt",
+  "ownerId",
 ]);
 
 export type TProductVariantSchema = Static<typeof ProductVariantSchema>;
@@ -30,8 +40,6 @@ export const ProductVariantQueryParamSchema = Type.Object({
 
 export const ProductVariantQueryStringSchema = Type.Object({
   includeProduct: Type.Boolean({ default: false }),
-  includeShop: Type.Boolean({ default: false }),
-  includeOwner: Type.Boolean({ default: false }),
 });
 
 export type TProductVariantQueryParam = Static<

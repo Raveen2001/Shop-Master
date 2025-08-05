@@ -1,32 +1,24 @@
 import { TNewShopsDB, eq, shopsDB, sql } from "database-drizzle";
-import FastifyTypebox from "../types/fastify";
-import {
-  TPagableShopQueryString,
-  TShopQueryParam,
-  TShopQueryString,
-} from "../types/shop";
+import FastifyTypebox from "../types/fastify.js";
+import { TPagableShopQueryString } from "../types/shop.js";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
   CreateShopOpts,
   QueryShopByOwnerOpts,
   QueryShopOpts,
-} from "../opts/shop";
+} from "../opts/shop.js";
 
 const ShopRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
 ) => {
-  // get shop by id
-  fastify.get<{
-    Params: TShopQueryParam;
-    Querystring: TShopQueryString;
-  }>("/:id", QueryShopOpts, async (req, reply) => {
-    const shop = await fastify.db.query.shopsDB.findFirst({
-      where: (shopsDB, { eq }) => eq(shopsDB.id, req.params.id),
+  fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
 
-      with: {
-        owner: req.query.includeOwner || undefined,
-        employees: req.query.includeEmployees || undefined,
-      },
+  // get shop by token
+  fastify.get("/", QueryShopOpts, async (req, reply) => {
+    const shopId = req.userInfo.data.shopId;
+
+    const shop = await fastify.db.query.shopsDB.findFirst({
+      where: (shopsDB, { eq }) => eq(shopsDB.id, shopId),
     });
 
     if (!shop) {
@@ -39,10 +31,8 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
 
   // create shop
   fastify.post<{
-    Querystring: TShopQueryString;
     Body: TNewShopsDB;
   }>("/create", CreateShopOpts, async (req, reply) => {
-    const { includeOwner, includeEmployees } = req.query;
     const { insertedId } = (
       await fastify.db
         .insert(shopsDB)
@@ -53,10 +43,6 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
 
     const shop = await fastify.db.query.shopsDB.findFirst({
       where: (shopsDB, { eq }) => eq(shopsDB.id, insertedId),
-      with: {
-        owner: includeOwner || undefined,
-        employees: includeEmployees || undefined,
-      },
     });
 
     reply.code(201).send(shop);
@@ -64,28 +50,24 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
 
   // get paginated shops by owner id
   fastify.get<{
-    Params: TShopQueryParam;
     Querystring: TPagableShopQueryString;
-  }>("/owner/:id", QueryShopByOwnerOpts, async (req, reply) => {
-    const { includeOwner, includeEmployees, limit, page, order, orderBy } =
-      req.query;
+  }>("/owner", QueryShopByOwnerOpts, async (req, reply) => {
+    const { limit, page, order, orderBy } = req.query;
+    const ownerId = req.userInfo.data.id;
 
     const offset = page && limit ? page * limit : undefined;
 
     const shops = await fastify.db.query.shopsDB.findMany({
-      where: (shopsDB, { eq }) => eq(shopsDB.ownerId, req.params.id),
-
-      with: {
-        owner: includeOwner || undefined,
-        employees: includeEmployees || undefined,
-      },
+      where: (shopsDB, { eq }) => eq(shopsDB.ownerId, ownerId),
 
       limit: limit,
       offset: offset,
 
       orderBy: (shopsDB, { asc, desc }) => {
-        if (orderBy && order === "asc") return asc(shopsDB[orderBy]);
-        if (orderBy && order === "desc") return desc(shopsDB[orderBy]);
+        if (orderBy && order === "asc")
+          return asc(shopsDB[orderBy as keyof typeof shopsDB]);
+        if (orderBy && order === "desc")
+          return desc(shopsDB[orderBy as keyof typeof shopsDB]);
 
         return asc(shopsDB.createdAt);
       },
@@ -97,7 +79,7 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
           total: sql<number>`count(*)`.mapWith(Number).as("total"),
         })
         .from(shopsDB)
-        .where(eq(shopsDB.ownerId, req.params.id))
+        .where(eq(shopsDB.ownerId, ownerId))
     )[0];
 
     reply.code(200).send({

@@ -1,16 +1,16 @@
 import { TNewProductCategoryDB, productCategoriesDB } from "database-drizzle";
-import FastifyTypebox from "../types/fastify";
+import FastifyTypebox from "../types/fastify.js";
 import {
   TCategoryQueryByFields,
   TCategoryQueryParam,
   TCategoryQueryString,
-} from "../types/category";
+} from "../types/category.js";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
   CreateCategoryOpts,
   QueryCategoryByOwnerOpts,
   QueryCategoryOpts,
-} from "../opts/category";
+} from "../opts/category.js";
 import { RouteHandlerMethod } from "fastify";
 
 const CategoryRoutes: FastifyPluginAsyncTypebox = async (
@@ -21,16 +21,13 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
     Params: TCategoryQueryParam;
     Querystring: TCategoryQueryString;
   }>("/:id", QueryCategoryOpts, async (req, reply) => {
-    const { includeOwner, includeProducts, includeShop, includeSubCategories } =
-      req.query;
+    const { includeProducts, includeSubCategories } = req.query;
 
     const category = await fastify.db.query.productCategoriesDB.findFirst({
       where: (productCategoriesDB, { eq }) =>
         eq(productCategoriesDB.id, req.params.id),
 
       with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
         products: includeProducts || undefined,
         subCategories: includeSubCategories || undefined,
       },
@@ -46,14 +43,15 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
 
   // create category
   fastify.post<{
-    Querystring: TCategoryQueryString;
     Body: TNewProductCategoryDB;
   }>("/create", CreateCategoryOpts, async (req, reply) => {
-    const { includeOwner, includeProducts, includeShop } = req.query;
+    const categoryBody = req.body;
+    categoryBody.ownerId = req.userInfo.data.id;
+
     const { insertedId } = (
       await fastify.db
         .insert(productCategoriesDB)
-        .values(req.body)
+        .values(categoryBody)
         .onConflictDoNothing()
         .returning({ insertedId: productCategoriesDB.id })
     )[0];
@@ -61,11 +59,6 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
     const category = await fastify.db.query.productCategoriesDB.findFirst({
       where: (productCategoriesDB, { eq }) =>
         eq(productCategoriesDB.id, insertedId),
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-        products: includeProducts || undefined,
-      },
     });
 
     reply.code(201).send(category);
@@ -75,20 +68,14 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
   function getCategorysBy(queryBy: TCategoryQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TCategoryQueryParam;
-      const {
-        includeOwner,
-        includeProducts,
-        includeShop,
-        includeSubCategories,
-      } = req.query as TCategoryQueryString;
+      const { includeProducts, includeSubCategories } =
+        req.query as TCategoryQueryString;
 
       const categorys = await fastify.db.query.productCategoriesDB.findMany({
         where: (productCategoriesDB, { eq }) =>
           eq(productCategoriesDB[queryBy], id),
         with: {
-          owner: includeOwner || undefined,
           products: includeProducts || undefined,
-          shop: includeShop || undefined,
           subCategories: includeSubCategories || undefined,
         },
       });

@@ -1,5 +1,5 @@
 import { object, string, InferType } from "yup";
-import { TSubCategoryData } from "./sub-category";
+import { TSubCategoryData } from "./sub-category.js";
 
 export const CategoryFormSchema = object({
   ownerId: string().required(),

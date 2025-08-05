@@ -1,17 +1,16 @@
 import { Static, Type } from "@sinclair/typebox";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { optionalType } from "./utils";
-import { ShopSchemaOut } from "./shop";
-import { ProductVariantSchema } from "./product-variant";
+import { OwnerSchemaWithoutPassword } from "./owner.js";
+import { optionalType } from "./utils.js";
+import { ShopSchemaOut } from "./shop.js";
+import { ProductVariantSchema } from "./product-variant.js";
 
 export const ProductSchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3, maxLength: 50 }),
+  image: optionalType(Type.String({ format: "uri" })),
 
   description: optionalType(Type.String()),
-  brandId: optionalType(Type.String()),
   categoryId: optionalType(Type.String()),
-  subCategoryId: optionalType(Type.String()),
 
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
@@ -44,8 +43,6 @@ export const ProductQueryParamSchema = Type.Object({
 });
 
 export const ProductQueryStringSchema = Type.Object({
-  includeOwner: Type.Boolean({ default: false }),
-  includeShop: Type.Boolean({ default: false }),
   includeVariants: Type.Boolean({ default: false }),
 });
 

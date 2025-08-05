@@ -7,12 +7,12 @@ import {
   PagableOrderQueryStringSchema,
   PagableOrderSchemaOut,
   TOrderQueryByFields,
-} from "../types/order";
+} from "../types/order.js";
 import { Type } from "@sinclair/typebox";
 import {
   PhoneQueryParamSchema,
   IDStringQueryParamSchema,
-} from "../types/common";
+} from "../types/common.js";
 
 export const CreateOrderOpts: RouteShorthandOptions = {
   schema: {

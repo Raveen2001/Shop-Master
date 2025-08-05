@@ -1,5 +1,5 @@
 import fp from "fastify-plugin";
-import db from "database-drizzle";
+import { db } from "database-drizzle";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
 const drizzlePlugin: FastifyPluginAsyncTypebox = async (fastify) => {

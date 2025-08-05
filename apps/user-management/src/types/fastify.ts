@@ -6,7 +6,8 @@ import {
   RawServerDefault,
 } from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import db from "database-drizzle";
+import { db } from "database-drizzle";
+import { TToken } from "types";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -19,7 +20,7 @@ declare module "fastify" {
   }
 
   interface FastifyRequest {
-    user: string | object | Buffer;
+    userInfo: TToken;
   }
 }
 

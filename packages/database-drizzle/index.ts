@@ -10,9 +10,7 @@ import * as EmployeePaymentsSchema from "./schema/employee_payments";
 import * as CustomersSchema from "./schema/customers";
 import * as CustomerPaymentsSchema from "./schema/customer_payments";
 
-import * as BrandsSchema from "./schema/brands";
 import * as ProductCategoriesSchema from "./schema/product_categories";
-import * as ProductSubCategoriesSchema from "./schema/product_sub_categories";
 import * as ProductsSchema from "./schema/products";
 import * as ProductImagesSchema from "./schema/product_images";
 import * as ProductSearchTagsSchema from "./schema/product_search_tags";
@@ -28,7 +26,7 @@ if (!process.env.DATABASE_URL) {
 }
 
 const client = postgres(process.env.DATABASE_URL);
-const db = drizzle(client, {
+export const db = drizzle(client, {
   schema: {
     ...ShopsSchema,
     ...OwnersSchema,
@@ -39,10 +37,7 @@ const db = drizzle(client, {
     ...CustomersSchema,
     ...CustomerPaymentsSchema,
 
-    ...BrandsSchema,
     ...ProductCategoriesSchema,
-    ...ProductSubCategoriesSchema,
-
     ...ProductsSchema,
     ...ProductVariantsSchema,
     ...ProductReviewsSchema,
@@ -55,6 +50,5 @@ const db = drizzle(client, {
   //   logger: true,
 });
 
-export default db;
 export * from "./schema";
 export * from "drizzle-orm";

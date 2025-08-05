@@ -6,33 +6,33 @@ import FastifyRateLimit from "@fastify/rate-limit";
 import FastifyAuth from "@fastify/auth";
 import FastifyJwt from "@fastify/jwt";
 
-import SwaggerPlugin from "./plugins/swagger.plugin";
-import DrizzlePlugin from "./plugins/drizzle.plugin";
-import DecoratorPlugin from "./plugins/decorators.plugin";
+import SwaggerPlugin from "./plugins/swagger.plugin.js";
+import DrizzlePlugin from "./plugins/drizzle.plugin.js";
+import DecoratorPlugin from "./plugins/decorators.plugin.js";
 
-import FastifyTypebox from "./types/fastify";
+import FastifyTypebox from "./types/fastify.js";
 
-import HelperRoutes from "./routes/helper";
+import HelperRoutes from "./routes/helper.js";
 
-import AuthRoutes from "./routes/auth";
+import AuthRoutes from "./routes/auth.js";
 
-import OwnerRoutes from "./routes/owner";
-import ShopRoutes from "./routes/shop";
+import OwnerRoutes from "./routes/owner.js";
+import ShopRoutes from "./routes/shop.js";
 
-import EmployeeRoutes from "./routes/employee";
-import EmployeePaymentRoutes from "./routes/employee-payments";
+import EmployeeRoutes from "./routes/employee.js";
+import EmployeePaymentRoutes from "./routes/employee-payments.js";
 
-import CustomerRoutes from "./routes/customer";
-import CustomerPaymentRoutes from "./routes/customer-payments";
+import CustomerRoutes from "./routes/customer.js";
+import CustomerPaymentRoutes from "./routes/customer-payments.js";
 
-import BrandRoutes from "./routes/brand";
-import CategoryRoutes from "./routes/category";
-import SubCategoryRoutes from "./routes/sub-category";
-import ProductVariantRoutes from "./routes/product-variant";
-import ProductRoutes from "./routes/product";
+import BrandRoutes from "./routes/brand.js";
+import CategoryRoutes from "./routes/category.js";
+import SubCategoryRoutes from "./routes/sub-category.js";
+import ProductVariantRoutes from "./routes/product-variant.js";
+import ProductRoutes from "./routes/product.js";
 
-import OrderRoutes from "./routes/order";
-import OrderItemRoutes from "./routes/order-item";
+import OrderRoutes from "./routes/order.js";
+import OrderItemRoutes from "./routes/order-item.js";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -94,9 +94,7 @@ fastify.register(EmployeePaymentRoutes, { prefix: "/employee-payments" });
 fastify.register(CustomerRoutes, { prefix: "/customers" });
 fastify.register(CustomerPaymentRoutes, { prefix: "/customer-payments" });
 
-fastify.register(BrandRoutes, { prefix: "/brands" });
 fastify.register(CategoryRoutes, { prefix: "/categories" });
-fastify.register(SubCategoryRoutes, { prefix: "/sub-categories" });
 fastify.register(ProductRoutes, { prefix: "/products" });
 fastify.register(ProductVariantRoutes, { prefix: "/product-variants" });
 

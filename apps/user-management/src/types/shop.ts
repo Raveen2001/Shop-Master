@@ -1,9 +1,8 @@
 import { Static, Type } from "@sinclair/typebox";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { EmployeeSchema } from "./employee";
-import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { EmployeeSchema } from "./employee.js";
+import { PagableQuerySchema, PagableSchema } from "./common.js";
 import { SHOP_DB_COLUMNS } from "database-drizzle";
-import { optionalType } from "./utils";
+import { optionalType } from "./utils.js";
 
 export const ShopSchema = Type.Object({
   id: Type.String(),
@@ -29,7 +28,6 @@ export const ShopSchemaIn = Type.Omit(ShopSchema, [
 export const ShopSchemaOut = Type.Intersect([
   ShopSchema,
   Type.Object({
-    owner: Type.Optional(OwnerSchemaWithoutPassword),
     employees: Type.Optional(Type.Array(EmployeeSchema)),
   }),
 ]);
@@ -41,22 +39,8 @@ export type TShopIn = Static<typeof ShopSchemaIn>;
 export type TShopOut = Static<typeof ShopSchemaOut>;
 export type TPagableShopOut = Static<typeof PagableShopSchemaOut>;
 
-export const ShopQueryParamSchema = Type.Object({
-  id: Type.String(),
-});
+export const PagableShopQueryStringSchema = PagableQuerySchema(SHOP_DB_COLUMNS);
 
-export const ShopQueryStringSchema = Type.Object({
-  includeOwner: Type.Boolean({ default: false }),
-  includeEmployees: Type.Boolean({ default: false }),
-});
-
-export const PagableShopQueryStringSchema = PagableQueryStringSchema(
-  ShopQueryStringSchema,
-  SHOP_DB_COLUMNS
-);
-
-export type TShopQueryParam = Static<typeof ShopQueryParamSchema>;
-export type TShopQueryString = Static<typeof ShopQueryStringSchema>;
 export type TPagableShopQueryString = Static<
   typeof PagableShopQueryStringSchema
 >;

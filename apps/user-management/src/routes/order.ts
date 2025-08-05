@@ -8,16 +8,16 @@ import {
   QueryPagedOrdersByPhoneOpts,
   getOptsForQueryOrderBy,
   getOptsForQueryPagedOrderBy,
-} from "../opts/order";
-import FastifyTypebox from "../types/fastify";
+} from "../opts/order.js";
+import FastifyTypebox from "../types/fastify.js";
 import {
   TOrderQueryByFields,
   TOrderQueryParam,
   TOrderQueryString,
   TOrderSchemaIn,
   TPagableOrderQueryString,
-} from "../types/order";
-import { TIDStringQueryParam, TPhoneQueryParam } from "../types/common";
+} from "../types/order.js";
+import { TIDStringQueryParam, TPhoneQueryParam } from "../types/common.js";
 
 const OrderRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
@@ -220,9 +220,9 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
         offset: offset,
         orderBy: (ordersDB, { asc, desc }) => {
           if (orderBy && order == "asc") {
-            return asc(ordersDB[orderBy]);
+            return asc(ordersDB[orderBy as keyof typeof ordersDB]);
           } else if (orderBy && order == "desc") {
-            return desc(ordersDB[orderBy]);
+            return desc(ordersDB[orderBy as keyof typeof ordersDB]);
           }
           return asc(ordersDB.createdAt);
         },
@@ -290,9 +290,9 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
         offset: offset,
         orderBy: (ordersDB, { asc, desc }) => {
           if (orderBy && order == "asc") {
-            return asc(ordersDB[orderBy]);
+            return asc(ordersDB[orderBy as keyof typeof ordersDB]);
           } else if (orderBy && order == "desc") {
-            return desc(ordersDB[orderBy]);
+            return desc(ordersDB[orderBy as keyof typeof ordersDB]);
           }
           return asc(ordersDB.createdAt);
         },

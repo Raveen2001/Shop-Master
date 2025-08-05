@@ -1,12 +1,12 @@
 import { Static, Type } from "@sinclair/typebox";
-import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { PagableQuerySchema, PagableSchema } from "./common.js";
 import { ORDERS_DB_COLUMNS, ORDER_STATUS, ORDER_TYPES } from "database-drizzle";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { ShopSchemaOut } from "./shop";
-import { OrderItemForOrderSchema, OrderItemSchema } from "./order-item";
-import { CustomerSchema } from "./customer";
-import { EmployeeSchemaWithoutPassword } from "./employee";
-import { optionalType } from "./utils";
+import { OwnerSchemaWithoutPassword } from "./owner.js";
+import { ShopSchemaOut } from "./shop.js";
+import { OrderItemForOrderSchema, OrderItemSchema } from "./order-item.js";
+import { CustomerSchema } from "./customer.js";
+import { EmployeeSchemaWithoutPassword } from "./employee.js";
+import { optionalType } from "./utils.js";
 
 export const OrderSchema = Type.Object({
   id: Type.String(),
@@ -68,10 +68,10 @@ export const OrderQueryStringSchema = Type.Object({
   includeItems: Type.Boolean({ default: false }),
 });
 
-export const PagableOrderQueryStringSchema = PagableQueryStringSchema(
+export const PagableOrderQueryStringSchema = Type.Intersect([
   OrderQueryStringSchema,
-  ORDERS_DB_COLUMNS
-);
+  PagableQuerySchema(ORDERS_DB_COLUMNS),
+]);
 
 export type TOrderQueryParam = Static<typeof OrderQueryParamSchema>;
 export type TOrderQueryString = Static<typeof OrderQueryStringSchema>;

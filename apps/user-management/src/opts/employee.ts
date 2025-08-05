@@ -1,20 +1,33 @@
 import { RouteShorthandOptions } from "fastify";
-import { LoginWithUsernamePropsSchema, LoginTokenSchema } from "../types/auth";
+import {
+  LoginWithUsernamePropsSchema,
+  LoginTokenSchema,
+} from "../types/auth.js";
 import {
   EmployeeQueryParamSchema,
-  EmployeeQueryStringSchema,
   EmployeeSchemaOut,
   PagableEmployeeQueryStringSchema,
   PagableEmployeeSchemaOut,
   EmployeeSchemaIn,
-} from "../types/employee";
+} from "../types/employee.js";
+import { ownerOnlyRoute } from "../preHooks/permissions.js";
 
 export const QueryEmployeeOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Employee"],
     summary: "Get a employee by employee_id",
     params: EmployeeQueryParamSchema,
-    querystring: EmployeeQueryStringSchema,
+    response: {
+      200: EmployeeSchemaOut,
+    },
+  },
+  preHandler: ownerOnlyRoute,
+};
+
+export const QueryEmployeeByTokenOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Employee"],
+    summary: "Get a employee by token",
     response: {
       200: EmployeeSchemaOut,
     },
@@ -43,6 +56,7 @@ export const QueryEmployeesByShopOpts: RouteShorthandOptions = {
       200: PagableEmployeeSchemaOut,
     },
   },
+  preHandler: ownerOnlyRoute,
 };
 
 export const CreateEmployeeOpts: RouteShorthandOptions = {
@@ -54,6 +68,7 @@ export const CreateEmployeeOpts: RouteShorthandOptions = {
       201: EmployeeSchemaOut,
     },
   },
+  preHandler: ownerOnlyRoute,
 };
 
 export const LoginEmployeeOpts: RouteShorthandOptions = {

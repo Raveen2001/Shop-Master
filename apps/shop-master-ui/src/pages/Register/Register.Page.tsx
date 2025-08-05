@@ -18,8 +18,9 @@ import WellDoneImage from "ui/assets/well_done.svg";
 import { Facebook, Google } from "ui/icons";
 import { IRequestError } from "schema";
 import { registerAsOwner } from "../../services/auth";
-import "./Register.style.scss";
 import { IRegisterData } from "./model";
+import "./Register.style.scss";
+
 const RegisterPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();

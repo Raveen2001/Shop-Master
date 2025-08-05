@@ -1,14 +1,27 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  AnyPgColumn,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { productsDB } from "./products";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
-import { productSubCategoriesDB } from "./product_sub_categories";
 
 export const productCategoriesDB = pgTable("product_categories", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   image: text("image"),
+
+  parentId: uuid("parent_id").references(
+    (): AnyPgColumn => productCategoriesDB.id,
+    {
+      onDelete: "cascade",
+    }
+  ),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 
@@ -24,7 +37,17 @@ export const productCategoriesRelation = relations(
   productCategoriesDB,
   ({ many, one }) => ({
     products: many(productsDB),
-    subCategories: many(productSubCategoriesDB),
+
+    parentCategory: one(productCategoriesDB, {
+      fields: [productCategoriesDB.parentId],
+      references: [productCategoriesDB.id],
+      relationName: "categoryHierarchy",
+    }),
+
+    subCategories: many(productCategoriesDB, {
+      relationName: "categoryHierarchy",
+    }),
+
     shop: one(shopsDB, {
       fields: [productCategoriesDB.shopId],
       references: [shopsDB.id],

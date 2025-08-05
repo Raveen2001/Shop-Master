@@ -1,10 +1,10 @@
 import { CUSTOMER_DB_COLUMNS, CUSTOMER_TYPES } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { ShopSchema } from "./shop";
-import { PagableQueryStringSchema, PagableSchema } from "./common";
-import { optionalType } from "./utils";
-import { EmployeeSchemaWithoutPassword } from "./employee";
+import { OwnerSchemaWithoutPassword } from "./owner.js";
+import { ShopSchema } from "./shop.js";
+import { PagableQueryStringSchema, PagableSchema } from "./common.js";
+import { optionalType } from "./utils.js";
+import { EmployeeSchemaWithoutPassword } from "./employee.js";
 
 export const CustomerSchema = Type.Object({
   name: Type.String({ minLength: 3 }),

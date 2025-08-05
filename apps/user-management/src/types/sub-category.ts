@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { optionalType } from "./utils";
-import { ShopSchemaOut } from "./shop";
+import { OwnerSchemaWithoutPassword } from "./owner.js";
+import { optionalType } from "./utils.js";
+import { ShopSchemaOut } from "./shop.js";
 
 export const SubCategorySchema = Type.Object({
   id: Type.String(),

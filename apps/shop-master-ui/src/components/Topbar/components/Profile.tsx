@@ -8,7 +8,7 @@ import {
   Typography,
   Box,
 } from "ui";
-import AvatarWithFallback from "ui/components/StringAvatar";
+import { StringAvatar } from "ui";
 
 import { useGlobalStore } from "../../../store/globalStore";
 import { useNavigate } from "react-router-dom";
@@ -42,10 +42,7 @@ const Profile = () => {
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
         >
-          <AvatarWithFallback
-            fallbackName={owner?.name ?? ""}
-            src={owner?.image}
-          />
+          <StringAvatar fallbackName={owner?.name ?? ""} src={owner?.image} />
         </IconButton>
       </Tooltip>
       <Menu

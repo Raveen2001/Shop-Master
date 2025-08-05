@@ -1,6 +1,6 @@
 import { object, string, mixed, InferType, number, date } from "yup";
-import { TEmployeeData } from "./employee";
-import { IPaginatedData } from "../common";
+import { TEmployeeData } from "./employee.js";
+import { IPaginatedData } from "../common/index.js";
 
 export const EMPLOYEE_PAYEMENT_TYPES = [
   "SALARY",

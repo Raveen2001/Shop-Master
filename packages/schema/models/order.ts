@@ -1,5 +1,5 @@
 import { object, string, InferType, number, array, date } from "yup";
-import { OrderItemFormSchema } from "./order-item";
+import { OrderItemFormSchema } from "./order-item.js";
 
 const ORDER_TYPES = ["ONLINE", "OFFLINE"] as const;
 const ORDER_STATUS = ["DRAFT", "COMPLETED"] as const;

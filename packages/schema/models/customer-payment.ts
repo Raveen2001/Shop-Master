@@ -1,7 +1,7 @@
-import { TEmployeeData } from "./employee";
-import { object, string, mixed, InferType, number, date } from "yup";
-import { TCustomerData } from "./customer";
-import { IPaginatedData } from "../common";
+import { TEmployeeData } from "./employee.js";
+import { object, string, InferType, number, date } from "yup";
+import { TCustomerData } from "./customer.js";
+import { IPaginatedData } from "../common/index.js";
 
 export const CUSTOMER_PAYEMENT_TYPES = ["BALANCE"] as const;
 

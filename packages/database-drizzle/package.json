@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "pull": "dotenv -e ../../.env -- drizzle-kit introspect:pg",
     "push": "dotenv -e ../../.env -- drizzle-kit push:pg",
@@ -13,7 +13,8 @@
     "check": "dotenv -e ../../.env -- drizzle-kit check:pg",
     "studio": "dotenv -e ../../.env -- drizzle-kit studio --port 9010 --verbose",
     "migrate": "dotenv -e ../../.env -- ts-node migrate.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "tsc --watch"
   },
   "keywords": [],
   "author": "",

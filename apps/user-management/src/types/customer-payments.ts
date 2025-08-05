@@ -1,14 +1,14 @@
 import { Static, Type } from "@sinclair/typebox";
-import { PagableQueryStringSchema, PagableSchema } from "./common";
+import { PagableQueryStringSchema, PagableSchema } from "./common.js";
 import {
   CUSTOMER_PAYEMENT_DB_COLUMNS,
   CUSTOMER_PAYEMENT_TYPES,
 } from "database-drizzle";
-import { EmployeeSchemaWithoutPassword } from "./employee";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { ShopSchema } from "./shop";
-import { CustomerSchemaOut } from "./customer";
-import { optionalType } from "./utils";
+import { EmployeeSchemaWithoutPassword } from "./employee.js";
+import { OwnerSchemaWithoutPassword } from "./owner.js";
+import { ShopSchema } from "./shop.js";
+import { CustomerSchemaOut } from "./customer.js";
+import { optionalType } from "./utils.js";
 
 export const CustomerPaymentSchema = Type.Object({
   id: Type.String(),

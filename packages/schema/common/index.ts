@@ -1,2 +1,2 @@
-export * from "./pagination";
-export * from "./error";
+export * from "./pagination.js";
+export * from "./error.js";

@@ -8,7 +8,7 @@ import {
   CustomerSchemaIn,
   CustomerQueryParamIDSchema,
   TCustomerQueryByFields,
-} from "../types/customer";
+} from "../types/customer.js";
 import { Type } from "@sinclair/typebox";
 
 export const QueryCustomerByPhoneOpts: RouteShorthandOptions = {

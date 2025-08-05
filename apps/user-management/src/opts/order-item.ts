@@ -4,9 +4,9 @@ import {
   OrderItemQueryStringSchema,
   OrderItemSchemaIn,
   OrderItemSchemaOut,
-} from "../types/order-item";
+} from "../types/order-item.js";
 import { Type } from "@sinclair/typebox";
-import { IDNumberQueryParamSchema } from "../types/common";
+import { IDNumberQueryParamSchema } from "../types/common.js";
 
 export const CreateOrderItemOpts: RouteShorthandOptions = {
   schema: {

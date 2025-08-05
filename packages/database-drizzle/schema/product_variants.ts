@@ -6,22 +6,31 @@ import {
   timestamp,
   uuid,
   text,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import { productsDB } from "./products";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
+
+export const unitEnum = pgEnum("unit", ["KG", "L", "G", "ML", "PCS"]);
 
 export const productVariantsDB = pgTable("product_variants", {
   id: uuid("id").defaultRandom().primaryKey(),
   productId: uuid("product_id").notNull(),
   name: text("name").notNull(),
   onlyForBilling: boolean("only_for_billing").default(false),
+  availability: boolean("availability").default(true),
+  isLoose: boolean("is_loose").default(false),
+
+  noOfUnits: integer("no_of_units").notNull(),
+  unit: unitEnum("unit").notNull(),
+
   acquiredPrice: integer("acquired_price").notNull(),
   salePrice: integer("sale_price").notNull(),
   mrp: integer("mrp").notNull(),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-  availability: boolean("availability").default(true),
 
   shopId: uuid("shop_id")
     .notNull()

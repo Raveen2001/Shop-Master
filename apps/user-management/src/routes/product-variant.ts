@@ -1,16 +1,16 @@
 import { TNewProductVariantsDB, productVariantsDB } from "database-drizzle";
-import FastifyTypebox from "../types/fastify";
+import FastifyTypebox from "../types/fastify.js";
 import {
   TProductVariantQueryByFields,
   TProductVariantQueryParam,
   TProductVariantQueryString,
-} from "../types/product-variant";
+} from "../types/product-variant.js";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
   CreateProductVariantOpts,
   QueryProductVariantOpts,
   QueryProductVariantsByIdOpts,
-} from "../opts/product-variant";
+} from "../opts/product-variant.js";
 import { RouteHandlerMethod } from "fastify";
 
 const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
@@ -21,11 +21,15 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
     Querystring: TProductVariantQueryString;
     Body: TNewProductVariantsDB;
   }>("/create", CreateProductVariantOpts, async (req, reply) => {
-    const { includeOwner, includeProduct, includeShop } = req.query;
+    const { includeProduct } = req.query;
+
+    const productVariantBody = req.body;
+    productVariantBody.ownerId = req.userInfo.data.id;
+
     const { insertedId } = (
       await fastify.db
         .insert(productVariantsDB)
-        .values(req.body)
+        .values(productVariantBody)
         .onConflictDoNothing()
         .returning({ insertedId: productVariantsDB.id })
     )[0];
@@ -34,8 +38,6 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
       where: (productVariantsDB, { eq }) =>
         eq(productVariantsDB.id, insertedId),
       with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
         product: includeProduct || undefined,
       },
     });
@@ -48,15 +50,15 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
     Params: TProductVariantQueryParam;
     Querystring: TProductVariantQueryString;
   }>("/:id", QueryProductVariantOpts, async (req, reply) => {
-    const { includeOwner, includeProduct, includeShop } = req.query;
+    // TODO: query based on ownerId and shopId
+
+    const { includeProduct } = req.query;
 
     const productVariant = await fastify.db.query.productVariantsDB.findFirst({
       where: (productVariantsDB, { eq }) =>
         eq(productVariantsDB.id, req.params.id),
 
       with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
         product: includeProduct || undefined,
       },
     });
@@ -75,17 +77,14 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
   ): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TProductVariantQueryParam;
-      const { includeOwner, includeProduct, includeShop } =
-        req.query as TProductVariantQueryString;
+      const { includeProduct } = req.query as TProductVariantQueryString;
 
       const productVariants = await fastify.db.query.productVariantsDB.findMany(
         {
           where: (productVariantsDB, { eq }) =>
             eq(productVariantsDB[queryBy], id),
           with: {
-            owner: includeOwner || undefined,
             product: includeProduct || undefined,
-            shop: includeShop || undefined,
           },
         }
       );
@@ -94,7 +93,7 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
     };
   }
 
-  // get subCategories by owner id
+  // get productVariants by owner id
   fastify.get<{
     Params: TProductVariantQueryParam;
     Querystring: TProductVariantQueryString;
@@ -104,7 +103,7 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
     getProductVariantsBy("ownerId")
   );
 
-  // get subCategories by shop id
+  // get productVariants by shop id
   fastify.get<{
     Params: TProductVariantQueryParam;
     Querystring: TProductVariantQueryString;

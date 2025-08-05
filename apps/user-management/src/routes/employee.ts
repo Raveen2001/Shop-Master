@@ -1,11 +1,11 @@
-import { employeesDB, eq, sql } from "database-drizzle";
+import { employeesDB, eq, sql, TNewEmployeeDB } from "database-drizzle";
 import {
   TEmployeeQueryByFields,
   TEmployeeIn,
   TEmployeeQueryParam,
-  TEmployeeQueryString,
   TPagableEmployeeQueryString,
-} from "../types/employee";
+  TEmployeeWithPassword,
+} from "../types/employee.js";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
@@ -14,22 +14,32 @@ import {
   QueryEmployeeOpts,
   QueryEmployeesByShopOpts,
   QueryEmployeesByOwnerOpts,
-} from "../opts/employee";
+  QueryEmployeeByTokenOpts,
+} from "../opts/employee.js";
+import { TOwnerWithoutPassword } from "../types/owner.js";
 
 export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
-  // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+  fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+
+  fastify.get("/", QueryEmployeeByTokenOpts, async (req, reply) => {
+    const employee = req.userInfo.data as TEmployeeWithPassword;
+    reply.code(200).send(employee);
+  });
 
   // create employee
   fastify.post<{
-    Querystring: TEmployeeQueryString;
     Body: TEmployeeIn;
   }>("/register", CreateEmployeeOpts, async (req, reply) => {
-    const { includeOwner, includeShop } = req.query;
-
     // check if the employee username already exists
+    const owner = req.userInfo.data as TOwnerWithoutPassword;
+
     const existingEmployee = await fastify.db.query.employeesDB.findFirst({
-      where: (employeesDB, { eq }) =>
-        eq(employeesDB.username, req.body.username),
+      where: (employeesDB, { eq, and }) =>
+        and(
+          eq(employeesDB.username, req.body.username),
+          eq(employeesDB.ownerId, owner.id),
+          eq(employeesDB.shopId, req.body.shopId)
+        ),
     });
     if (existingEmployee) {
       reply.code(409).send({ message: "Username already exists" });
@@ -37,9 +47,10 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     }
 
     const hashedPassword = await fastify.hashPassword(req.body.password);
-    const employeeWithHashedPassword = {
+    const employeeWithHashedPassword: TNewEmployeeDB = {
       ...req.body,
       password: hashedPassword,
+      ownerId: owner.id,
     };
     const { insertedId } = (
       await fastify.db
@@ -53,27 +64,17 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
 
     const employee = await fastify.db.query.employeesDB.findFirst({
       where: (employees, { eq }) => eq(employees.id, insertedId),
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-      },
     });
     reply.code(201).send(employee);
   });
 
   // query employee by id
   fastify.get<{
-    Querystring: TEmployeeQueryString;
     Params: TEmployeeQueryParam;
   }>("/:id", QueryEmployeeOpts, async (req, reply) => {
     const { id } = req.params;
-    const { includeOwner, includeShop } = req.query;
 
     const employee = await fastify.db.query.employeesDB.findFirst({
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-      },
       where: (employeesDB, { eq }) => eq(employeesDB.id, id),
     });
 
@@ -90,24 +91,20 @@ export const EmployeeRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   ): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TEmployeeQueryParam;
-      const { includeOwner, includeShop, limit, page, order, orderBy } =
+      const { limit, page, order, orderBy } =
         req.query as TPagableEmployeeQueryString;
 
       const offset = page && limit ? page * limit : undefined;
 
       const employees = await fastify.db.query.employeesDB.findMany({
         where: (employeesDB, { eq }) => eq(employeesDB[queryBy], id),
-        with: {
-          owner: includeOwner || undefined,
-          shop: includeShop || undefined,
-        },
         limit: limit,
         offset: offset,
         orderBy: (employeesDB, { asc, desc }) => {
           if (orderBy && order == "asc") {
-            return asc(employeesDB[orderBy]);
+            return asc(employeesDB[orderBy as keyof typeof employeesDB]);
           } else if (orderBy && order == "desc") {
-            return desc(employeesDB[orderBy]);
+            return desc(employeesDB[orderBy as keyof typeof employeesDB]);
           }
           return asc(employeesDB.createdAt);
         },

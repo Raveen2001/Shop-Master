@@ -8,7 +8,7 @@ import {
   TCustomerPaymentIn,
   TCustomerPaymentQueryParam,
   TPagableCustomerPaymentQueryString,
-} from "../types/customer-payments";
+} from "../types/customer-payments.js";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
@@ -16,8 +16,8 @@ import {
   CreateCustomerPaymentOpts,
   QueryCustomersPaymentsByIdOpts,
   QueryCustomersPaymentsByPhoneOpts,
-} from "../opts/customer-payments";
-import { TPhoneQueryParam } from "../types/common";
+} from "../opts/customer-payments.js";
+import { TPhoneQueryParam } from "../types/common.js";
 
 const CustomerPaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
@@ -72,9 +72,13 @@ const CustomerPaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
           offset: offset,
           orderBy: (customerPaymentsDB, { asc, desc }) => {
             if (orderBy && order == "asc") {
-              return asc(customerPaymentsDB[orderBy]);
+              return asc(
+                customerPaymentsDB[orderBy as keyof typeof customerPaymentsDB]
+              );
             } else if (orderBy && order == "desc") {
-              return desc(customerPaymentsDB[orderBy]);
+              return desc(
+                customerPaymentsDB[orderBy as keyof typeof customerPaymentsDB]
+              );
             }
             return asc(customerPaymentsDB.createdAt);
           },
@@ -153,9 +157,13 @@ const CustomerPaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
           offset: offset,
           orderBy: (customerPaymentsDB, { asc, desc }) => {
             if (orderBy && order == "asc") {
-              return asc(customerPaymentsDB[orderBy]);
+              return asc(
+                customerPaymentsDB[orderBy as keyof typeof customerPaymentsDB]
+              );
             } else if (orderBy && order == "desc") {
-              return desc(customerPaymentsDB[orderBy]);
+              return desc(
+                customerPaymentsDB[orderBy as keyof typeof customerPaymentsDB]
+              );
             }
             return asc(customerPaymentsDB.createdAt);
           },

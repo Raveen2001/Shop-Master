@@ -4,8 +4,9 @@ import {
   ProductVariantQueryStringSchema,
   ProductVariantSchema,
   ProductVariantSchemaIn,
-} from "../types/product-variant";
+} from "../types/product-variant.js";
 import { Type } from "@sinclair/typebox";
+import { ownerOnlyRoute } from "../preHooks/permissions.js";
 
 export const CreateProductVariantOpts: RouteShorthandOptions = {
   schema: {
@@ -17,6 +18,7 @@ export const CreateProductVariantOpts: RouteShorthandOptions = {
       201: ProductVariantSchema,
     },
   },
+  preHandler: ownerOnlyRoute,
 };
 
 export const QueryProductVariantOpts: RouteShorthandOptions = {

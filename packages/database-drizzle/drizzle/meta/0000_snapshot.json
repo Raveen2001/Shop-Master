@@ -1,91 +1,9 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "60f9925b-1008-46c1-8ee0-9005e342192c",
+  "id": "de40b6e3-fdf6-43c7-84ae-abb26a0bce0a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "brands": {
-      "name": "brands",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "image": {
-          "name": "image",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "shop_id": {
-          "name": "shop_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "owner_id": {
-          "name": "owner_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "brands_shop_id_shops_id_fk": {
-          "name": "brands_shop_id_shops_id_fk",
-          "tableFrom": "brands",
-          "tableTo": "shops",
-          "columnsFrom": [
-            "shop_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "brands_owner_id_owners_id_fk": {
-          "name": "brands_owner_id_owners_id_fk",
-          "tableFrom": "brands",
-          "tableTo": "owners",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "customer_payments": {
       "name": "customer_payments",
       "schema": "",
@@ -773,6 +691,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -802,6 +726,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "product_categories_parent_id_product_categories_id_fk": {
+          "name": "product_categories_parent_id_product_categories_id_fk",
+          "tableFrom": "product_categories",
+          "tableTo": "product_categories",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "product_categories_shop_id_shops_id_fk": {
           "name": "product_categories_shop_id_shops_id_fk",
           "tableFrom": "product_categories",
@@ -818,107 +755,6 @@
         "product_categories_owner_id_owners_id_fk": {
           "name": "product_categories_owner_id_owners_id_fk",
           "tableFrom": "product_categories",
-          "tableTo": "owners",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "product_sub_categories": {
-      "name": "product_sub_categories",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "category_id": {
-          "name": "category_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "image": {
-          "name": "image",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "shop_id": {
-          "name": "shop_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "owner_id": {
-          "name": "owner_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "product_sub_categories_category_id_product_categories_id_fk": {
-          "name": "product_sub_categories_category_id_product_categories_id_fk",
-          "tableFrom": "product_sub_categories",
-          "tableTo": "product_categories",
-          "columnsFrom": [
-            "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "product_sub_categories_shop_id_shops_id_fk": {
-          "name": "product_sub_categories_shop_id_shops_id_fk",
-          "tableFrom": "product_sub_categories",
-          "tableTo": "shops",
-          "columnsFrom": [
-            "shop_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "product_sub_categories_owner_id_owners_id_fk": {
-          "name": "product_sub_categories_owner_id_owners_id_fk",
-          "tableFrom": "product_sub_categories",
           "tableTo": "owners",
           "columnsFrom": [
             "owner_id"
@@ -956,23 +792,11 @@
           "primaryKey": false,
           "notNull": false
         },
-        "brand_id": {
-          "name": "brand_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
         "category_id": {
           "name": "category_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
-        },
-        "sub_category_id": {
-          "name": "sub_category_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -1003,38 +827,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "products_brand_id_brands_id_fk": {
-          "name": "products_brand_id_brands_id_fk",
-          "tableFrom": "products",
-          "tableTo": "brands",
-          "columnsFrom": [
-            "brand_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "products_category_id_product_categories_id_fk": {
           "name": "products_category_id_product_categories_id_fk",
           "tableFrom": "products",
           "tableTo": "product_categories",
           "columnsFrom": [
             "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "products_sub_category_id_product_sub_categories_id_fk": {
-          "name": "products_sub_category_id_product_sub_categories_id_fk",
-          "tableFrom": "products",
-          "tableTo": "product_sub_categories",
-          "columnsFrom": [
-            "sub_category_id"
           ],
           "columnsTo": [
             "id"
@@ -1235,20 +1033,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "brand_id": {
-          "name": "brand_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "category_id": {
           "name": "category_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "sub_category_id": {
-          "name": "sub_category_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -1281,38 +1067,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "product_reviews_brand_id_brands_id_fk": {
-          "name": "product_reviews_brand_id_brands_id_fk",
-          "tableFrom": "product_reviews",
-          "tableTo": "brands",
-          "columnsFrom": [
-            "brand_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "product_reviews_category_id_product_categories_id_fk": {
           "name": "product_reviews_category_id_product_categories_id_fk",
           "tableFrom": "product_reviews",
           "tableTo": "product_categories",
           "columnsFrom": [
             "category_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "product_reviews_sub_category_id_product_sub_categories_id_fk": {
-          "name": "product_reviews_sub_category_id_product_sub_categories_id_fk",
-          "tableFrom": "product_reviews",
-          "tableTo": "product_sub_categories",
-          "columnsFrom": [
-            "sub_category_id"
           ],
           "columnsTo": [
             "id"

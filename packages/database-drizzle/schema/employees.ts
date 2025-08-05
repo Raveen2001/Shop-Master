@@ -6,6 +6,7 @@ import {
   timestamp,
   uuid,
   varchar,
+  unique,
 } from "drizzle-orm/pg-core";
 import { ownersDB } from "./owners";
 import { shopsDB } from "./shops";
@@ -20,25 +21,36 @@ export const employeeTypeEnum = pgEnum("employee_type", [
   "BILLING_DEVICE",
 ]);
 
-export const employeesDB = pgTable("employees", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  username: text("username").notNull(),
-  name: text("name").notNull(),
-  password: text("password").notNull(),
-  email: varchar("email", { length: 256 }),
-  phone: varchar("phone", { length: 10 }).notNull(),
-  image: text("image"),
-  address: text("address").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-  type: employeeTypeEnum("type").notNull(),
-  shopId: uuid("shop_id")
-    .notNull()
-    .references(() => shopsDB.id),
-  ownerId: uuid("owner_id")
-    .notNull()
-    .references(() => ownersDB.id),
-});
+export const employeesDB = pgTable(
+  "employees",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    username: text("username").notNull(),
+    name: text("name").notNull(),
+    password: text("password").notNull(),
+    email: varchar("email", { length: 256 }),
+    phone: varchar("phone", { length: 10 }).notNull(),
+    image: text("image"),
+    address: text("address").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    type: employeeTypeEnum("type").notNull(),
+    shopId: uuid("shop_id")
+      .notNull()
+      .references(() => shopsDB.id),
+    ownerId: uuid("owner_id")
+      .notNull()
+      .references(() => ownersDB.id),
+  },
+
+  (table) => ({
+    unique_username_shop_owner: unique().on(
+      table.username,
+      table.shopId,
+      table.ownerId
+    ),
+  })
+);
 
 export const EMPLOYEE_DB_COLUMNS = [
   "id",

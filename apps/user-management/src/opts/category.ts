@@ -4,19 +4,20 @@ import {
   CategorySchemaOut,
   CategorySchemaIn,
   CategoryQueryStringSchema,
-} from "../types/category";
+} from "../types/category.js";
 import { Type } from "@sinclair/typebox";
+import { ownerOnlyRoute } from "../preHooks/permissions.js";
 
 export const CreateCategoryOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Category"],
     summary: "Create a new Category",
     body: CategorySchemaIn,
-    querystring: CategoryQueryStringSchema,
     response: {
       201: CategorySchemaOut,
     },
   },
+  preHandler: ownerOnlyRoute,
 };
 
 export const QueryCategoryOpts: RouteShorthandOptions = {

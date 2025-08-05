@@ -1,8 +1,8 @@
 {
   "name": "ui",
   "version": "0.0.0",
-  "main": "./index.tsx",
-  "types": "./index.tsx",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
   "license": "MIT",
   "files": [
     "icons.tsx",
@@ -41,5 +41,11 @@
     "react-router-dom": "^6.9.0",
     "react-select": "^5.7.5",
     "schema": "*"
+  },
+  "exports": {
+    "./icons": "./src/icons.tsx",
+    ".": "./src/index.tsx",
+    "./styles.css": "./src/styles.css",
+    "./assets/*": "./src/assets/*"
   }
 }

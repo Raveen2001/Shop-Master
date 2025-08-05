@@ -1,9 +1,12 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { ownersDB } from "database-drizzle";
-import { TLoginWithEmailIn, TLoginWithUsernameIn } from "../types/auth";
-import { CreateOwnerOpts, LoginOwnerOpts } from "../opts/owner";
-import { TOwnerIn } from "../types/owner";
-import { LoginEmployeeOpts } from "../opts/employee";
+import { TToken } from "types";
+
+import { TLoginWithEmailIn, TLoginWithUsernameIn } from "../types/auth.js";
+import { CreateOwnerOpts, LoginOwnerOpts } from "../opts/owner.js";
+import { OwnerSchemaWithoutPassword, TOwnerIn } from "../types/owner.js";
+import { LoginEmployeeOpts } from "../opts/employee.js";
+import { EmployeeSchemaWithoutPassword } from "../types/employee.js";
 
 const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // Register as owner
@@ -56,7 +59,10 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     if (!isPasswordValid) {
       reply.code(401).send({ message: "Invalid credentials" });
     }
-    const token = fastify.signJwt(owner);
+    const token = fastify.signJwt({
+      data: OwnerSchemaWithoutPassword.parse(owner),
+      type: "owner",
+    } as TToken);
     reply.code(200).send({ token });
   });
 
@@ -80,7 +86,10 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     if (!isPasswordValid) {
       reply.code(401).send({ message: "Invalid credentials" });
     }
-    const token = fastify.signJwt(employee);
+    const token = fastify.signJwt({
+      data: EmployeeSchemaWithoutPassword.parse(employee),
+      type: "employee",
+    } as TToken);
     reply.code(200).send({ token });
   });
 };

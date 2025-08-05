@@ -8,14 +8,14 @@ import {
   TEmployeePaymentIn,
   TEmployeePaymentQueryParam,
   TPagableEmployeePaymentQueryString,
-} from "../types/employee-payments";
+} from "../types/employee-payments.js";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
 import {
   CreateEmployeePaymentOpts,
   QueryEmployeesPaymentsByIdOpts,
-} from "../opts/employee-payments";
+} from "../opts/employee-payments.js";
 
 const EmployeePaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
@@ -70,9 +70,13 @@ const EmployeePaymentRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
           offset: offset,
           orderBy: (employeePaymentsDB, { asc, desc }) => {
             if (orderBy && order == "asc") {
-              return asc(employeePaymentsDB[orderBy]);
+              return asc(
+                employeePaymentsDB[orderBy as keyof typeof employeePaymentsDB]
+              );
             } else if (orderBy && order == "desc") {
-              return desc(employeePaymentsDB[orderBy]);
+              return desc(
+                employeePaymentsDB[orderBy as keyof typeof employeePaymentsDB]
+              );
             }
             return asc(employeePaymentsDB.createdAt);
           },

@@ -1,13 +1,12 @@
 import { Static, Type } from "@sinclair/typebox";
-import { OwnerSchemaWithoutPassword } from "./owner";
-import { optionalType } from "./utils";
-import { ShopSchemaOut } from "./shop";
-import { SubCategorySchema } from "./sub-category";
+import { optionalType } from "./utils.js";
+import { SubCategorySchema } from "./sub-category.js";
 
 export const CategorySchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3, maxLength: 50 }),
   image: optionalType(Type.String({ format: "uri" })),
+  parentId: optionalType(Type.String()),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),
   ownerId: Type.String(),
@@ -23,8 +22,6 @@ export const CategorySchemaIn = Type.Omit(CategorySchema, [
 export const CategorySchemaOut = Type.Intersect([
   CategorySchema,
   Type.Object({
-    shop: Type.Optional(ShopSchemaOut),
-    owner: Type.Optional(OwnerSchemaWithoutPassword),
     subCategories: Type.Optional(Type.Array(SubCategorySchema)),
     // TODO: add products
     // products: Type.Optional(Type.Array(EmployeeSchema)),
@@ -40,8 +37,6 @@ export const CategoryQueryParamSchema = Type.Object({
 });
 
 export const CategoryQueryStringSchema = Type.Object({
-  includeOwner: Type.Boolean({ default: false }),
-  includeShop: Type.Boolean({ default: false }),
   includeProducts: Type.Boolean({ default: false }),
   includeSubCategories: Type.Boolean({ default: false }),
 });

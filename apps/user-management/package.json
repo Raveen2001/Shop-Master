@@ -4,11 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "dotenv -e ../../.env -- node dist/index.js",
     "build": "tsc",
-    "dev": "dotenv -e ../../.env -- nodemon src/index.ts",
+    "dev": "dotenv -e ../../.env -- nodemon --ext ts,js,json --exec \"tsx src/index.ts\"",
     "lint": "eslint . *.ts --fix"
   },
   "keywords": [],
@@ -36,8 +37,9 @@
     "@types/node": "20.4.0",
     "eslint": "^8.44.0",
     "nodemon": "^2.0.22",
-    "ts-node": "^10.9.1",
     "tsconfig": "*",
-    "typescript": "^5.1.6"
+    "tsx": "^4.20.3",
+    "typescript": "^5.1.6",
+    "types": "*"
   }
 }

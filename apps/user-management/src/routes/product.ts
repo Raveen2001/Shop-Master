@@ -1,16 +1,16 @@
 import { TNewProductsDB, productsDB } from "database-drizzle";
-import FastifyTypebox from "../types/fastify";
+import FastifyTypebox from "../types/fastify.js";
 import {
   TProductQueryByFields,
   TProductQueryParam,
   TProductQueryString,
-} from "../types/product";
+} from "../types/product.js";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
   CreateProductOpts,
   QueryProductOpts,
   QueryProductsByIdOpts,
-} from "../opts/product";
+} from "../opts/product.js";
 import { RouteHandlerMethod } from "fastify";
 
 const ProductRoutes: FastifyPluginAsyncTypebox = async (
@@ -21,7 +21,7 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
     Querystring: TProductQueryString;
     Body: TNewProductsDB;
   }>("/create", CreateProductOpts, async (req, reply) => {
-    const { includeOwner, includeVariants, includeShop } = req.query;
+    const { includeVariants } = req.query;
     const { insertedId } = (
       await fastify.db
         .insert(productsDB)
@@ -33,8 +33,6 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
     const product = await fastify.db.query.productsDB.findFirst({
       where: (productsDB, { eq }) => eq(productsDB.id, insertedId),
       with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
         variants: includeVariants || undefined,
       },
     });
@@ -47,14 +45,12 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
     Params: TProductQueryParam;
     Querystring: TProductQueryString;
   }>("/:id", QueryProductOpts, async (req, reply) => {
-    const { includeOwner, includeVariants, includeShop } = req.query;
+    const { includeVariants } = req.query;
 
     const product = await fastify.db.query.productsDB.findFirst({
       where: (productsDB, { eq }) => eq(productsDB.id, req.params.id),
 
       with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
         variants: includeVariants || undefined,
       },
     });
@@ -71,15 +67,12 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
   function getProductsBy(queryBy: TProductQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TProductQueryParam;
-      const { includeOwner, includeVariants, includeShop } =
-        req.query as TProductQueryString;
+      const { includeVariants } = req.query as TProductQueryString;
 
       const products = await fastify.db.query.productsDB.findMany({
         where: (productsDB, { eq }) => eq(productsDB[queryBy], id),
         with: {
-          owner: includeOwner || undefined,
           variants: includeVariants || undefined,
-          shop: includeShop || undefined,
         },
       });
 

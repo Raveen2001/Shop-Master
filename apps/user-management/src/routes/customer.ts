@@ -6,7 +6,7 @@ import {
   TCustomerQueryParamID,
   TCustomerQueryString,
   TPagableCustomerQueryString,
-} from "../types/customer";
+} from "../types/customer.js";
 
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { RouteHandlerMethod } from "fastify";
@@ -15,7 +15,7 @@ import {
   QueryCustomerByPhoneOpts,
   getOptsForQueryCustomerBy,
   getOptsForQueryPagedCustomerBy,
-} from "../opts/customer";
+} from "../opts/customer.js";
 import { get } from "http";
 
 export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -132,9 +132,9 @@ export const CustomerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
         offset: offset,
         orderBy: (customersDB, { asc, desc }) => {
           if (orderBy && order == "asc") {
-            return asc(customersDB[orderBy]);
+            return asc(customersDB[orderBy as keyof typeof customersDB]);
           } else if (orderBy && order == "desc") {
-            return desc(customersDB[orderBy]);
+            return desc(customersDB[orderBy as keyof typeof customersDB]);
           }
           return asc(customersDB.createdAt);
         },

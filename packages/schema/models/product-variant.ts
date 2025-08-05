@@ -1,4 +1,4 @@
-import { TProductData } from "./product";
+import { TProductData } from "./product.js";
 import { object, string, InferType, number, boolean } from "yup";
 
 export const ProductVariantFormSchema = object({

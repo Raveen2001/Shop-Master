@@ -5,8 +5,8 @@ import {
   PagableCustomerPaymentsSchemaOut,
   CustomerPaymentSchemaIn,
   CustomerPaymentSchema,
-} from "../types/customer-payments";
-import { PhoneQueryParamSchema } from "../types/common";
+} from "../types/customer-payments.js";
+import { PhoneQueryParamSchema } from "../types/common.js";
 
 export const QueryCustomersPaymentsByIdOpts: RouteShorthandOptions = {
   schema: {

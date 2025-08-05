@@ -1,12 +1,6 @@
 import { RouteShorthandOptions } from "fastify";
-import { LoginWithEmailPropsSchema, LoginTokenSchema } from "../types/auth";
-import {
-  OwnerSchemaIn,
-  OwnerSchemaWithoutPassword,
-  OwnerQueryParamSchema,
-  OwnerQueryStringSchema,
-  OwnerSchemaOut,
-} from "../types/owner";
+import { LoginWithEmailPropsSchema, LoginTokenSchema } from "../types/auth.js";
+import { OwnerSchemaIn, OwnerSchemaWithoutPassword } from "../types/owner.js";
 
 export const CreateOwnerOpts: RouteShorthandOptions = {
   schema: {
@@ -32,24 +26,12 @@ export const LoginOwnerOpts: RouteShorthandOptions = {
   },
 };
 
-export const QueryOwnerOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Owner"],
-    summary: "Get Owner by owner_id",
-    params: OwnerQueryParamSchema,
-    querystring: OwnerQueryStringSchema,
-    response: {
-      200: OwnerSchemaOut,
-    },
-  },
-};
-
 export const QueryOwnerByTokenOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Owner"],
     summary: "Get Owner by token",
     response: {
-      200: OwnerSchemaOut,
+      200: OwnerSchemaWithoutPassword,
     },
   },
 };

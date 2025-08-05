@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
-import { EmployeeSchema } from "./employee";
-import { ShopSchema } from "./shop";
-import { optionalType } from "./utils";
+import { EmployeeSchema } from "./employee.js";
+import { ShopSchema } from "./shop.js";
+import { optionalType } from "./utils.js";
 
 export const OwnerSchema = Type.Object({
   id: Type.String(),
@@ -21,29 +21,9 @@ export type TOwner = Static<typeof OwnerSchema>;
 export const OwnerSchemaWithoutPassword = Type.Omit(OwnerSchema, ["password"]);
 export type TOwnerWithoutPassword = Static<typeof OwnerSchemaWithoutPassword>;
 
-export const OwnerSchemaOut = Type.Intersect([
-  OwnerSchemaWithoutPassword,
-  Type.Object({
-    shops: Type.Optional(Type.Array(ShopSchema)),
-    employees: Type.Optional(Type.Array(EmployeeSchema)),
-  }),
-]);
-
 export const OwnerSchemaIn = Type.Omit(OwnerSchema, [
   "id",
   "createdAt",
   "updatedAt",
 ]);
 export type TOwnerIn = Static<typeof OwnerSchemaIn>;
-
-export const OwnerQueryParamSchema = Type.Object({
-  id: Type.String(),
-});
-
-export const OwnerQueryStringSchema = Type.Object({
-  includeShops: Type.Boolean({ default: false }),
-  includeEmployees: Type.Boolean({ default: false }),
-});
-
-export type TOwnerQueryParam = Static<typeof OwnerQueryParamSchema>;
-export type TOwnerQueryString = Static<typeof OwnerQueryStringSchema>;
