@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Dialog, LinearProgress } from "ui";
+import { Box, Dialog, Typography } from "ui";
 import { useCategoryContext } from "./CategoryContext";
 import CategoryHeader from "./CategoryHeader";
 import CategoryGrid from "./CategoryGrid";
+import ProductGrid from "./ProductGrid";
 import CategoryForm from "../../components/CategoryForm";
 import ProductForm from "../../components/ProductForm";
 
@@ -68,7 +69,19 @@ const ManageCategories = () => {
       />
 
       {/* Category Grid */}
-      <CategoryGrid onCategoryClick={handleCategoryClick} />
+      <Box className="mt-8">
+        <CategoryGrid onCategoryClick={handleCategoryClick} />
+      </Box>
+
+      {/* Product Grid */}
+      {currentCategoryId && (
+        <Box className="mt-8">
+          <Typography variant="h5" className="mb-4">
+            Products in this category
+          </Typography>
+          <ProductGrid />
+        </Box>
+      )}
 
       {/* Create Category Modal */}
       <Dialog

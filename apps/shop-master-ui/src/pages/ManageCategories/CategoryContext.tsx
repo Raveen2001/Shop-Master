@@ -8,7 +8,7 @@ import React, {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCategory } from "../../services/category";
 import { useGlobalStore } from "../../store/globalStore";
-import { TCategoryData, TCategoryFormSchema } from "schema";
+import { TCategoryData, TCategoryFormSchema, TProductData } from "schema";
 
 interface CategoryContextType {
   // State
@@ -16,6 +16,7 @@ interface CategoryContextType {
   isLoading: boolean;
   currentCategoryId: string | null;
   filteredCategories: TCategoryData[];
+  filteredProducts: TProductData[];
   breadcrumbPath: Array<{ id: string; name: string }>;
   isCreateModalOpen: boolean;
   isCreateProductModalOpen: boolean;
@@ -49,12 +50,14 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
   );
   const [
     categories,
+    products,
     selectedShop,
     owner,
     setIsCategoryDataFetching,
     isCategoryDataFetching,
   ] = useGlobalStore((store) => [
     store.categories,
+    store.products,
     store.selectedShop,
     store.owner,
     store.setIsCategoryDataFetching,
@@ -89,6 +92,12 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
       currentCategoryId ? cat.parentId === currentCategoryId : !cat.parentId
     );
   }, [categories, currentCategoryId]);
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) =>
+      currentCategoryId ? product.categoryId === currentCategoryId : true
+    );
+  }, [products, currentCategoryId]);
 
   // Methods
   const addToBreadcrumb = (category: { id: string; name: string }) => {
@@ -151,6 +160,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
     categories,
     isLoading: isCategoryDataFetching,
     currentCategoryId,
+    filteredProducts,
     breadcrumbPath,
     isCreateModalOpen,
     filteredCategories,
