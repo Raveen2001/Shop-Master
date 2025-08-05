@@ -16,12 +16,11 @@ const useProductVariantForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [owner, selectedShop, products, brands, categories] = useGlobalStore(
+  const [owner, selectedShop, products, categories] = useGlobalStore(
     (state) => [
       state.owner,
       state.selectedShop,
       state.products,
-      state.brands,
       state.categories,
     ]
   );
@@ -33,12 +32,8 @@ const useProductVariantForm = () => {
     navigate("/products");
   }
 
-  const selectedBrand = brands.find((b) => b.id === selectedProduct?.brandId);
   const selectedCategory = categories.find(
     (c) => c.id === selectedProduct?.categoryId
-  );
-  const selectedSubCategory = selectedCategory?.subCategories?.find(
-    (sc) => sc.id === selectedProduct?.subCategoryId
   );
 
   const queryClient = useQueryClient();
@@ -67,6 +62,7 @@ const useProductVariantForm = () => {
     register,
     handleSubmit,
     formState: { errors: formErrors },
+    control,
   } = useForm<TProductVariantFormSchema>({
     defaultValues: {
       availability: true,
@@ -87,6 +83,7 @@ const useProductVariantForm = () => {
 
   return {
     register,
+    control,
     onSubmit,
     formErrors,
     isMutateError,
@@ -96,9 +93,7 @@ const useProductVariantForm = () => {
     shop: selectedShop,
     owner,
     selectedProduct,
-    selectedBrand,
     selectedCategory,
-    selectedSubCategory,
   };
 };
 

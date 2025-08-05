@@ -8,17 +8,18 @@ import {
   Switch,
   Button,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
   LoadingButton,
   Snackbar,
   Alert,
   FormControlLabel,
+  InputLabel,
+  FormControl,
+  Select,
+  MenuItem,
+  FormHelperText,
 } from "ui";
-import { CUSTOMER_TYPES } from "schema";
+import { Controller } from "react-hook-form";
+import { UNITS } from "schema";
 
 const ProductVariantForm: FC = () => {
   const {
@@ -28,12 +29,11 @@ const ProductVariantForm: FC = () => {
     isMutateLoading,
     mutateError,
     register,
-    selectedBrand,
     selectedCategory,
-    selectedSubCategory,
     selectedProduct,
     shop,
     owner,
+    control,
   } = useProductVariantForm();
   return (
     <Box className="px-8 py-4">
@@ -78,8 +78,45 @@ const ProductVariantForm: FC = () => {
                   error={!!formErrors.name}
                   helperText={formErrors.name?.message}
                 />
+
+                <Controller
+                  control={control}
+                  name="unit"
+                  render={({ field }) => (
+                    <FormControl error={!!formErrors.unit} required>
+                      <InputLabel id="unit-label" required>
+                        Unit
+                      </InputLabel>
+                      <Select
+                        labelId="unit-label"
+                        id="unit"
+                        {...(field as any)}
+                        label="Unit *"
+                      >
+                        {UNITS.map((unit) => (
+                          <MenuItem key={unit} value={unit}>
+                            {unit}
+                          </MenuItem>
+                        ))}
+                      </Select>
+
+                      <FormHelperText>
+                        {formErrors.unit?.message}
+                      </FormHelperText>
+                    </FormControl>
+                  )}
+                />
+
                 <TextField
-                  label="Acquired Price"
+                  label="No of Units *"
+                  type="number"
+                  {...register("noOfUnits")}
+                  error={!!formErrors.noOfUnits}
+                  helperText={formErrors.noOfUnits?.message}
+                />
+
+                <TextField
+                  label="Acquired Price *"
                   type="number"
                   {...register("acquiredPrice")}
                   error={!!formErrors.acquiredPrice}
@@ -99,6 +136,8 @@ const ProductVariantForm: FC = () => {
                   error={!!formErrors.salePrice}
                   helperText={formErrors.salePrice?.message}
                 />
+              </Box>
+              <Box className="flex flex-col gap-4">
                 <TextField
                   label="Shop"
                   contentEditable={false}
@@ -109,28 +148,18 @@ const ProductVariantForm: FC = () => {
                   contentEditable={false}
                   value={owner?.name ?? ""}
                 />
-              </Box>
-              <Box className="flex flex-col gap-4">
                 <TextField
                   label="Product"
                   contentEditable={false}
                   value={selectedProduct?.name ?? ""}
                 />
-                <TextField
-                  label="Brand"
-                  contentEditable={false}
-                  value={selectedBrand?.name ?? "No Brand"}
-                />
+
                 <TextField
                   label="Category"
                   contentEditable={false}
                   value={selectedCategory?.name ?? "No Category"}
                 />
-                <TextField
-                  label="Sub-category"
-                  contentEditable={false}
-                  value={selectedSubCategory?.name ?? "No Sub-category"}
-                />
+
                 <FormControlLabel
                   control={
                     <Switch

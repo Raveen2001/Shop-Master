@@ -16,6 +16,8 @@ import { RouteHandlerMethod } from "fastify";
 const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
 ) => {
+  fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+
   // create productVariant
   fastify.post<{
     Querystring: TProductVariantQueryString;

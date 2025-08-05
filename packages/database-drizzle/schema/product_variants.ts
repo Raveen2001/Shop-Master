@@ -20,7 +20,6 @@ export const productVariantsDB = pgTable("product_variants", {
   name: text("name").notNull(),
   onlyForBilling: boolean("only_for_billing").default(false),
   availability: boolean("availability").default(true),
-  isLoose: boolean("is_loose").default(false),
 
   noOfUnits: integer("no_of_units").notNull(),
   unit: unitEnum("unit").notNull(),
