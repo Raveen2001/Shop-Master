@@ -1,5 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
-import { PagableQueryStringSchema, PagableSchema } from "./common.js";
+import { PagableQuerySchema, PagableSchema } from "./common.js";
 import {
   EMPLOYEE_PAYEMENT_DB_COLUMNS,
   EMPLOYEE_PAYEMENT_TYPES,
@@ -65,11 +65,10 @@ export const EmployeePaymentQueryStringSchema = Type.Object({
   includeOwner: Type.Boolean({ default: false }),
 });
 
-export const PagableEmployeePaymentsQueryStringSchema =
-  PagableQueryStringSchema(
-    EmployeePaymentQueryStringSchema,
-    EMPLOYEE_PAYEMENT_DB_COLUMNS
-  );
+export const PagableEmployeePaymentsQueryStringSchema = Type.Intersect([
+  EmployeePaymentQueryStringSchema,
+  PagableQuerySchema(EMPLOYEE_PAYEMENT_DB_COLUMNS),
+]);
 
 export type TEmployeePaymentQueryParam = Static<
   typeof EmployeePaymentsQueryParamSchema

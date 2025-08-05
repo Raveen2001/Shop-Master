@@ -25,9 +25,7 @@ import EmployeePaymentRoutes from "./routes/employee-payments.js";
 import CustomerRoutes from "./routes/customer.js";
 import CustomerPaymentRoutes from "./routes/customer-payments.js";
 
-import BrandRoutes from "./routes/brand.js";
 import CategoryRoutes from "./routes/category.js";
-import SubCategoryRoutes from "./routes/sub-category.js";
 import ProductVariantRoutes from "./routes/product-variant.js";
 import ProductRoutes from "./routes/product.js";
 
@@ -102,7 +100,7 @@ fastify.register(OrderRoutes, { prefix: "/orders" });
 fastify.register(OrderItemRoutes, { prefix: "/order-items" });
 
 // start the server
-fastify.listen({ port: 9000, host: "0.0.0.0" }, async (err) => {
+fastify.listen({ port: 9000, host: "127.0.0.1" }, async (err) => {
   if (err) {
     fastify.log.error(err);
     process.exit(1);

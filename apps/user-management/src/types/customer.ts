@@ -2,7 +2,7 @@ import { CUSTOMER_DB_COLUMNS, CUSTOMER_TYPES } from "database-drizzle";
 import { Static, Type } from "@sinclair/typebox";
 import { OwnerSchemaWithoutPassword } from "./owner.js";
 import { ShopSchema } from "./shop.js";
-import { PagableQueryStringSchema, PagableSchema } from "./common.js";
+import { PagableQuerySchema, PagableSchema } from "./common.js";
 import { optionalType } from "./utils.js";
 import { EmployeeSchemaWithoutPassword } from "./employee.js";
 
@@ -54,10 +54,10 @@ export const CustomerQueryStringSchema = Type.Object({
   includeCreatedByEmployee: Type.Boolean({ default: false }),
 });
 
-export const PagableCustomerQueryStringSchema = PagableQueryStringSchema(
+export const PagableCustomerQueryStringSchema = Type.Intersect([
   CustomerQueryStringSchema,
-  CUSTOMER_DB_COLUMNS
-);
+  PagableQuerySchema(CUSTOMER_DB_COLUMNS),
+]);
 
 export type TCustomerQueryParam = Static<typeof CustomerQueryParamSchema>;
 export type TCustomerQueryParamID = Static<typeof CustomerQueryParamIDSchema>;
