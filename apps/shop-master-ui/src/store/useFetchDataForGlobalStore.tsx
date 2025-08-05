@@ -16,7 +16,6 @@ const useFetchDataForGlobalStore = () => {
     setCustomers,
     setCategories,
     setProducts,
-    setIsCategoryDataFetching,
     selectedShopId,
     setSelectedShopId,
     getIsAllDataLoaded,

@@ -18,9 +18,9 @@ import {
   IconButton,
   Breadcrumbs,
   Link,
+  LinearProgress,
 } from "ui";
 import { Add, ArrowBack } from "ui/icons";
-import { getCategoriesBy } from "../../services/category";
 import { createCategory } from "../../services/category";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useGlobalStore } from "../../store/globalStore";
@@ -211,8 +211,9 @@ const ManageCategories = () => {
 
       {/* Category Grid */}
       {isCategoryDataFetching ? (
-        <Box className="flex h-64 items-center justify-center">
-          <Typography>Loading categories...</Typography>
+        <Box className="flex h-64 flex-col items-center justify-center gap-4">
+          <Typography>Loading categories... </Typography>
+          <LinearProgress className="w-96" />
         </Box>
       ) : filteredCategories.length === 0 ? (
         <Box className="flex h-64 items-center justify-center">
