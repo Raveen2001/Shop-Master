@@ -1,6 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
-import { EmployeeSchema } from "./employee.js";
-import { ShopSchema } from "./shop.js";
+
 import { optionalType } from "./utils.js";
 
 export const OwnerSchema = Type.Object({

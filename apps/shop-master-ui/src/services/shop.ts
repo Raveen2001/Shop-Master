@@ -3,8 +3,8 @@ import { QueryFunctionContext } from "@tanstack/react-query";
 import { axiosClient } from "../utils/axios";
 import { TShopData, TShopFormSchema } from "schema";
 
-export const getShopsByOwnerId = (ownerId: string) => {
-  const url = `/shops/owner/${ownerId}`;
+export const getShopsByOwnerId = () => {
+  const url = `/shops`;
   return async (context: QueryFunctionContext) => {
     const queryParams = context.meta;
     return axiosClient.get<IPaginatedData<TShopData>>(url, {

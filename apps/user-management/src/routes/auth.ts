@@ -7,6 +7,7 @@ import { CreateOwnerOpts, LoginOwnerOpts } from "../opts/owner.js";
 import { OwnerSchemaWithoutPassword, TOwnerIn } from "../types/owner.js";
 import { LoginEmployeeOpts } from "../opts/employee.js";
 import { EmployeeSchemaWithoutPassword } from "../types/employee.js";
+import { Value } from "@sinclair/typebox/value";
 
 const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   // Register as owner
@@ -60,7 +61,7 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
       reply.code(401).send({ message: "Invalid credentials" });
     }
     const token = fastify.signJwt({
-      data: OwnerSchemaWithoutPassword.parse(owner),
+      data: Value.Clean(OwnerSchemaWithoutPassword, owner),
       type: "owner",
     } as TToken);
     reply.code(200).send({ token });

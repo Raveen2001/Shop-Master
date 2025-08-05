@@ -1,6 +1,7 @@
 import fp from "fastify-plugin";
 import bcrypt from "bcrypt";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { TToken } from "types";
 
 const decoratorPlugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.decorate(
@@ -50,8 +51,8 @@ const decoratorPlugin: FastifyPluginAsyncTypebox = async (fastify) => {
         reply.code(401).send({ message: "No token provided" });
         return;
       }
-      const data = fastify.jwt.verify(token);
-      request.user = data;
+      const data = fastify.jwt.verify(token) as TToken;
+      request.userInfo = data;
     } catch {
       reply.code(401).send({ message: "Invalid token" });
     }

@@ -2,13 +2,12 @@ import { Box, Button, PaginatedTable, Typography } from "ui";
 
 import { columnsDefs } from "./columns";
 import { Add } from "ui/icons";
-import { useGlobalStore } from "../../store/globalStore";
 
 import { useNavigate } from "react-router-dom";
 
 const ManageBrands = () => {
   const navigate = useNavigate();
-  const brands = useGlobalStore((state) => state.brands);
+  const brands: any[] = [];
   return (
     <>
       <Box className="mb-8 flex">

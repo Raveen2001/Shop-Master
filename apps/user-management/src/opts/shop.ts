@@ -11,22 +11,22 @@ export const QueryShopOpts: RouteShorthandOptions = {
   schema: {
     tags: ["Shop"],
     summary: "Get shop by token",
-    response: {
-      200: ShopSchemaOut,
-    },
-  },
-};
-
-export const QueryShopByOwnerOpts: RouteShorthandOptions = {
-  schema: {
-    tags: ["Shop"],
-    summary: "Get shops by owner token",
     querystring: PagableShopQueryStringSchema,
     response: {
       200: PagableShopSchemaOut,
     },
   },
   preHandler: ownerOnlyRoute,
+};
+
+export const QueryShopByIdOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Shop"],
+    summary: "Get shop by id",
+    response: {
+      200: ShopSchemaOut,
+    },
+  },
 };
 
 export const CreateShopOpts: RouteShorthandOptions = {

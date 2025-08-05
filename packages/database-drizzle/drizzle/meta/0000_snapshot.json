@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "de40b6e3-fdf6-43c7-84ae-abb26a0bce0a",
+  "id": "e013c9ac-af53-4b98-a448-990a51217d96",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "customer_payments": {
@@ -490,7 +490,17 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "employees_username_shop_id_owner_id_unique": {
+          "name": "employees_username_shop_id_owner_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "username",
+            "shop_id",
+            "owner_id"
+          ]
+        }
+      }
     },
     "shops": {
       "name": "shops",
@@ -792,6 +802,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "category_id": {
           "name": "category_id",
           "type": "uuid",
@@ -900,6 +916,32 @@
           "notNull": false,
           "default": false
         },
+        "availability": {
+          "name": "availability",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "is_loose": {
+          "name": "is_loose",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "no_of_units": {
+          "name": "no_of_units",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "unit": {
+          "name": "unit",
+          "type": "unit",
+          "primaryKey": false,
+          "notNull": true
+        },
         "acquired_price": {
           "name": "acquired_price",
           "type": "integer",
@@ -931,13 +973,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "availability": {
-          "name": "availability",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": true
         },
         "shop_id": {
           "name": "shop_id",
@@ -1560,6 +1595,16 @@
         "DELIVERY_PERSON": "DELIVERY_PERSON",
         "PARCEL_COUNTER_DEVICE": "PARCEL_COUNTER_DEVICE",
         "BILLING_DEVICE": "BILLING_DEVICE"
+      }
+    },
+    "unit": {
+      "name": "unit",
+      "values": {
+        "KG": "KG",
+        "L": "L",
+        "G": "G",
+        "ML": "ML",
+        "PCS": "PCS"
       }
     },
     "order_status": {

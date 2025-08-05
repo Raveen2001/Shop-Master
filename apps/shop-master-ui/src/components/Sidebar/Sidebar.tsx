@@ -1,10 +1,12 @@
-import { Box, Typography } from "ui";
+import { Box, Button, Typography } from "ui";
 
 import CollapsibleItem from "../CollapsibleItem/CollapsibleItem";
 import SidebarItem from "./SidebarItem";
 import { SIDEBAR_ITEMS } from "./constant";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   return (
     <Box
       className={
@@ -27,6 +29,19 @@ const Sidebar = () => {
             />
           ))}
         </Box>
+      </Box>
+
+      <Box className="absolute bottom-0 left-0 right-0 p-4">
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/login");
+          }}
+        >
+          Logout
+        </Button>
       </Box>
     </Box>
   );

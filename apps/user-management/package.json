@@ -25,7 +25,7 @@
     "@fastify/swagger": "^8.8.0",
     "@fastify/swagger-ui": "^1.9.2",
     "@fastify/type-provider-typebox": "^3.3.0",
-    "@sinclair/typebox": "^0.29.6",
+    "@sinclair/typebox": "^0.34.38",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.1.0",
     "database-drizzle": "*",

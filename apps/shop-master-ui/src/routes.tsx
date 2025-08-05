@@ -22,11 +22,9 @@ import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 import CustomerPaymentForm from "./pages/CustomerPaymentForm";
 
 import ManageBrands from "./pages/ManageBrands";
-import BrandForm from "./pages/BrandForm";
 
 import ManageCategories from "./pages/ManageCategories";
 import CategoryForm from "./pages/CategoryForm";
-import SubCategoryForm from "./pages/SubCategoryForm";
 
 import ManageProducts from "./pages/ManageProducts";
 import ProductForm from "./pages/ProductForm";
@@ -143,11 +141,6 @@ export const router = createBrowserRouter([
             path: "",
             element: <ManageBrands />,
           },
-
-          {
-            path: "create",
-            element: <BrandForm />,
-          },
         ],
       },
 
@@ -163,11 +156,6 @@ export const router = createBrowserRouter([
           {
             path: "create",
             element: <CategoryForm />,
-          },
-
-          {
-            path: ":id/sub-category/create",
-            element: <SubCategoryForm />,
           },
         ],
       },

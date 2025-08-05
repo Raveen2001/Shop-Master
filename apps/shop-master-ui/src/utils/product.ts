@@ -1,8 +1,7 @@
-import { TProductData, TCategoryData, TBrandData } from "schema";
+import { TProductData, TCategoryData } from "schema";
 
 export const mergeProductData = (
   products: TProductData[],
-  brands: TBrandData[],
   categories: TCategoryData[]
 ): TProductData[] => {
   const updatedProducts = products.map((product) => {
@@ -15,13 +14,10 @@ export const mergeProductData = (
       (subCategory) => subCategory.id === product.subCategoryId
     );
 
-    const brand = brands.find((brand) => brand.id === product.brandId);
-
     return {
       ...product,
       category,
       subCategory,
-      brand,
     };
   });
 

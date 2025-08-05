@@ -23,6 +23,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "unit" AS ENUM('KG', 'L', 'G', 'ML', 'PCS');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "order_status" AS ENUM('COMPLETED', 'DRAFT');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -87,7 +93,8 @@ CREATE TABLE IF NOT EXISTS "employees" (
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"type" "employee_type" NOT NULL,
 	"shop_id" uuid NOT NULL,
-	"owner_id" uuid NOT NULL
+	"owner_id" uuid NOT NULL,
+	CONSTRAINT "employees_username_shop_id_owner_id_unique" UNIQUE("username","shop_id","owner_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "shops" (
@@ -131,6 +138,7 @@ CREATE TABLE IF NOT EXISTS "products" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	"description" text,
+	"image" text,
 	"category_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
@@ -143,12 +151,15 @@ CREATE TABLE IF NOT EXISTS "product_variants" (
 	"product_id" uuid NOT NULL,
 	"name" text NOT NULL,
 	"only_for_billing" boolean DEFAULT false,
+	"availability" boolean DEFAULT true,
+	"is_loose" boolean DEFAULT false,
+	"no_of_units" integer NOT NULL,
+	"unit" "unit" NOT NULL,
 	"acquired_price" integer NOT NULL,
 	"sale_price" integer NOT NULL,
 	"mrp" integer NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	"availability" boolean DEFAULT true,
 	"shop_id" uuid NOT NULL,
 	"owner_id" uuid NOT NULL
 );

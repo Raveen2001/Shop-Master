@@ -15,7 +15,6 @@ import { mergeProductData } from "../utils/product";
 interface IGlobalStore {
   isOwnerDataFetched: boolean;
   isCategoryDataFetched: boolean;
-  isBrandDataFetched: boolean;
   isProductDataFetched: boolean;
   isShopsDataFetched: boolean;
   isEmployeeDataFetched: boolean;
@@ -34,9 +33,6 @@ interface IGlobalStore {
 
   customers: TCustomerData[];
   setCustomers: (customers: TCustomerData[]) => void;
-
-  brands: TBrandData[];
-  setBrands: (brands: TBrandData[]) => void;
 
   categories: TCategoryData[];
   setCategories: (categories: TCategoryData[]) => void;
@@ -59,12 +55,10 @@ export const useGlobalStore = create(
     selectedShop: undefined,
     customers: [],
     employees: [],
-    brands: [],
     categories: [],
     products: [],
     isOwnerDataFetched: false,
     isCategoryDataFetched: false,
-    isBrandDataFetched: false,
     isProductDataFetched: false,
     isShopsDataFetched: false,
     isEmployeeDataFetched: false,
@@ -83,7 +77,6 @@ export const useGlobalStore = create(
         state.selectedShopId = shopId;
         state.selectedShop = state.shops.find((shop) => shop.id === shopId);
         state.isCategoryDataFetched = false;
-        state.isBrandDataFetched = false;
         state.isProductDataFetched = false;
       });
     },
@@ -123,13 +116,6 @@ export const useGlobalStore = create(
       });
     },
 
-    setBrands: (brands) => {
-      set((state) => {
-        state.brands = brands;
-        state.isBrandDataFetched = true;
-      });
-    },
-
     isAllDataLoaded: () => {
       const state = get();
       return (
@@ -137,14 +123,13 @@ export const useGlobalStore = create(
         state.isShopsDataFetched &&
         state.isCustomerDataFetched &&
         state.isCategoryDataFetched &&
-        state.isBrandDataFetched &&
         state.isProductDataFetched
       );
     },
 
     getAllProductVariantsWithDetails() {
-      const { products, brands, categories } = get();
-      const mergedProduct = mergeProductData(products, brands, categories);
+      const { products, categories } = get();
+      const mergedProduct = mergeProductData(products, categories);
       const productVariants = mergedProduct
         .map((product) => {
           const currentVariants = product.variants?.map((v) => ({

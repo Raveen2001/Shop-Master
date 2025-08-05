@@ -1,6 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
 import { optionalType } from "./utils.js";
-import { SubCategorySchema } from "./sub-category.js";
 
 export const CategorySchema = Type.Object({
   id: Type.String(),
@@ -22,7 +21,7 @@ export const CategorySchemaIn = Type.Omit(CategorySchema, [
 export const CategorySchemaOut = Type.Intersect([
   CategorySchema,
   Type.Object({
-    subCategories: Type.Optional(Type.Array(SubCategorySchema)),
+    subCategories: Type.Optional(Type.Array(CategorySchema)),
     // TODO: add products
     // products: Type.Optional(Type.Array(EmployeeSchema)),
   }),

@@ -16,6 +16,8 @@ import { RouteHandlerMethod } from "fastify";
 const CategoryRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
 ) => {
+  fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+
   // get category by id
   fastify.get<{
     Params: TCategoryQueryParam;

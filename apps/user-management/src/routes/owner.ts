@@ -7,6 +7,7 @@ const OwnerRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
 
   fastify.get("/", QueryOwnerByTokenOpts, async (req, reply) => {
+    console.log(req.userInfo);
     let ownerId: string;
     if (req.userInfo.type === "owner") {
       const owner = req.userInfo.data as TOwnerWithoutPassword;

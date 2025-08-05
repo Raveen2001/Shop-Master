@@ -4,7 +4,7 @@ import { TPagableShopQueryString } from "../types/shop.js";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import {
   CreateShopOpts,
-  QueryShopByOwnerOpts,
+  QueryShopByIdOpts,
   QueryShopOpts,
 } from "../opts/shop.js";
 
@@ -13,12 +13,16 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
 ) => {
   fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
 
-  // get shop by token
-  fastify.get("/", QueryShopOpts, async (req, reply) => {
-    const shopId = req.userInfo.data.shopId;
-
+  // get shop by id
+  fastify.get<{
+    Params: {
+      id: string;
+    };
+  }>("/:id", QueryShopByIdOpts, async (req, reply) => {
+    const shopId = req.params.id;
     const shop = await fastify.db.query.shopsDB.findFirst({
-      where: (shopsDB, { eq }) => eq(shopsDB.id, shopId),
+      where: (shopsDB, { eq, and }) =>
+        and(eq(shopsDB.id, shopId), eq(shopsDB.id, req.userInfo.data.shopId)),
     });
 
     if (!shop) {
@@ -51,7 +55,7 @@ const ShopRoutes: FastifyPluginAsyncTypebox = async (
   // get paginated shops by owner id
   fastify.get<{
     Querystring: TPagableShopQueryString;
-  }>("/owner", QueryShopByOwnerOpts, async (req, reply) => {
+  }>("/", QueryShopOpts, async (req, reply) => {
     const { limit, page, order, orderBy } = req.query;
     const ownerId = req.userInfo.data.id;
 
