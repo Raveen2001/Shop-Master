@@ -7,7 +7,6 @@ export * from "./customer-payment.js";
 export * from "./brand.js";
 export * from "./category.js";
 export * from "./product.js";
-export * from "./sub-category.js";
 export * from "./product-variant.js";
 
 export * from "./order.js";

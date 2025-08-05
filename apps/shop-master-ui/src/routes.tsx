@@ -21,7 +21,8 @@ import CustomerForm from "./pages/CustomerForm/CustomerForm";
 import CustomersPaymentHistory from "./pages/CustomersPaymentHistory ";
 import CustomerPaymentForm from "./pages/CustomerPaymentForm";
 
-import ManageCategories from "./pages/ManageCategory";
+import ManageCategories from "./pages/ManageCategories";
+import { CategoryProvider } from "./pages/ManageCategories/CategoryContext";
 import CategoryForm from "./pages/CategoryForm";
 
 import ManageProducts from "./pages/ManageProducts";
@@ -137,11 +138,19 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ManageCategories />,
+            element: (
+              <CategoryProvider>
+                <ManageCategories />
+              </CategoryProvider>
+            ),
           },
           {
             path: ":categoryId",
-            element: <ManageCategories />,
+            element: (
+              <CategoryProvider>
+                <ManageCategories />
+              </CategoryProvider>
+            ),
           },
         ],
       },

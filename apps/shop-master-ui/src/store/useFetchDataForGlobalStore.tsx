@@ -18,7 +18,6 @@ const useFetchDataForGlobalStore = () => {
     setProducts,
     selectedShopId,
     setSelectedShopId,
-    getIsAllDataLoaded,
   } = useGlobalStore();
 
   const ownerQuery = useQuery({
@@ -135,8 +134,8 @@ const useFetchDataForGlobalStore = () => {
   }, [shopsQuery.data, shopsQuery.isSuccess]);
 
   const isAllDataLoaded = useMemo(() => {
-    return !isLoading && !isError && !!getIsAllDataLoaded();
-  }, [isLoading, isError, getIsAllDataLoaded]);
+    return !isLoading && !isError;
+  }, [isLoading, isError]);
 
   return {
     isAllDataLoaded,

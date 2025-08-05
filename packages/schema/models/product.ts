@@ -1,7 +1,6 @@
 import { object, string, InferType } from "yup";
 import { TProductVariantData } from "./product-variant.js";
 import { TCategoryData } from "./category.js";
-import { TSubCategoryData } from "./sub-category.js";
 import { TBrandData } from "./brand.js";
 
 export const ProductFormSchema = object({
@@ -26,6 +25,5 @@ export type TProductData = TProductFormSchema & {
   updatedAt: string;
   variants?: TProductVariantData[];
   category?: TCategoryData;
-  subCategory?: TSubCategoryData;
   brand?: TBrandData;
 };
