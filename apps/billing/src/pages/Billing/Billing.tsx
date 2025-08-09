@@ -1,6 +1,4 @@
-import React from "react";
 import { Box, Grid, useTheme, useMediaQuery } from "@mui/material";
-import { OrderSummary } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
 import {
@@ -9,6 +7,7 @@ import {
   CategoryDetailsView,
   ProductVariantsView,
 } from "../../components";
+import { OrderSummary } from "../../components/OrderSummary";
 
 const BillingPage = () => {
   const theme = useTheme();
@@ -18,11 +17,8 @@ const BillingPage = () => {
     currentStep,
     selectedCategory,
     selectedProduct,
-    orderItems,
 
     addToOrder,
-    updateOrderItemQuantity,
-    removeOrderItem,
     goBack,
   } = useBillingStore();
 
@@ -35,17 +31,9 @@ const BillingPage = () => {
     );
   }
 
-  const handleVariantSelect = (variant: any) => {
-    if (selectedProduct) {
-      addToOrder(variant, selectedProduct.name, 1);
-      // After adding to order, go back to category details
-      goBack();
-    }
-  };
-
   const handlePrintBill = () => {
     // TODO: Implement print bill functionality
-    console.log("Printing bill for items:", orderItems);
+    console.log("Printing bill for items");
   };
 
   const renderLeftSection = () => {
@@ -95,12 +83,7 @@ const BillingPage = () => {
 
         {/* Right Section - Order Summary (1/3 width on desktop, fixed width on tablet) */}
         <Grid item xs={12} md={4}>
-          <OrderSummary
-            orderItems={orderItems}
-            onUpdateQuantity={updateOrderItemQuantity}
-            onRemoveItem={removeOrderItem}
-            onPrintBill={handlePrintBill}
-          />
+          <OrderSummary onPrintBill={handlePrintBill} />
         </Grid>
       </Grid>
     </Box>

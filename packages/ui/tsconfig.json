@@ -3,7 +3,8 @@
   "include": [
     ".",
     "theme.d.ts",
-    "../../apps/billing/src/components/ProductVariantCard"
+    "../../apps/billing/src/components/ProductVariantCard",
+    "../../apps/billing/src/components/OrderSummary"
   ],
   "exclude": ["dist", "build", "node_modules"]
 }

@@ -2,16 +2,16 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { TCategoryData, TProductData, TProductVariantData } from "schema";
 
-interface OrderItem {
+export type TOrderItem = {
   variant: TProductVariantData;
   productName: string;
   quantity: number;
 
   totalQuantityWithUnit: string;
   totalPrice: number;
-}
+};
 
-interface IBillingStore {
+type IBillingStore = {
   // Navigation state
   currentStep: "categories" | "categoryDetails" | "products" | "variants";
 
@@ -21,7 +21,7 @@ interface IBillingStore {
   categoryPath: TCategoryData[]; // Track navigation path
 
   // Order state
-  orderItems: OrderItem[];
+  orderItems: TOrderItem[];
 
   // Navigation actions
   setCurrentStep: (
@@ -46,7 +46,7 @@ interface IBillingStore {
   // Utility
   getTotalAmount: () => number;
   getOrderItemCount: () => number;
-}
+};
 
 export const useBillingStore = create(
   immer<IBillingStore>((set, get) => ({
