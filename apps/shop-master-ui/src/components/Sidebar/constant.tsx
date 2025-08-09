@@ -1,11 +1,7 @@
 import {
-  DashboardTwoTone,
   ManageAccountsTwoTone,
   PaymentTwoTone,
-  PeopleAltTwoTone,
-  WorkTwoTone,
   CategoryTwoTone,
-  FitbitTwoTone,
   StoreTwoTone,
   EngineeringTwoTone,
   InventoryTwoTone,

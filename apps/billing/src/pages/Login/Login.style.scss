@@ -1,0 +1,48 @@
+.LoginPage {
+    min-height: 100vh;
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 40px;
+
+        h3 {
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        svg {
+            max-width: 80%;
+            height: auto;
+        }
+    }
+
+    .right {
+        background: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100vh;
+
+        h4 {
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            button {
+                margin-top: 16px;
+                height: 48px;
+                font-weight: 600;
+            }
+        }
+    }
+}

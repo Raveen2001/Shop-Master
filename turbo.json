@@ -5,7 +5,12 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "apps/user-management/dist/**"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "apps/user-management/dist/**",
+        "apps/billing/dist/**"
+      ]
     },
     "lint": {
       "outputs": [],
