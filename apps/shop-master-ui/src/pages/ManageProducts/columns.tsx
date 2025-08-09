@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { TProductData } from "schema";
 import {
-  getSubRowColumnOption,
+  // getSubRowColumnOption,
   TableDateTimeCell,
   TableProfileCell,
   createColumnHelper,
@@ -10,12 +10,12 @@ import {
   ColumnDef,
 } from "ui";
 
-import { EditTwoTone, AddCircleTwoTone, Visibility } from "ui/icons";
+import { EditTwoTone, Visibility } from "ui/icons";
 
 const columnHelper = createColumnHelper<TProductData>();
 
 export const columnsDefs: ColumnDef<TProductData, any>[] = [
-  getSubRowColumnOption<TProductData>(),
+  // getSubRowColumnOption<TProductData>(),
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",
@@ -74,7 +74,7 @@ export const columnsDefs: ColumnDef<TProductData, any>[] = [
       return (
         <Box className="flex gap-2">
           <Link to={`/products/${id}`}>
-            <IconButton color="primary">
+            <IconButton>
               <Visibility />
             </IconButton>
           </Link>
@@ -83,11 +83,11 @@ export const columnsDefs: ColumnDef<TProductData, any>[] = [
             <EditTwoTone />
           </IconButton>
 
-          <Link to={`${id}/product-variant/create`}>
+          {/* <Link to={`${id}/product-variant/create`}>
             <IconButton>
               <AddCircleTwoTone />
             </IconButton>
-          </Link>
+          </Link> */}
         </Box>
       );
     },

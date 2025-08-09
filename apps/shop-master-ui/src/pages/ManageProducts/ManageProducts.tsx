@@ -7,7 +7,7 @@ import { useGlobalStore } from "../../store/globalStore";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { mergeProductData } from "../../utils/product";
-import ProductVariantList from "./ProductVariantTable/ProductVariantTable";
+// import ProductVariantList from "./ProductVariantTable/ProductVariantTable";
 
 const ManageProducts = () => {
   const navigate = useNavigate();
@@ -43,8 +43,8 @@ const ManageProducts = () => {
         columns={columnsDefs}
         data={updatedProducts}
         defaultSortColumn={{ id: "createdAt", desc: false }}
-        getRowCanExpand={(row) => (row.original.variants ?? []).length > 0}
-        renderSubComponent={ProductVariantList}
+        // getRowCanExpand={(row) => (row.original.variants ?? []).length > 0}
+        // renderSubComponent={ProductVariantList}
       />
     </>
   );
