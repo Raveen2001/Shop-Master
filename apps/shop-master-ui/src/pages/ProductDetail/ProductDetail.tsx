@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Box, Button, ReactTable, Typography, Card, Chip, Dialog } from "ui";
+import { Box, Button, ReactTable, Typography, Card, Dialog } from "ui";
 import { Add, ArrowBack } from "ui/icons";
 import { getProductById } from "../../services/product";
 import { columnsDefs } from "./columns";
