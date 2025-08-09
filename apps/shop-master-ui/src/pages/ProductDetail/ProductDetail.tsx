@@ -6,6 +6,7 @@ import { Add, ArrowBack } from "ui/icons";
 import { getProductById } from "../../services/product";
 import { columnsDefs } from "./columns";
 import ProductVariantForm from "../ProductVariantForm/ProductVariantForm";
+import { useGlobalStore } from "../../store/globalStore";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const ProductDetail = () => {
   const queryClient = useQueryClient();
   const [isCreateVariantModalOpen, setIsCreateVariantModalOpen] =
     useState(false);
-
+  const selectedShopId = useGlobalStore((state) => state.selectedShopId);
   const {
     data: productResponse,
     isLoading,
@@ -30,6 +31,9 @@ const ProductDetail = () => {
     setIsCreateVariantModalOpen(false);
     // Refetch the product data to show the new variant
     queryClient.invalidateQueries({ queryKey: ["product", id] });
+    queryClient.invalidateQueries({
+      queryKey: ["shop", selectedShopId, "products"],
+    });
   };
 
   if (isLoading) {
