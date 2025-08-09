@@ -96,20 +96,20 @@ const LoginPage = () => {
           className="form"
         >
           <Controller
-            name="email"
+            name="username"
             control={control}
             rules={{
-              required: "Email address is required",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "Please enter a valid email address",
+              required: "Username is required",
+              minLength: {
+                value: 3,
+                message: "Username must be at least 3 characters",
               },
             }}
             defaultValue=""
             render={({ field, fieldState: { error } }) => (
               <TextField
                 sx={{ marginTop: "16px" }}
-                label="Email address"
+                label="Username"
                 error={!!error}
                 helperText={error?.message}
                 fullWidth

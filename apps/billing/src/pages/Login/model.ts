@@ -1,7 +1,7 @@
 import { loginAsEmployee } from "../../services/auth";
 
 export interface ILoginData {
-  email: string;
+  username: string;
   password: string;
 }
 

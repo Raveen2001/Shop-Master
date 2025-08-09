@@ -1,7 +1,7 @@
 {
   "configurations": [
     {
-      "command": "pnpm dev",
+      "command": "npm run dev",
       "name": "Debug Shop Master API",
       "request": "launch",
       "type": "node-terminal",

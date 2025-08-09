@@ -59,6 +59,7 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
     );
     if (!isPasswordValid) {
       reply.code(401).send({ message: "Invalid credentials" });
+      return;
     }
     const token = fastify.signJwt({
       data: Value.Clean(OwnerSchemaWithoutPassword, owner),
@@ -80,15 +81,17 @@ const AuthRoutes: FastifyPluginAsyncTypebox = async (fastify) => {
       reply.code(404).send({ message: "User not found" });
       return;
     }
+    console.log(employee);
     const isPasswordValid = await fastify.comparePassword(
       password,
       employee.password
     );
     if (!isPasswordValid) {
       reply.code(401).send({ message: "Invalid credentials" });
+      return;
     }
     const token = fastify.signJwt({
-      data: EmployeeSchemaWithoutPassword.parse(employee),
+      data: Value.Clean(EmployeeSchemaWithoutPassword, employee),
       type: "employee",
     } as TToken);
     reply.code(200).send({ token });

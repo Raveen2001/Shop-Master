@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 
 const AUTH_URLS = ["/login"];
 
-function App() {
+function AppContent() {
   // get the logged in status from local storage
   const isLoggedIn = useMemo(() => !!localStorage.getItem("token"), []);
 
@@ -27,9 +27,13 @@ function App() {
     }
   }, [isLoggedIn]);
 
+  return <RouterProvider router={router} />;
+}
+
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AppContent />
       <ReactQueryDevtools initialIsOpen={false} position={"bottom"} />
     </QueryClientProvider>
   );

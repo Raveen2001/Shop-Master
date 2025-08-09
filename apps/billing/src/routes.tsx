@@ -1,5 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import AuthenticatedRootLayout from "./layouts/AuthenticatedRootLayout";
+import Layout from "./layouts/Layout";
+
 import LoginPage from "./pages/Login";
 import BillingPage from "./pages/Billing";
 
@@ -10,10 +13,26 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <BillingPage />,
-  },
-  {
-    path: "*",
-    element: <h1>404 Not Found</h1>,
+    element: <AuthenticatedRootLayout />,
+    children: [
+      {
+        path: "",
+        element: <BillingPage />,
+      },
+      {
+        path: "billing",
+        element: <Layout />,
+        children: [
+          {
+            path: "",
+            element: <BillingPage />,
+          },
+        ],
+      },
+      {
+        path: "*",
+        element: <h1>404 Not Found</h1>,
+      },
+    ],
   },
 ]);
