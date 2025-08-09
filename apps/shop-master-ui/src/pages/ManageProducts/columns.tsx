@@ -10,7 +10,7 @@ import {
   ColumnDef,
 } from "ui";
 
-import { EditTwoTone, AddCircleTwoTone } from "ui/icons";
+import { EditTwoTone, AddCircleTwoTone, Visibility } from "ui/icons";
 
 const columnHelper = createColumnHelper<TProductData>();
 
@@ -73,6 +73,12 @@ export const columnsDefs: ColumnDef<TProductData, any>[] = [
     }) => {
       return (
         <Box className="flex gap-2">
+          <Link to={`/products/${id}`}>
+            <IconButton color="primary">
+              <Visibility />
+            </IconButton>
+          </Link>
+
           <IconButton>
             <EditTwoTone />
           </IconButton>

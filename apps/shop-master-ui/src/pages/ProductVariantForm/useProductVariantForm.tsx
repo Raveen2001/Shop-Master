@@ -10,9 +10,10 @@ import {
 } from "schema";
 import { createProductVariant } from "../../services/product-variant";
 import { useGlobalStore } from "../../store/globalStore";
+import { TProductVariantFormProps } from "./ProductVariantForm";
 
 //TODO: add image upload
-const useProductVariantForm = () => {
+const useProductVariantForm = (props?: TProductVariantFormProps) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -25,12 +26,18 @@ const useProductVariantForm = () => {
     ]
   );
 
-  const selectedProduct = products.find((product) => product.id === id);
-  // navigate to products if unable to find the product
-  if (!selectedProduct) {
-    console.log("product not found", products, selectedProduct, id);
-    navigate("/products");
-  }
+  // Use productId from props if provided, otherwise use URL param
+  const productId = props?.productId || id;
+
+  const selectedProduct = products.find((product) => product.id === productId);
+
+  // Only navigate if we're not in a modal context (no props provided)
+  useEffect(() => {
+    if (!selectedProduct && !props) {
+      console.log("product not found", products, selectedProduct, id);
+      navigate("/products");
+    }
+  }, [selectedProduct, props, products, id, navigate]);
 
   const selectedCategory = categories.find(
     (c) => c.id === selectedProduct?.categoryId
@@ -54,7 +61,12 @@ const useProductVariantForm = () => {
       queryClient.invalidateQueries({
         queryKey: ["shop", selectedShop?.id, "products"],
       });
-      navigate("/products");
+      // Call onSuccess callback if provided, otherwise navigate
+      if (props?.onSuccess) {
+        props.onSuccess();
+      } else {
+        navigate("/products");
+      }
     },
   });
 

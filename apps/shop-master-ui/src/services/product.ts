@@ -11,6 +11,15 @@ export const getProductsBy = (by: "owner" | "shop", id: string) => {
   };
 };
 
+export const getProductById = (id: string) => {
+  const url = `/products/${id}`;
+  return async () => {
+    return axiosClient.get<TProductData>(url, {
+      params: { includeVariants: true },
+    });
+  };
+};
+
 export const createProduct = (brand: TProductFormSchema) => {
   const url = "/products/create";
   return axiosClient.post<TProductData>(url, brand);

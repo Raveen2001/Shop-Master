@@ -7,6 +7,7 @@ import CategoryGrid from "./CategoryGrid";
 import ProductGrid from "./ProductGrid";
 import CategoryForm from "../../components/CategoryForm";
 import ProductForm from "../../components/ProductForm";
+import ProductVariantForm from "../ProductVariantForm/ProductVariantForm";
 
 const ManageCategories = () => {
   const navigate = useNavigate();
@@ -17,10 +18,12 @@ const ManageCategories = () => {
     breadcrumbPath,
     isCreateModalOpen,
     isCreateProductModalOpen,
+
     openCreateModal,
     closeCreateModal,
     openCreateProductModal,
     closeCreateProductModal,
+
     navigateToCategory,
     navigateBack,
     setCurrentCategoryId,

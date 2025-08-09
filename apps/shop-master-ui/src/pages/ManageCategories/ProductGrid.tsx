@@ -1,28 +1,58 @@
-import React from "react";
-import { Box, Typography, Card, Grid, LinearProgress } from "ui";
+import { Box, Typography, Card, Grid, LinearProgress, Chip, Button } from "ui";
 import { useCategoryContext } from "./CategoryContext";
 import { useGlobalStore } from "../../store/globalStore";
-import { mergeProductData } from "../../utils/product";
+import { TProductData } from "schema";
+import { formatCurrency } from "ui";
+import { Visibility } from "ui/icons";
+import { useNavigate } from "react-router-dom";
 
-interface ProductGridProps {
-  onProductClick?: (product: { id: string; name: string }) => void;
-}
+const ProductGrid = () => {
+  const { filteredProducts } = useCategoryContext();
+  const navigate = useNavigate();
 
-const ProductGrid: React.FC<ProductGridProps> = ({ onProductClick }) => {
-  const { currentCategoryId, isLoading, filteredProducts } =
-    useCategoryContext();
+  const isProductDataFetching = useGlobalStore(
+    (state) => state.isProductDataFetching
+  );
 
-  if (isLoading) {
+  const renderVariantInfo = (product: TProductData) => {
+    if (!product.variants || product.variants.length === 0) {
+      return (
+        <Typography variant="caption" color="textSecondary">
+          No variants
+        </Typography>
+      );
+    }
+
+    // Show the first variant as a preview
+    return (
+      <Box className="mt-2">
+        <Typography variant="caption" color="textSecondary" className="block">
+          {product.variants.length} variants
+        </Typography>
+        <Box className="mt-1 flex items-center gap-2">
+          {product.variants.map((variant) => (
+            <Chip
+              key={variant.id}
+              label={`${variant.noOfUnits} ${variant.unit} - ${formatCurrency(
+                variant.salePrice
+              )}`}
+              size="small"
+              color="primary"
+              variant="outlined"
+            />
+          ))}
+        </Box>
+      </Box>
+    );
+  };
+
+  if (isProductDataFetching) {
     return (
       <Box className="flex h-64 flex-col items-center justify-center gap-4">
         <Typography>Loading products...</Typography>
         <LinearProgress className="w-full" />
       </Box>
     );
-  }
-
-  if (!currentCategoryId) {
-    return null;
   }
 
   if (filteredProducts.length === 0) {
@@ -41,7 +71,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ onProductClick }) => {
         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
           <Card
             className="h-full cursor-pointer transition-shadow duration-200 hover:shadow-lg"
-            onClick={() => onProductClick?.(product)}
+            onClick={() => navigate(`/products/${product.id}`)}
           >
             <Box className="p-4 text-center">
               <Box className="mx-auto mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200">
@@ -59,12 +89,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ onProductClick }) => {
               >
                 {product.description || "No description"}
               </Typography>
-              {product.variants && product.variants.length > 0 && (
-                <Typography variant="caption" color="textSecondary">
-                  {product.variants.length} variant
-                  {product.variants.length !== 1 ? "s" : ""}
-                </Typography>
-              )}
+              {renderVariantInfo(product)}
             </Box>
           </Card>
         </Grid>

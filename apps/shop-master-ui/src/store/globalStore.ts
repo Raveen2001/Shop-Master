@@ -14,6 +14,8 @@ import { mergeProductData } from "../utils/product";
 interface IGlobalStore {
   isCategoryDataFetching: boolean;
   setIsCategoryDataFetching: (isFetching: boolean) => void;
+  isProductDataFetching: boolean;
+  setIsProductDataFetching: (isFetching: boolean) => void;
 
   isOwnerDataFetched: boolean;
   isCategoryDataFetched: boolean;
@@ -67,6 +69,7 @@ export const useGlobalStore = create(
     isCustomerDataFetched: false,
 
     isCategoryDataFetching: false,
+    isProductDataFetching: false,
 
     setShops: (shops: TShopData[]) => {
       set((state) => {
@@ -110,6 +113,7 @@ export const useGlobalStore = create(
       set((state) => {
         state.products = products;
         state.isProductDataFetched = true;
+        state.isProductDataFetching = false;
       });
     },
 
@@ -149,9 +153,14 @@ export const useGlobalStore = create(
     },
 
     setIsCategoryDataFetching: (isFetching: boolean) => {
-      console.log("isFetching", isFetching);
       set((state) => {
-        state.isCategoryDataFetching = true;
+        state.isCategoryDataFetching = isFetching;
+      });
+    },
+
+    setIsProductDataFetching: (isFetching: boolean) => {
+      set((state) => {
+        state.isProductDataFetching = isFetching;
       });
     },
   }))

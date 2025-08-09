@@ -21,7 +21,12 @@ import {
 import { Controller } from "react-hook-form";
 import { UNITS } from "schema";
 
-const ProductVariantForm: FC = () => {
+export type TProductVariantFormProps = {
+  productId?: string;
+  onSuccess?: () => void;
+};
+
+const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
   const {
     formErrors,
     onSubmit,
@@ -34,10 +39,16 @@ const ProductVariantForm: FC = () => {
     shop,
     owner,
     control,
-  } = useProductVariantForm();
+  } = useProductVariantForm(props);
+
+  // Check if this is being used in a modal context
+  const isModal = !!props.productId;
+
   return (
     <Box className="px-8 py-4">
-      <Typography variant="h5">Create a new Product Variant</Typography>
+      <Typography variant="h5">
+        {isModal ? "Add New Product Variant" : "Create a new Product Variant"}
+      </Typography>
 
       <Box className="h-8" />
 
@@ -64,9 +75,11 @@ const ProductVariantForm: FC = () => {
               <Switch color="secondary" {...register("onlyForBilling")} />
             </Box>
 
-            <Button color="error" variant="outlined">
-              Delete Product Variant
-            </Button>
+            {!isModal && (
+              <Button color="error" variant="outlined">
+                Delete Product Variant
+              </Button>
+            )}
           </Card>
 
           <Card elevation={5} className="ml-10 flex h-full flex-col gap-4 p-6">
@@ -180,7 +193,7 @@ const ProductVariantForm: FC = () => {
               className="float-right"
               type="submit"
             >
-              Create Product Variant
+              {isModal ? "Add Variant" : "Create Product Variant"}
             </LoadingButton>
           </Card>
         </Box>
