@@ -1,5 +1,9 @@
 {
   "extends": "tsconfig/react-library.json",
-  "include": [".", "theme.d.ts"],
+  "include": [
+    ".",
+    "theme.d.ts",
+    "../../apps/billing/src/components/ProductVariantCard"
+  ],
   "exclude": ["dist", "build", "node_modules"]
 }

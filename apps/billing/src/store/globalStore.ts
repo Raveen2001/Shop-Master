@@ -1,95 +1,92 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-
-interface IEmployeeData {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  shopId: string;
-}
-
-interface IShopData {
-  id: string;
-  name: string;
-  address?: string;
-}
-
-interface IProductData {
-  id: string;
-  name: string;
-  price: number;
-  categoryId: string;
-  shopId: string;
-}
-
-interface ICategoryData {
-  id: string;
-  name: string;
-  shopId: string;
-}
+import {
+  TCategoryData,
+  TCustomerData,
+  TEmployeeData,
+  TProductData,
+  TProductVariantData,
+  TShopData,
+} from "schema";
+import { mergeProductData } from "ui";
 
 interface IGlobalStore {
-  // Employee data
-  employee?: IEmployeeData;
-  setEmployee: (employee: IEmployeeData) => void;
-  isEmployeeDataFetched: boolean;
-
-  // Shop data
-  shop?: IShopData;
-  setShop: (shop: IShopData) => void;
-  isShopDataFetched: boolean;
-
-  // Products and categories for billing
-  products: IProductData[];
-  setProducts: (products: IProductData[]) => void;
-  isProductDataFetched: boolean;
-
-  categories: ICategoryData[];
-  setCategories: (categories: ICategoryData[]) => void;
-  isCategoryDataFetched: boolean;
-
-  // Loading states
-  isProductDataFetching: boolean;
-  setIsProductDataFetching: (isFetching: boolean) => void;
   isCategoryDataFetching: boolean;
   setIsCategoryDataFetching: (isFetching: boolean) => void;
+  isProductDataFetching: boolean;
+  setIsProductDataFetching: (isFetching: boolean) => void;
 
-  // Utility methods
+  isProductVariantsDataFetching: boolean;
+  setIsProductVariantsDataFetching: (isFetching: boolean) => void;
+
+  isCategoryDataFetched: boolean;
+  isProductDataFetched: boolean;
+  isShopDataFetched: boolean;
+  isEmployeeDataFetched: boolean;
+  isCustomerDataFetched: boolean;
+
+  shop?: TShopData;
+  setShop: (shop: TShopData) => void;
+
+  customers: TCustomerData[];
+  setCustomers: (customers: TCustomerData[]) => void;
+
+  categories: TCategoryData[];
+  setCategories: (categories: TCategoryData[]) => void;
+
+  employee?: TEmployeeData;
+  setEmployee: (employee: TEmployeeData) => void;
+
+  products: TProductData[];
+  setProducts: (products: TProductData[]) => void;
+
+  productVariants: TProductVariantData[];
+  setProductVariants: (productVariants: TProductVariantData[]) => void;
+
   getIsAllDataLoaded: () => boolean;
-  getProductsByCategory: (categoryId: string) => IProductData[];
 }
 
 export const useGlobalStore = create(
   immer<IGlobalStore>((set, get) => ({
     employee: undefined,
-    shop: undefined,
-    products: [],
-    categories: [],
-
     isEmployeeDataFetched: false,
-    isShopDataFetched: false,
-    isProductDataFetched: false,
+
+    shop: undefined,
+    customers: [],
+    categories: [],
+    products: [],
+    productVariants: [],
     isCategoryDataFetched: false,
+    isProductDataFetched: false,
+    isShopDataFetched: false,
+    isCustomerDataFetched: false,
 
-    isProductDataFetching: false,
     isCategoryDataFetching: false,
+    isProductDataFetching: false,
+    isProductVariantsDataFetching: false,
 
-    setEmployee: (employee: IEmployeeData) => {
-      set((state) => {
-        state.employee = employee;
-        state.isEmployeeDataFetched = true;
-      });
-    },
-
-    setShop: (shop: IShopData) => {
+    setShop: (shop: TShopData) => {
       set((state) => {
         state.shop = shop;
         state.isShopDataFetched = true;
       });
     },
 
-    setProducts: (products: IProductData[]) => {
+    setEmployee: (employee) => {
+      set((state) => {
+        state.employee = employee;
+        state.isEmployeeDataFetched = true;
+      });
+    },
+
+    setCustomers: (customers) => {
+      set((state) => {
+        state.customers = customers;
+        state.isCustomerDataFetched = true;
+      });
+    },
+
+    setProducts: (products) => {
       set((state) => {
         state.products = products;
         state.isProductDataFetched = true;
@@ -97,11 +94,50 @@ export const useGlobalStore = create(
       });
     },
 
-    setCategories: (categories: ICategoryData[]) => {
+    setCategories: (categories) => {
       set((state) => {
         state.categories = categories;
-        state.isCategoryDataFetched = true;
         state.isCategoryDataFetching = false;
+        state.isCategoryDataFetched = true;
+      });
+    },
+
+    setProductVariants: (productVariants) => {
+      set((state) => {
+        state.productVariants = productVariants;
+      });
+    },
+
+    getIsAllDataLoaded: () => {
+      const state = get();
+      return (
+        state.isEmployeeDataFetched &&
+        state.isShopDataFetched &&
+        state.isCustomerDataFetched &&
+        state.isCategoryDataFetched &&
+        state.isProductDataFetched
+      );
+    },
+
+    getAllProductVariantsWithDetails() {
+      const { products, categories } = get();
+      const mergedProduct = mergeProductData(products, categories);
+      const productVariants = mergedProduct
+        .map((product) => {
+          const currentVariants = product.variants?.map((v) => ({
+            product,
+            ...v,
+          }));
+          return currentVariants ?? [];
+        })
+        .flat();
+
+      return productVariants;
+    },
+
+    setIsCategoryDataFetching: (isFetching: boolean) => {
+      set((state) => {
+        state.isCategoryDataFetching = isFetching;
       });
     },
 
@@ -111,27 +147,10 @@ export const useGlobalStore = create(
       });
     },
 
-    setIsCategoryDataFetching: (isFetching: boolean) => {
+    setIsProductVariantsDataFetching: (isFetching: boolean) => {
       set((state) => {
-        state.isCategoryDataFetching = isFetching;
+        state.isProductVariantsDataFetching = isFetching;
       });
-    },
-
-    getIsAllDataLoaded: () => {
-      const state = get();
-      return (
-        state.isEmployeeDataFetched &&
-        state.isShopDataFetched &&
-        state.isProductDataFetched &&
-        state.isCategoryDataFetched
-      );
-    },
-
-    getProductsByCategory: (categoryId: string) => {
-      const state = get();
-      return state.products.filter(
-        (product) => product.categoryId === categoryId
-      );
     },
   }))
 );

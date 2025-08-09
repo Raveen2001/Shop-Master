@@ -1,95 +1,108 @@
-import { Box, Typography } from "ui";
+import React from "react";
+import { Box, Grid, useTheme, useMediaQuery } from "@mui/material";
+import { OrderSummary } from "ui";
 import { useGlobalStore } from "../../store";
-import { BillingNoDataState } from "../../components";
+import { useBillingStore } from "../../store/billingStore";
+import {
+  BillingNoDataState,
+  CategoriesView,
+  CategoryDetailsView,
+  ProductVariantsView,
+} from "../../components";
 
 const BillingPage = () => {
-  const { products, categories, getProductsByCategory } = useGlobalStore();
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.between("md", "lg"));
+  const { products } = useGlobalStore();
+  const {
+    currentStep,
+    selectedCategory,
+    selectedProduct,
+    orderItems,
 
-  // Show no data state if there are no categories or products
-  if (categories.length === 0 || products.length === 0) {
+    addToOrder,
+    updateOrderItemQuantity,
+    removeOrderItem,
+    goBack,
+  } = useBillingStore();
+
+  if (products.length === 0) {
     return (
-      <BillingNoDataState 
+      <BillingNoDataState
         title="No Products Available"
         message="There are no products or categories available for billing at the moment."
       />
     );
   }
 
+  const handleVariantSelect = (variant: any) => {
+    if (selectedProduct) {
+      addToOrder(variant, selectedProduct.name, 1);
+      // After adding to order, go back to category details
+      goBack();
+    }
+  };
+
+  const handlePrintBill = () => {
+    // TODO: Implement print bill functionality
+    console.log("Printing bill for items:", orderItems);
+  };
+
+  const renderLeftSection = () => {
+    switch (currentStep) {
+      case "categories":
+        return <CategoriesView />;
+      case "categoryDetails":
+        return selectedCategory ? <CategoryDetailsView /> : null;
+      case "variants":
+        return selectedProduct ? <ProductVariantsView /> : null;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box
       sx={{
-        padding: "20px",
+        padding: "16px",
         backgroundColor: "#f5f5f5",
-        minHeight: "calc(100vh - 120px)",
+        height: "100%",
       }}
     >
-      {/* Products and Categories */}
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
-          backgroundColor: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          marginBottom: "20px",
+          height: "100%",
+          flexWrap: "nowrap",
         }}
       >
-        <Typography variant="h6" gutterBottom>
-          Available Products
-        </Typography>
-        <Box sx={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-          {categories.map((category) => (
-            <Box
-              key={category.id}
-              sx={{
-                border: "1px solid #e0e0e0",
-                borderRadius: "8px",
-                padding: "16px",
-                minWidth: "200px",
-              }}
-            >
-              <Typography variant="subtitle1" gutterBottom>
-                {category.name}
-              </Typography>
-              {getProductsByCategory(category.id).map((product) => (
-                <Box
-                  key={product.id}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "8px 0",
-                    borderBottom: "1px solid #f0f0f0",
-                  }}
-                >
-                  <Typography variant="body2">{product.name}</Typography>
-                  <Typography variant="body2" color="primary">
-                    ${product.price}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-          ))}
-        </Box>
-      </Box>
+        {/* Left Section - Product Selection (2/3 width on desktop, full width on tablet) */}
+        <Grid item xs={12} md={8}>
+          <Box
+            sx={{
+              backgroundColor: "#ffffff",
+              borderRadius: isTablet ? "12px" : "16px",
+              padding: isTablet ? "16px" : "24px",
+              height: "100%",
+              overflowY: "auto",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+            }}
+          >
+            {renderLeftSection()}
+          </Box>
+        </Grid>
 
-      {/* Billing Actions */}
-      <Box
-        sx={{
-          backgroundColor: "white",
-          padding: "40px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="h5" color="text.secondary" gutterBottom>
-          Ready for Billing
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          All data has been loaded successfully. You can now proceed with
-          billing operations.
-        </Typography>
-      </Box>
+        {/* Right Section - Order Summary (1/3 width on desktop, fixed width on tablet) */}
+        <Grid item xs={12} md={4}>
+          <OrderSummary
+            orderItems={orderItems}
+            onUpdateQuantity={updateOrderItemQuantity}
+            onRemoveItem={removeOrderItem}
+            onPrintBill={handlePrintBill}
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 };

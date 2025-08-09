@@ -1,0 +1,1 @@
+export { ProductVariantCard } from "./ProductVariantCard";

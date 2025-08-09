@@ -2,131 +2,74 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalStore } from "./globalStore";
-
-// Mock API functions - replace with actual API calls when available
-const getEmployeeByToken = async () => {
-  // This would typically call your actual API
-  // For now, we'll simulate getting employee data from localStorage
-  const token = localStorage.getItem("token");
-  if (!token) throw new Error("No token found");
-
-  // Mock employee data - replace with actual API call
-  return {
-    id: "emp-001",
-    name: "John Doe",
-    email: "john@shop.com",
-    role: "cashier",
-    shopId: "shop-001",
-  };
-};
-
-const getShopById = async (shopId: string) => {
-  // Mock shop data - replace with actual API call
-  return {
-    id: shopId,
-    name: "Main Store",
-    address: "123 Main St, City",
-  };
-};
-
-const getProductsByShop = async (shopId: string) => {
-  // Mock products data - replace with actual API call
-  return [
-    {
-      id: "prod-001",
-      name: "Product 1",
-      price: 10.99,
-      categoryId: "cat-001",
-      shopId,
-    },
-    {
-      id: "prod-002",
-      name: "Product 2",
-      price: 15.99,
-      categoryId: "cat-001",
-      shopId,
-    },
-    {
-      id: "prod-003",
-      name: "Product 3",
-      price: 8.99,
-      categoryId: "cat-002",
-      shopId,
-    },
-  ];
-};
-
-const getCategoriesByShop = async (shopId: string) => {
-  // Mock categories data - replace with actual API call
-  return [
-    {
-      id: "cat-001",
-      name: "Electronics",
-      shopId,
-    },
-    {
-      id: "cat-002",
-      name: "Clothing",
-      shopId,
-    },
-  ];
-};
+import {
+  getCategoriesByShopId,
+  getCustomersByShopId,
+  getEmployeeData,
+  getProductVariantsByShopId,
+  getProductsByShopId,
+  getShopById,
+} from "../services";
 
 const useFetchDataForGlobalStore = () => {
   const navigate = useNavigate();
   const {
-    setEmployee,
     setShop,
-    setProducts,
+    setCustomers,
     setCategories,
-    setIsProductDataFetching,
-    setIsCategoryDataFetching,
+    setProducts,
+    setEmployee,
+    setProductVariants,
   } = useGlobalStore();
 
-  // Fetch employee data
   const employeeQuery = useQuery({
     queryKey: ["employee"],
-    queryFn: getEmployeeByToken,
-    retry: false,
+    queryFn: getEmployeeData,
+    select: (data) => data.data,
   });
 
   useEffect(() => {
     if (!employeeQuery.isSuccess) return;
+
     setEmployee(employeeQuery.data);
   }, [employeeQuery.isSuccess, employeeQuery.data, setEmployee]);
 
-  // Fetch shop data when employee data is available
   const shopQuery = useQuery({
     queryKey: ["shop", employeeQuery.data?.shopId],
-    queryFn: () => getShopById(employeeQuery.data!.shopId),
+    queryFn: () => getShopById(employeeQuery.data?.shopId ?? ""),
     enabled: !!employeeQuery.data?.shopId,
-    retry: false,
+    select: (data) => data.data,
   });
 
   useEffect(() => {
     if (!shopQuery.isSuccess) return;
     setShop(shopQuery.data);
-  }, [shopQuery.isSuccess, shopQuery.data, setShop]);
 
-  // Fetch products when shop data is available
-  const productsQuery = useQuery({
-    queryKey: ["shop", shopQuery.data?.id, "products"],
-    queryFn: () => getProductsByShop(shopQuery.data!.id),
-    enabled: !!shopQuery.data?.id,
-    retry: false,
+    if (!shopQuery.data) {
+      navigate("/shops/create");
+    }
+  }, [navigate, shopQuery.isSuccess, shopQuery.data, setShop]);
+
+  const customersQuery = useQuery({
+    queryKey: ["shop", employeeQuery.data?.shopId, "customers"],
+    queryFn: () => getCustomersByShopId(employeeQuery.data?.shopId ?? ""),
+    enabled: !!employeeQuery.data?.shopId,
+    select: (data) => data.data,
   });
 
   useEffect(() => {
-    if (!productsQuery.isSuccess) return;
-    setProducts(productsQuery.data);
-  }, [productsQuery.isSuccess, productsQuery.data, setProducts]);
+    if (!customersQuery.isSuccess) return;
+    setCustomers(customersQuery.data);
+  }, [customersQuery.isSuccess, customersQuery.data, setCustomers]);
 
-  // Fetch categories when shop data is available
   const categoriesQuery = useQuery({
-    queryKey: ["shop", shopQuery.data?.id, "categories"],
-    queryFn: () => getCategoriesByShop(shopQuery.data!.id),
-    enabled: !!shopQuery.data?.id,
-    retry: false,
+    queryKey: ["shop", employeeQuery.data?.shopId, "categories"],
+    queryFn: () => getCategoriesByShopId(employeeQuery.data?.shopId ?? ""),
+    enabled: !!employeeQuery.data?.shopId,
+    select: (data) => data.data,
+    meta: {
+      includeSubCategories: true,
+    },
   });
 
   useEffect(() => {
@@ -134,34 +77,48 @@ const useFetchDataForGlobalStore = () => {
     setCategories(categoriesQuery.data);
   }, [categoriesQuery.isSuccess, categoriesQuery.data, setCategories]);
 
-  // Set loading states
-  useEffect(() => {
-    setIsProductDataFetching(productsQuery.isLoading);
-  }, [productsQuery.isLoading, setIsProductDataFetching]);
+  const productsQuery = useQuery({
+    queryKey: ["shop", employeeQuery.data?.shopId, "products"],
+    queryFn: () => getProductsByShopId(employeeQuery.data?.shopId ?? ""),
+    enabled: !!employeeQuery.data?.shopId,
+
+    select: (data) => data.data,
+  });
 
   useEffect(() => {
-    setIsCategoryDataFetching(categoriesQuery.isLoading);
-  }, [categoriesQuery.isLoading, setIsCategoryDataFetching]);
+    if (!productsQuery.isSuccess) return;
+    setProducts(productsQuery.data);
+  }, [productsQuery.isSuccess, productsQuery.data, setProducts]);
 
-  // Handle authentication errors
+  const productVariantsQuery = useQuery({
+    queryKey: ["shop", employeeQuery.data?.shopId, "product-variants"],
+    queryFn: () => getProductVariantsByShopId(employeeQuery.data?.shopId ?? ""),
+    enabled: !!employeeQuery.data?.shopId,
+    select: (data) => data.data,
+  });
+
   useEffect(() => {
-    if (employeeQuery.isError) {
-      localStorage.removeItem("token");
-      navigate("/login");
-    }
-  }, [employeeQuery.isError, navigate]);
+    if (!productVariantsQuery.isSuccess) return;
+    setProductVariants(productVariantsQuery.data);
+  }, [
+    productVariantsQuery.isSuccess,
+    productVariantsQuery.data,
+    setProductVariants,
+  ]);
 
   const isLoading = useMemo(
     () =>
       employeeQuery.isLoading ||
       shopQuery.isLoading ||
       productsQuery.isLoading ||
-      categoriesQuery.isLoading,
+      categoriesQuery.isLoading ||
+      productVariantsQuery.isLoading,
     [
-      employeeQuery.isLoading,
-      shopQuery.isLoading,
-      productsQuery.isLoading,
       categoriesQuery.isLoading,
+      employeeQuery.isLoading,
+      productsQuery.isLoading,
+      shopQuery.isLoading,
+      productVariantsQuery.isLoading,
     ]
   );
 
@@ -170,12 +127,14 @@ const useFetchDataForGlobalStore = () => {
       employeeQuery.isError ||
       shopQuery.isError ||
       productsQuery.isError ||
-      categoriesQuery.isError,
+      categoriesQuery.isError ||
+      productVariantsQuery.isError,
     [
-      employeeQuery.isError,
-      shopQuery.isError,
-      productsQuery.isLoading,
       categoriesQuery.isError,
+      employeeQuery.isError,
+      productsQuery.isError,
+      shopQuery.isError,
+      productVariantsQuery.isError,
     ]
   );
 
@@ -187,8 +146,6 @@ const useFetchDataForGlobalStore = () => {
     isAllDataLoaded,
     isLoading,
     isError,
-    employee: employeeQuery.data,
-    shop: shopQuery.data,
   };
 };
 
