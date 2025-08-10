@@ -8,7 +8,7 @@ export const ProductSchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3, maxLength: 50 }),
   tamilName: optionalType(Type.String({ minLength: 3, maxLength: 50 })),
-  image: optionalType(Type.String({ format: "uri" })),
+  image: optionalType(Type.String()),
 
   description: optionalType(Type.String()),
   categoryId: optionalType(Type.String()),

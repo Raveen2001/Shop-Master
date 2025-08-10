@@ -5,6 +5,7 @@ import FastifyCors from "@fastify/cors";
 import FastifyRateLimit from "@fastify/rate-limit";
 import FastifyAuth from "@fastify/auth";
 import FastifyJwt from "@fastify/jwt";
+import FastifyMultipart from "@fastify/multipart";
 
 import SwaggerPlugin from "./plugins/swagger.plugin.js";
 import DrizzlePlugin from "./plugins/drizzle.plugin.js";
@@ -31,6 +32,9 @@ import ProductRoutes from "./routes/product.js";
 
 import OrderRoutes from "./routes/order.js";
 import OrderItemRoutes from "./routes/order-item.js";
+import UploadRoutes from "./routes/upload.js";
+import fastifyStatic from "@fastify/static";
+import path from "path";
 
 const fastify: FastifyTypebox = Fastify({
   logger: {
@@ -63,6 +67,14 @@ fastify.register(FastifyAuth);
 const secret: string = process.env.JWT_SECRET as string;
 fastify.register(FastifyJwt, {
   secret,
+});
+
+// register multipart for file uploads
+fastify.register(FastifyMultipart, {
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+    files: 1, // Only allow 1 file per request
+  },
 });
 
 // ---- register custom plugins ----
@@ -98,6 +110,17 @@ fastify.register(ProductVariantRoutes, { prefix: "/product-variants" });
 
 fastify.register(OrderRoutes, { prefix: "/orders" });
 fastify.register(OrderItemRoutes, { prefix: "/order-items" });
+
+fastify.register(fastifyStatic, {
+  root: path.join(process.cwd(), "uploads"),
+  prefix: "/uploads/",
+  setHeaders: (res) => {
+    res.setHeader("Cache-Control", "public, max-age=31536000");
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  },
+});
+
+fastify.register(UploadRoutes, { prefix: "/upload" });
 
 // start the server
 fastify.listen({ port: 9000, host: "127.0.0.1" }, async (err) => {

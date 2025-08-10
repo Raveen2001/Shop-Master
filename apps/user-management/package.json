@@ -20,8 +20,10 @@
     "@fastify/cors": "^8.3.0",
     "@fastify/helmet": "^11.0.0",
     "@fastify/jwt": "^7.2.0",
+    "@fastify/multipart": "^8.0.3",
     "@fastify/one-line-logger": "^1.2.0",
     "@fastify/rate-limit": "^8.0.3",
+    "@fastify/static": "^7.0.0",
     "@fastify/swagger": "^8.8.0",
     "@fastify/swagger-ui": "^1.9.2",
     "@fastify/type-provider-typebox": "^3.3.0",
@@ -39,7 +41,7 @@
     "nodemon": "^2.0.22",
     "tsconfig": "*",
     "tsx": "^4.20.3",
-    "typescript": "^5.1.6",
-    "types": "*"
+    "types": "*",
+    "typescript": "^5.1.6"
   }
 }

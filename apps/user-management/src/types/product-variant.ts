@@ -10,7 +10,6 @@ export const ProductVariantSchema = Type.Object({
   salePrice: Type.Number(),
   mrp: Type.Number(),
   onlyForBilling: Type.Boolean({ default: false }),
-  isLoose: Type.Boolean({ default: false }),
   noOfUnits: Type.Number(),
   unit: Type.Union([
     Type.Literal("KG"),

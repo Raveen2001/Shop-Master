@@ -29,5 +29,11 @@
       "cache": false
     }
   },
-  "globalEnv": ["JWT_SECRET", "DATABASE_URL"]
+  "globalEnv": [
+    "JWT_SECRET",
+    "DATABASE_URL",
+    "REACT_APP_API_BASE_URL",
+    "REACT_APP_IMAGE_BASE_URL",
+    "API_PORT"
+  ]
 }

@@ -22,6 +22,10 @@ declare module "fastify" {
   interface FastifyRequest {
     userInfo: TToken;
   }
+
+  interface FastifyReply {
+    sendFile(filename: string, options?: any): FastifyReply;
+  }
 }
 
 type FastifyTypebox = FastifyInstance<

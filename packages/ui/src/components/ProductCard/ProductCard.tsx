@@ -3,6 +3,9 @@ import { Box, Typography, Chip, Card } from "@mui/material";
 import { TProductData, TProductVariantData } from "schema";
 import { formatCurrency } from "../../utils/currency";
 
+// import env variables from process.env
+const { VITE_IMAGE_BASE_URL } = import.meta.env;
+
 interface ProductCardProps {
   product: TProductData;
   onClick: (product: TProductData) => void;
@@ -52,7 +55,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     >
       <Box className="p-4 text-center">
         <Box className="mx-auto mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-          <Typography variant="h4" color="textSecondary">
+          {product.image ? (
+            <img
+              src={`${VITE_IMAGE_BASE_URL}${product.image}`}
+              alt={product.tamilName || product.name}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                // Fallback to text if image fails to load
+                e.currentTarget.style.display = "none";
+                e.currentTarget.nextElementSibling?.classList.remove("hidden");
+              }}
+            />
+          ) : null}
+          <Typography
+            variant="h4"
+            color="textSecondary"
+            className={product.image ? "hidden" : ""}
+          >
             {(product.tamilName || product.name).charAt(0).toUpperCase()}
           </Typography>
         </Box>

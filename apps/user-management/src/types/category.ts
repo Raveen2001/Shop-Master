@@ -5,7 +5,7 @@ export const CategorySchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3, maxLength: 50 }),
   tamilName: optionalType(Type.String({ minLength: 3, maxLength: 50 })),
-  image: optionalType(Type.String({ format: "uri" })),
+  image: optionalType(Type.String()),
   parentId: optionalType(Type.String()),
   createdAt: Type.String({ format: "date-time" }),
   updatedAt: Type.String({ format: "date-time" }),

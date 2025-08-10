@@ -47,13 +47,13 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
   fastify.post<{
     Body: TNewProductCategoryDB;
   }>("/create", CreateCategoryOpts, async (req, reply) => {
-    const categoryBody = req.body;
-    categoryBody.ownerId = req.userInfo.data.id;
+    const categoryData = req.body;
+    categoryData.ownerId = req.userInfo.data.id;
 
     const { insertedId } = (
       await fastify.db
         .insert(productCategoriesDB)
-        .values(categoryBody)
+        .values(categoryData)
         .onConflictDoNothing()
         .returning({ insertedId: productCategoriesDB.id })
     )[0];

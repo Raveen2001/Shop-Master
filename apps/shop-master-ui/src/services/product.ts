@@ -20,7 +20,7 @@ export const getProductById = (id: string) => {
   };
 };
 
-export const createProduct = (brand: TProductFormSchema) => {
+export const createProduct = (product: TProductFormSchema) => {
   const url = "/products/create";
-  return axiosClient.post<TProductData>(url, brand);
+  return axiosClient.post<TProductData>(url, product);
 };

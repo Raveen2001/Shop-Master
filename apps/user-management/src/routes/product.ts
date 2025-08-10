@@ -24,10 +24,12 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
     Body: TNewProductsDB;
   }>("/create", CreateProductOpts, async (req, reply) => {
     const { includeVariants } = req.query;
+    const productData = req.body;
+
     const { insertedId } = (
       await fastify.db
         .insert(productsDB)
-        .values(req.body)
+        .values(productData)
         .onConflictDoNothing()
         .returning({ insertedId: productsDB.id })
     )[0];

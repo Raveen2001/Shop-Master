@@ -2,6 +2,9 @@ import React from "react";
 import { Box, Typography, Card } from "@mui/material";
 import { TCategoryData } from "schema";
 
+// import env variables from process.env
+const { VITE_IMAGE_BASE_URL } = import.meta.env;
+
 interface CategoryCardProps {
   category: TCategoryData;
   onClick: (category: TCategoryData) => void;
@@ -20,7 +23,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
         <Box className="mx-auto mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200">
           {category.image ? (
             <img
-              src={category.image}
+              src={`${VITE_IMAGE_BASE_URL}${category.image}`}
               alt={category.tamilName || category.name}
               className="h-full w-full object-cover"
             />

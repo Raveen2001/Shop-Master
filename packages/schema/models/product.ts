@@ -13,6 +13,7 @@ export const ProductFormSchema = object({
   tamilName: string().trim().nullable(),
   description: string().trim().nullable(),
   categoryId: string().trim().nullable(),
+  image: string().url("Image must be a valid URL").nullable(),
 });
 
 export type TProductFormSchema = InferType<typeof ProductFormSchema>;

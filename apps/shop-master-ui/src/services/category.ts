@@ -12,6 +12,5 @@ export const getCategoriesBy = (by: "owner" | "shop", id: string) => {
 
 export const createCategory = (category: TCategoryFormSchema) => {
   const url = "/categories/create";
-
   return axiosClient.post<TCategoryData>(url, category);
 };
