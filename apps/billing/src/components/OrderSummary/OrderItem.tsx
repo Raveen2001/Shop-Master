@@ -1,14 +1,22 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { QuantitySelector } from "ui";
-import { TOrderItem, useBillingStore } from "../../store/billingStore";
+import { useBillingStore } from "../../store/billingStore";
+import { TOrderItemFormSchema } from "schema";
+import { useGlobalStore } from "../../store";
 
 type OrderItemProps = {
-  orderItem: TOrderItem;
+  orderItem: TOrderItemFormSchema;
 };
 
 const OrderItem = ({ orderItem }: OrderItemProps) => {
+  const store = useGlobalStore();
   const { removeOrderItem, updateOrderItemQuantity } = useBillingStore();
+
+  const productVariant = store.productVariants.find(
+    (product) => product.id === orderItem.productVariantId
+  );
+
   return (
     <Box
       sx={{
@@ -37,21 +45,20 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
               marginBottom: "2px",
             }}
           >
-            {orderItem.productName}
+            {productVariant?.name}
           </Typography>
           <Typography
             variant="caption"
             color="text.secondary"
             sx={{ fontSize: "16px" }}
           >
-            {orderItem.variant.name} - {orderItem.variant.noOfUnits}{" "}
-            {orderItem.variant.unit}
+            {productVariant?.noOfUnits} {productVariant?.unit}
           </Typography>
         </Box>
 
         <IconButton
           size="small"
-          onClick={() => removeOrderItem(orderItem.variant.id)}
+          onClick={() => removeOrderItem(orderItem.productVariantId)}
           sx={{
             color: "error.main",
             padding: "4px",
@@ -72,11 +79,12 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
           <QuantitySelector
             quantity={orderItem.quantity}
             onUpdateQuantity={(quantity) =>
-              updateOrderItemQuantity(orderItem.variant.id, quantity)
+              updateOrderItemQuantity(orderItem.productVariantId, quantity)
             }
           />
           <Typography variant="body2" sx={{ fontSize: "16px" }}>
-            {orderItem.totalQuantityWithUnit}
+            {orderItem.quantity * (productVariant?.noOfUnits ?? 1)}{" "}
+            {productVariant?.unit}
           </Typography>
         </Box>
         <Typography

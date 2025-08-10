@@ -6,6 +6,8 @@ export const OrderItemFormSchema = object({
   quantity: number()
     .min(1, "Quantity should be atleast 1")
     .required("Quantity is required"),
+
+  totalPrice: number().required("Total price is required"),
   discount: number()
     .min(0, "Discount should be atleast 0")
     .required("Discount is required"),

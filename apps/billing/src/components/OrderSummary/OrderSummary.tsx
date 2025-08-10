@@ -4,6 +4,7 @@ import { Box, Typography, Button, IconButton, Divider } from "@mui/material";
 import { TProductVariantData } from "schema";
 import { useBillingStore } from "../../store/billingStore";
 import OrderItem from "./OrderItem";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 
 interface OrderItem {
   variant: TProductVariantData;
@@ -14,16 +15,14 @@ interface OrderItem {
 
 interface OrderSummaryProps {
   onPrintBill: () => void;
+  isCreatingOrder: boolean;
 }
 
-export const OrderSummary: React.FC<OrderSummaryProps> = ({ onPrintBill }) => {
-  const { orderItems, updateOrderItemQuantity, removeOrderItem } =
-    useBillingStore();
-
-  const totalAmount = orderItems.reduce(
-    (sum, item) => sum + item.totalPrice,
-    0
-  );
+export const OrderSummary: React.FC<OrderSummaryProps> = ({
+  onPrintBill,
+  isCreatingOrder,
+}) => {
+  const { order, clearOrder } = useBillingStore();
 
   return (
     <Box
@@ -41,17 +40,27 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ onPrintBill }) => {
         },
       }}
     >
-      <Typography
-        variant="h5"
+      <Box
         sx={{
-          fontWeight: 600,
-          marginBottom: "20px",
-          textAlign: "center",
-          color: "text.primary",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        Order Summary
-      </Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 600,
+            color: "text.primary",
+          }}
+        >
+          Order Summary
+        </Typography>
+
+        <IconButton onClick={clearOrder} sx={{ color: "error.main" }}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
 
       <Box
         sx={{
@@ -60,7 +69,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ onPrintBill }) => {
           marginBottom: "20px",
         }}
       >
-        {orderItems.length === 0 ? (
+        {order.items.length === 0 ? (
           <Box
             sx={{
               display: "flex",
@@ -79,8 +88,8 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ onPrintBill }) => {
             </Typography>
           </Box>
         ) : (
-          orderItems.map((item) => (
-            <OrderItem key={item.variant.id} orderItem={item} />
+          order.items.map((item) => (
+            <OrderItem key={item.productVariantId} orderItem={item} />
           ))
         )}
       </Box>
@@ -111,7 +120,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ onPrintBill }) => {
             color: "success.main",
           }}
         >
-          ₹{totalAmount}
+          ₹{order.total}
         </Typography>
       </Box>
 
@@ -120,7 +129,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ onPrintBill }) => {
         fullWidth
         size="large"
         onClick={onPrintBill}
-        disabled={orderItems.length === 0}
+        disabled={order.items.length === 0 || isCreatingOrder}
         sx={{
           backgroundColor: "#2196f3",
           "&:hover": {
@@ -132,7 +141,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ onPrintBill }) => {
           borderRadius: "8px",
         }}
       >
-        Print Bill
+        {isCreatingOrder ? "Creating Order..." : "Print Bill"}
       </Button>
     </Box>
   );

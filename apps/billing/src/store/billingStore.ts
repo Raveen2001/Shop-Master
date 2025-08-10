@@ -1,15 +1,14 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { TCategoryData, TProductData, TProductVariantData } from "schema";
-
-export type TOrderItem = {
-  variant: TProductVariantData;
-  productName: string;
-  quantity: number;
-
-  totalQuantityWithUnit: string;
-  totalPrice: number;
-};
+import {
+  TCategoryData,
+  TEmployeeData,
+  TOrderData,
+  TOrderFormSchema,
+  TProductData,
+  TProductVariantData,
+} from "schema";
+import { INITIAL_ORDER } from "../constants/order";
 
 type IBillingStore = {
   // Navigation state
@@ -21,7 +20,7 @@ type IBillingStore = {
   categoryPath: TCategoryData[]; // Track navigation path
 
   // Order state
-  orderItems: TOrderItem[];
+  order: TOrderFormSchema;
 
   // Navigation actions
   setCurrentStep: (
@@ -41,10 +40,10 @@ type IBillingStore = {
   ) => void;
   updateOrderItemQuantity: (variantId: string, newQuantity: number) => void;
   removeOrderItem: (variantId: string) => void;
+  completeOrder: (employee: TEmployeeData) => TOrderFormSchema;
   clearOrder: () => void;
 
   // Utility
-  getTotalAmount: () => number;
   getOrderItemCount: () => number;
 };
 
@@ -54,7 +53,8 @@ export const useBillingStore = create(
     selectedCategory: undefined,
     selectedProduct: undefined,
     categoryPath: [],
-    orderItems: [],
+
+    order: INITIAL_ORDER,
 
     setCurrentStep: (step) => {
       set((state) => {
@@ -135,67 +135,88 @@ export const useBillingStore = create(
 
     addToOrder: (variant, productName, quantity = 1) => {
       set((state) => {
-        const existingItemIndex = state.orderItems.findIndex(
-          (item) => item.variant.id === variant.id
+        const existingItemIndex = state.order.items.findIndex(
+          (item) => item.productVariantId === variant.id
         );
 
         if (existingItemIndex >= 0) {
           // Update existing item quantity
-          state.orderItems[existingItemIndex].quantity += quantity;
-          state.orderItems[existingItemIndex].totalPrice =
-            state.orderItems[existingItemIndex].quantity * variant.salePrice;
+          state.order.items[existingItemIndex].quantity += quantity;
+          state.order.items[existingItemIndex].totalPrice =
+            state.order.items[existingItemIndex].quantity * variant.salePrice;
         } else {
           // Add new item
-          state.orderItems.push({
-            variant,
-            productName,
+          state.order.items.push({
+            productVariantId: variant.id,
+            unitPrice: variant.salePrice,
             quantity,
-            totalQuantityWithUnit: `${quantity * variant.noOfUnits} ${
-              variant.unit
-            }`,
             totalPrice: quantity * variant.salePrice,
+            discount: 0,
           });
         }
+
+        const totalPrice = state.order.items.reduce(
+          (sum, item) => sum + item.totalPrice,
+          0
+        );
+        state.order.total = totalPrice;
       });
     },
 
     updateOrderItemQuantity: (variantId, newQuantity) => {
       set((state) => {
-        const item = state.orderItems.find(
-          (item) => item.variant.id === variantId
+        const item = state.order.items.find(
+          (item) => item.productVariantId === variantId
         );
         if (item) {
           item.quantity = newQuantity;
-          item.totalQuantityWithUnit = `${
-            newQuantity * item.variant.noOfUnits
-          } ${item.variant.unit}`;
-          item.totalPrice = newQuantity * item.variant.salePrice;
+          item.totalPrice = newQuantity * item.unitPrice;
+
+          const totalPrice = state.order.items.reduce(
+            (sum, item) => sum + item.totalPrice,
+            0
+          );
+          state.order.total = totalPrice;
         }
       });
     },
 
     removeOrderItem: (variantId) => {
       set((state) => {
-        state.orderItems = state.orderItems.filter(
-          (item) => item.variant.id !== variantId
+        state.order.items = state.order.items.filter(
+          (item) => item.productVariantId !== variantId
         );
+
+        const totalPrice = state.order.items.reduce(
+          (sum, item) => sum + item.totalPrice,
+          0
+        );
+        state.order.total = totalPrice;
       });
     },
 
     clearOrder: () => {
       set((state) => {
-        state.orderItems = [];
+        state.order = INITIAL_ORDER;
       });
-    },
-
-    getTotalAmount: () => {
-      const state = get();
-      return state.orderItems.reduce((sum, item) => sum + item.totalPrice, 0);
     },
 
     getOrderItemCount: () => {
       const state = get();
-      return state.orderItems.length;
+      return state.order.items.length;
+    },
+
+    completeOrder: (employee) => {
+      set((state) => {
+        state.order.subTotal = state.order.total;
+
+        state.order.shopId = employee.shopId;
+        state.order.ownerId = employee.ownerId;
+        state.order.createdByEmployeeId = employee.id;
+        state.order.createdAt = new Date();
+        state.order.status = "COMPLETED";
+      });
+      return get().order;
     },
   }))
 );

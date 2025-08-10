@@ -11,11 +11,11 @@ interface ProductVariantCardProps {
 export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
   variant,
 }) => {
-  const { addToOrder, updateOrderItemQuantity, selectedProduct, orderItems } =
+  const { addToOrder, updateOrderItemQuantity, selectedProduct, order } =
     useBillingStore();
 
-  const isVariantAddedToOrder = orderItems.some(
-    (item) => item.variant.id === variant.id
+  const isVariantAddedToOrder = order.items.some(
+    (item) => item.productVariantId === variant.id
   );
 
   return (
@@ -157,7 +157,7 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
         ) : (
           <QuantitySelector
             quantity={
-              orderItems.find((item) => item.variant.id === variant.id)
+              order.items.find((item) => item.productVariantId === variant.id)
                 ?.quantity || 1
             }
             onUpdateQuantity={(quantity) =>

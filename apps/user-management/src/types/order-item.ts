@@ -8,6 +8,7 @@ export const OrderItemSchema = Type.Object({
   quantity: Type.Number(),
   unitPrice: Type.Number(),
   discount: Type.Number(),
+  totalPrice: Type.Number(),
 });
 
 export const OrderItemSchemaIn = Type.Omit(OrderItemSchema, ["id"]);

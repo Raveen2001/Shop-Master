@@ -1,4 +1,4 @@
-import { Box, Grid, useTheme, useMediaQuery } from "@mui/material";
+import { Box, Grid, useTheme, useMediaQuery, toast } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
 import {
@@ -8,19 +8,35 @@ import {
   ProductVariantsView,
 } from "../../components";
 import { OrderSummary } from "../../components/OrderSummary";
+import { useMutation } from "@tanstack/react-query";
+import { createOrder } from "../../services/order";
+import { TOrderFormSchema } from "schema";
 
 const BillingPage = () => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between("md", "lg"));
-  const { products } = useGlobalStore();
+  const { products, employee } = useGlobalStore();
   const {
     currentStep,
     selectedCategory,
     selectedProduct,
-
-    addToOrder,
-    goBack,
+    order,
+    completeOrder,
   } = useBillingStore();
+
+  const { mutate: createOrderMutation, isPending: isCreatingOrder } =
+    useMutation({
+      mutationFn: (data: TOrderFormSchema) =>
+        createOrder(employee!.shopId, data),
+      onSuccess: () => {
+        toast.success("Order created successfully");
+      },
+      onError: () => {
+        toast.error("Failed to create order");
+      },
+
+      mutationKey: ["createOrder"],
+    });
 
   if (products.length === 0) {
     return (
@@ -31,9 +47,12 @@ const BillingPage = () => {
     );
   }
 
-  const handlePrintBill = () => {
+  const handlePrintBill = async () => {
     // TODO: Implement print bill functionality
     console.log("Printing bill for items");
+    const completedOrder = completeOrder(employee!);
+
+    createOrderMutation(completedOrder);
   };
 
   const renderLeftSection = () => {
@@ -83,7 +102,10 @@ const BillingPage = () => {
 
         {/* Right Section - Order Summary (1/3 width on desktop, fixed width on tablet) */}
         <Grid item xs={12} md={4}>
-          <OrderSummary onPrintBill={handlePrintBill} />
+          <OrderSummary
+            onPrintBill={handlePrintBill}
+            isCreatingOrder={isCreatingOrder}
+          />
         </Grid>
       </Grid>
     </Box>
