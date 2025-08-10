@@ -22,23 +22,19 @@ import { TIDStringQueryParam, TPhoneQueryParam } from "../types/common.js";
 const OrderRoutes: FastifyPluginAsyncTypebox = async (
   fastify: FastifyTypebox
 ) => {
+  fastify.addHook("preHandler", fastify.auth([fastify.verifyJwt]));
+
   // create order
   fastify.post<{
     Querystring: TOrderQueryString;
     Body: TOrderSchemaIn;
-  }>("/create", CreateOrderOpts, async (req, reply) => {
-    const {
-      includeCreatedByEmployee,
-      includeCustomer,
-      includeOwner,
-      includeShop,
-      includeItems,
-    } = req.query;
-
+  }>("", CreateOrderOpts, async (req, reply) => {
     const data = {
       ...req.body,
       createdAt: new Date(req.body.createdAt),
     };
+    console.log(data);
+
     const { insertedId } = (
       await fastify.db
         .insert(ordersDB)
@@ -56,16 +52,19 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
 
     const order = await fastify.db.query.ordersDB.findFirst({
       where: (ordersDB, { eq }) => eq(ordersDB.id, insertedId),
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-        customer: includeCustomer || undefined,
-        createdByEmployee: includeCreatedByEmployee || undefined,
-        items: includeItems || undefined,
-      },
     });
 
-    reply.code(201).send(order);
+    if (!order) {
+      reply.code(404).send({ message: "Order not found" });
+      return;
+    }
+
+    const orderWithItems = {
+      ...order,
+      items: orderItems,
+    };
+
+    reply.code(201).send(orderWithItems);
   });
 
   // get order by id
@@ -73,24 +72,10 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
     Params: TOrderQueryParam;
     Querystring: TOrderQueryString;
   }>("/:id", QueryOrderOpts, async (req, reply) => {
-    const {
-      includeCreatedByEmployee,
-      includeCustomer,
-      includeOwner,
-      includeShop,
-      includeItems,
-    } = req.query;
-
     const order = await fastify.db.query.ordersDB.findFirst({
       where: (ordersDB, { eq }) => eq(ordersDB.id, req.params.id),
 
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-        customer: includeCustomer || undefined,
-        createdByEmployee: includeCreatedByEmployee || undefined,
-        items: includeItems || undefined,
-      },
+      with: {},
     });
 
     if (!order) {
@@ -107,23 +92,10 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
   ): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TIDStringQueryParam;
-      const {
-        includeCreatedByEmployee,
-        includeCustomer,
-        includeOwner,
-        includeShop,
-        includeItems,
-      } = req.query as TOrderQueryString;
 
       const orders = await fastify.db.query.ordersDB.findMany({
         where: (ordersDB, { eq }) => eq(ordersDB[queryBy], id),
-        with: {
-          owner: includeOwner || undefined,
-          shop: includeShop || undefined,
-          customer: includeCustomer || undefined,
-          createdByEmployee: includeCreatedByEmployee || undefined,
-          items: includeItems || undefined,
-        },
+        with: {},
       });
 
       reply.code(200).send(orders);
@@ -146,23 +118,10 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
     Querystring: TOrderQueryString;
   }>("/customer/:phone", QueryOrdersByPhoneOpts, async (req, reply) => {
     const { phone } = req.params as TPhoneQueryParam;
-    const {
-      includeCreatedByEmployee,
-      includeCustomer,
-      includeOwner,
-      includeShop,
-      includeItems,
-    } = req.query as TOrderQueryString;
 
     const orders = await fastify.db.query.ordersDB.findMany({
       where: (ordersDB, { eq }) => eq(ordersDB["customerPhone"], phone),
-      with: {
-        owner: includeOwner || undefined,
-        shop: includeShop || undefined,
-        customer: includeCustomer || undefined,
-        createdByEmployee: includeCreatedByEmployee || undefined,
-        items: includeItems || undefined,
-      },
+      with: {},
     });
 
     reply.code(200).send(orders);
@@ -192,17 +151,8 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
   function getPagedOrdersBy(queryBy: TOrderQueryByFields): RouteHandlerMethod {
     return async (req, reply) => {
       const { id } = req.params as TIDStringQueryParam;
-      const {
-        includeCreatedByEmployee,
-        includeCustomer,
-        includeOwner,
-        includeShop,
-        includeItems,
-        limit,
-        order,
-        orderBy,
-        page,
-      } = req.query as TPagableOrderQueryString;
+      const { limit, order, orderBy, page } =
+        req.query as TPagableOrderQueryString;
 
       const offset =
         page !== undefined && limit !== undefined ? page * limit : undefined;
@@ -210,11 +160,7 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
       const orders = await fastify.db.query.ordersDB.findMany({
         where: (ordersDB, { eq }) => eq(ordersDB[queryBy], id),
         with: {
-          owner: includeOwner || undefined,
-          shop: includeShop || undefined,
-          customer: includeCustomer || undefined,
-          createdByEmployee: includeCreatedByEmployee || undefined,
-          items: includeItems || undefined,
+          items: true,
         },
         limit: limit,
         offset: offset,
@@ -262,30 +208,14 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
     QueryPagedOrdersByPhoneOpts,
     async (req, reply) => {
       const { phone } = req.params;
-      const {
-        includeCreatedByEmployee,
-        includeCustomer,
-        includeOwner,
-        includeShop,
-        includeItems,
-        limit,
-        order,
-        orderBy,
-        page,
-      } = req.query;
+      const { limit, order, orderBy, page } = req.query;
 
       const offset =
         page !== undefined && limit !== undefined ? page * limit : undefined;
 
       const orders = await fastify.db.query.ordersDB.findMany({
         where: (ordersDB, { eq }) => eq(ordersDB["customerPhone"], phone),
-        with: {
-          owner: includeOwner || undefined,
-          shop: includeShop || undefined,
-          customer: includeCustomer || undefined,
-          createdByEmployee: includeCreatedByEmployee || undefined,
-          items: includeItems || undefined,
-        },
+        with: {},
         limit: limit,
         offset: offset,
         orderBy: (ordersDB, { asc, desc }) => {

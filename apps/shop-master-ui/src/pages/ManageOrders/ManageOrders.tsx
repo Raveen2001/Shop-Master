@@ -34,11 +34,10 @@ const ManageOrders = () => {
       </Box>
       <ReactQueryPaginatedTable
         columns={columnsDefs}
-        queryFn={getPagedOrdersBy("shop", selectedShopId, {
-          includeItems: true,
-        })}
+        queryFn={getPagedOrdersBy("shop", selectedShopId)}
         queryKeys={["shop", selectedShopId, "orders"]}
         defaultSortColumn={{ id: "createdAt", desc: true }}
+        enabled={!!selectedShopId}
       />
     </Box>
   );

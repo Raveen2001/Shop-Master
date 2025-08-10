@@ -2,8 +2,8 @@ import { RouteShorthandOptions } from "fastify";
 import {
   OrderQueryParamSchema,
   OrderQueryStringSchema,
+  OrderSchema,
   OrderSchemaIn,
-  OrderSchemaOut,
   PagableOrderQueryStringSchema,
   PagableOrderSchemaOut,
   TOrderQueryByFields,
@@ -21,7 +21,7 @@ export const CreateOrderOpts: RouteShorthandOptions = {
     body: OrderSchemaIn,
     querystring: OrderQueryStringSchema,
     response: {
-      201: OrderSchemaOut,
+      201: OrderSchema,
     },
   },
 };
@@ -33,7 +33,7 @@ export const QueryOrderOpts: RouteShorthandOptions = {
     params: OrderQueryParamSchema,
     querystring: OrderQueryStringSchema,
     response: {
-      200: OrderSchemaOut,
+      200: OrderSchema,
     },
   },
 };
@@ -46,7 +46,7 @@ export const getOptsForQueryOrderBy = (by: TOrderQueryByFields) => {
       params: IDStringQueryParamSchema,
       querystring: OrderQueryStringSchema,
       response: {
-        200: Type.Array(OrderSchemaOut),
+        200: Type.Array(OrderSchema),
       },
     },
   };
@@ -73,7 +73,7 @@ export const QueryOrdersByPhoneOpts: RouteShorthandOptions = {
     params: PhoneQueryParamSchema,
     querystring: OrderQueryStringSchema,
     response: {
-      200: Type.Array(OrderSchemaOut),
+      200: Type.Array(OrderSchema),
     },
   },
 };

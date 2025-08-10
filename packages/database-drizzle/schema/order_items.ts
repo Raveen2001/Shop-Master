@@ -16,6 +16,7 @@ export const orderItemsDB = pgTable("order_items", {
 
   quantity: integer("quantity").notNull(),
   unitPrice: integer("unit_price").notNull(),
+  totalPrice: integer("total_price").default(0).notNull(),
   discount: integer("discount").notNull(),
 });
 

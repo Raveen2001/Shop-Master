@@ -7,14 +7,10 @@ export const createOrder = (data: TOrderFormSchema) => {
   return axiosClient.post<TOrderData>(url, data);
 };
 
-export const getPagedOrdersBy = (
-  by: "shop" | "owner",
-  id: string,
-  options: Record<string, any>
-) => {
+export const getPagedOrdersBy = (by: "shop" | "owner", id: string) => {
   const url = `/orders/${by}/${id}/paged`;
   return async (context: QueryFunctionContext) => {
-    const queryParams = { ...context.meta, ...options };
+    const queryParams = { ...context.meta };
 
     return axiosClient.get<IPaginatedData<TOrderData>>(url, {
       params: queryParams,

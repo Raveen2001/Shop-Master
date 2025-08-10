@@ -31,6 +31,7 @@ interface IReactQueryPaginatedTableProps<T, K> {
     context: QueryFunctionContext,
   ) => Promise<AxiosResponse<IPaginatedData<T>>>;
   queryKeys: string[];
+  enabled?: boolean;
   defaultSortColumn?: ColumnSort;
   disableSorting?: boolean;
 }
@@ -40,6 +41,7 @@ const ReactQueryPaginatedTable = <T, K>({
   queryKeys,
   defaultSortColumn,
   disableSorting,
+  enabled,
 }: IReactQueryPaginatedTableProps<T, K>) => {
   const [sorting, setSorting] = useState<SortingState>(
     (defaultSortColumn ? [defaultSortColumn] : []) as SortingState,
@@ -66,6 +68,7 @@ const ReactQueryPaginatedTable = <T, K>({
     queryKey: [...queryKeys, fetchOptions],
     queryFn: queryFn,
     meta: fetchOptions,
+    enabled,
   });
 
   const containsData = React.useMemo(() => {

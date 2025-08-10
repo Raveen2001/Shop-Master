@@ -37,22 +37,11 @@ export const OrderSchema = Type.Object({
 
 export const OrderSchemaIn = Type.Omit(OrderSchema, ["id", "updatedAt"]);
 
-export const OrderSchemaOut = Type.Intersect([
-  Type.Omit(OrderSchema, ["items"]),
-  Type.Object({
-    shop: Type.Optional(ShopSchemaOut),
-    owner: Type.Optional(OwnerSchemaWithoutPassword),
-    customer: Type.Optional(CustomerSchema),
-    createdByEmployee: optionalType(EmployeeSchemaWithoutPassword),
-    items: Type.Optional(Type.Array(OrderItemSchema)),
-  }),
-]);
-
-export const PagableOrderSchemaOut = PagableSchema(OrderSchemaOut);
+export const PagableOrderSchemaOut = PagableSchema(OrderSchema);
 
 export type TOrderSchema = Static<typeof OrderSchema>;
 export type TOrderSchemaIn = Static<typeof OrderSchemaIn>;
-export type TOrderSchemaOut = Static<typeof OrderSchemaOut>;
+export type TOrderSchemaOut = Static<typeof OrderSchema>;
 
 export type TPagableOrderSchemaOut = Static<typeof PagableOrderSchemaOut>;
 
@@ -60,13 +49,7 @@ export const OrderQueryParamSchema = Type.Object({
   id: Type.Integer(),
 });
 
-export const OrderQueryStringSchema = Type.Object({
-  includeShop: Type.Boolean({ default: false }),
-  includeOwner: Type.Boolean({ default: false }),
-  includeCustomer: Type.Boolean({ default: false }),
-  includeCreatedByEmployee: Type.Boolean({ default: false }),
-  includeItems: Type.Boolean({ default: false }),
-});
+export const OrderQueryStringSchema = Type.Object({});
 
 export const PagableOrderQueryStringSchema = Type.Intersect([
   OrderQueryStringSchema,
