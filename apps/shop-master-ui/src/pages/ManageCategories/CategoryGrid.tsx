@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Card, Grid, LinearProgress } from "ui";
+import { Box, Typography, Card, Grid, LinearProgress, CategoryCard } from "ui";
 import { useCategoryContext } from "./CategoryContext";
 
 interface CategoryGridProps {
@@ -35,34 +35,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ onCategoryClick }) => {
     <Grid container spacing={3}>
       {filteredCategories.map((category) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={category.id}>
-          <Card
-            className="h-full cursor-pointer transition-shadow duration-200 hover:shadow-lg"
-            onClick={() => onCategoryClick(category)}
-          >
-            <Box className="p-4 text-center">
-              <Box className="mx-auto mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-                {category.image ? (
-                  <img
-                    src={category.image}
-                    alt={category.tamilName || category.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <Typography variant="h4" color="textSecondary">
-                    {(category.tamilName || category.name)
-                      .charAt(0)
-                      .toUpperCase()}
-                  </Typography>
-                )}
-              </Box>
-              <Typography variant="h6" className="font-medium">
-                {category.tamilName || category.name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Click to view sub-categories
-              </Typography>
-            </Box>
-          </Card>
+          <CategoryCard category={category} onClick={onCategoryClick} />
         </Grid>
       ))}
     </Grid>

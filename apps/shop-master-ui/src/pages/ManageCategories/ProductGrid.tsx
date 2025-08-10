@@ -1,4 +1,13 @@
-import { Box, Typography, Card, Grid, LinearProgress, Chip, Button } from "ui";
+import {
+  Box,
+  Typography,
+  Card,
+  Grid,
+  LinearProgress,
+  Chip,
+  Button,
+  ProductCard,
+} from "ui";
 import { useCategoryContext } from "./CategoryContext";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductData } from "schema";
@@ -69,29 +78,11 @@ const ProductGrid = () => {
     <Grid container spacing={3}>
       {filteredProducts.map((product) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-          <Card
-            className="h-full cursor-pointer transition-shadow duration-200 hover:shadow-lg"
+          <ProductCard
+            product={product}
             onClick={() => navigate(`/products/${product.id}`)}
-          >
-            <Box className="p-4 text-center">
-              <Box className="mx-auto mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-                <Typography variant="h4" color="textSecondary">
-                  {product.name.charAt(0).toUpperCase()}
-                </Typography>
-              </Box>
-              <Typography variant="h6" className="font-medium">
-                {product.name}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                className="line-clamp-2"
-              >
-                {product.description || "No description"}
-              </Typography>
-              {renderVariantInfo(product)}
-            </Box>
-          </Card>
+            variants={product.variants || []}
+          />
         </Grid>
       ))}
     </Grid>
