@@ -31,7 +31,7 @@ export const CategoryDetailsView: React.FC = () => {
   const breadcrumbItems = [
     { label: "Categories", onClick: () => goBack() },
     ...categoryPath.map((cat, index) => ({
-      label: cat.name,
+      label: cat.tamilName || cat.name,
       onClick: () => {
         // Navigate to specific category in path
         navigateToCategoryInPath(index);
@@ -55,7 +55,7 @@ export const CategoryDetailsView: React.FC = () => {
           color: "text.primary",
         }}
       >
-        {selectedCategory?.name}
+        {selectedCategory?.tamilName || selectedCategory?.name}
       </Typography>
 
       {/* Subcategories Section */}

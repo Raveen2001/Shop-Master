@@ -8,9 +8,9 @@ export const columnsDefs: ColumnDef<TProductVariantData, any>[] = [
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",
-    cell: ({ getValue }) => {
-      const name = getValue();
-      return <strong>{name}</strong>;
+    cell: ({ row }) => {
+      const { name, tamilName } = row.original;
+      return <strong>{tamilName || name}</strong>;
     },
   }),
 

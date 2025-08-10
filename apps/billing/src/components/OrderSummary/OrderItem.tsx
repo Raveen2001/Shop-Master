@@ -45,7 +45,7 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
               marginBottom: "2px",
             }}
           >
-            {productVariant?.name}
+            {productVariant?.tamilName || productVariant?.name}
           </Typography>
           <Typography
             variant="caption"

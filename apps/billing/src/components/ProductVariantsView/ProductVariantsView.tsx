@@ -25,10 +25,13 @@ export const ProductVariantsView: React.FC = () => {
         items={[
           { label: "Categories", onClick: () => navigateToCategoryInPath(-1) },
           {
-            label: selectedCategory?.name || "Unknown Category",
+            label:
+              selectedCategory?.tamilName ||
+              selectedCategory?.name ||
+              "Unknown Category",
             onClick: () => goBack(),
           },
-          { label: selectedProduct?.name || "" },
+          { label: selectedProduct?.tamilName || selectedProduct?.name || "" },
         ]}
         onBack={goBack}
         showBackButton={true}
@@ -36,7 +39,9 @@ export const ProductVariantsView: React.FC = () => {
 
       {/* Product Details Section */}
       <Box>
-        <Typography variant="h6">{selectedProduct?.name}</Typography>
+        <Typography variant="h6">
+          {selectedProduct?.tamilName || selectedProduct?.name}
+        </Typography>
 
         {selectedProduct?.description && (
           <Typography variant="body1">

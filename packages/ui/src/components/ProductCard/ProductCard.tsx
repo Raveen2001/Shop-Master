@@ -53,11 +53,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <Box className="p-4 text-center">
         <Box className="mx-auto mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200">
           <Typography variant="h4" color="textSecondary">
-            {product.name.charAt(0).toUpperCase()}
+            {(product.tamilName || product.name).charAt(0).toUpperCase()}
           </Typography>
         </Box>
         <Typography variant="h6" className="font-medium">
-          {product.name}
+          {product.tamilName || product.name}
         </Typography>
         <Typography
           variant="body2"

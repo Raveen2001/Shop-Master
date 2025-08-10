@@ -58,6 +58,12 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
                   helperText={formErrors.name?.message}
                 />
                 <TextField
+                  label="Tamil Name"
+                  {...register("tamilName")}
+                  error={!!formErrors.tamilName}
+                  helperText={formErrors.tamilName?.message}
+                />
+                <TextField
                   label="Shop"
                   contentEditable={false}
                   value={shop?.name ?? ""}

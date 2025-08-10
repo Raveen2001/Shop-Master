@@ -1,9 +1,11 @@
 import { Static, Type } from "@sinclair/typebox";
+import { optionalType } from "./utils.js";
 
 export const ProductVariantSchema = Type.Object({
   id: Type.String(),
   productId: Type.String(),
   name: Type.String({ minLength: 3, maxLength: 50 }),
+  tamilName: optionalType(Type.String({ minLength: 3, maxLength: 50 })),
   acquiredPrice: Type.Number(),
   salePrice: Type.Number(),
   mrp: Type.Number(),

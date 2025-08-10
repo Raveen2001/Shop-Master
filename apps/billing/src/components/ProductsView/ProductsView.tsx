@@ -25,7 +25,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       <Breadcrumb
         items={[
           { label: "Categories", onClick: onBack },
-          { label: selectedCategory.name },
+          { label: selectedCategory.tamilName || selectedCategory.name },
         ]}
         onBack={onBack}
         showBackButton={true}

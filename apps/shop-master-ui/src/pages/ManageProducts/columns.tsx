@@ -22,10 +22,10 @@ export const columnsDefs: ColumnDef<TProductData, any>[] = [
 
     cell: ({
       row: {
-        original: { name },
+        original: { name, tamilName },
       },
     }) => {
-      return <TableProfileCell name={name} />;
+      return <TableProfileCell name={tamilName || name} />;
     },
   }),
 
@@ -40,7 +40,10 @@ export const columnsDefs: ColumnDef<TProductData, any>[] = [
     }) => {
       if (!category) return "-";
       return (
-        <TableProfileCell name={category.name} imageUrl={category.image} />
+        <TableProfileCell
+          name={category.tamilName || category.name}
+          imageUrl={category.image}
+        />
       );
     },
   }),

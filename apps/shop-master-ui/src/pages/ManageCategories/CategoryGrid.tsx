@@ -44,17 +44,19 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ onCategoryClick }) => {
                 {category.image ? (
                   <img
                     src={category.image}
-                    alt={category.name}
+                    alt={category.tamilName || category.name}
                     className="h-full w-full object-cover"
                   />
                 ) : (
                   <Typography variant="h4" color="textSecondary">
-                    {category.name.charAt(0).toUpperCase()}
+                    {(category.tamilName || category.name)
+                      .charAt(0)
+                      .toUpperCase()}
                   </Typography>
                 )}
               </Box>
               <Typography variant="h6" className="font-medium">
-                {category.name}
+                {category.tamilName || category.name}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Click to view sub-categories

@@ -92,6 +92,13 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   helperText={formErrors.name?.message}
                 />
 
+                <TextField
+                  label="Tamil Name"
+                  {...register("tamilName")}
+                  error={!!formErrors.tamilName}
+                  helperText={formErrors.tamilName?.message}
+                />
+
                 <Controller
                   control={control}
                   name="unit"
@@ -164,13 +171,18 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                 <TextField
                   label="Product"
                   contentEditable={false}
-                  value={selectedProduct?.name ?? ""}
+                  value={
+                    (selectedProduct?.tamilName || selectedProduct?.name) ?? ""
+                  }
                 />
 
                 <TextField
                   label="Category"
                   contentEditable={false}
-                  value={selectedCategory?.name ?? "No Category"}
+                  value={
+                    (selectedCategory?.tamilName || selectedCategory?.name) ??
+                    "No Category"
+                  }
                 />
 
                 <FormControlLabel

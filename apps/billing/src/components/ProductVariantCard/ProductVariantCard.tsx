@@ -48,7 +48,7 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
               marginBottom: "4px",
             }}
           >
-            {selectedProduct?.name}
+            {selectedProduct?.tamilName || selectedProduct?.name}
           </Typography>
 
           <Typography
@@ -61,7 +61,7 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
               marginBottom: "8px",
             }}
           >
-            {variant.name}
+            {variant.tamilName || variant.name}
           </Typography>
         </Box>
 

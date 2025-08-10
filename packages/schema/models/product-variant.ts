@@ -12,6 +12,7 @@ export const ProductVariantFormSchema = object({
     .min(3, "Name must be at least 3 characters")
     .required("Name is required"),
 
+  tamilName: string().trim().nullable(),
   unit: string()
     .oneOf(UNITS, "Unit should be valid")
     .required("Unit is required"),

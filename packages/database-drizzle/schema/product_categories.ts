@@ -13,6 +13,7 @@ import { ownersDB } from "./owners";
 export const productCategoriesDB = pgTable("product_categories", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
+  tamilName: text("tamil_name"),
   image: text("image"),
 
   parentId: uuid("parent_id").references(

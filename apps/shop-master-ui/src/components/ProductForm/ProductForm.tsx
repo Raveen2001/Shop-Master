@@ -62,6 +62,13 @@ const ProductForm: FC<TProductFormProps> = (props) => {
                 helperText={formErrors.name?.message}
               />
 
+              <TextField
+                label="Tamil Name"
+                {...register("tamilName")}
+                error={!!formErrors.tamilName}
+                helperText={formErrors.tamilName?.message}
+              />
+
               <FormControl error={!!formErrors.categoryId}>
                 <InputLabel id="category-label">Category *</InputLabel>
                 <Select
@@ -79,7 +86,7 @@ const ProductForm: FC<TProductFormProps> = (props) => {
                       selected={category.id === props.categoryId}
                     >
                       <TableProfileCell
-                        name={category.name}
+                        name={category.tamilName || category.name}
                         imageUrl={category.image}
                       />
                     </MenuItem>

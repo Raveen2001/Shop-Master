@@ -72,16 +72,18 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
                     <Box component={"li"} {...(props as any)} key={option.id}>
                       <Box className="flex flex-col">
                         <Typography variant="body2" className="font-semibold">
-                          {option.product.name}
+                          {option.product.tamilName || option.product.name}
                         </Typography>
                         <Typography variant="caption" className="text-gray-500">
-                          {option.name}
+                          {option.tamilName || option.name}
                         </Typography>
                       </Box>
                     </Box>
                   );
                 }}
-                getOptionLabel={(option) => option.product.name}
+                getOptionLabel={(option) =>
+                  option.product.tamilName || option.product.name
+                }
                 autoHighlight
                 autoFocus
                 renderInput={(params: any) => (
@@ -104,7 +106,11 @@ const OrderItem: FC<OrderItemProps> = ({ orderIdx, orderItem }) => {
           className="w-72"
           label="Variant"
           disabled
-          value={selectedProductVariant?.name ?? ""}
+          value={
+            (selectedProductVariant?.tamilName ||
+              selectedProductVariant?.name) ??
+            ""
+          }
         />
 
         <TextField

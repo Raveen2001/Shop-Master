@@ -19,10 +19,10 @@ export const columnsDefs: ColumnDef<TProductVariantData, any>[] = [
     header: "Name",
     cell: ({
       row: {
-        original: { name },
+        original: { name, tamilName },
       },
     }) => {
-      return <TableProfileCell name={name} />;
+      return <TableProfileCell name={tamilName || name} />;
     },
   }),
 

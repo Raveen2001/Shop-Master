@@ -65,7 +65,9 @@ const ProductDetail = () => {
         </Button>
 
         <Box className="flex-1">
-          <Typography variant="h4">{product.name}</Typography>
+          <Typography variant="h4">
+            {product.tamilName || product.name}
+          </Typography>
           <Typography variant="body2" color="textSecondary">
             Product Details
           </Typography>
@@ -93,7 +95,9 @@ const ProductDetail = () => {
               Category
             </Typography>
             <Typography variant="body1">
-              {product.category?.name || "No category"}
+              {product.category?.tamilName ||
+                product.category?.name ||
+                "No category"}
             </Typography>
           </Box>
 
