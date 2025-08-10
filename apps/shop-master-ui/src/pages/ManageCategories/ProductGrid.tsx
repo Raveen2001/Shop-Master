@@ -1,18 +1,6 @@
-import {
-  Box,
-  Typography,
-  Card,
-  Grid,
-  LinearProgress,
-  Chip,
-  Button,
-  ProductCard,
-} from "ui";
+import { Box, Typography, Grid, LinearProgress, Chip, ProductCard } from "ui";
 import { useCategoryContext } from "./CategoryContext";
 import { useGlobalStore } from "../../store/globalStore";
-import { TProductData } from "schema";
-import { formatCurrency } from "ui";
-import { Visibility } from "ui/icons";
 import { useNavigate } from "react-router-dom";
 
 const ProductGrid = () => {
@@ -22,38 +10,6 @@ const ProductGrid = () => {
   const isProductDataFetching = useGlobalStore(
     (state) => state.isProductDataFetching
   );
-
-  const renderVariantInfo = (product: TProductData) => {
-    if (!product.variants || product.variants.length === 0) {
-      return (
-        <Typography variant="caption" color="textSecondary">
-          No variants
-        </Typography>
-      );
-    }
-
-    // Show the first variant as a preview
-    return (
-      <Box className="mt-2">
-        <Typography variant="caption" color="textSecondary" className="block">
-          {product.variants.length} variants
-        </Typography>
-        <Box className="mt-1 flex items-center gap-2">
-          {product.variants.map((variant) => (
-            <Chip
-              key={variant.id}
-              label={`${variant.noOfUnits} ${variant.unit} - ${formatCurrency(
-                variant.salePrice
-              )}`}
-              size="small"
-              color="primary"
-              variant="outlined"
-            />
-          ))}
-        </Box>
-      </Box>
-    );
-  };
 
   if (isProductDataFetching) {
     return (
