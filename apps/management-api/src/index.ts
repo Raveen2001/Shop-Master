@@ -124,9 +124,9 @@ fastify.register(UploadRoutes, { prefix: "/upload" });
 
 // start the server
 fastify.listen(
-  { 
+  {
     port: Number(process.env.MANAGEMENT_API_PORT ?? 9000),
-    host: '0.0.0.0' // Listen on all network interfaces
+    host: "0.0.0.0", // Listen on all network interfaces
   },
   async (err) => {
     if (err) {
