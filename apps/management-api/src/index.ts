@@ -123,14 +123,17 @@ fastify.register(fastifyStatic, {
 fastify.register(UploadRoutes, { prefix: "/upload" });
 
 // start the server
-fastify.listen({ port: 9000, host: "127.0.0.1" }, async (err) => {
-  if (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
+fastify.listen(
+  { port: Number(process.env.MANAGEMENT_API_PORT ?? 9000) },
+  async (err) => {
+    if (err) {
+      fastify.log.error(err);
+      process.exit(1);
+    }
 
-  fastify.swagger();
-});
+    fastify.swagger();
+  }
+);
 
 fastify.setErrorHandler(async (error, request, reply) => {
   console.error(error);
