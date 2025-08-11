@@ -16,29 +16,48 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
 }) => {
   return (
     <Card
-      className="h-full cursor-pointer transition-shadow duration-200 hover:shadow-lg"
+      className="h-full cursor-pointer transition-shadow duration-200 hover:shadow-lg overflow-hidden"
       onClick={() => onClick(category)}
     >
-      <Box className="p-4 text-center">
-        <Box className="mx-auto mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-          {category.image ? (
-            <img
-              src={`${VITE_IMAGE_BASE_URL}${category.image}`}
-              alt={category.tamilName || category.name}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <Typography variant="h4" color="textSecondary">
+      <Box
+        className="relative h-full min-h-[200px] flex items-end"
+        sx={{
+          backgroundImage: category.image
+            ? `url(${VITE_IMAGE_BASE_URL}${category.image})`
+            : "none",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Gradient overlay for better text visibility */}
+        <Box className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+        {/* Fallback background when no image */}
+        {!category.image && (
+          <Box className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <Typography
+              variant="h1"
+              color="white"
+              className="text-6xl font-bold"
+            >
               {(category.tamilName || category.name).charAt(0).toUpperCase()}
             </Typography>
-          )}
+          </Box>
+        )}
+
+        {/* Text content */}
+        <Box className="relative p-4 w-full z-10">
+          <Typography
+            variant="h6"
+            className="font-bold text-white mb-1 drop-shadow-lg"
+          >
+            {category.tamilName || category.name}
+          </Typography>
+          <Typography variant="body2" className="text-white/90 drop-shadow-md">
+            Click to view sub-categories
+          </Typography>
         </Box>
-        <Typography variant="h6" className="font-medium">
-          {category.tamilName || category.name}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          Click to view sub-categories
-        </Typography>
       </Box>
     </Card>
   );

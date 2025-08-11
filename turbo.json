@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalDependencies": [".env.local"],
   "ui": "tui",
   "tasks": {
     "build": {
@@ -8,8 +8,9 @@
       "outputs": [
         "dist/**",
         ".next/**",
-        "apps/user-management/dist/**",
-        "apps/billing/dist/**"
+        "apps/shop-master-ui/dist/**",
+        "apps/billing/dist/**",
+        "apps/management-api/dist/**"
       ]
     },
     "lint": {
@@ -29,11 +30,5 @@
       "cache": false
     }
   },
-  "globalEnv": [
-    "JWT_SECRET",
-    "DATABASE_URL",
-    "REACT_APP_API_BASE_URL",
-    "REACT_APP_IMAGE_BASE_URL",
-    "API_PORT"
-  ]
+  "globalEnv": ["JWT_SECRET", "DATABASE_URL", "MANAGEMENT_API_PORT"]
 }

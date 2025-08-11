@@ -29,6 +29,8 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
     shop,
     owner,
   } = useCategoryForm(props);
+
+  console.log("props", props);
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">Create a new Category</Typography>

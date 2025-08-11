@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1754385622094,
-      "tag": "0000_broad_surge",
+      "when": 1754818314277,
+      "tag": "0000_perfect_midnight",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1754810283833,
-      "tag": "0001_cool_mindworm",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1754811842429,
-      "tag": "0002_mixed_mariko_yashida",
+      "when": 1754821810509,
+      "tag": "0001_flowery_talisman",
       "breakpoints": true
     }
   ]

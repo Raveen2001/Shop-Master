@@ -137,21 +137,18 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
 
                 <TextField
                   label="Acquired Price *"
-                  type="number"
                   {...register("acquiredPrice")}
                   error={!!formErrors.acquiredPrice}
                   helperText={formErrors.acquiredPrice?.message}
                 />
                 <TextField
                   label="MRP *"
-                  type="number"
                   {...register("mrp")}
                   error={!!formErrors.mrp}
                   helperText={formErrors.mrp?.message}
                 />
                 <TextField
                   label="Sale Price *"
-                  type="number"
                   {...register("salePrice")}
                   error={!!formErrors.salePrice}
                   helperText={formErrors.salePrice?.message}

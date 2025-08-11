@@ -1,5 +1,6 @@
-import { IconButton, Box, Typography } from "@mui/material";
+import { IconButton, Box, TextField } from "@mui/material";
 import { Remove as RemoveIcon, Add as AddIcon } from "@mui/icons-material";
+import { useState, useEffect } from "react";
 
 interface QuantitySelectorProps {
   quantity: number;
@@ -10,6 +11,24 @@ const QuantitySelector = ({
   quantity,
   onUpdateQuantity,
 }: QuantitySelectorProps) => {
+  const [inputValue, setInputValue] = useState(quantity.toString());
+
+  // Update input value when quantity prop changes
+  useEffect(() => {
+    setInputValue(quantity.toString());
+  }, [quantity]);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const numValue = parseInt(inputValue, 10);
+    if (!isNaN(numValue) && numValue >= 1) {
+      onUpdateQuantity(numValue);
+    } else {
+      // Reset to current quantity if invalid input
+      setInputValue(quantity.toString());
+    }
+  };
+
   return (
     <Box>
       <Box
@@ -34,17 +53,34 @@ const QuantitySelector = ({
           <RemoveIcon fontSize="small" />
         </IconButton>
 
-        <Typography
-          sx={{
-            padding: "4px 12px",
-            minWidth: "40px",
-            textAlign: "center",
-            fontSize: "14px",
-            fontWeight: 500,
+        <TextField
+          value={inputValue}
+          onChange={handleInputChange}
+          variant="standard"
+          size="small"
+          inputProps={{
+            style: {
+              textAlign: "center",
+              fontSize: "14px",
+              fontWeight: 500,
+              padding: "4px 8px",
+              minWidth: "40px",
+            },
+            min: 1,
+            type: "number",
           }}
-        >
-          {quantity}
-        </Typography>
+          sx={{
+            "& .MuiInput-underline:before": { borderBottom: "none" },
+            "& .MuiInput-underline:after": { borderBottom: "none" },
+            "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+              borderBottom: "none",
+            },
+            "& .MuiInput-root": {
+              fontSize: "14px",
+              fontWeight: 500,
+            },
+          }}
+        />
 
         <IconButton
           size="small"

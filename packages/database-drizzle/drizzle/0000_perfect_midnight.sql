@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS "owners" (
 CREATE TABLE IF NOT EXISTS "product_categories" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
+	"tamil_name" text,
 	"image" text,
 	"parent_id" uuid,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -137,6 +138,7 @@ CREATE TABLE IF NOT EXISTS "product_categories" (
 CREATE TABLE IF NOT EXISTS "products" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
+	"tamil_name" text,
 	"description" text,
 	"image" text,
 	"category_id" uuid NOT NULL,
@@ -150,9 +152,9 @@ CREATE TABLE IF NOT EXISTS "product_variants" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"product_id" uuid NOT NULL,
 	"name" text NOT NULL,
+	"tamil_name" text,
 	"only_for_billing" boolean DEFAULT false,
 	"availability" boolean DEFAULT true,
-	"is_loose" boolean DEFAULT false,
 	"no_of_units" integer NOT NULL,
 	"unit" "unit" NOT NULL,
 	"acquired_price" integer NOT NULL,
@@ -220,6 +222,7 @@ CREATE TABLE IF NOT EXISTS "order_items" (
 	"product_variant_id" uuid NOT NULL,
 	"quantity" integer NOT NULL,
 	"unit_price" integer NOT NULL,
+	"total_price" integer DEFAULT 0 NOT NULL,
 	"discount" integer NOT NULL
 );
 --> statement-breakpoint

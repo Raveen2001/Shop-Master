@@ -19,11 +19,11 @@ export const ProductVariantFormSchema = object({
   noOfUnits: number().required("No of Units is required"),
   acquiredPrice: number()
     .required("Acquired Price is required")
-    .min(1, "Acquired Price must be at least 1"),
+    .min(0, "Acquired Price must be at least 1"),
   salePrice: number()
     .required("Sale Price is required")
-    .min(1, "Sale Price must be at least 1"),
-  mrp: number().required("MRP is required").min(1, "MRP must be at least 1"),
+    .min(0, "Sale Price must be at least 1"),
+  mrp: number().required("MRP is required").min(0, "MRP must be at least 1"),
   onlyForBilling: boolean().default(false),
   availability: boolean().default(true),
 });

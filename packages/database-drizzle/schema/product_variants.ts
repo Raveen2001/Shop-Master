@@ -7,6 +7,7 @@ import {
   uuid,
   text,
   pgEnum,
+  decimal,
 } from "drizzle-orm/pg-core";
 import { productsDB } from "./products";
 import { shopsDB } from "./shops";
@@ -25,9 +26,9 @@ export const productVariantsDB = pgTable("product_variants", {
   noOfUnits: integer("no_of_units").notNull(),
   unit: unitEnum("unit").notNull(),
 
-  acquiredPrice: integer("acquired_price").notNull(),
-  salePrice: integer("sale_price").notNull(),
-  mrp: integer("mrp").notNull(),
+  acquiredPrice: decimal("acquired_price").notNull(),
+  salePrice: decimal("sale_price").notNull(),
+  mrp: decimal("mrp").notNull(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

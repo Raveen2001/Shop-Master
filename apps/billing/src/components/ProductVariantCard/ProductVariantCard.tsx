@@ -41,17 +41,6 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
       >
         <Box sx={{ flex: 1 }}>
           <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              fontSize: "12px",
-              marginBottom: "4px",
-            }}
-          >
-            {selectedProduct?.tamilName || selectedProduct?.name}
-          </Typography>
-
-          <Typography
             variant="h6"
             sx={{
               fontWeight: 600,
@@ -67,11 +56,11 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
 
         <Chip
           label={`${variant.noOfUnits} ${variant.unit}`}
-          size="small"
+          size="medium"
           sx={{
             backgroundColor: "#e8f5e8",
             color: "success.main",
-            fontSize: "12px",
+            fontSize: "16px",
             height: "24px",
           }}
         />

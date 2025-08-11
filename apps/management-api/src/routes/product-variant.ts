@@ -91,6 +91,8 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
         }
       );
 
+      console.log("productVariants", productVariants);
+
       reply.code(200).send(productVariants);
     };
   }

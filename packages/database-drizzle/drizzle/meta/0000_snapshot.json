@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "e013c9ac-af53-4b98-a448-990a51217d96",
+  "id": "a31ab9ea-2b24-408e-a2e3-53d1d66fecc0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "customer_payments": {
@@ -695,6 +695,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "tamil_name": {
+          "name": "tamil_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "image": {
           "name": "image",
           "type": "text",
@@ -795,6 +801,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "tamil_name": {
+          "name": "tamil_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "description": {
           "name": "description",
@@ -909,6 +921,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "tamil_name": {
+          "name": "tamil_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "only_for_billing": {
           "name": "only_for_billing",
           "type": "boolean",
@@ -922,13 +940,6 @@
           "primaryKey": false,
           "notNull": false,
           "default": true
-        },
-        "is_loose": {
-          "name": "is_loose",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
         },
         "no_of_units": {
           "name": "no_of_units",
@@ -1520,6 +1531,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "total_price": {
+          "name": "total_price",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         },
         "discount": {
           "name": "discount",

@@ -69,12 +69,6 @@ const ManageCategories = () => {
         onCreateProduct={openCreateProductModal}
         onBreadcrumbClick={handleBreadcrumbClick}
       />
-
-      {/* Category Grid */}
-      <Box className="mt-8">
-        <CategoryGrid onCategoryClick={handleCategoryClick} />
-      </Box>
-
       {/* Product Grid */}
       {currentCategoryId && (
         <Box className="mt-8">
@@ -84,6 +78,13 @@ const ManageCategories = () => {
           <ProductGrid />
         </Box>
       )}
+      {/* Category Grid */}
+      <Box className="mt-8">
+        <Typography variant="h5" className="mb-4">
+          Categories
+        </Typography>
+        <CategoryGrid onCategoryClick={handleCategoryClick} />
+      </Box>
 
       {/* Create Category Modal */}
       <Dialog
@@ -94,7 +95,7 @@ const ManageCategories = () => {
       >
         <CategoryForm
           onSuccess={closeCreateModal}
-          parentCategoryId={categoryId}
+          parentCategoryId={currentCategoryId}
         />
       </Dialog>
 

@@ -1,7 +1,14 @@
 import { TProductVariantData, TProductVariantFormSchema } from "schema";
 import { axiosClient } from "../utils/axios";
 
-export const createProductVariant = (brand: TProductVariantFormSchema) => {
+export const createProductVariant = (
+  productVariant: TProductVariantFormSchema
+) => {
   const url = "/product-variants/create";
-  return axiosClient.post<TProductVariantData>(url, brand);
+
+  // productVariant.acquiredPrice = Number(productVariant.acquiredPrice);
+  // productVariant.salePrice = Number(productVariant.salePrice);
+  // productVariant.mrp = Number(productVariant.mrp);
+
+  return axiosClient.post<TProductVariantData>(url, productVariant);
 };
