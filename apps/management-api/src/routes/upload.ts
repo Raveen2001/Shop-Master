@@ -54,7 +54,7 @@ const UploadRoutes: FastifyPluginAsyncTypebox = async (
 
       // Save file
       const buffer = await data.toBuffer();
-      await fs.writeFile(filePath, buffer);
+      await fs.writeFile(filePath, new Uint8Array(buffer));
 
       // Return the file URL
       const fileUrl = `/uploads/${filename}`;
