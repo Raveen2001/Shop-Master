@@ -1,7 +1,8 @@
 module.exports = {
   apps: [
     {
-      script: "npm start -w management-api",
+      script:
+        "npx turbo run build --filter=management-api && npm start -w management-api",
       watch: false,
       name: "SHOP MASTER - management-api",
 
