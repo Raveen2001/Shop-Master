@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      script: "./apps/management-api/dist/index.js",
+      script: "npm start -w management-api",
       watch: false,
       name: "SHOP MASTER - management-api",
       error_file: "./logs/management-api/error.log",
