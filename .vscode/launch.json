@@ -7,6 +7,15 @@
       "type": "node-terminal",
       "cwd": "${workspaceFolder}/apps/user-management"
     },
+
+    {
+      "command": "npm run dev",
+      "name": "Debug Billing API",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/apps/billing-api"
+    },
+
     {
       "name": "Edge 5173",
       "request": "launch",
