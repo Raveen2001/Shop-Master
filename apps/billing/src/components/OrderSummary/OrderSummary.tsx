@@ -1,17 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, Button, IconButton, Divider } from "@mui/material";
 
-import { TProductVariantData } from "schema";
 import { useBillingStore } from "../../store/billingStore";
 import OrderItem from "./OrderItem";
-import { Delete as DeleteIcon } from "@mui/icons-material";
-
-interface TOrderItem {
-  variant: TProductVariantData;
-  productName: string;
-  quantity: number;
-  totalPrice: number;
-}
+import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
+import { AddCustomItemModal } from "../AddCustomItemModal";
+import { CustomItemFormData } from "../AddCustomItemModal/AddCustomItemModal";
 
 interface OrderSummaryProps {
   onPrintBill: () => void;
@@ -22,7 +16,13 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
   onPrintBill,
   isCreatingOrder,
 }) => {
-  const { order, clearOrder } = useBillingStore();
+  const { order, clearOrder, addCustomItemToOrder } = useBillingStore();
+  const [isCustomItemModalOpen, setIsCustomItemModalOpen] = useState(false);
+
+  const handleAddCustomItem = (customItem: CustomItemFormData) => {
+    addCustomItemToOrder(customItem);
+    setIsCustomItemModalOpen(false);
+  };
 
   return (
     <Box
@@ -57,9 +57,24 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
           Order Summary
         </Typography>
 
-        <IconButton onClick={clearOrder} sx={{ color: "error.main" }}>
-          <DeleteIcon />
-        </IconButton>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <IconButton
+            onClick={() => setIsCustomItemModalOpen(true)}
+            sx={{
+              color: "primary.main",
+              backgroundColor: "#f5f5f5",
+              "&:hover": {
+                backgroundColor: "#e0e0e0",
+              },
+            }}
+            size="small"
+          >
+            <AddIcon />
+          </IconButton>
+          <IconButton onClick={clearOrder} sx={{ color: "error.main" }}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
       </Box>
 
       <Box
@@ -143,6 +158,12 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
       >
         {isCreatingOrder ? "Creating Order..." : "Print Bill"}
       </Button>
+
+      <AddCustomItemModal
+        open={isCustomItemModalOpen}
+        onClose={() => setIsCustomItemModalOpen(false)}
+        onAddItem={handleAddCustomItem}
+      />
     </Box>
   );
 };

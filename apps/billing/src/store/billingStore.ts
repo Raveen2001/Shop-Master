@@ -3,12 +3,12 @@ import { immer } from "zustand/middleware/immer";
 import {
   TCategoryData,
   TEmployeeData,
-  TOrderData,
   TOrderFormSchema,
   TProductData,
   TProductVariantData,
 } from "schema";
 import { INITIAL_ORDER } from "../constants/order";
+import { CustomItemFormData } from "../components/AddCustomItemModal/AddCustomItemModal";
 
 type IBillingStore = {
   // Navigation state
@@ -35,6 +35,7 @@ type IBillingStore = {
 
   // Order actions
   addToOrder: (variant: TProductVariantData, quantity?: number) => void;
+  addCustomItemToOrder: (customItem: CustomItemFormData) => void;
   updateOrderItemQuantity: (variantId: string, newQuantity: number) => void;
   removeOrderItem: (variantId: string) => void;
   completeOrder: (employee: TEmployeeData) => TOrderFormSchema;
@@ -52,6 +53,7 @@ export const useBillingStore = create(
     categoryPath: [],
 
     order: INITIAL_ORDER,
+    customItems: [],
 
     setCurrentStep: (step) => {
       set((state) => {
@@ -166,6 +168,31 @@ export const useBillingStore = create(
           0
         );
         state.order.total = totalPrice;
+      });
+    },
+
+    addCustomItemToOrder: (customItem) => {
+      set((state) => {
+        // Generate a unique ID for custom items
+        const customItemId = `custom-${Date.now()}`;
+
+        const totalPrice = customItem.quantity * customItem.unitPrice;
+
+        // Add custom item to order
+        state.order.items.push({
+          productVariantId: customItemId,
+          unitPrice: customItem.unitPrice,
+          quantity: customItem.quantity,
+          totalPrice: totalPrice,
+          discount: 0,
+        });
+
+        // Update order total
+        const orderTotal = state.order.items.reduce(
+          (sum, item) => sum + item.totalPrice,
+          0
+        );
+        state.order.total = orderTotal;
       });
     },
 

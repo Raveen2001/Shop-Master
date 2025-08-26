@@ -5,3 +5,4 @@ export { default as BillingNoDataState } from "./BillingNoDataState";
 export { CategoriesView } from "./CategoriesView";
 export { CategoryDetailsView } from "./CategoryDetailsView";
 export { ProductVariantsView } from "./ProductVariantsView";
+export { AddCustomItemModal } from "./AddCustomItemModal";

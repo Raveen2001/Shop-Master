@@ -13,15 +13,25 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
   const store = useGlobalStore();
   const { removeOrderItem, updateOrderItemQuantity } = useBillingStore();
 
-  const productVariant = store.productVariants.find(
-    (product) => product.id === orderItem.productVariantId
-  );
+  // Early return if productVariantId is undefined
+  if (!orderItem.productVariantId) {
+    return null;
+  }
+
+  const productVariantId = orderItem.productVariantId;
+  const isCustomItem = productVariantId.startsWith("custom-");
+
+  const productVariant = !isCustomItem
+    ? store.productVariants.find((product) => product.id === productVariantId)
+    : null;
 
   return (
     <Box
       sx={{
         padding: "12px",
-        border: productVariant?.onlyForBilling
+        border: isCustomItem
+          ? "1px solid #FF9F43"
+          : productVariant?.onlyForBilling
           ? "1px solid #3F9EFF"
           : "1px solid #e0e0e0",
         borderRadius: "8px",
@@ -47,20 +57,33 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
               marginBottom: "2px",
             }}
           >
-            {productVariant?.tamilName || productVariant?.name}
+            {isCustomItem
+              ? "<no name>"
+              : productVariant?.tamilName || productVariant?.name}
           </Typography>
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ fontSize: "16px" }}
-          >
-            {productVariant?.noOfUnits} {productVariant?.unit}
-          </Typography>
+          {!isCustomItem && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontSize: "16px" }}
+            >
+              {productVariant?.noOfUnits} {productVariant?.unit}
+            </Typography>
+          )}
+          {isCustomItem && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ fontSize: "16px" }}
+            >
+              ₹{orderItem.unitPrice}
+            </Typography>
+          )}
         </Box>
 
         <IconButton
           size="small"
-          onClick={() => removeOrderItem(orderItem.productVariantId)}
+          onClick={() => removeOrderItem(productVariantId)}
           sx={{
             color: "error.main",
             padding: "4px",
@@ -81,7 +104,7 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
           <QuantitySelector
             quantity={orderItem.quantity}
             onUpdateQuantity={(quantity) =>
-              updateOrderItemQuantity(orderItem.productVariantId, quantity)
+              updateOrderItemQuantity(productVariantId, quantity)
             }
           />
           {productVariant?.onlyForBilling && (
