@@ -1,0 +1,1 @@
+ALTER TABLE "product_categories" ADD COLUMN "order_priority" integer DEFAULT 0 NOT NULL;

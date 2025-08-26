@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import {
   AnyPgColumn,
+  integer,
   pgTable,
   text,
   timestamp,
@@ -22,6 +23,8 @@ export const productCategoriesDB = pgTable("product_categories", {
       onDelete: "cascade",
     }
   ),
+
+  orderPriority: integer("order_priority").notNull().default(0),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
