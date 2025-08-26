@@ -3,7 +3,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IRequestError, TProductFormSchema, ProductFormSchema } from "schema";
-import { createProduct } from "../../services/product";
+import { createProduct, updateProduct } from "../../services/product";
 import { uploadImage } from "../../services/upload";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductFormProps } from "./ProductForm";
@@ -17,15 +17,11 @@ const useProductForm = (props: TUseProductFormProps) => {
     state.categories,
   ]);
   const [productImage, setProductImage] = useState<File | null>(null);
+  const isEditMode = !!props.product;
 
   const queryClient = useQueryClient();
 
-  const {
-    mutate,
-    isPending: isMutateLoading,
-    isError: isMutateError,
-    error: mutateError,
-  } = useMutation<
+  const createMutation = useMutation<
     Awaited<ReturnType<typeof createProduct>>,
     IRequestError,
     TProductFormSchema
@@ -40,17 +36,39 @@ const useProductForm = (props: TUseProductFormProps) => {
     },
   });
 
+  const updateMutation = useMutation<
+    Awaited<ReturnType<typeof updateProduct>>,
+    IRequestError,
+    { id: string; data: Partial<TProductFormSchema> }
+  >({
+    mutationKey: ["product", "update"],
+    mutationFn: ({ id, data }) => updateProduct(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "products"],
+      });
+      props.onSuccess?.();
+    },
+  });
+
+  const mutation = isEditMode ? updateMutation : createMutation;
+
   const {
     register,
     handleSubmit,
-
     formState: { errors: formErrors },
     getValues: getFormValues,
     setValue: setFormState,
   } = useForm<TProductFormSchema>({
     resolver: yupResolver(ProductFormSchema as any),
     defaultValues: {
-      categoryId: props.categoryId,
+      categoryId: props.categoryId || props.product?.categoryId,
+      name: props.product?.name || "",
+      tamilName: props.product?.tamilName || "",
+      description: props.product?.description || "",
+      image: props.product?.image || null,
+      shopId: props.product?.shopId || selectedShop?.id || "",
+      ownerId: props.product?.ownerId || owner?.id || "",
     },
   });
 
@@ -67,7 +85,7 @@ const useProductForm = (props: TUseProductFormProps) => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      let imageUrl = null;
+      let imageUrl = props.product?.image;
 
       // Upload image if selected
       if (productImage) {
@@ -75,13 +93,17 @@ const useProductForm = (props: TUseProductFormProps) => {
         imageUrl = uploadResponse.url;
       }
 
-      // Create product with image URL
+      // Create/Update product with image URL
       const productData = {
         ...data,
         image: imageUrl,
       };
 
-      mutate(productData);
+      if (isEditMode && props.product) {
+        updateMutation.mutate({ id: props.product.id, data: productData });
+      } else {
+        createMutation.mutate(productData);
+      }
     } catch (error: any) {
       console.error("Error uploading image:", error);
       // Show error to user but don't proceed with product creation
@@ -95,10 +117,10 @@ const useProductForm = (props: TUseProductFormProps) => {
     onSubmit,
     formErrors,
     getFormValues,
-    isMutateError,
-    isMutateLoading,
-    mutateError,
-    mutate,
+    isMutateError: mutation.isError,
+    isMutateLoading: mutation.isPending,
+    mutateError: mutation.error,
+    mutate: mutation.mutate,
     shop: selectedShop,
     owner,
     categories,

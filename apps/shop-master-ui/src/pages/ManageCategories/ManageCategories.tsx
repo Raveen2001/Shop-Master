@@ -7,7 +7,7 @@ import CategoryGrid from "./CategoryGrid";
 import ProductGrid from "./ProductGrid";
 import CategoryForm from "../../components/CategoryForm";
 import ProductForm from "../../components/ProductForm";
-import { TCategoryData } from "schema";
+import { TCategoryData, TProductData } from "schema";
 
 const ManageCategories = () => {
   const navigate = useNavigate();
@@ -16,6 +16,8 @@ const ManageCategories = () => {
   const [categoryToEdit, setCategoryToEdit] = useState<TCategoryData | null>(
     null
   );
+  const [isEditProductModalOpen, setIsEditProductModalOpen] = useState(false);
+  const [productToEdit, setProductToEdit] = useState<TProductData | null>(null);
 
   const {
     currentCategoryId,
@@ -76,6 +78,16 @@ const ManageCategories = () => {
     setCategoryToEdit(null);
   };
 
+  const handleProductEdit = (product: TProductData) => {
+    setProductToEdit(product);
+    setIsEditProductModalOpen(true);
+  };
+
+  const closeEditProductModal = () => {
+    setIsEditProductModalOpen(false);
+    setProductToEdit(null);
+  };
+
   return (
     <Box>
       <CategoryHeader
@@ -90,7 +102,7 @@ const ManageCategories = () => {
           <Typography variant="h5" className="mb-4">
             Products in this category
           </Typography>
-          <ProductGrid />
+          <ProductGrid onProductEdit={handleProductEdit} />
         </Box>
       )}
       {/* Category Grid */}
@@ -141,6 +153,20 @@ const ManageCategories = () => {
           onSuccess={closeEditModal}
           category={categoryToEdit || undefined}
           parentCategoryId={categoryToEdit?.parentId}
+        />
+      </Dialog>
+
+      {/* Edit Product Modal */}
+      <Dialog
+        open={isEditProductModalOpen}
+        onClose={closeEditProductModal}
+        maxWidth="lg"
+        fullWidth
+      >
+        <ProductForm
+          onSuccess={closeEditProductModal}
+          product={productToEdit || undefined}
+          categoryId={productToEdit?.categoryId}
         />
       </Dialog>
     </Box>

@@ -17,10 +17,12 @@ import {
   TableProfileCell,
   ProfileImagePicker,
 } from "ui";
+import { TProductData } from "schema";
 
 export type TProductFormProps = {
   categoryId?: string | null;
   onSuccess?: () => void;
+  product?: TProductData; // For editing existing product
 };
 
 const ProductForm: FC<TProductFormProps> = (props) => {
@@ -38,7 +40,9 @@ const ProductForm: FC<TProductFormProps> = (props) => {
   } = useProductForm(props);
   return (
     <Box className="px-8 py-4">
-      <Typography variant="h5">Create a new Product</Typography>
+      <Typography variant="h5">
+        {props.product ? "Edit Product" : "Create a new Product"}
+      </Typography>
 
       <Box className="h-8" />
 
@@ -47,7 +51,10 @@ const ProductForm: FC<TProductFormProps> = (props) => {
           elevation={5}
           className="flex flex-col items-center justify-between gap-4 p-6"
         >
-          <ProfileImagePicker onImageChange={setProductImage} />
+          <ProfileImagePicker
+            onImageChange={setProductImage}
+            currentImageUrl={props.product?.image}
+          />
           <Button color="error" variant="outlined">
             Delete Product
           </Button>
@@ -128,7 +135,7 @@ const ProductForm: FC<TProductFormProps> = (props) => {
             className="float-right"
             type="submit"
           >
-            Create Product
+            {props.product ? "Update Product" : "Create Product"}
           </LoadingButton>
         </Card>
       </form>

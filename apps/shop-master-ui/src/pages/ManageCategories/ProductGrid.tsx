@@ -1,9 +1,15 @@
+import React from "react";
 import { Box, Typography, Grid, LinearProgress, ProductCard } from "ui";
 import { useCategoryContext } from "./CategoryContext";
 import { useGlobalStore } from "../../store/globalStore";
 import { useNavigate } from "react-router-dom";
+import { TProductData } from "schema";
 
-const ProductGrid = () => {
+interface ProductGridProps {
+  onProductEdit?: (product: TProductData) => void;
+}
+
+const ProductGrid: React.FC<ProductGridProps> = ({ onProductEdit }) => {
   const { filteredProducts } = useCategoryContext();
   const navigate = useNavigate();
 
@@ -38,6 +44,7 @@ const ProductGrid = () => {
             product={product}
             onClick={() => navigate(`/products/${product.id}`)}
             variants={product.variants || []}
+            onEdit={onProductEdit}
           />
         </Grid>
       ))}

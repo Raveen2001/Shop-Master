@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Typography, Chip, Card } from "@mui/material";
+import { Box, Typography, Chip, Card, IconButton } from "@mui/material";
+import { Edit } from "@mui/icons-material";
 import { TProductData, TProductVariantData } from "schema";
 import { formatCurrency } from "../../utils/currency";
 
@@ -10,12 +11,14 @@ interface ProductCardProps {
   product: TProductData;
   onClick: (product: TProductData) => void;
   variants: TProductVariantData[];
+  onEdit?: (product: TProductData) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onClick,
   variants,
+  onEdit,
 }) => {
   const renderVariantInfo = () => {
     if (!variants || variants.length === 0) {
@@ -69,12 +72,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <Card
-      className="h-full cursor-pointer transition-shadow duration-200 hover:shadow-lg min-w-40 w-full overflow-hidden"
-      onClick={() => onClick(product)}
-    >
+    <Card className="h-full transition-shadow duration-200 hover:shadow-lg min-w-40 w-full overflow-hidden">
       <Box
-        className="relative h-full min-h-[280px] flex flex-col"
+        className="relative h-full min-h-[280px] flex flex-col cursor-pointer"
+        onClick={() => onClick(product)}
         sx={{
           backgroundImage: product.image
             ? `url(${VITE_IMAGE_BASE_URL}${product.image})`
@@ -84,6 +85,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           backgroundRepeat: "no-repeat",
         }}
       >
+        {/* Action buttons */}
+        {onEdit && (
+          <Box className="absolute top-2 right-2 z-20">
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(product);
+              }}
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.9)",
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 1)",
+                },
+              }}
+            >
+              <Edit fontSize="small" />
+            </IconButton>
+          </Box>
+        )}
+
         {/* Gradient overlay for better text visibility */}
         <Box className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 

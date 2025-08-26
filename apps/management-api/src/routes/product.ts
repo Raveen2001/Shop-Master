@@ -1,4 +1,5 @@
 import { TNewProductsDB, productsDB } from "database-drizzle";
+import { eq } from "drizzle-orm";
 import FastifyTypebox from "../types/fastify.js";
 import {
   TProductQueryByFields,
@@ -10,6 +11,7 @@ import {
   CreateProductOpts,
   QueryProductOpts,
   QueryProductsByIdOpts,
+  UpdateProductOpts,
 } from "../opts/product.js";
 import { RouteHandlerMethod } from "fastify";
 
@@ -95,6 +97,42 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
     Params: TProductQueryParam;
     Querystring: TProductQueryString;
   }>("/shop/:id", QueryProductsByIdOpts, getProductsBy("shopId"));
+
+  // update product
+  fastify.put<{
+    Params: TProductQueryParam;
+    Body: Partial<TNewProductsDB>;
+  }>("/:id", UpdateProductOpts, async (req, reply) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    // Ensure the product belongs to the user
+    const existingProduct = await fastify.db.query.productsDB.findFirst({
+      where: (productsDB, { eq, and }) =>
+        and(
+          eq(productsDB.id, id),
+          eq(productsDB.ownerId, req.userInfo.data.id)
+        ),
+    });
+
+    if (!existingProduct) {
+      reply.code(404).send({ message: "Product not found or unauthorized" });
+      return;
+    }
+
+    // Update the product
+    const updatedProduct = await fastify.db
+      .update(productsDB)
+      .set({
+        ...updateData,
+        updatedAt: new Date(),
+      })
+      .where(eq(productsDB.id, id))
+      .returning()
+      .then((rows) => rows[0]);
+
+    reply.code(200).send(updatedProduct);
+  });
 };
 
 export default ProductRoutes;

@@ -24,3 +24,11 @@ export const createProduct = (product: TProductFormSchema) => {
   const url = "/products/create";
   return axiosClient.post<TProductData>(url, product);
 };
+
+export const updateProduct = (
+  id: string,
+  product: Partial<TProductFormSchema>
+) => {
+  const url = `/products/${id}`;
+  return axiosClient.put<TProductData>(url, product);
+};
