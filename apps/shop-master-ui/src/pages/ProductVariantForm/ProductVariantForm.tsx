@@ -130,7 +130,6 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
 
                 <TextField
                   label="No of Units *"
-                  type="number"
                   {...register("noOfUnits")}
                   error={!!formErrors.noOfUnits}
                   helperText={formErrors.noOfUnits?.message}

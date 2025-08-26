@@ -23,7 +23,7 @@ export const productVariantsDB = pgTable("product_variants", {
   onlyForBilling: boolean("only_for_billing").default(false),
   availability: boolean("availability").default(true),
 
-  noOfUnits: integer("no_of_units").notNull(),
+  noOfUnits: decimal("no_of_units").notNull(),
   unit: unitEnum("unit").notNull(),
 
   acquiredPrice: decimal("acquired_price").notNull(),

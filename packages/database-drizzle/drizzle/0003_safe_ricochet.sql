@@ -1,0 +1,1 @@
+ALTER TABLE "product_variants" ALTER COLUMN "no_of_units" SET DATA TYPE numeric;
