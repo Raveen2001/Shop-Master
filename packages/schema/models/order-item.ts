@@ -1,7 +1,7 @@
 import { InferType, number, object, string } from "yup";
 
 export const OrderItemFormSchema = object({
-  productVariantId: string().uuid(),
+  productVariantId: string().uuid().nullable(),
   unitPrice: number().required("Unit price is required"),
   quantity: number()
     .min(1, "Quantity should be atleast 1")

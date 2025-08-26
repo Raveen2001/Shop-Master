@@ -240,16 +240,24 @@ export const useBillingStore = create(
     },
 
     completeOrder: (employee) => {
-      set((state) => {
-        state.order.subTotal = state.order.total;
+      const order = structuredClone(get().order);
 
-        state.order.shopId = employee.shopId;
-        state.order.ownerId = employee.ownerId;
-        state.order.createdByEmployeeId = employee.id;
-        state.order.createdAt = new Date();
-        state.order.status = "COMPLETED";
+      order.subTotal = order.total;
+
+      order.shopId = employee.shopId;
+      order.ownerId = employee.ownerId;
+      order.createdByEmployeeId = employee.id;
+      order.createdAt = new Date();
+      order.status = "COMPLETED";
+
+      order.items.forEach((item) => {
+        if (item.productVariantId?.startsWith("custom-")) {
+          item.productVariantId = null;
+        }
       });
-      return get().order;
+
+      console.log(order);
+      return order;
     },
   }))
 );

@@ -1,10 +1,11 @@
 import { Static, Type } from "@sinclair/typebox";
 import { ProductVariantSchema } from "./product-variant.js";
+import { optionalType } from "./utils.js";
 
 export const OrderItemSchema = Type.Object({
   id: Type.String(),
   orderId: Type.String(),
-  productVariantId: Type.String(),
+  productVariantId: optionalType(Type.String()),
   quantity: Type.Number(),
   unitPrice: Type.Number(),
   discount: Type.Number(),

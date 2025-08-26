@@ -16,7 +16,8 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
   onPrintBill,
   isCreatingOrder,
 }) => {
-  const { order, clearOrder, addCustomItemToOrder } = useBillingStore();
+  const { order, clearOrder, addCustomItemToOrder, getOrderItemCount } =
+    useBillingStore();
   const [isCustomItemModalOpen, setIsCustomItemModalOpen] = useState(false);
 
   const handleAddCustomItem = (customItem: CustomItemFormData) => {
@@ -54,7 +55,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
             color: "text.primary",
           }}
         >
-          Order Summary
+          Order Summary ({getOrderItemCount()})
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>

@@ -10,26 +10,28 @@ import {
 import { OrderSummary } from "../../components/OrderSummary";
 import { useMutation } from "@tanstack/react-query";
 import { createOrder } from "../../services/order";
-import { TOrderFormSchema } from "schema";
+import { printBill } from "../../services/printer";
+import { convertOrderToPrinterOrder } from "../../utils/printer";
 
 const BillingPage = () => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.between("md", "lg"));
-  const { products, employee } = useGlobalStore();
+  const { products, employee, productVariants } = useGlobalStore();
   const {
     currentStep,
     selectedCategory,
     selectedProduct,
-    order,
     completeOrder,
+    clearOrder,
   } = useBillingStore();
 
   const { mutate: createOrderMutation, isPending: isCreatingOrder } =
     useMutation({
-      mutationFn: (data: TOrderFormSchema) =>
-        createOrder(employee!.shopId, data),
-      onSuccess: () => {
+      mutationFn: createOrder,
+      onSuccess: (data) => {
         toast.success("Order created successfully");
+        printBill(convertOrderToPrinterOrder(data.data, productVariants));
+        clearOrder();
       },
       onError: () => {
         toast.error("Failed to create order");

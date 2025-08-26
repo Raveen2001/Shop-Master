@@ -1,11 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { PagableQuerySchema, PagableSchema } from "./common.js";
 import { ORDERS_DB_COLUMNS, ORDER_STATUS, ORDER_TYPES } from "database-drizzle";
-import { OwnerSchemaWithoutPassword } from "./owner.js";
-import { ShopSchemaOut } from "./shop.js";
-import { OrderItemForOrderSchema, OrderItemSchema } from "./order-item.js";
-import { CustomerSchema } from "./customer.js";
-import { EmployeeSchemaWithoutPassword } from "./employee.js";
+import { OrderItemForOrderSchema } from "./order-item.js";
 import { optionalType } from "./utils.js";
 
 export const OrderSchema = Type.Object({

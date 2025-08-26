@@ -1,6 +1,6 @@
-import { TOrderFormSchema } from "schema";
+import { TOrderData, TOrderFormSchema } from "schema";
 import { axiosClient } from "../utils/axios";
 
-export const createOrder = async (shopId: string, order: TOrderFormSchema) => {
-  return axiosClient.post(`/orders`, order);
+export const createOrder = async (order: TOrderFormSchema) => {
+  return axiosClient.post<TOrderData>(`/orders`, order);
 };
