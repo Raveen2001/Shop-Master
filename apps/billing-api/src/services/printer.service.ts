@@ -19,9 +19,8 @@ export class PrinterService {
       this.device = new escpos.USB();
       this.printer = new escpos.Printer(this.device);
       console.log("✅ USB thermal printer initialized");
-    } catch (error) {
-      console.error("❌ Failed to initialize USB printer:", error);
-      throw error;
+    } catch (error: any) {
+      console.error("❌ Failed to initialize USB printer:", error.message);
     }
   }
 
