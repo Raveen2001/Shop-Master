@@ -8,7 +8,10 @@ import {
   TProductVariantFormSchema,
   ProductVariantFormSchema,
 } from "schema";
-import { createProductVariant } from "../../services/product-variant";
+import {
+  createProductVariant,
+  updateProductVariant,
+} from "../../services/product-variant";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductVariantFormProps } from "./ProductVariantForm";
 
@@ -44,18 +47,14 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
   );
 
   const queryClient = useQueryClient();
+  const isEditMode = !!props?.variant;
 
-  const {
-    mutate,
-    isPending: isMutateLoading,
-    isError: isMutateError,
-    error: mutateError,
-  } = useMutation<
+  const createMutation = useMutation<
     Awaited<ReturnType<typeof createProductVariant>>,
     IRequestError,
     TProductVariantFormSchema
   >({
-    mutationKey: ["product", "create"],
+    mutationKey: ["product-variant", "create"],
     mutationFn: createProductVariant,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -70,6 +69,28 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     },
   });
 
+  const updateMutation = useMutation<
+    Awaited<ReturnType<typeof updateProductVariant>>,
+    IRequestError,
+    { id: string; data: Partial<TProductVariantFormSchema> }
+  >({
+    mutationKey: ["product-variant", "update"],
+    mutationFn: ({ id, data }) => updateProductVariant(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "products"],
+      });
+      // Call onSuccess callback if provided, otherwise navigate
+      if (props?.onSuccess) {
+        props.onSuccess();
+      } else {
+        navigate("/products");
+      }
+    },
+  });
+
+  const mutation = isEditMode ? updateMutation : createMutation;
+
   const {
     register,
     handleSubmit,
@@ -77,20 +98,28 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     control,
   } = useForm<TProductVariantFormSchema>({
     defaultValues: {
-      availability: true,
-      onlyForBilling: false,
-      mrp: 1,
-      salePrice: 1,
-      acquiredPrice: 1,
-      shopId: selectedShop?.id ?? "",
-      ownerId: owner?.id ?? "",
-      productId: selectedProduct?.id ?? "",
+      availability: props?.variant?.availability ?? true,
+      onlyForBilling: props?.variant?.onlyForBilling ?? false,
+      mrp: props?.variant?.mrp ?? 1,
+      salePrice: props?.variant?.salePrice ?? 1,
+      acquiredPrice: props?.variant?.acquiredPrice ?? 1,
+      name: props?.variant?.name ?? "",
+      tamilName: props?.variant?.tamilName ?? "",
+      unit: props?.variant?.unit ?? "KG",
+      noOfUnits: props?.variant?.noOfUnits ?? 1,
+      shopId: props?.variant?.shopId ?? selectedShop?.id ?? "",
+      ownerId: props?.variant?.ownerId ?? owner?.id ?? "",
+      productId: props?.variant?.productId ?? selectedProduct?.id ?? "",
     },
     resolver: yupResolver(ProductVariantFormSchema as any),
   });
 
   const onSubmit = handleSubmit((data) => {
-    mutate(data);
+    if (isEditMode && props?.variant) {
+      updateMutation.mutate({ id: props.variant.id, data });
+    } else {
+      createMutation.mutate(data);
+    }
   });
 
   return {
@@ -98,10 +127,10 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     control,
     onSubmit,
     formErrors,
-    isMutateError,
-    isMutateLoading,
-    mutateError,
-    mutate,
+    isMutateError: mutation.isError,
+    isMutateLoading: mutation.isPending,
+    mutateError: mutation.error,
+    mutate: mutation.mutate,
     shop: selectedShop,
     owner,
     selectedProduct,

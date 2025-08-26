@@ -19,11 +19,12 @@ import {
   FormHelperText,
 } from "ui";
 import { Controller } from "react-hook-form";
-import { UNITS } from "schema";
+import { UNITS, TProductVariantData } from "schema";
 
 export type TProductVariantFormProps = {
   productId?: string;
   onSuccess?: () => void;
+  variant?: TProductVariantData; // For editing existing variant
 };
 
 const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
@@ -47,7 +48,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
   return (
     <Box className="px-8 py-4">
       <Typography variant="h5">
-        {isModal ? "Add New Product Variant" : "Create a new Product Variant"}
+        {props.variant ? "Edit Product Variant" : "Add New Product Variant"}
       </Typography>
 
       <Box className="h-8" />
@@ -202,7 +203,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
               className="float-right"
               type="submit"
             >
-              {isModal ? "Add Variant" : "Create Product Variant"}
+              {props.variant ? "Update Variant" : "Add Variant"}
             </LoadingButton>
           </Card>
         </Box>

@@ -12,3 +12,11 @@ export const createProductVariant = (
 
   return axiosClient.post<TProductVariantData>(url, productVariant);
 };
+
+export const updateProductVariant = (
+  id: string,
+  productVariant: Partial<TProductVariantFormSchema>
+) => {
+  const url = `/product-variants/${id}`;
+  return axiosClient.put<TProductVariantData>(url, productVariant);
+};

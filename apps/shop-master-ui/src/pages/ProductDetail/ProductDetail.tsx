@@ -4,9 +4,10 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Box, Button, ReactTable, Typography, Card, Dialog } from "ui";
 import { Add, ArrowBack } from "ui/icons";
 import { getProductById } from "../../services/product";
-import { columnsDefs } from "./columns";
+import { createColumnsDefs } from "./columns";
 import ProductVariantForm from "../ProductVariantForm/ProductVariantForm";
 import { useGlobalStore } from "../../store/globalStore";
+import { TProductVariantData } from "schema";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -14,6 +15,9 @@ const ProductDetail = () => {
   const queryClient = useQueryClient();
   const [isCreateVariantModalOpen, setIsCreateVariantModalOpen] =
     useState(false);
+  const [isEditVariantModalOpen, setIsEditVariantModalOpen] = useState(false);
+  const [variantToEdit, setVariantToEdit] =
+    useState<TProductVariantData | null>(null);
   const selectedShopId = useGlobalStore((state) => state.selectedShopId);
   const {
     data: productResponse,
@@ -29,11 +33,22 @@ const ProductDetail = () => {
 
   const handleVariantSuccess = () => {
     setIsCreateVariantModalOpen(false);
+    setIsEditVariantModalOpen(false);
     // Refetch the product data to show the new variant
     queryClient.invalidateQueries({ queryKey: ["product", id] });
     queryClient.invalidateQueries({
       queryKey: ["shop", selectedShopId, "products"],
     });
+  };
+
+  const handleVariantEdit = (variant: TProductVariantData) => {
+    setVariantToEdit(variant);
+    setIsEditVariantModalOpen(true);
+  };
+
+  const closeEditVariantModal = () => {
+    setIsEditVariantModalOpen(false);
+    setVariantToEdit(null);
   };
 
   if (isLoading) {
@@ -66,7 +81,7 @@ const ProductDetail = () => {
 
         <Box className="flex-1">
           <Typography variant="h4">
-            {product.tamilName || product.name}
+            {product.tamilName} {`<${product.name}>`}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             Product Details
@@ -136,7 +151,10 @@ const ProductDetail = () => {
           </Button>
         </Box>
 
-        <ReactTable columns={columnsDefs} data={product.variants ?? []} />
+        <ReactTable
+          columns={createColumnsDefs(handleVariantEdit)}
+          data={product.variants ?? []}
+        />
       </Box>
 
       {/* Create Variant Modal */}
@@ -148,6 +166,20 @@ const ProductDetail = () => {
       >
         <ProductVariantForm
           productId={product.id}
+          onSuccess={handleVariantSuccess}
+        />
+      </Dialog>
+
+      {/* Edit Variant Modal */}
+      <Dialog
+        open={isEditVariantModalOpen}
+        onClose={closeEditVariantModal}
+        maxWidth="lg"
+        fullWidth
+      >
+        <ProductVariantForm
+          productId={product.id}
+          variant={variantToEdit || undefined}
           onSuccess={handleVariantSuccess}
         />
       </Dialog>

@@ -13,7 +13,9 @@ import { EditTwoTone } from "ui/icons";
 
 const columnHelper = createColumnHelper<TProductVariantData>();
 
-export const columnsDefs: ColumnDef<TProductVariantData, any>[] = [
+export const createColumnsDefs = (
+  onEdit?: (variant: TProductVariantData) => void
+): ColumnDef<TProductVariantData, any>[] => [
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",
@@ -54,21 +56,21 @@ export const columnsDefs: ColumnDef<TProductVariantData, any>[] = [
       return <TableDateTimeCell date={date} />;
     },
   }),
-  columnHelper.display({
-    id: "action",
-    header: "Actions",
-    cell: ({
-      row: {
-        original: { id },
-      },
-    }) => {
-      return (
-        <Box className="flex gap-2">
-          <IconButton>
-            <EditTwoTone />
-          </IconButton>
-        </Box>
-      );
-    },
-  }),
+  ...(onEdit
+    ? [
+        columnHelper.display({
+          id: "action",
+          header: "Actions",
+          cell: ({ row }) => {
+            return (
+              <Box className="flex gap-2">
+                <IconButton size="small" onClick={() => onEdit(row.original)}>
+                  <EditTwoTone />
+                </IconButton>
+              </Box>
+            );
+          },
+        }),
+      ]
+    : []),
 ];

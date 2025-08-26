@@ -14,7 +14,9 @@ import { EditTwoTone, Visibility } from "ui/icons";
 
 const columnHelper = createColumnHelper<TProductData>();
 
-export const columnsDefs: ColumnDef<TProductData, any>[] = [
+export const createColumnsDefs = (
+  onEdit?: (product: TProductData) => void
+): ColumnDef<TProductData, any>[] => [
   // getSubRowColumnOption<TProductData>(),
   columnHelper.accessor("name", {
     id: "name",
@@ -69,20 +71,16 @@ export const columnsDefs: ColumnDef<TProductData, any>[] = [
   columnHelper.display({
     id: "action",
     header: "Actions",
-    cell: ({
-      row: {
-        original: { id },
-      },
-    }) => {
+    cell: ({ row: { original } }) => {
       return (
         <Box className="flex gap-2">
-          <Link to={`/products/${id}`}>
+          <Link to={`/products/${original.id}`}>
             <IconButton>
               <Visibility />
             </IconButton>
           </Link>
 
-          <IconButton>
+          <IconButton onClick={() => onEdit?.(original)}>
             <EditTwoTone />
           </IconButton>
 
@@ -96,3 +94,6 @@ export const columnsDefs: ColumnDef<TProductData, any>[] = [
     },
   }),
 ];
+
+// For backward compatibility
+export const columnsDefs = createColumnsDefs();

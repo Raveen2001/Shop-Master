@@ -44,3 +44,16 @@ export const QueryProductVariantsByIdOpts: RouteShorthandOptions = {
     },
   },
 };
+
+export const UpdateProductVariantOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Product-Variant"],
+    summary: "Update a ProductVariant",
+    params: ProductVariantQueryParamSchema,
+    body: Type.Partial(ProductVariantSchemaIn),
+    response: {
+      200: ProductVariantSchema,
+    },
+  },
+  preHandler: ownerOnlyRoute,
+};

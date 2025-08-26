@@ -1,10 +1,19 @@
 import { TProductVariantData } from "schema";
-import { ColumnDef, TableDateTimeCell, createColumnHelper } from "ui";
+import {
+  ColumnDef,
+  TableDateTimeCell,
+  createColumnHelper,
+  Box,
+  IconButton,
+} from "ui";
 import { Chip } from "ui";
+import { EditTwoTone } from "ui/icons";
 
 const columnHelper = createColumnHelper<TProductVariantData>();
 
-export const columnsDefs: ColumnDef<TProductVariantData, any>[] = [
+export const createColumnsDefs = (
+  onEdit?: (variant: TProductVariantData) => void
+): ColumnDef<TProductVariantData, any>[] => [
   columnHelper.accessor("name", {
     id: "name",
     header: "Name",
@@ -97,4 +106,23 @@ export const columnsDefs: ColumnDef<TProductVariantData, any>[] = [
       return <TableDateTimeCell date={date} />;
     },
   }),
+
+  // Actions column
+  ...(onEdit
+    ? [
+        columnHelper.display({
+          id: "actions",
+          header: "Actions",
+          cell: ({ row }) => {
+            return (
+              <Box className="flex gap-2">
+                <IconButton size="small" onClick={() => onEdit(row.original)}>
+                  <EditTwoTone />
+                </IconButton>
+              </Box>
+            );
+          },
+        }),
+      ]
+    : []),
 ];

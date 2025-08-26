@@ -1,13 +1,15 @@
-import { Box, Button, PaginatedTable, Typography } from "ui";
+import { Box, Button, PaginatedTable, Typography, Dialog } from "ui";
 
-import { columnsDefs } from "./columns";
+import { createColumnsDefs } from "./columns";
 import { Add } from "ui/icons";
 import { useGlobalStore } from "../../store/globalStore";
 
 import { useNavigate } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { mergeProductData } from "../../utils/product";
-// import ProductVariantList from "./ProductVariantTable/ProductVariantTable";
+import { TProductData } from "schema";
+import ProductForm from "../../components/ProductForm";
+import ProductVariantList from "./ProductVariantTable/ProductVariantTable";
 
 const ManageProducts = () => {
   const navigate = useNavigate();
@@ -15,11 +17,23 @@ const ManageProducts = () => {
     state.products,
     state.categories,
   ]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [productToEdit, setProductToEdit] = useState<TProductData | null>(null);
 
   const updatedProducts = useMemo(
     () => mergeProductData(products, categories),
     [categories, products]
   );
+
+  const handleProductEdit = (product: TProductData) => {
+    setProductToEdit(product);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setProductToEdit(null);
+  };
 
   return (
     <>
@@ -40,12 +54,26 @@ const ManageProducts = () => {
 
       <PaginatedTable
         className="max-h-[80vh]"
-        columns={columnsDefs}
+        columns={createColumnsDefs(handleProductEdit)}
         data={updatedProducts}
         defaultSortColumn={{ id: "createdAt", desc: false }}
         // getRowCanExpand={(row) => (row.original.variants ?? []).length > 0}
         // renderSubComponent={ProductVariantList}
       />
+
+      {/* Edit Product Modal */}
+      <Dialog
+        open={isEditModalOpen}
+        onClose={closeEditModal}
+        maxWidth="lg"
+        fullWidth
+      >
+        <ProductForm
+          onSuccess={closeEditModal}
+          product={productToEdit || undefined}
+          categoryId={productToEdit?.categoryId}
+        />
+      </Dialog>
     </>
   );
 };

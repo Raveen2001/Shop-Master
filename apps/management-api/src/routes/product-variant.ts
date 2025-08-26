@@ -1,4 +1,5 @@
 import { TNewProductVariantsDB, productVariantsDB } from "database-drizzle";
+import { eq } from "drizzle-orm";
 import FastifyTypebox from "../types/fastify.js";
 import {
   TProductVariantQueryByFields,
@@ -10,6 +11,7 @@ import {
   CreateProductVariantOpts,
   QueryProductVariantOpts,
   QueryProductVariantsByIdOpts,
+  UpdateProductVariantOpts,
 } from "../opts/product-variant.js";
 import { RouteHandlerMethod } from "fastify";
 
@@ -112,6 +114,44 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
     Params: TProductVariantQueryParam;
     Querystring: TProductVariantQueryString;
   }>("/shop/:id", QueryProductVariantsByIdOpts, getProductVariantsBy("shopId"));
+
+  // update product variant
+  fastify.put<{
+    Params: TProductVariantQueryParam;
+    Body: Partial<TNewProductVariantsDB>;
+  }>("/:id", UpdateProductVariantOpts, async (req, reply) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    // Ensure the product variant belongs to the user
+    const existingVariant = await fastify.db.query.productVariantsDB.findFirst({
+      where: (productVariantsDB, { eq, and }) =>
+        and(
+          eq(productVariantsDB.id, id),
+          eq(productVariantsDB.ownerId, req.userInfo.data.id)
+        ),
+    });
+
+    if (!existingVariant) {
+      reply
+        .code(404)
+        .send({ message: "Product variant not found or unauthorized" });
+      return;
+    }
+
+    // Update the product variant
+    const updatedVariant = await fastify.db
+      .update(productVariantsDB)
+      .set({
+        ...updateData,
+        updatedAt: new Date(),
+      })
+      .where(eq(productVariantsDB.id, id))
+      .returning()
+      .then((rows) => rows[0]);
+
+    reply.code(200).send(updatedVariant);
+  });
 };
 
 export default ProductVariantRoutes;
