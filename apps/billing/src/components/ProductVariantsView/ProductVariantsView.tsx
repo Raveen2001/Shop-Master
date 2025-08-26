@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Grid, Divider } from "@mui/material";
+import { Box, Typography, Grid, Divider, Button } from "@mui/material";
 import { Breadcrumb } from "ui";
 import { ProductVariantCard } from "../ProductVariantCard";
 import { useBillingStore } from "../../store/billingStore";
@@ -11,6 +11,7 @@ export const ProductVariantsView: React.FC = () => {
     selectedCategory,
     goBack,
     navigateToCategoryInPath,
+    goToHome,
   } = useBillingStore();
 
   const store = useGlobalStore();
@@ -21,22 +22,41 @@ export const ProductVariantsView: React.FC = () => {
 
   return (
     <Box>
-      <Breadcrumb
-        items={[
-          { label: "Categories", onClick: () => navigateToCategoryInPath(-1) },
-          {
-            label:
-              selectedCategory?.tamilName ||
-              selectedCategory?.name ||
-              "Unknown Category",
-            onClick: () => goBack(),
-          },
-          { label: selectedProduct?.tamilName || selectedProduct?.name || "" },
-        ]}
-        onBack={goBack}
-        showBackButton={true}
-      />
+      <Box className="flex justify-between">
+        <Breadcrumb
+          items={[
+            {
+              label: "Categories",
+              onClick: () => navigateToCategoryInPath(-1),
+            },
+            {
+              label:
+                selectedCategory?.tamilName ||
+                selectedCategory?.name ||
+                "Unknown Category",
+              onClick: () => goBack(),
+            },
+            {
+              label: selectedProduct?.tamilName || selectedProduct?.name || "",
+            },
+          ]}
+          onBack={goBack}
+          showBackButton={true}
+        />
 
+        <Box className="flex justify-end">
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{
+              height: "20px",
+            }}
+            onClick={() => goToHome()}
+          >
+            Home
+          </Button>
+        </Box>
+      </Box>
       {/* Product Details Section */}
       <Box>
         <Typography variant="h6">

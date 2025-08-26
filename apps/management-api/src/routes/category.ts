@@ -81,6 +81,9 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
           products: includeProducts || undefined,
           subCategories: includeSubCategories || undefined,
         },
+        orderBy: (productCategoriesDB, { asc }) => [
+          asc(productCategoriesDB.tamilName),
+        ],
       });
 
       reply.code(200).send(categorys);

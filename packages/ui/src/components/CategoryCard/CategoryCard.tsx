@@ -39,9 +39,9 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
             <Typography
               variant="h1"
               color="white"
-              className="text-6xl font-bold"
+              className="text-3xl font-bold"
             >
-              {(category.tamilName || category.name).charAt(0).toUpperCase()}
+              {category.tamilName || category.name}
             </Typography>
           </Box>
         )}

@@ -36,7 +36,9 @@ const LoginPage = () => {
     mutationFn: loginAsEmployee,
     onSuccess: ({ data }) => {
       localStorage.setItem("token", data.token);
-      navigate("/");
+      navigate("/", {
+        replace: true,
+      });
     },
   });
 

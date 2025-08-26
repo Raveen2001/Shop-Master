@@ -29,6 +29,7 @@ type IBillingStore = {
   selectCategory: (category: TCategoryData) => void;
   selectProduct: (product: TProductData) => void;
   goBack: () => void;
+  goToHome: () => void;
   navigateToCategory: (category: TCategoryData) => void;
   navigateToCategoryInPath: (categoryIndex: number) => void;
 
@@ -102,6 +103,15 @@ export const useBillingStore = create(
       set((state) => {
         state.selectedProduct = product;
         state.currentStep = "variants";
+      });
+    },
+
+    goToHome: () => {
+      set((state) => {
+        state.currentStep = "categories";
+        state.categoryPath = [];
+        state.selectedCategory = undefined;
+        state.selectedProduct = undefined;
       });
     },
 

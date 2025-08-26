@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, Typography, Grid, Divider } from "@mui/material";
+import { Box, Typography, Grid, Divider, Button } from "@mui/material";
 import { CategoryCard, ProductCard, Breadcrumb } from "ui";
-import { TCategoryData, TProductData } from "schema";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
 
@@ -12,6 +11,7 @@ export const CategoryDetailsView: React.FC = () => {
   const {
     categoryPath,
     goBack,
+    goToHome,
     navigateToCategoryInPath,
     selectProduct,
     selectCategory,
@@ -41,11 +41,26 @@ export const CategoryDetailsView: React.FC = () => {
 
   return (
     <Box>
-      <Breadcrumb
-        items={breadcrumbItems}
-        onBack={goBack}
-        showBackButton={true}
-      />
+      <Box className="flex justify-between">
+        <Breadcrumb
+          items={breadcrumbItems}
+          onBack={goBack}
+          showBackButton={true}
+        />
+
+        <Box className="flex justify-end">
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{
+              height: "20px",
+            }}
+            onClick={() => goToHome()}
+          >
+            Home
+          </Button>
+        </Box>
+      </Box>
 
       <Typography
         variant="h4"

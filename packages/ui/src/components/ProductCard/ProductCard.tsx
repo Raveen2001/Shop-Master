@@ -93,9 +93,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <Typography
               variant="h1"
               color="white"
-              className="text-6xl font-bold"
+              className="text-3xl font-bold"
             >
-              {(product.tamilName || product.name).toUpperCase()}
+              {product.tamilName || product.name}
             </Typography>
           </Box>
         )}

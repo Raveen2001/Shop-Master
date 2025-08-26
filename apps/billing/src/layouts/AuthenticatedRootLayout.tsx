@@ -13,7 +13,7 @@ const AuthenticatedRootLayout = () => {
 
   return (
     <Box className="flex h-screen flex-col">
-      <BillingHeader />
+      {/* <BillingHeader /> */}
       <PageStatus
         isLoading={isLoading}
         isError={isError}
