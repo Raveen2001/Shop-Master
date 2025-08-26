@@ -130,6 +130,18 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
       <DialogContent sx={{ paddingTop: "0 !important" }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <TextField
+            label="Unit Price (₹)"
+            type="number"
+            value={formData.unitPrice}
+            onChange={handleChange("unitPrice")}
+            onBlur={handleBlur("unitPrice")}
+            error={!!errors.unitPrice}
+            helperText={errors.unitPrice}
+            fullWidth
+            variant="outlined"
+            inputProps={{ min: 0 }}
+          />
+          <TextField
             label="Quantity"
             type="number"
             value={formData.quantity}
@@ -140,19 +152,6 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
             fullWidth
             variant="outlined"
             inputProps={{ min: 1, step: 1 }}
-          />
-
-          <TextField
-            label="Unit Price (₹)"
-            type="number"
-            value={formData.unitPrice}
-            onChange={handleChange("unitPrice")}
-            onBlur={handleBlur("unitPrice")}
-            error={!!errors.unitPrice}
-            helperText={errors.unitPrice}
-            fullWidth
-            variant="outlined"
-            inputProps={{ min: 0, step: 0.01 }}
           />
 
           {formData.quantity > 0 && formData.unitPrice > 0 && (
