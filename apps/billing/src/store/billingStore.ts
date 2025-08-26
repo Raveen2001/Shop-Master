@@ -34,11 +34,7 @@ type IBillingStore = {
   navigateToCategoryInPath: (categoryIndex: number) => void;
 
   // Order actions
-  addToOrder: (
-    variant: TProductVariantData,
-    productName: string,
-    quantity?: number
-  ) => void;
+  addToOrder: (variant: TProductVariantData, quantity?: number) => void;
   updateOrderItemQuantity: (variantId: string, newQuantity: number) => void;
   removeOrderItem: (variantId: string) => void;
   completeOrder: (employee: TEmployeeData) => TOrderFormSchema;
@@ -143,7 +139,7 @@ export const useBillingStore = create(
       }
     },
 
-    addToOrder: (variant, productName, quantity = 1) => {
+    addToOrder: (variant, quantity = 1) => {
       set((state) => {
         const existingItemIndex = state.order.items.findIndex(
           (item) => item.productVariantId === variant.id

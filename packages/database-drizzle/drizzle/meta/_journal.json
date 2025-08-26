@@ -29,6 +29,27 @@
       "when": 1756232686063,
       "tag": "0003_safe_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1756237808105,
+      "tag": "0004_cold_lady_bullseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1756238782233,
+      "tag": "0005_free_siren",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1756238834483,
+      "tag": "0006_uneven_changeling",
+      "breakpoints": true
     }
   ]
 }

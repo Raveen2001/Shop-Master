@@ -11,8 +11,7 @@ interface ProductVariantCardProps {
 export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
   variant,
 }) => {
-  const { addToOrder, updateOrderItemQuantity, selectedProduct, order } =
-    useBillingStore();
+  const { addToOrder, updateOrderItemQuantity, order } = useBillingStore();
 
   const isVariantAddedToOrder = order.items.some(
     (item) => item.productVariantId === variant.id
@@ -136,7 +135,7 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
             variant="contained"
             size="small"
             onClick={() => {
-              addToOrder(variant, selectedProduct?.name || "");
+              addToOrder(variant);
             }}
             sx={{
               fontSize: "12px",

@@ -10,9 +10,9 @@ export const orderItemsDB = pgTable("order_items", {
     .notNull()
     .references(() => ordersDB.id),
 
-  productVariantId: uuid("product_variant_id")
-    .notNull()
-    .references(() => productVariantsDB.id),
+  productVariantId: uuid("product_variant_id").references(
+    () => productVariantsDB.id
+  ),
 
   quantity: integer("quantity").notNull(),
   unitPrice: integer("unit_price").notNull(),

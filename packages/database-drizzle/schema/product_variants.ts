@@ -1,7 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
-  integer,
   pgTable,
   timestamp,
   uuid,
@@ -17,7 +16,9 @@ export const unitEnum = pgEnum("unit", ["KG", "L", "G", "ML", "PCS"]);
 
 export const productVariantsDB = pgTable("product_variants", {
   id: uuid("id").defaultRandom().primaryKey(),
-  productId: uuid("product_id").notNull(),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => productsDB.id),
   name: text("name").notNull(),
   tamilName: text("tamil_name"),
   onlyForBilling: boolean("only_for_billing").default(false),
