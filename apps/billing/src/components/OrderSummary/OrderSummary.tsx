@@ -6,7 +6,7 @@ import { useBillingStore } from "../../store/billingStore";
 import OrderItem from "./OrderItem";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 
-interface OrderItem {
+interface TOrderItem {
   variant: TProductVariantData;
   productName: string;
   quantity: number;

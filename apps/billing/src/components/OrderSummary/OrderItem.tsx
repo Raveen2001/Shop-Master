@@ -21,7 +21,9 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
     <Box
       sx={{
         padding: "12px",
-        border: "1px solid #e0e0e0",
+        border: productVariant?.onlyForBilling
+          ? "1px solid #3F9EFF"
+          : "1px solid #e0e0e0",
         borderRadius: "8px",
         marginBottom: "12px",
         backgroundColor: "#fafafa",
@@ -82,10 +84,15 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
               updateOrderItemQuantity(orderItem.productVariantId, quantity)
             }
           />
-          <Typography variant="body2" sx={{ fontSize: "16px" }}>
-            {orderItem.quantity * (productVariant?.noOfUnits ?? 1)}{" "}
-            {productVariant?.unit}
-          </Typography>
+          {productVariant?.onlyForBilling && (
+            <Typography
+              variant="body2"
+              sx={{ fontSize: "16px", minWidth: "50px" }}
+            >
+              {orderItem.quantity * (productVariant?.noOfUnits ?? 1)}{" "}
+              {productVariant?.unit}
+            </Typography>
+          )}
         </Box>
         <Typography
           variant="body2"

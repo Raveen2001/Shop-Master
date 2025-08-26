@@ -1,6 +1,5 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [".env.local"],
   "ui": "tui",
   "tasks": {
     "build": {
@@ -30,5 +29,11 @@
       "cache": false
     }
   },
-  "globalEnv": ["JWT_SECRET", "DATABASE_URL", "MANAGEMENT_API_PORT"]
+  "globalEnv": [
+    "VITE_IMAGE_BASE_URL",
+    "VITE_API_BASE_URL",
+    "JWT_SECRET",
+    "MANAGEMENT_API_PORT",
+    "DATABASE_URL"
+  ]
 }
