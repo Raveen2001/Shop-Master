@@ -20,12 +20,24 @@ const QuantitySelector = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    const numValue = parseInt(inputValue, 10);
-    if (!isNaN(numValue) && numValue >= 1) {
+    setInputValue(inputValue);
+    const numValue = parseFloat(inputValue);
+    if (!isNaN(numValue)) {
       onUpdateQuantity(numValue);
-    } else {
-      // Reset to current quantity if invalid input
+    }
+  };
+
+  const handleBlur = () => {
+    const numValue = parseFloat(inputValue);
+    if (isNaN(numValue) || numValue === 0) {
       setInputValue(quantity.toString());
+      return;
+    }
+
+    if (numValue < 0) {
+      setInputValue((numValue * -1).toString());
+      onUpdateQuantity(numValue * -1);
+      return;
     }
   };
 
@@ -56,6 +68,7 @@ const QuantitySelector = ({
         <TextField
           value={inputValue}
           onChange={handleInputChange}
+          onBlur={handleBlur}
           variant="standard"
           size="small"
           inputProps={{
@@ -63,11 +76,8 @@ const QuantitySelector = ({
               textAlign: "center",
               fontSize: "14px",
               fontWeight: 500,
-              padding: "4px 8px",
-              minWidth: "40px",
+              minWidth: "30px",
             },
-            min: 1,
-            type: "number",
           }}
           sx={{
             "& .MuiInput-underline:before": { borderBottom: "none" },
