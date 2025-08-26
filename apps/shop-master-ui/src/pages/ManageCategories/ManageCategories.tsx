@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Dialog, Typography } from "ui";
 import { useCategoryContext } from "./CategoryContext";
@@ -7,10 +7,15 @@ import CategoryGrid from "./CategoryGrid";
 import ProductGrid from "./ProductGrid";
 import CategoryForm from "../../components/CategoryForm";
 import ProductForm from "../../components/ProductForm";
+import { TCategoryData } from "schema";
 
 const ManageCategories = () => {
   const navigate = useNavigate();
   const { categoryId } = useParams();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState<TCategoryData | null>(
+    null
+  );
 
   const {
     currentCategoryId,
@@ -61,6 +66,16 @@ const ManageCategories = () => {
     openCreateModal();
   };
 
+  const handleCategoryEdit = (category: TCategoryData) => {
+    setCategoryToEdit(category);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setCategoryToEdit(null);
+  };
+
   return (
     <Box>
       <CategoryHeader
@@ -83,7 +98,10 @@ const ManageCategories = () => {
         <Typography variant="h5" className="mb-4">
           Categories
         </Typography>
-        <CategoryGrid onCategoryClick={handleCategoryClick} />
+        <CategoryGrid
+          onCategoryClick={handleCategoryClick}
+          onCategoryEdit={handleCategoryEdit}
+        />
       </Box>
 
       {/* Create Category Modal */}
@@ -109,6 +127,20 @@ const ManageCategories = () => {
         <ProductForm
           onSuccess={closeCreateProductModal}
           categoryId={currentCategoryId}
+        />
+      </Dialog>
+
+      {/* Edit Category Modal */}
+      <Dialog
+        open={isEditModalOpen}
+        onClose={closeEditModal}
+        maxWidth="lg"
+        fullWidth
+      >
+        <CategoryForm
+          onSuccess={closeEditModal}
+          category={categoryToEdit || undefined}
+          parentCategoryId={categoryToEdit?.parentId}
         />
       </Dialog>
     </Box>

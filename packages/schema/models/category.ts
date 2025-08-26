@@ -9,7 +9,7 @@ export const CategoryFormSchema = object({
     .required("Name is required"),
 
   tamilName: string().trim().nullable(),
-  image: string().url("Image must be a valid URL").nullable(),
+  image: string().nullable(),
   parentId: string().nullable(),
 });
 

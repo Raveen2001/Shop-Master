@@ -1,12 +1,17 @@
 import React from "react";
 import { Box, Typography, Card, Grid, LinearProgress, CategoryCard } from "ui";
 import { useCategoryContext } from "./CategoryContext";
+import { TCategoryData } from "schema";
 
 interface CategoryGridProps {
   onCategoryClick: (category: { id: string; name: string }) => void;
+  onCategoryEdit?: (category: TCategoryData) => void;
 }
 
-const CategoryGrid: React.FC<CategoryGridProps> = ({ onCategoryClick }) => {
+const CategoryGrid: React.FC<CategoryGridProps> = ({
+  onCategoryClick,
+  onCategoryEdit,
+}) => {
   const { isLoading, currentCategoryId, filteredCategories } =
     useCategoryContext();
 
@@ -35,7 +40,11 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ onCategoryClick }) => {
     <Grid container spacing={3}>
       {filteredCategories.map((category) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={category.id}>
-          <CategoryCard category={category} onClick={onCategoryClick} />
+          <CategoryCard
+            category={category}
+            onClick={onCategoryClick}
+            onEdit={onCategoryEdit}
+          />
         </Grid>
       ))}
     </Grid>

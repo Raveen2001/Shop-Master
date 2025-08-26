@@ -14,3 +14,11 @@ export const createCategory = (category: TCategoryFormSchema) => {
   const url = "/categories/create";
   return axiosClient.post<TCategoryData>(url, category);
 };
+
+export const updateCategory = (
+  id: string,
+  category: Partial<TCategoryFormSchema>
+) => {
+  const url = `/categories/${id}`;
+  return axiosClient.put<TCategoryData>(url, category);
+};

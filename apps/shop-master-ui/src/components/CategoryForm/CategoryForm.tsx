@@ -11,10 +11,12 @@ import {
   Alert,
 } from "ui";
 import useCategoryForm from "./useCategoryForm";
+import { TCategoryData } from "schema";
 
 export type TCategoryFormProps = {
   parentCategoryId?: string | null;
   onSuccess?: () => void;
+  category?: TCategoryData; // For editing existing category
 };
 
 const CategoryForm: FC<TCategoryFormProps> = (props) => {
@@ -33,7 +35,9 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
   console.log("props", props);
   return (
     <Box className="px-8 py-4">
-      <Typography variant="h5">Create a new Category</Typography>
+      <Typography variant="h5">
+        {props.category ? "Edit Category" : "Create a new Category"}
+      </Typography>
 
       <Box className="h-8" />
 
@@ -42,7 +46,10 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
           elevation={5}
           className="flex flex-col items-center justify-center gap-8 px-6 py-10"
         >
-          <ProfileImagePicker onImageChange={setCategoryImage} />
+          <ProfileImagePicker
+            onImageChange={setCategoryImage}
+            currentImageUrl={props.category?.image}
+          />
 
           <Button color="error" variant="outlined">
             Delete Category
@@ -84,7 +91,7 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
               className="float-right"
               type="submit"
             >
-              Create Category
+              {props.category ? "Update Category" : "Create Category"}
             </LoadingButton>
           </form>
         </Card>

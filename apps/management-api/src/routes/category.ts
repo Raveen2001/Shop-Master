@@ -1,4 +1,5 @@
 import { TNewProductCategoryDB, productCategoriesDB } from "database-drizzle";
+import { eq } from "drizzle-orm";
 import FastifyTypebox from "../types/fastify.js";
 import {
   TCategoryQueryByFields,
@@ -10,6 +11,7 @@ import {
   CreateCategoryOpts,
   QueryCategoryByOwnerOpts,
   QueryCategoryOpts,
+  UpdateCategoryOpts,
 } from "../opts/category.js";
 import { RouteHandlerMethod } from "fastify";
 
@@ -101,6 +103,43 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
     Params: TCategoryQueryParam;
     Querystring: TCategoryQueryString;
   }>("/shop/:id", QueryCategoryByOwnerOpts, getCategorysBy("shopId"));
+
+  // update category
+  fastify.put<{
+    Params: TCategoryQueryParam;
+    Body: Partial<TNewProductCategoryDB>;
+  }>("/:id", UpdateCategoryOpts, async (req, reply) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    // Ensure the category belongs to the user
+    const existingCategory =
+      await fastify.db.query.productCategoriesDB.findFirst({
+        where: (productCategoriesDB, { eq, and }) =>
+          and(
+            eq(productCategoriesDB.id, id),
+            eq(productCategoriesDB.ownerId, req.userInfo.data.id)
+          ),
+      });
+
+    if (!existingCategory) {
+      reply.code(404).send({ message: "Category not found or unauthorized" });
+      return;
+    }
+
+    // Update the category
+    const updatedCategory = await fastify.db
+      .update(productCategoriesDB)
+      .set({
+        ...updateData,
+        updatedAt: new Date(),
+      })
+      .where(eq(productCategoriesDB.id, id))
+      .returning()
+      .then((rows) => rows[0]);
+
+    reply.code(200).send(updatedCategory);
+  });
 };
 
 export default CategoryRoutes;

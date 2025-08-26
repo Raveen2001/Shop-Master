@@ -1,4 +1,4 @@
-import { Box, Typography, Grid, LinearProgress, Chip, ProductCard } from "ui";
+import { Box, Typography, Grid, LinearProgress, ProductCard } from "ui";
 import { useCategoryContext } from "./CategoryContext";
 import { useGlobalStore } from "../../store/globalStore";
 import { useNavigate } from "react-router-dom";

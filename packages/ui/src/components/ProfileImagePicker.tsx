@@ -4,12 +4,16 @@ import clsx from "clsx";
 import { useDisplayImage } from "../hooks";
 import React from "react";
 
+const { VITE_IMAGE_BASE_URL } = import.meta.env;
+
 interface IProfileImagePickerProps {
   onImageChange: (image: File | null) => void;
+  currentImageUrl?: string | null;
 }
 
 const ProfileImagePicker: React.FC<IProfileImagePickerProps> = ({
   onImageChange,
+  currentImageUrl,
 }) => {
   const { localUrl, localUploader } = useDisplayImage();
 
@@ -27,13 +31,20 @@ const ProfileImagePicker: React.FC<IProfileImagePickerProps> = ({
               className="absolute h-full w-full rounded-full object-cover"
             />
           )}
+          {!localUrl && currentImageUrl && (
+            <img
+              src={`${VITE_IMAGE_BASE_URL}${currentImageUrl}`}
+              alt="preview"
+              className="absolute h-full w-full rounded-full object-cover"
+            />
+          )}
 
           <Box
             className={clsx(
               "absolute flex h-full w-full flex-col items-center justify-center gap-1 rounded-full transition-all duration-300",
               {
                 "opacity-0 group-hover:bg-slate-900/50 group-hover:opacity-100":
-                  !!localUrl,
+                  !!localUrl || !!currentImageUrl,
               },
             )}
           >

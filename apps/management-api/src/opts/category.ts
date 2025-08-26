@@ -55,3 +55,16 @@ export const QueryCategoryByShopOpts: RouteShorthandOptions = {
     },
   },
 };
+
+export const UpdateCategoryOpts: RouteShorthandOptions = {
+  schema: {
+    tags: ["Category"],
+    summary: "Update a Category",
+    params: CategoryQueryParamSchema,
+    body: Type.Partial(CategorySchemaIn),
+    response: {
+      200: CategorySchemaOut,
+    },
+  },
+  preHandler: ownerOnlyRoute,
+};

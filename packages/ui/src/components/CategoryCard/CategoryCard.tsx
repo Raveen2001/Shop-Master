@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Typography, Card } from "@mui/material";
+import { Box, Typography, Card, IconButton } from "@mui/material";
+import { Edit } from "@mui/icons-material";
 import { TCategoryData } from "schema";
 
 // import env variables from process.env
@@ -8,19 +9,19 @@ const { VITE_IMAGE_BASE_URL } = import.meta.env;
 interface CategoryCardProps {
   category: TCategoryData;
   onClick: (category: TCategoryData) => void;
+  onEdit?: (category: TCategoryData) => void;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
   category,
   onClick,
+  onEdit,
 }) => {
   return (
-    <Card
-      className="h-full cursor-pointer transition-shadow duration-200 hover:shadow-lg overflow-hidden"
-      onClick={() => onClick(category)}
-    >
+    <Card className="h-full transition-shadow duration-200 hover:shadow-lg overflow-hidden">
       <Box
-        className="relative h-full min-h-[200px] flex items-end"
+        className="relative h-full min-h-[200px] flex items-end cursor-pointer"
+        onClick={() => onClick(category)}
         sx={{
           backgroundImage: category.image
             ? `url(${VITE_IMAGE_BASE_URL}${category.image})`
@@ -30,6 +31,27 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
           backgroundRepeat: "no-repeat",
         }}
       >
+        {/* Action buttons */}
+        {onEdit && (
+          <Box className="absolute top-2 right-2 z-20">
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(category);
+              }}
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.9)",
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 1)",
+                },
+              }}
+            >
+              <Edit fontSize="small" />
+            </IconButton>
+          </Box>
+        )}
+
         {/* Gradient overlay for better text visibility */}
         <Box className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
