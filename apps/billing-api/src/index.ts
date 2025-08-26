@@ -45,6 +45,24 @@ app.get("/print-test", async (req, res) => {
   }
 });
 
+app.post("/print-order", async (req, res) => {
+  try {
+    const result = await printerService.printOrder(req.body);
+    res.json({
+      success: true,
+      message: "Order printed successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error("Print error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to print order",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
+
 // Get printer status
 app.get("/printer-status", async (req, res) => {
   try {

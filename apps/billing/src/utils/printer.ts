@@ -1,12 +1,20 @@
-import { TOrderData, TProductVariantData } from "schema";
+import { TOrderData, TProductVariantData, TShopData } from "schema";
 import { PrinterOrder } from "../types/printer";
 
 export const convertOrderToPrinterOrder = (
   order: TOrderData,
-  variants: TProductVariantData[]
+  variants: TProductVariantData[],
+  shop: TShopData
 ): PrinterOrder => {
   const printerOrder: PrinterOrder = {
     id: order.id.toString(),
+    date: order.createdAt,
+    shop: {
+      name: shop.name,
+      address: shop.address,
+      phone: shop.phone,
+      gstin: "TO BE ADDED",
+    },
     items: order.items.map((item) => {
       const variant = variants.find(
         (variant) => variant.id === item.productVariantId

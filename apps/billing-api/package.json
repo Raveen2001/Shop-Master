@@ -10,7 +10,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@node-escpos/core": "^0.6.0",
     "@types/escpos": "^2.5.5",
+    "canvas": "^3.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "escpos": "^3.0.0-alpha.6",

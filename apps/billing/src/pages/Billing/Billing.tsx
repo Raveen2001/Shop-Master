@@ -22,15 +22,20 @@ const BillingPage = () => {
     selectedCategory,
     selectedProduct,
     completeOrder,
+
     clearOrder,
   } = useBillingStore();
+
+  const shop = useGlobalStore((state) => state.shop);
 
   const { mutate: createOrderMutation, isPending: isCreatingOrder } =
     useMutation({
       mutationFn: createOrder,
       onSuccess: (data) => {
         toast.success("Order created successfully");
-        printBill(convertOrderToPrinterOrder(data.data, productVariants));
+        printBill(
+          convertOrderToPrinterOrder(data.data, productVariants, shop!)
+        );
         clearOrder();
       },
       onError: () => {
