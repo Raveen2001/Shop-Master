@@ -7,6 +7,7 @@ import { createCategory, updateCategory } from "../../services/category";
 import { uploadImage } from "../../services/upload";
 import { useGlobalStore } from "../../store/globalStore";
 import { TCategoryFormProps } from "./CategoryForm";
+import { useNavigate } from "react-router-dom";
 
 type TUseCategoryFormProps = TCategoryFormProps;
 
@@ -21,6 +22,7 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
   const queryClient = useQueryClient();
   const [categoryImage, setCategoryImage] = useState<File | null>(null);
   const isEditMode = !!props.category;
+  const navigate = useNavigate();
 
   const createMutation = useMutation<
     Awaited<ReturnType<typeof createCategory>>,
@@ -78,36 +80,26 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
     setFormState("ownerId", owner?.id ?? "");
   }, [owner?.id, setFormState, selectedShop?.id]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    console.log("data", data);
-    try {
-      let imageUrl = props.category?.image;
+  const onSubmit = handleSubmit((data) => {
+    if (!data.tamilName) data.tamilName = null;
 
-      // Upload image if selected
-      if (categoryImage) {
-        const uploadResponse = await uploadImage(categoryImage);
-        imageUrl = uploadResponse.url;
-      }
-
-      // Create/Update category with image URL
-      const categoryData = {
-        ...data,
-        image: imageUrl,
-      };
-
-      if (isEditMode && props.category) {
-        console.log("categoryData", categoryData);
-        updateMutation.mutate({ id: props.category.id, data: categoryData });
-      } else {
-        createMutation.mutate(categoryData);
-      }
-    } catch (error: any) {
-      console.error("Error uploading image:", error);
-      // Show error to user but don't proceed with category creation
-      // You might want to show a toast notification here
-      alert(`Upload failed: ${error.message}`);
+    if (isEditMode) {
+      updateMutation.mutate({
+        id: props.category!.id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
     }
   });
+
+  const handleClose = () => {
+    if (props.onSuccess) {
+      props.onSuccess();
+    } else {
+      navigate("/categories");
+    }
+  };
 
   return {
     register,
@@ -119,6 +111,7 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
     setCategoryImage,
     shop: selectedShop,
     owner,
+    handleClose,
   };
 };
 

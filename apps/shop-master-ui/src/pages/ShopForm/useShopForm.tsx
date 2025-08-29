@@ -53,6 +53,10 @@ const useShopForm = () => {
     mutate(data);
   });
 
+  const handleClose = () => {
+    navigate("/shops");
+  };
+
   useEffect(() => {
     setValue("ownerId", ownerId ?? "");
   }, [ownerId, setValue]);
@@ -66,6 +70,7 @@ const useShopForm = () => {
     onSubmit,
     register,
     setImage,
+    handleClose,
   };
 };
 

@@ -115,26 +115,39 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    if (isEditMode && props?.variant) {
-      updateMutation.mutate({ id: props.variant.id, data });
+    if (!data.tamilName) data.tamilName = null;
+
+    if (isEditMode) {
+      updateMutation.mutate({
+        id: props.variant!.id,
+        data,
+      });
     } else {
       createMutation.mutate(data);
     }
   });
 
+  const handleClose = () => {
+    if (props.onSuccess) {
+      props.onSuccess();
+    } else {
+      navigate("/products");
+    }
+  };
+
   return {
     register,
-    control,
     onSubmit,
     formErrors,
     isMutateError: mutation.isError,
     isMutateLoading: mutation.isPending,
     mutateError: mutation.error,
-    mutate: mutation.mutate,
+    selectedCategory,
+    selectedProduct,
     shop: selectedShop,
     owner,
-    selectedProduct,
-    selectedCategory,
+    control,
+    handleClose,
   };
 };
 

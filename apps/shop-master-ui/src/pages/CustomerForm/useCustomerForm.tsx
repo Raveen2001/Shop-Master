@@ -66,6 +66,10 @@ const useCustomerForm = (props: TCustomerFormProps) => {
     mutate(data);
   });
 
+  const handleClose = () => {
+    navigate("/customers");
+  };
+
   return {
     register,
     onSubmit,
@@ -73,11 +77,11 @@ const useCustomerForm = (props: TCustomerFormProps) => {
     isMutateError,
     isMutateLoading,
     mutateError,
-    mutate,
     setProfileImage,
     shop: selectedShop,
     owner,
     control,
+    handleClose,
   };
 };
 

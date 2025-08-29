@@ -55,8 +55,13 @@ const useEmployeeForm = () => {
 
   const onSubmit = handleSubmit((data) => {
     if (!data.email) data.email = null;
+
     mutate(data);
   });
+
+  const handleClose = () => {
+    navigate("/employees");
+  };
 
   return {
     register,
@@ -65,10 +70,10 @@ const useEmployeeForm = () => {
     isMutateError,
     isMutateLoading,
     mutateError,
-    mutate,
     setProfileImage,
     shop: selectedShop,
     owner,
+    handleClose,
   };
 };
 

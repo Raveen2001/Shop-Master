@@ -16,7 +16,9 @@ import {
   Alert,
   TableProfileCell,
   ProfileImagePicker,
+  IconButton,
 } from "ui";
+import { Close } from "ui/icons";
 import { TProductData } from "schema";
 
 export type TProductFormProps = {
@@ -37,108 +39,120 @@ const ProductForm: FC<TProductFormProps> = (props) => {
     shop,
     owner,
     setProductImage,
+    handleClose,
   } = useProductForm(props);
   return (
-    <Box className="px-8 py-4">
-      <Typography variant="h5">
-        {props.product ? "Edit Product" : "Create a new Product"}
-      </Typography>
+    <Box className="px-4 py-4 sm:px-6 lg:px-8">
+      <Box className="mb-4 flex items-center justify-between sm:mb-6">
+        <Typography variant="h5">
+          {props.product ? "Edit Product" : "Create a new Product"}
+        </Typography>
+        <IconButton size="small" onClick={handleClose}>
+          <Close />
+        </IconButton>
+      </Box>
 
-      <Box className="h-8" />
-
-      <form onSubmit={onSubmit} className="flex h-full flex-row gap-4">
+      <Box className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]">
         <Card
           elevation={5}
-          className="flex flex-col items-center justify-between gap-4 p-6"
+          className="flex flex-col items-center justify-center gap-6 p-4 sm:p-6 lg:p-8"
         >
           <ProfileImagePicker
             onImageChange={setProductImage}
             currentImageUrl={props.product?.image}
           />
-          <Button color="error" variant="outlined">
+          <Button color="error" variant="outlined" fullWidth>
             Delete Product
           </Button>
         </Card>
-        <Card elevation={5} className="flex-1 p-6">
-          <Box className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Box className="flex flex-col gap-4">
-              <TextField
-                label="Name *"
-                {...register("name")}
-                error={!!formErrors.name}
-                helperText={formErrors.name?.message}
-              />
 
-              <TextField
-                label="Tamil Name"
-                {...register("tamilName")}
-                error={!!formErrors.tamilName}
-                helperText={formErrors.tamilName?.message}
-              />
+        <Card elevation={5} className="p-4 sm:p-6 lg:p-8">
+          <form onSubmit={onSubmit} className="flex h-full flex-col gap-6">
+            <Box className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-2">
+              <Box className="flex flex-col gap-4">
+                <TextField
+                  label="Name *"
+                  {...register("name")}
+                  error={!!formErrors.name}
+                  helperText={formErrors.name?.message}
+                  fullWidth
+                />
 
-              <FormControl error={!!formErrors.categoryId}>
-                <InputLabel id="category-label">Category *</InputLabel>
-                <Select
-                  labelId="category-label"
-                  id="category"
-                  {...register("categoryId")}
-                  label="Category"
-                  defaultValue={props.categoryId ?? ""}
-                  disabled={props.categoryId != null}
-                >
-                  {categories.map((category: any) => (
-                    <MenuItem
-                      key={category.id}
-                      value={category.id}
-                      selected={category.id === props.categoryId}
-                    >
-                      <TableProfileCell
-                        name={category.tamilName || category.name}
-                        imageUrl={category.image}
-                      />
-                    </MenuItem>
-                  ))}
-                </Select>
+                <TextField
+                  label="Tamil Name"
+                  {...register("tamilName")}
+                  error={!!formErrors.tamilName}
+                  helperText={formErrors.tamilName?.message}
+                  fullWidth
+                />
 
-                <FormHelperText>
-                  {formErrors.categoryId?.message}
-                </FormHelperText>
-              </FormControl>
-              <TextField
-                label="Description"
-                {...register("description")}
-                error={!!formErrors.description}
-                helperText={formErrors.description?.message}
-                multiline
-                rows={4}
-              />
+                <FormControl error={!!formErrors.categoryId} fullWidth>
+                  <InputLabel id="category-label">Category *</InputLabel>
+                  <Select
+                    labelId="category-label"
+                    id="category"
+                    {...register("categoryId")}
+                    label="Category"
+                    defaultValue={props.categoryId ?? ""}
+                    disabled={props.categoryId != null}
+                  >
+                    {categories.map((category: any) => (
+                      <MenuItem
+                        key={category.id}
+                        value={category.id}
+                        selected={category.id === props.categoryId}
+                      >
+                        <TableProfileCell
+                          name={category.tamilName || category.name}
+                          imageUrl={category.image}
+                        />
+                      </MenuItem>
+                    ))}
+                  </Select>
+
+                  <FormHelperText>
+                    {formErrors.categoryId?.message}
+                  </FormHelperText>
+                </FormControl>
+                <TextField
+                  label="Description"
+                  {...register("description")}
+                  error={!!formErrors.description}
+                  helperText={formErrors.description?.message}
+                  multiline
+                  rows={4}
+                  fullWidth
+                />
+              </Box>
+              <Box className="flex flex-col gap-4">
+                <TextField
+                  label="Shop"
+                  contentEditable={false}
+                  value={shop?.name ?? ""}
+                  fullWidth
+                />
+                <TextField
+                  label="Owner"
+                  contentEditable={false}
+                  value={owner?.name ?? ""}
+                  fullWidth
+                />
+              </Box>
             </Box>
-            <Box className="flex flex-col gap-4">
-              <TextField
-                label="Shop"
-                contentEditable={false}
-                value={shop?.name ?? ""}
-              />
-              <TextField
-                label="Owner"
-                contentEditable={false}
-                value={owner?.name ?? ""}
-              />
+
+            <Box className="flex justify-end">
+              <LoadingButton
+                loading={isMutateLoading}
+                variant="contained"
+                type="submit"
+                size="large"
+              >
+                {props.product ? "Update Product" : "Create Product"}
+              </LoadingButton>
             </Box>
-          </Box>
-
-          <Box className="h-8" />
-
-          <LoadingButton
-            loading={isMutateLoading}
-            variant="contained"
-            className="float-right"
-            type="submit"
-          >
-            {props.product ? "Update Product" : "Create Product"}
-          </LoadingButton>
+          </form>
         </Card>
-      </form>
+      </Box>
 
       <Snackbar
         open={isMutateError}

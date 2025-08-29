@@ -3,12 +3,14 @@ import {
   Box,
   Button,
   Card,
+  IconButton,
   LoadingButton,
   ProfileImagePicker,
   Snackbar,
   TextField,
   Typography,
 } from "ui";
+import { Close } from "ui/icons";
 import useShopForm from "./useShopForm";
 
 const ShopForm = () => {
@@ -20,27 +22,31 @@ const ShopForm = () => {
     mutateError,
     register,
     setImage,
+    handleClose,
   } = useShopForm();
   return (
-    <Box className="px-8 py-4">
-      <Typography variant="h5">Create a new Shop</Typography>
+    <Box className="px-4 py-4 sm:px-6 lg:px-8">
+      <Box className="mb-4 flex items-center justify-between sm:mb-6">
+        <Typography variant="h5">Create a new Shop</Typography>
+        <IconButton size="small" onClick={handleClose}>
+          <Close />
+        </IconButton>
+      </Box>
 
-      <Box className="h-8" />
-
-      <Box className="grid grid-cols-1 grid-rows-2 lg:grid-cols-[300px_2fr] lg:grid-rows-1">
+      <Box className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]">
         <Card
           elevation={5}
-          className="flex flex-col items-center justify-center gap-8 px-6 py-10"
+          className="flex flex-col items-center justify-center gap-6 p-4 sm:p-6 lg:p-8"
         >
           <ProfileImagePicker onImageChange={setImage} />
 
-          <Button color="error" variant="outlined">
+          <Button color="error" variant="outlined" fullWidth>
             Delete Shop
           </Button>
         </Card>
 
-        <Card elevation={5} className="ml-10 p-6">
-          <form onSubmit={onSubmit} className="flex h-full flex-col gap-4">
+        <Card elevation={5} className="p-4 sm:p-6 lg:p-8">
+          <form onSubmit={onSubmit} className="flex h-full flex-col gap-6">
             <Box className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-2">
               <Box className="flex flex-col gap-4">
                 <TextField
@@ -48,6 +54,7 @@ const ShopForm = () => {
                   {...register("name")}
                   error={!!formErrors.name}
                   helperText={formErrors.name?.message}
+                  fullWidth
                 />
 
                 <TextField
@@ -58,6 +65,7 @@ const ShopForm = () => {
                     formErrors.domain?.message ??
                     "Domain should be unique Eg: my-shop"
                   }
+                  fullWidth
                 />
 
                 <TextField
@@ -65,18 +73,21 @@ const ShopForm = () => {
                   {...register("email")}
                   error={!!formErrors.email}
                   helperText={formErrors.email?.message}
+                  fullWidth
                 />
                 <TextField
                   label="Phone Number *"
                   {...register("phone")}
                   error={!!formErrors.phone}
                   helperText={formErrors.phone?.message}
+                  fullWidth
                 />
                 <TextField
                   label="Website"
                   {...register("website")}
                   error={!!formErrors.website}
                   helperText={formErrors.website?.message}
+                  fullWidth
                 />
               </Box>
               <Box className="flex flex-col gap-4">
@@ -87,6 +98,7 @@ const ShopForm = () => {
                   helperText={formErrors.description?.message}
                   multiline
                   rows={4}
+                  fullWidth
                 />
                 <TextField
                   label="Address *"
@@ -95,18 +107,21 @@ const ShopForm = () => {
                   helperText={formErrors.address?.message}
                   multiline
                   rows={4}
+                  fullWidth
                 />
               </Box>
             </Box>
 
-            <LoadingButton
-              loading={isMutateLoading}
-              variant="contained"
-              className="float-right"
-              type="submit"
-            >
-              Create Shop
-            </LoadingButton>
+            <Box className="flex justify-end">
+              <LoadingButton
+                loading={isMutateLoading}
+                variant="contained"
+                type="submit"
+                size="large"
+              >
+                Create Shop
+              </LoadingButton>
+            </Box>
           </form>
         </Card>
       </Box>

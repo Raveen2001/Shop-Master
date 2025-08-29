@@ -17,7 +17,9 @@ import {
   Select,
   MenuItem,
   FormHelperText,
+  IconButton,
 } from "ui";
+import { Close } from "ui/icons";
 import { Controller } from "react-hook-form";
 import { UNITS, TProductVariantData } from "schema";
 
@@ -40,50 +42,53 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
     shop,
     owner,
     control,
+    handleClose,
   } = useProductVariantForm(props);
 
   // Check if this is being used in a modal context
   const isModal = !!props.productId;
 
   return (
-    <Box className="px-8 py-4">
-      <Typography variant="h5">
-        {props.variant ? "Edit Product Variant" : "Add New Product Variant"}
-      </Typography>
+    <Box className="px-4 py-4 sm:px-6 lg:px-8">
+      <Box className="mb-4 flex items-center justify-between sm:mb-6">
+        <Typography variant="h5">
+          {props.variant ? "Edit Product Variant" : "Add New Product Variant"}
+        </Typography>
+        <IconButton size="small" onClick={handleClose}>
+          <Close />
+        </IconButton>
+      </Box>
 
-      <Box className="h-8" />
+      <Box className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr]">
+        <Card
+          elevation={5}
+          className="flex flex-col items-center justify-center gap-6 p-4 sm:p-6 lg:p-8"
+        >
+          <ProfileImagePicker onImageChange={console.log} />
 
-      <form onSubmit={onSubmit}>
-        <Box className="grid grid-cols-1 grid-rows-2 lg:grid-cols-[300px_2fr] lg:grid-rows-1">
-          <Card
-            elevation={5}
-            className="flex flex-col items-center justify-center gap-8 px-6 py-10"
-          >
-            <ProfileImagePicker onImageChange={console.log} />
-
-            <Box className="flex items-center">
-              <Box className="flex-1">
-                <Typography variant="subtitle2">Only for Billing</Typography>
-                <Typography
-                  variant="caption"
-                  className="m-0 p-0 leading-none text-slate-600"
-                >
-                  Enabling this will only make the variant available only for
-                  billing purposes. It is hidden from the customer{`&apos;`}s
-                  app.
-                </Typography>
-              </Box>
-              <Switch color="secondary" {...register("onlyForBilling")} />
+          <Box className="flex w-full items-center gap-3">
+            <Box className="flex-1">
+              <Typography variant="subtitle2">Only for Billing</Typography>
+              <Typography
+                variant="caption"
+                className="m-0 p-0 leading-none text-slate-600"
+              >
+                Enabling this will only make the variant available only for
+                billing purposes. It is hidden from the customer{`&apos;`}s app.
+              </Typography>
             </Box>
+            <Switch color="secondary" {...register("onlyForBilling")} />
+          </Box>
 
-            {!isModal && (
-              <Button color="error" variant="outlined">
-                Delete Product Variant
-              </Button>
-            )}
-          </Card>
+          {!isModal && (
+            <Button color="error" variant="outlined" fullWidth>
+              Delete Product Variant
+            </Button>
+          )}
+        </Card>
 
-          <Card elevation={5} className="ml-10 flex h-full flex-col gap-4 p-6">
+        <Card elevation={5} className="p-4 sm:p-6 lg:p-8">
+          <form onSubmit={onSubmit} className="flex h-full flex-col gap-6">
             <Box className="grid flex-1 grid-cols-1 gap-6 lg:grid-cols-2">
               <Box className="flex flex-col gap-4">
                 <TextField
@@ -91,6 +96,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   {...register("name")}
                   error={!!formErrors.name}
                   helperText={formErrors.name?.message}
+                  fullWidth
                 />
 
                 <TextField
@@ -98,13 +104,14 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   {...register("tamilName")}
                   error={!!formErrors.tamilName}
                   helperText={formErrors.tamilName?.message}
+                  fullWidth
                 />
 
                 <Controller
                   control={control}
                   name="unit"
                   render={({ field }) => (
-                    <FormControl error={!!formErrors.unit} required>
+                    <FormControl error={!!formErrors.unit} required fullWidth>
                       <InputLabel id="unit-label" required>
                         Unit
                       </InputLabel>
@@ -133,6 +140,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   {...register("noOfUnits")}
                   error={!!formErrors.noOfUnits}
                   helperText={formErrors.noOfUnits?.message}
+                  fullWidth
                 />
 
                 <TextField
@@ -140,18 +148,21 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   {...register("acquiredPrice")}
                   error={!!formErrors.acquiredPrice}
                   helperText={formErrors.acquiredPrice?.message}
+                  fullWidth
                 />
                 <TextField
                   label="MRP *"
                   {...register("mrp")}
                   error={!!formErrors.mrp}
                   helperText={formErrors.mrp?.message}
+                  fullWidth
                 />
                 <TextField
                   label="Sale Price *"
                   {...register("salePrice")}
                   error={!!formErrors.salePrice}
                   helperText={formErrors.salePrice?.message}
+                  fullWidth
                 />
               </Box>
               <Box className="flex flex-col gap-4">
@@ -159,11 +170,13 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   label="Shop"
                   contentEditable={false}
                   value={shop?.name ?? ""}
+                  fullWidth
                 />
                 <TextField
                   label="Owner"
                   contentEditable={false}
                   value={owner?.name ?? ""}
+                  fullWidth
                 />
                 <TextField
                   label="Product"
@@ -171,6 +184,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   value={
                     (selectedProduct?.tamilName || selectedProduct?.name) ?? ""
                   }
+                  fullWidth
                 />
 
                 <TextField
@@ -180,6 +194,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                     (selectedCategory?.tamilName || selectedCategory?.name) ??
                     "No Category"
                   }
+                  fullWidth
                 />
 
                 <FormControlLabel
@@ -196,17 +211,19 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
               </Box>
             </Box>
 
-            <LoadingButton
-              loading={isMutateLoading}
-              variant="contained"
-              className="float-right"
-              type="submit"
-            >
-              {props.variant ? "Update Variant" : "Add Variant"}
-            </LoadingButton>
-          </Card>
-        </Box>
-      </form>
+            <Box className="flex justify-end">
+              <LoadingButton
+                loading={isMutateLoading}
+                variant="contained"
+                type="submit"
+                size="large"
+              >
+                {props.variant ? "Update Variant" : "Add Variant"}
+              </LoadingButton>
+            </Box>
+          </form>
+        </Card>
+      </Box>
 
       <Snackbar
         open={isMutateError}

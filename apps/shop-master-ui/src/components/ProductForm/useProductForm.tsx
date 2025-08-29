@@ -7,6 +7,7 @@ import { createProduct, updateProduct } from "../../services/product";
 import { uploadImage } from "../../services/upload";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductFormProps } from "./ProductForm";
+import { useNavigate } from "react-router-dom";
 
 type TUseProductFormProps = TProductFormProps;
 
@@ -18,6 +19,7 @@ const useProductForm = (props: TUseProductFormProps) => {
   ]);
   const [productImage, setProductImage] = useState<File | null>(null);
   const isEditMode = !!props.product;
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
@@ -83,50 +85,40 @@ const useProductForm = (props: TUseProductFormProps) => {
     }
   }, [owner?.id, setFormState, selectedShop?.id, props.categoryId]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      let imageUrl = props.product?.image;
+  const onSubmit = handleSubmit((data) => {
+    if (!data.description) data.description = null;
+    if (!data.tamilName) data.tamilName = null;
 
-      // Upload image if selected
-      if (productImage) {
-        const uploadResponse = await uploadImage(productImage);
-        imageUrl = uploadResponse.url;
-      }
-
-      // Create/Update product with image URL
-      const productData = {
-        ...data,
-        image: imageUrl,
-      };
-
-      if (isEditMode && props.product) {
-        updateMutation.mutate({ id: props.product.id, data: productData });
-      } else {
-        createMutation.mutate(productData);
-      }
-    } catch (error: any) {
-      console.error("Error uploading image:", error);
-      // Show error to user but don't proceed with product creation
-      // You might want to show a toast notification here
-      alert(`Upload failed: ${error.message}`);
+    if (isEditMode) {
+      updateMutation.mutate({
+        id: props.product!.id,
+        data,
+      });
+    } else {
+      createMutation.mutate(data);
     }
   });
+
+  const handleClose = () => {
+    if (props.onSuccess) {
+      props.onSuccess();
+    } else {
+      navigate("/products");
+    }
+  };
 
   return {
     register,
     onSubmit,
     formErrors,
-    getFormValues,
     isMutateError: mutation.isError,
     isMutateLoading: mutation.isPending,
     mutateError: mutation.error,
-    mutate: mutation.mutate,
+    categories,
     shop: selectedShop,
     owner,
-    categories,
-
-    productImage,
     setProductImage,
+    handleClose,
   };
 };
 
