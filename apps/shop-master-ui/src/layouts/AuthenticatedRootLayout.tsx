@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Box, PageLoading } from "ui";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
@@ -10,19 +10,51 @@ const AuthenticatedRootLayout = () => {
   const { isAllDataLoaded, hasNoShops, isLoading, isError } =
     useFetchDataForGlobalStore();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <Box className="flex h-screen flex-row">
-      <Sidebar />
-      <Box className="relative flex-1 overflow-auto">
+      {/* Mobile overlay */}
+      {isSidebarOpen && (
+        <Box
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+          onClick={closeSidebar}
+        />
+      )}
+
+      {/* Sidebar */}
+      <Box
+        className={`fixed left-0 top-20 z-50 h-[calc(100vh-5rem)] transform transition-transform duration-300 ease-in-out lg:relative lg:top-0 lg:h-screen lg:translate-x-0 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <Sidebar onClose={closeSidebar} />
+      </Box>
+
+      {/* Main content area */}
+      <Box className="relative flex flex-1 flex-col">
         <PageStatus
           isLoading={isLoading}
           isError={isError}
           hasNoShops={hasNoShops}
           isAllDataLoaded={isAllDataLoaded}
         >
-          <Topbar />
-          <Box className="p-4">
-            <Outlet />
+          {/* Sticky Topbar */}
+          <Topbar onMenuClick={toggleSidebar} />
+
+          {/* Scrollable content */}
+          <Box className="flex-1 overflow-auto">
+            <Box className="p-4">
+              <Outlet />
+            </Box>
           </Box>
         </PageStatus>
       </Box>

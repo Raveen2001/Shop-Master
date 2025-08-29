@@ -48,6 +48,14 @@ export const router = createBrowserRouter([
 
     children: [
       {
+        path: "",
+        element: (
+          <CategoryProvider>
+            <ManageCategories />
+          </CategoryProvider>
+        ),
+      },
+      {
         path: "orders",
         element: <Layout />,
         children: [
@@ -182,6 +190,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+
       {
         path: "*",
         element: <h1>404 Not Found</h1>,
