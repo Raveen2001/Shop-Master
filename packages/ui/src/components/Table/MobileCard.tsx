@@ -13,6 +13,7 @@ const MobileCard = <T,>({ row }: MobileCardProps<T>) => {
           {row.getVisibleCells().map((cell) => {
             const column = cell.column;
             const header = column.columnDef.header;
+            const meta = column.columnDef.meta;
             const cellValue = flexRender(
               column.columnDef.cell,
               cell.getContext(),
