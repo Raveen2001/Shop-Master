@@ -22,7 +22,6 @@ import {
 
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import ShowStatus from "./ShowStatus";
-import MobileCard from "./MobileCard";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
