@@ -26,6 +26,7 @@ import {
 
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import ShowStatus from "./ShowStatus";
+import MobileCard from "./MobileCard";
 
 interface IReactQueryPaginatedTableProps<T, K>
   extends React.HTMLAttributes<HTMLElement> {
@@ -36,6 +37,7 @@ interface IReactQueryPaginatedTableProps<T, K>
   getSubRows?: (originalRow: T, index: number) => T[];
   getRowCanExpand?: (row: Row<T>) => boolean;
 }
+
 const ReactQueryPaginatedTable = <T, K>({
   columns,
   data,
@@ -68,9 +70,35 @@ const ReactQueryPaginatedTable = <T, K>({
     getExpandedRowModel: getExpandedRowModel(),
     enableSortingRemoval: false,
   });
+
   return (
     <Box className={clsx("flex flex-col w-full h-full isolate", className)}>
-      <Box className="relative w-full overflow-auto border border-dotted border-slate-400 flex-1">
+      {/* Mobile Card Layout */}
+      <Box className="lg:hidden">
+        {containsData ? (
+          <Box className="space-y-4">
+            {table.getRowModel().rows.map((row) => (
+              <Fragment key={row.id}>
+                <MobileCard row={row} />
+                {renderSubComponent &&
+                  row.getIsExpanded() &&
+                  row.getCanExpand() && (
+                    <Box className="ml-4 border-l-2 border-gray-200 pl-4">
+                      {renderSubComponent({ row })}
+                    </Box>
+                  )}
+              </Fragment>
+            ))}
+          </Box>
+        ) : (
+          <Box className="w-full h-80 flex justify-center items-center p-4">
+            <ShowStatus />
+          </Box>
+        )}
+      </Box>
+
+      {/* Desktop Table Layout */}
+      <Box className="hidden lg:block relative w-full overflow-auto border border-dotted border-slate-400 flex-1">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100 sticky top-0 z-10`}>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -151,6 +179,8 @@ const ReactQueryPaginatedTable = <T, K>({
           </Box>
         )}
       </Box>
+
+      {/* Responsive Pagination */}
       <TablePagination
         component="div"
         className="overflow-hidden"
@@ -162,6 +192,23 @@ const ReactQueryPaginatedTable = <T, K>({
         rowsPerPage={table.getState().pagination.pageSize}
         onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement>) => {
           table.setPageSize(Number(e.target.value));
+        }}
+        labelRowsPerPage="Rows per page:"
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+        }
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        SelectProps={{
+          size: "small",
+        }}
+        sx={{
+          ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
+            {
+              fontSize: { xs: "0.75rem", sm: "0.875rem" },
+            },
+          ".MuiTablePagination-select": {
+            fontSize: { xs: "0.75rem", sm: "0.875rem" },
+          },
         }}
       />
     </Box>

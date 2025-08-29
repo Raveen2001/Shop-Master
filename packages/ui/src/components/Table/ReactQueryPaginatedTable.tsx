@@ -24,6 +24,7 @@ import { IPaginatedData } from "schema";
 import ShowStatus from "./ShowStatus";
 import { AxiosResponse } from "axios";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
+import MobileCard from "./MobileCard";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
@@ -35,6 +36,7 @@ interface IReactQueryPaginatedTableProps<T, K> {
   defaultSortColumn?: ColumnSort;
   disableSorting?: boolean;
 }
+
 const ReactQueryPaginatedTable = <T, K>({
   columns,
   queryFn,
@@ -100,7 +102,25 @@ const ReactQueryPaginatedTable = <T, K>({
 
   return (
     <Box>
-      <Box className="relative w-full overflow-auto border border-dotted border-slate-400">
+      {/* Mobile Card Layout */}
+      <Box className="lg:hidden">
+        {containsData ? (
+          <Box className="space-y-4">
+            {table.getRowModel().rows.map((row) => (
+              <Box key={row.id}>
+                <MobileCard row={row} />
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <Box className="w-full h-80 flex justify-center items-center p-4">
+            <ShowStatus isLoading={isLoading} isError={isError} />
+          </Box>
+        )}
+      </Box>
+
+      {/* Desktop Table Layout */}
+      <Box className="hidden lg:block relative w-full overflow-auto border border-dotted border-slate-400">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100 `}>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -169,6 +189,7 @@ const ReactQueryPaginatedTable = <T, K>({
         )}
       </Box>
 
+      {/* Responsive Pagination */}
       <TablePagination
         component="div"
         count={axiosResponse?.data.total ?? 0}
@@ -186,6 +207,23 @@ const ReactQueryPaginatedTable = <T, K>({
             limit: Number(e.target.value),
             page: 0,
           }));
+        }}
+        labelRowsPerPage="Rows per page:"
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}-${to} of ${count !== -1 ? count : `more than ${to}`}`
+        }
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        SelectProps={{
+          size: "small",
+        }}
+        sx={{
+          ".MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows":
+            {
+              fontSize: { xs: "0.75rem", sm: "0.875rem" },
+            },
+          ".MuiTablePagination-select": {
+            fontSize: { xs: "0.75rem", sm: "0.875rem" },
+          },
         }}
       />
     </Box>

@@ -22,12 +22,14 @@ import {
 
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import ShowStatus from "./ShowStatus";
+import MobileCard from "./MobileCard";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
   data: T[];
   defaultSortColumn?: ColumnSort;
 }
+
 const ReactQueryPaginatedTable = <T, K>({
   columns,
   data,
@@ -55,7 +57,25 @@ const ReactQueryPaginatedTable = <T, K>({
 
   return (
     <Box>
-      <Box className="w-full overflow-auto border border-dotted border-slate-400 max-h-[50vh]">
+      {/* Mobile Card Layout */}
+      <Box className="lg:hidden">
+        {containsData ? (
+          <Box className="space-y-4">
+            {table.getRowModel().rows.map((row) => (
+              <Fragment key={row.id}>
+                <MobileCard row={row} />
+              </Fragment>
+            ))}
+          </Box>
+        ) : (
+          <Box className="w-full h-80 flex justify-center items-center p-4">
+            <ShowStatus />
+          </Box>
+        )}
+      </Box>
+
+      {/* Desktop Table Layout */}
+      <Box className="hidden lg:block w-full overflow-auto border border-dotted border-slate-400 max-h-[50vh]">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100`}>
             {table.getHeaderGroups().map((headerGroup) => (
