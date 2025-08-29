@@ -151,17 +151,17 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                   fullWidth
                 />
                 <TextField
-                  label="MRP *"
-                  {...register("mrp")}
-                  error={!!formErrors.mrp}
-                  helperText={formErrors.mrp?.message}
-                  fullWidth
-                />
-                <TextField
                   label="Sale Price *"
                   {...register("salePrice")}
                   error={!!formErrors.salePrice}
                   helperText={formErrors.salePrice?.message}
+                  fullWidth
+                />
+                <TextField
+                  label="MRP *"
+                  {...register("mrp")}
+                  error={!!formErrors.mrp}
+                  helperText={formErrors.mrp?.message}
                   fullWidth
                 />
               </Box>

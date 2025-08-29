@@ -68,7 +68,7 @@ const ProductDetail = () => {
   }
 
   return (
-    <Box className="px-8 py-4">
+    <Box>
       {/* Header */}
       <Box className="mb-8 flex items-center gap-4">
         <Button

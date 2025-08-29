@@ -9,7 +9,7 @@ interface TopbarProps {
 
 const Topbar = ({ onMenuClick }: TopbarProps) => {
   return (
-    <Box className="sticky top-0 z-50 flex h-20 w-full items-center justify-between border-b border-gray-200 bg-white/60 p-4 drop-shadow-sm backdrop-blur">
+    <Box className="flex h-20 w-full items-center justify-between border-b border-gray-200 bg-white/60 p-4 drop-shadow-sm backdrop-blur">
       <Box className="flex items-center gap-4">
         {/* Hamburger menu button for mobile */}
         <IconButton onClick={onMenuClick} className="lg:hidden" size="small">

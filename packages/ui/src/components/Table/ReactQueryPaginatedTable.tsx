@@ -24,7 +24,6 @@ import { IPaginatedData } from "schema";
 import ShowStatus from "./ShowStatus";
 import { AxiosResponse } from "axios";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
-import MobileCard from "./MobileCard";
 
 interface IReactQueryPaginatedTableProps<T, K> {
   columns: ColumnDef<T, K>[];
@@ -102,25 +101,8 @@ const ReactQueryPaginatedTable = <T, K>({
 
   return (
     <Box>
-      {/* Mobile Card Layout */}
-      <Box className="lg:hidden">
-        {containsData ? (
-          <Box className="space-y-4">
-            {table.getRowModel().rows.map((row) => (
-              <Box key={row.id}>
-                <MobileCard row={row} />
-              </Box>
-            ))}
-          </Box>
-        ) : (
-          <Box className="w-full h-80 flex justify-center items-center p-4">
-            <ShowStatus isLoading={isLoading} isError={isError} />
-          </Box>
-        )}
-      </Box>
-
       {/* Desktop Table Layout */}
-      <Box className="hidden lg:block relative w-full overflow-auto border border-dotted border-slate-400">
+      <Box className="relative w-full overflow-auto border border-dotted border-slate-400">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100 `}>
             {table.getHeaderGroups().map((headerGroup) => (

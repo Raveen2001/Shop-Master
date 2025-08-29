@@ -21,7 +21,7 @@ const AuthenticatedRootLayout = () => {
   };
 
   return (
-    <Box className="flex h-screen flex-row">
+    <Box className="flex h-full flex-row">
       {/* Mobile overlay */}
       {isSidebarOpen && (
         <Box
@@ -47,11 +47,13 @@ const AuthenticatedRootLayout = () => {
           hasNoShops={hasNoShops}
           isAllDataLoaded={isAllDataLoaded}
         >
-          {/* Sticky Topbar */}
-          <Topbar onMenuClick={toggleSidebar} />
-
-          <Box className="flex-1 p-4">
-            <Outlet />
+          <Box className="flex flex-col">
+            <Box className="sticky top-0 z-50 h-20">
+              <Topbar onMenuClick={toggleSidebar} />
+            </Box>
+            <Box className="pb-safe flex-1 p-4">
+              <Outlet />
+            </Box>
           </Box>
         </PageStatus>
       </Box>

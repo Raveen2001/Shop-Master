@@ -26,7 +26,6 @@ import {
 
 import { ArrowDownwardRounded, ArrowUpwardRounded } from "@mui/icons-material";
 import ShowStatus from "./ShowStatus";
-import MobileCard from "./MobileCard";
 
 interface IReactQueryPaginatedTableProps<T, K>
   extends React.HTMLAttributes<HTMLElement> {
@@ -73,32 +72,8 @@ const ReactQueryPaginatedTable = <T, K>({
 
   return (
     <Box className={clsx("flex flex-col w-full h-full isolate", className)}>
-      {/* Mobile Card Layout */}
-      <Box className="lg:hidden">
-        {containsData ? (
-          <Box className="space-y-4">
-            {table.getRowModel().rows.map((row) => (
-              <Fragment key={row.id}>
-                <MobileCard row={row} />
-                {renderSubComponent &&
-                  row.getIsExpanded() &&
-                  row.getCanExpand() && (
-                    <Box className="ml-4 border-l-2 border-gray-200 pl-4">
-                      {renderSubComponent({ row })}
-                    </Box>
-                  )}
-              </Fragment>
-            ))}
-          </Box>
-        ) : (
-          <Box className="w-full h-80 flex justify-center items-center p-4">
-            <ShowStatus />
-          </Box>
-        )}
-      </Box>
-
       {/* Desktop Table Layout */}
-      <Box className="hidden lg:block relative w-full overflow-auto border border-dotted border-slate-400 flex-1">
+      <Box className="relative w-full overflow-auto border border-dotted border-slate-400 flex-1">
         <MUITable className={`w-[${table.getTotalSize()}px]`}>
           <TableHead className={`bg-slate-100 sticky top-0 z-10`}>
             {table.getHeaderGroups().map((headerGroup) => (

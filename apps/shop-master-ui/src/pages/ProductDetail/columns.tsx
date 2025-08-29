@@ -49,21 +49,21 @@ export const createColumnsDefs = (
     },
   }),
 
-  columnHelper.accessor("acquiredPrice", {
-    id: "acquiredPrice",
-    header: "Acquired Price",
-    meta: {
-      className: "hidden xl:table-cell",
-    },
+  columnHelper.accessor("salePrice", {
+    id: "salePrice",
+    header: "Sale Price",
     cell: ({ getValue }) => {
       const price = getValue();
       return `₹${price}`;
     },
   }),
 
-  columnHelper.accessor("salePrice", {
-    id: "salePrice",
-    header: "Sale Price",
+  columnHelper.accessor("acquiredPrice", {
+    id: "acquiredPrice",
+    header: "Acquired Price",
+    meta: {
+      className: "hidden xl:table-cell",
+    },
     cell: ({ getValue }) => {
       const price = getValue();
       return `₹${price}`;
