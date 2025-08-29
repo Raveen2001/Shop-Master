@@ -35,7 +35,11 @@ const Sidebar = ({ onClose }: SidebarProps) => {
               name={item.name}
               key={item.name}
               content={item.items.map((subItem) => (
-                <SidebarItem {...subItem} key={subItem.name} />
+                <SidebarItem
+                  {...subItem}
+                  key={subItem.name}
+                  onClose={onClose}
+                />
               ))}
             />
           ))}

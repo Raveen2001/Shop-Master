@@ -4,11 +4,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "ui";
 import { TSidebarSubItem } from "./models";
 
-const SidebarItem: React.FC<TSidebarSubItem> = ({
+interface SidebarItemProps extends TSidebarSubItem {
+  onClose?: () => void;
+}
+
+const SidebarItem: React.FC<SidebarItemProps> = ({
   name,
   path,
   icon,
   highlightPathPattern,
+  onClose,
   // items,
 }) => {
   const theme = useTheme();
@@ -18,12 +23,18 @@ const SidebarItem: React.FC<TSidebarSubItem> = ({
 
   const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate(path);
+    // Close sidebar after navigation (especially useful on mobile)
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
     <Box
       className={`group relative  mx-3 h-[50px] cursor-pointer`}
-      onClick={() => {
-        navigate(path);
-      }}
+      onClick={handleClick}
     >
       <Box
         className={clsx(
