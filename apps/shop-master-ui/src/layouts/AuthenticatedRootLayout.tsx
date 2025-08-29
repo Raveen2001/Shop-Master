@@ -40,7 +40,7 @@ const AuthenticatedRootLayout = () => {
       </Box>
 
       {/* Main content area */}
-      <Box className="relative flex-1">
+      <Box className="relative flex-1 overflow-auto">
         <PageStatus
           isLoading={isLoading}
           isError={isError}
@@ -50,11 +50,8 @@ const AuthenticatedRootLayout = () => {
           {/* Sticky Topbar */}
           <Topbar onMenuClick={toggleSidebar} />
 
-          {/* Scrollable content */}
-          <Box className="flex-1 overflow-auto">
-            <Box className="max-w-full p-4">
-              <Outlet />
-            </Box>
+          <Box className="flex-1 p-4">
+            <Outlet />
           </Box>
         </PageStatus>
       </Box>
