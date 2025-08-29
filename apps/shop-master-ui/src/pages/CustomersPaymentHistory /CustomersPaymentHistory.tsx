@@ -21,7 +21,7 @@ const CustomersPaymentHistory = () => {
           startIcon={<Add />}
           onClick={() => navigate("create")}
         >
-          New Customer Payment
+          Payment
         </Button>
       </Box>
       <ReactQueryPaginatedTable
