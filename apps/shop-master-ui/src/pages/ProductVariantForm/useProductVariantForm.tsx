@@ -11,6 +11,7 @@ import {
 import {
   createProductVariant,
   updateProductVariant,
+  deleteProductVariant,
 } from "../../services/product-variant";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductVariantFormProps } from "./ProductVariantForm";
@@ -54,13 +55,12 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     IRequestError,
     TProductVariantFormSchema
   >({
-    mutationKey: ["product-variant", "create"],
+    mutationKey: ["productVariant", "create"],
     mutationFn: createProductVariant,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["shop", selectedShop?.id, "products"],
       });
-      // Call onSuccess callback if provided, otherwise navigate
       if (props?.onSuccess) {
         props.onSuccess();
       } else {
@@ -74,13 +74,31 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     IRequestError,
     { id: string; data: Partial<TProductVariantFormSchema> }
   >({
-    mutationKey: ["product-variant", "update"],
+    mutationKey: ["productVariant", "update"],
     mutationFn: ({ id, data }) => updateProductVariant(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["shop", selectedShop?.id, "products"],
       });
-      // Call onSuccess callback if provided, otherwise navigate
+      if (props?.onSuccess) {
+        props.onSuccess();
+      } else {
+        navigate("/products");
+      }
+    },
+  });
+
+  const deleteMutation = useMutation<
+    Awaited<ReturnType<typeof deleteProductVariant>>,
+    IRequestError,
+    string
+  >({
+    mutationKey: ["productVariant", "delete"],
+    mutationFn: deleteProductVariant,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "products"],
+      });
       if (props?.onSuccess) {
         props.onSuccess();
       } else {
@@ -127,6 +145,12 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     }
   });
 
+  const handleDelete = () => {
+    if (props?.variant?.id) {
+      deleteMutation.mutate(props.variant.id);
+    }
+  };
+
   const handleClose = () => {
     if (props.onSuccess) {
       props.onSuccess();
@@ -148,6 +172,9 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     owner,
     control,
     handleClose,
+    handleDelete,
+    isDeleteLoading: deleteMutation.isPending,
+    deleteError: deleteMutation.error,
   };
 };
 

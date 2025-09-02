@@ -1,13 +1,16 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { IRequestError, TProductFormSchema, ProductFormSchema } from "schema";
-import { createProduct, updateProduct } from "../../services/product";
-import { uploadImage } from "../../services/upload";
+import {
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../../services/product";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductFormProps } from "./ProductForm";
-import { useNavigate } from "react-router-dom";
 
 type TUseProductFormProps = TProductFormProps;
 
@@ -50,6 +53,21 @@ const useProductForm = (props: TUseProductFormProps) => {
         queryKey: ["shop", selectedShop?.id, "products"],
       });
       props.onSuccess?.();
+    },
+  });
+
+  const deleteMutation = useMutation<
+    Awaited<ReturnType<typeof deleteProduct>>,
+    IRequestError,
+    string
+  >({
+    mutationKey: ["product", "delete"],
+    mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "products"],
+      });
+      navigate("/products");
     },
   });
 
@@ -99,6 +117,12 @@ const useProductForm = (props: TUseProductFormProps) => {
     }
   });
 
+  const handleDelete = () => {
+    if (props?.product?.id) {
+      deleteMutation.mutate(props.product.id);
+    }
+  };
+
   const handleClose = () => {
     if (props.onSuccess) {
       props.onSuccess();
@@ -119,6 +143,9 @@ const useProductForm = (props: TUseProductFormProps) => {
     owner,
     setProductImage,
     handleClose,
+    handleDelete,
+    isDeleteLoading: deleteMutation.isPending,
+    deleteError: deleteMutation.error,
   };
 };
 

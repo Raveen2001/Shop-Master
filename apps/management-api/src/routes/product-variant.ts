@@ -151,6 +151,36 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
 
     reply.code(200).send(updatedVariant);
   });
+
+  // delete product variant
+  fastify.delete<{
+    Params: TProductVariantQueryParam;
+  }>("/:id", async (req, reply) => {
+    const { id } = req.params;
+
+    // Ensure the product variant belongs to the user
+    const existingVariant = await fastify.db.query.productVariantsDB.findFirst({
+      where: (productVariantsDB, { eq, and }) =>
+        and(
+          eq(productVariantsDB.id, id),
+          eq(productVariantsDB.ownerId, req.userInfo.data.id)
+        ),
+    });
+
+    if (!existingVariant) {
+      reply
+        .code(404)
+        .send({ message: "Product variant not found or unauthorized" });
+      return;
+    }
+
+    // Delete the product variant
+    await fastify.db
+      .delete(productVariantsDB)
+      .where(eq(productVariantsDB.id, id));
+
+    reply.code(200).send({ message: "Product variant deleted successfully" });
+  });
 };
 
 export default ProductVariantRoutes;

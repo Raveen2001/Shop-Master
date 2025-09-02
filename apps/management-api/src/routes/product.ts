@@ -133,6 +133,44 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
 
     reply.code(200).send(updatedProduct);
   });
+
+  // delete product
+  fastify.delete<{
+    Params: TProductQueryParam;
+  }>("/:id", async (req, reply) => {
+    const { id } = req.params;
+
+    // Ensure the product belongs to the user
+    const existingProduct = await fastify.db.query.productsDB.findFirst({
+      where: (productsDB, { eq, and }) =>
+        and(
+          eq(productsDB.id, id),
+          eq(productsDB.ownerId, req.userInfo.data.id)
+        ),
+      with: {
+        variants: true,
+      },
+    });
+
+    if (!existingProduct) {
+      reply.code(404).send({ message: "Product not found or unauthorized" });
+      return;
+    }
+
+    // Check if product has variants
+    if (existingProduct.variants && existingProduct.variants.length > 0) {
+      reply.code(400).send({
+        message:
+          "Cannot delete product with existing variants. Please remove variants first.",
+      });
+      return;
+    }
+
+    // Delete the product
+    await fastify.db.delete(productsDB).where(eq(productsDB.id, id));
+
+    reply.code(200).send({ message: "Product deleted successfully" });
+  });
 };
 
 export default ProductRoutes;

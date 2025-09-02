@@ -32,3 +32,8 @@ export const updateProduct = (
   const url = `/products/${id}`;
   return axiosClient.put<TProductData>(url, product);
 };
+
+export const deleteProduct = (id: string) => {
+  const url = `/products/${id}`;
+  return axiosClient.delete<{ message: string }>(url);
+};

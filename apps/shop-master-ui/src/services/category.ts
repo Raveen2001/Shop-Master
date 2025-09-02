@@ -22,3 +22,8 @@ export const updateCategory = (
   const url = `/categories/${id}`;
   return axiosClient.put<TCategoryData>(url, category);
 };
+
+export const deleteCategory = (id: string) => {
+  const url = `/categories/${id}`;
+  return axiosClient.delete<{ message: string }>(url);
+};

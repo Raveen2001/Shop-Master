@@ -21,7 +21,7 @@ const AuthenticatedRootLayout = () => {
   };
 
   return (
-    <Box className="flex h-full flex-row">
+    <Box className="flex h-[100dvh] flex-row">
       {/* Mobile overlay */}
       {isSidebarOpen && (
         <Box
@@ -40,7 +40,7 @@ const AuthenticatedRootLayout = () => {
       </Box>
 
       {/* Main content area */}
-      <Box className="relative flex-1 overflow-auto">
+      <Box className="pb-safe relative flex-1 overflow-auto">
         <PageStatus
           isLoading={isLoading}
           isError={isError}

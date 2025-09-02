@@ -140,6 +140,59 @@ const CategoryRoutes: FastifyPluginAsyncTypebox = async (
 
     reply.code(200).send(updatedCategory);
   });
+
+  // delete category
+  fastify.delete<{
+    Params: TCategoryQueryParam;
+  }>("/:id", async (req, reply) => {
+    const { id } = req.params;
+
+    // Ensure the category belongs to the user
+    const existingCategory =
+      await fastify.db.query.productCategoriesDB.findFirst({
+        where: (productCategoriesDB, { eq, and }) =>
+          and(
+            eq(productCategoriesDB.id, id),
+            eq(productCategoriesDB.ownerId, req.userInfo.data.id)
+          ),
+        with: {
+          products: true,
+          subCategories: true,
+        },
+      });
+
+    if (!existingCategory) {
+      reply.code(404).send({ message: "Category not found or unauthorized" });
+      return;
+    }
+
+    // Check if category has products or subcategories
+    if (existingCategory.products && existingCategory.products.length > 0) {
+      reply.code(400).send({
+        message:
+          "Cannot delete category with existing products. Please remove or reassign products first.",
+      });
+      return;
+    }
+
+    if (
+      existingCategory.subCategories &&
+      existingCategory.subCategories.length > 0
+    ) {
+      reply.code(400).send({
+        message:
+          "Cannot delete category with existing subcategories. Please remove or reassign subcategories first.",
+      });
+      return;
+    }
+
+    // Delete the category
+    await fastify.db
+      .delete(productCategoriesDB)
+      .where(eq(productCategoriesDB.id, id));
+
+    reply.code(200).send({ message: "Category deleted successfully" });
+  });
 };
 
 export default CategoryRoutes;

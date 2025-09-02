@@ -1,28 +1,28 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { IRequestError, TCategoryFormSchema, CategoryFormSchema } from "schema";
-import { createCategory, updateCategory } from "../../services/category";
-import { uploadImage } from "../../services/upload";
+import {
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from "../../services/category";
 import { useGlobalStore } from "../../store/globalStore";
 import { TCategoryFormProps } from "./CategoryForm";
-import { useNavigate } from "react-router-dom";
 
-type TUseCategoryFormProps = TCategoryFormProps;
-
-const useCategoryForm = (props: TUseCategoryFormProps) => {
-  const [owner, selectedShop, setIsCategoryDataFetching] = useGlobalStore(
-    (state) => [
-      state.owner,
-      state.selectedShop,
-      state.setIsCategoryDataFetching,
-    ]
-  );
-  const queryClient = useQueryClient();
-  const [categoryImage, setCategoryImage] = useState<File | null>(null);
-  const isEditMode = !!props.category;
+const useCategoryForm = (props?: TCategoryFormProps) => {
   const navigate = useNavigate();
+  const [owner, selectedShop] = useGlobalStore((state) => [
+    state.owner,
+    state.selectedShop,
+  ]);
+
+  const [categoryImage, setCategoryImage] = useState<File | null>(null);
+  const isEditMode = !!props?.category;
+
+  const queryClient = useQueryClient();
 
   const createMutation = useMutation<
     Awaited<ReturnType<typeof createCategory>>,
@@ -32,11 +32,10 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
     mutationKey: ["category", "create"],
     mutationFn: createCategory,
     onSuccess: () => {
-      setIsCategoryDataFetching(true);
       queryClient.invalidateQueries({
         queryKey: ["shop", selectedShop?.id, "categories"],
       });
-      props.onSuccess?.();
+      props?.onSuccess?.();
     },
   });
 
@@ -48,11 +47,25 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
     mutationKey: ["category", "update"],
     mutationFn: ({ id, data }) => updateCategory(id, data),
     onSuccess: () => {
-      setIsCategoryDataFetching(true);
       queryClient.invalidateQueries({
         queryKey: ["shop", selectedShop?.id, "categories"],
       });
-      props.onSuccess?.();
+      props?.onSuccess?.();
+    },
+  });
+
+  const deleteMutation = useMutation<
+    Awaited<ReturnType<typeof deleteCategory>>,
+    IRequestError,
+    string
+  >({
+    mutationKey: ["category", "delete"],
+    mutationFn: deleteCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["shop", selectedShop?.id, "categories"],
+      });
+      navigate("/categories");
     },
   });
 
@@ -62,26 +75,20 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
     register,
     handleSubmit,
     formState: { errors: formErrors },
-    setValue: setFormState,
   } = useForm<TCategoryFormSchema>({
-    defaultValues: {
-      image: props.category?.image ?? null,
-      parentId: props.parentCategoryId ?? props.category?.parentId ?? null,
-      name: props.category?.name ?? "",
-      tamilName: props.category?.tamilName ?? "",
-      shopId: props.category?.shopId ?? selectedShop?.id ?? "",
-      ownerId: props.category?.ownerId ?? owner?.id ?? "",
-    },
     resolver: yupResolver(CategoryFormSchema as any),
+    defaultValues: {
+      name: props?.category?.name || "",
+      tamilName: props?.category?.tamilName || "",
+      parentId: props?.parentCategoryId || props?.category?.parentId || null,
+      shopId: props?.category?.shopId || selectedShop?.id || "",
+      ownerId: props?.category?.ownerId || owner?.id || "",
+    },
   });
-
-  useEffect(() => {
-    setFormState("shopId", selectedShop?.id ?? "");
-    setFormState("ownerId", owner?.id ?? "");
-  }, [owner?.id, setFormState, selectedShop?.id]);
 
   const onSubmit = handleSubmit((data) => {
     if (!data.tamilName) data.tamilName = null;
+    if (!data.parentId) data.parentId = null;
 
     if (isEditMode) {
       updateMutation.mutate({
@@ -93,8 +100,14 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
     }
   });
 
+  const handleDelete = () => {
+    if (props?.category?.id) {
+      deleteMutation.mutate(props.category.id);
+    }
+  };
+
   const handleClose = () => {
-    if (props.onSuccess) {
+    if (props?.onSuccess) {
       props.onSuccess();
     } else {
       navigate("/categories");
@@ -108,10 +121,13 @@ const useCategoryForm = (props: TUseCategoryFormProps) => {
     isMutateError: mutation.isError,
     isMutateLoading: mutation.isPending,
     mutateError: mutation.error,
-    setCategoryImage,
     shop: selectedShop,
     owner,
+    setCategoryImage,
     handleClose,
+    handleDelete,
+    isDeleteLoading: deleteMutation.isPending,
+    deleteError: deleteMutation.error,
   };
 };
 

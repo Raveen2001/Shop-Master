@@ -20,3 +20,8 @@ export const updateProductVariant = (
   const url = `/product-variants/${id}`;
   return axiosClient.put<TProductVariantData>(url, productVariant);
 };
+
+export const deleteProductVariant = (id: string) => {
+  const url = `/product-variants/${id}`;
+  return axiosClient.delete<{ message: string }>(url);
+};
