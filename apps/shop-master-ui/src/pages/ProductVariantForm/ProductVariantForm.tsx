@@ -101,7 +101,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
               <Switch color="secondary" {...register("onlyForBilling")} />
             </Box>
 
-            {!isModal && props.variant && (
+            {props.variant && (
               <Button
                 color="error"
                 variant="outlined"

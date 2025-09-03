@@ -3,7 +3,7 @@ import { Box } from "ui";
 import { Outlet } from "react-router-dom";
 import useFetchDataForGlobalStore from "../store/useFetchDataForGlobalStore";
 import {
-  BillingHeader,
+  // BillingHeader,
   BillingErrorState,
   BillingLoadingState,
 } from "../components";
