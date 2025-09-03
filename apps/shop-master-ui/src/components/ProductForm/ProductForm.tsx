@@ -46,6 +46,8 @@ const ProductForm: FC<TProductFormProps> = (props) => {
     handleDelete,
     isDeleteLoading,
     deleteError,
+    isUploading,
+    uploadError,
   } = useProductForm(props);
 
   const handleDeleteClick = () => {
@@ -176,8 +178,13 @@ const ProductForm: FC<TProductFormProps> = (props) => {
                   variant="contained"
                   type="submit"
                   size="large"
+                  disabled={isUploading}
                 >
-                  {props.product ? "Update Product" : "Create Product"}
+                  {isUploading
+                    ? "Uploading Image..."
+                    : props.product
+                    ? "Update Product"
+                    : "Create Product"}
                 </LoadingButton>
               </Box>
             </form>
@@ -185,7 +192,7 @@ const ProductForm: FC<TProductFormProps> = (props) => {
         </Box>
 
         <Snackbar
-          open={isMutateError}
+          open={isMutateError || !!uploadError}
           autoHideDuration={6000}
           anchorOrigin={{
             vertical: "bottom",
@@ -193,7 +200,8 @@ const ProductForm: FC<TProductFormProps> = (props) => {
           }}
         >
           <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
-            {mutateError?.response?.data.error ??
+            {uploadError ||
+              mutateError?.response?.data?.error ||
               "Something went wrong, please try again later"}
           </Alert>
         </Snackbar>
@@ -208,7 +216,7 @@ const ProductForm: FC<TProductFormProps> = (props) => {
         message="Are you sure you want to delete this product? This action cannot be undone."
         itemName={props.product?.name || props.product?.tamilName || "Product"}
         isLoading={isDeleteLoading}
-        error={deleteError?.response?.data?.message || null}
+        error={deleteError?.response?.data?.error || null}
       />
     </>
   );

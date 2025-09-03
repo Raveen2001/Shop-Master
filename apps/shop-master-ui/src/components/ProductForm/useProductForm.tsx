@@ -9,6 +9,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../../services/product";
+import { uploadImage } from "../../services/upload";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductFormProps } from "./ProductForm";
 
@@ -21,6 +22,8 @@ const useProductForm = (props: TUseProductFormProps) => {
     state.categories,
   ]);
   const [productImage, setProductImage] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const isEditMode = !!props.product;
   const navigate = useNavigate();
 
@@ -103,17 +106,46 @@ const useProductForm = (props: TUseProductFormProps) => {
     }
   }, [owner?.id, setFormState, selectedShop?.id, props.categoryId]);
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     if (!data.description) data.description = null;
     if (!data.tamilName) data.tamilName = null;
 
-    if (isEditMode) {
-      updateMutation.mutate({
-        id: props.product!.id,
-        data,
-      });
-    } else {
-      createMutation.mutate(data);
+    // Clear any previous upload errors
+    setUploadError(null);
+
+    console.log("Form submission started", { data, productImage });
+
+    try {
+      // Handle image upload if a new image is selected
+      if (productImage) {
+        console.log("Starting image upload...", productImage);
+        setIsUploading(true);
+        const uploadResult = await uploadImage(productImage);
+        console.log("Image upload successful:", uploadResult);
+        data.image = uploadResult.url;
+        setIsUploading(false);
+      } else {
+        console.log("No image to upload");
+      }
+
+      console.log("Proceeding with product operation:", data);
+
+      if (isEditMode) {
+        updateMutation.mutate({
+          id: props.product!.id,
+          data,
+        });
+      } else {
+        createMutation.mutate(data);
+      }
+    } catch (error) {
+      console.error("Error in form submission:", error);
+      setIsUploading(false);
+      setUploadError(
+        error instanceof Error ? error.message : "Failed to upload image"
+      );
+      // Don't proceed with product creation/update if image upload fails
+      return;
     }
   });
 
@@ -136,7 +168,7 @@ const useProductForm = (props: TUseProductFormProps) => {
     onSubmit,
     formErrors,
     isMutateError: mutation.isError,
-    isMutateLoading: mutation.isPending,
+    isMutateLoading: mutation.isPending || isUploading,
     mutateError: mutation.error,
     categories,
     shop: selectedShop,
@@ -146,6 +178,8 @@ const useProductForm = (props: TUseProductFormProps) => {
     handleDelete,
     isDeleteLoading: deleteMutation.isPending,
     deleteError: deleteMutation.error,
+    isUploading,
+    uploadError,
   };
 };
 
