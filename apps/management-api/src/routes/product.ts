@@ -80,6 +80,7 @@ const ProductRoutes: FastifyPluginAsyncTypebox = async (
         with: {
           variants: includeVariants || undefined,
         },
+        orderBy: (productsDB, { desc }) => [desc(productsDB.tamilName)],
       });
 
       reply.code(200).send(products);

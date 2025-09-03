@@ -68,10 +68,6 @@ export class PrinterService {
 
   async printOrder(order: PrinterOrder) {
     return new Promise((resolve, reject) => {
-      if (!this.device || !this.printer) {
-        return reject("No printer initialized");
-      }
-
       try {
         // Format date and time
         order.date = new Date(order.date);
@@ -278,6 +274,10 @@ export class PrinterService {
           console.log(`✅ Receipt saved as PNG: ${filepath}`);
         } catch (saveError) {
           console.error("❌ Failed to save receipt PNG:", saveError);
+        }
+
+        if (!this.device || !this.printer) {
+          return reject("No printer initialized");
         }
 
         // Convert canvas to image and print

@@ -27,6 +27,8 @@ const useProductForm = (props: TUseProductFormProps) => {
   const isEditMode = !!props.product;
   const navigate = useNavigate();
 
+  const selectedCategory = categories.find((c) => c.id === props.categoryId);
+
   const queryClient = useQueryClient();
 
   const createMutation = useMutation<
@@ -86,8 +88,8 @@ const useProductForm = (props: TUseProductFormProps) => {
     resolver: yupResolver(ProductFormSchema as any),
     defaultValues: {
       categoryId: props.categoryId || props.product?.categoryId,
-      name: props.product?.name || "",
-      tamilName: props.product?.tamilName || "",
+      name: props.product?.name || selectedCategory?.name || "",
+      tamilName: props.product?.tamilName || selectedCategory?.tamilName || "",
       description: props.product?.description || "",
       image: props.product?.image || null,
       shopId: props.product?.shopId || selectedShop?.id || "",
