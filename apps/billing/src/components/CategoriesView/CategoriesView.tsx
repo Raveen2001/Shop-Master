@@ -11,7 +11,7 @@ export const CategoriesView: React.FC = () => {
   const rootCategories = store.categories.filter((cat) => !cat.parentId);
 
   return (
-    <Box>
+    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Breadcrumb items={[{ label: "Categories" }]} showBackButton={false} />
 
       <Typography
@@ -35,7 +35,7 @@ export const CategoriesView: React.FC = () => {
         Select a category to view its subcategories and products
       </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} height="100%" overflow="auto">
         {rootCategories.map((category) => (
           <Grid
             item

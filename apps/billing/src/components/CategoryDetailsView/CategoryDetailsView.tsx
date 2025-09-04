@@ -40,7 +40,7 @@ export const CategoryDetailsView: React.FC = () => {
   ];
 
   return (
-    <Box>
+    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Box className="flex justify-between">
         <Breadcrumb
           items={breadcrumbItems}
@@ -74,111 +74,108 @@ export const CategoryDetailsView: React.FC = () => {
       </Typography>
 
       {/* Subcategories Section */}
-      {subCategories.length > 0 && (
-        <Box sx={{ marginBottom: "32px" }}>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: 600,
-              marginBottom: "16px",
-              color: "text.primary",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            Subcategories
+      <Box sx={{ height: "100%", overflow: "auto" }}>
+        {subCategories.length > 0 && (
+          <Box sx={{ marginBottom: "32px" }}>
             <Typography
-              component="span"
+              variant="h5"
               sx={{
-                fontSize: "0.875rem",
-                color: "text.secondary",
-                fontWeight: 400,
+                fontWeight: 600,
+                marginBottom: "16px",
+                color: "text.primary",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
               }}
             >
-              ({subCategories.length})
-            </Typography>
-          </Typography>
-          <Grid container spacing={2}>
-            {subCategories.map((subCategory) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                key={subCategory.id}
-                sx={{ height: "max-content" }}
+              Subcategories
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "text.secondary",
+                  fontWeight: 400,
+                }}
               >
-                <CategoryCard category={subCategory} onClick={selectCategory} />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      )}
+                ({subCategories.length})
+              </Typography>
+            </Typography>
+            <Grid container spacing={2}>
+              {subCategories.map((subCategory) => (
+                <Grid item xs={12} sm={6} lg={4} key={subCategory.id}>
+                  <CategoryCard
+                    category={subCategory}
+                    onClick={selectCategory}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
 
-      {/* Products Section */}
-      {categoryProducts.length > 0 && (
-        <Box>
-          {subCategories.length > 0 && (
-            <Divider sx={{ marginBottom: "24px" }} />
-          )}
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: 600,
-              marginBottom: "16px",
-              color: "text.primary",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            Products
+        {/* Products Section */}
+        {categoryProducts.length > 0 && (
+          <Box>
+            {subCategories.length > 0 && (
+              <Divider sx={{ marginBottom: "24px" }} />
+            )}
             <Typography
-              component="span"
+              variant="h5"
               sx={{
-                fontSize: "0.875rem",
-                color: "text.secondary",
-                fontWeight: 400,
+                fontWeight: 600,
+                marginBottom: "16px",
+                color: "text.primary",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
               }}
             >
-              ({categoryProducts.length})
+              Products
+              <Typography
+                component="span"
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "text.secondary",
+                  fontWeight: 400,
+                }}
+              >
+                ({categoryProducts.length})
+              </Typography>
             </Typography>
-          </Typography>
-          <Grid container spacing={2}>
-            {categoryProducts.map((product) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                <ProductCard
-                  product={product}
-                  onClick={selectProduct}
-                  variants={store.productVariants.filter(
-                    (v) => v.productId === product.id
-                  )}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      )}
+            <Grid container spacing={2}>
+              {categoryProducts.map((product) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                  <ProductCard
+                    product={product}
+                    onClick={selectProduct}
+                    variants={store.productVariants.filter(
+                      (v) => v.productId === product.id
+                    )}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
 
-      {/* No Content State */}
-      {subCategories.length === 0 && categoryProducts.length === 0 && (
-        <Box
-          sx={{
-            textAlign: "center",
-            padding: "40px 20px",
-            color: "text.secondary",
-          }}
-        >
-          <Typography variant="h6" sx={{ marginBottom: "8px" }}>
-            No Content Available
-          </Typography>
-          <Typography variant="body2">
-            This category has no subcategories or products yet.
-          </Typography>
-        </Box>
-      )}
+        {/* No Content State */}
+        {subCategories.length === 0 && categoryProducts.length === 0 && (
+          <Box
+            sx={{
+              textAlign: "center",
+              padding: "40px 20px",
+              color: "text.secondary",
+            }}
+          >
+            <Typography variant="h6" sx={{ marginBottom: "8px" }}>
+              No Content Available
+            </Typography>
+            <Typography variant="body2">
+              This category has no subcategories or products yet.
+            </Typography>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

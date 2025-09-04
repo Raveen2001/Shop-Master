@@ -1,4 +1,4 @@
-import { Box, Grid, useTheme, useMediaQuery, toast } from "ui";
+import { Box, Grid, useTheme, toast } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
 import {
@@ -14,15 +14,12 @@ import { printBill } from "../../services/printer";
 import { convertOrderToPrinterOrder } from "../../utils/printer";
 
 const BillingPage = () => {
-  const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.between("md", "lg"));
   const { products, employee, productVariants } = useGlobalStore();
   const {
     currentStep,
     selectedCategory,
     selectedProduct,
     completeOrder,
-
     clearOrder,
   } = useBillingStore();
 
@@ -41,7 +38,6 @@ const BillingPage = () => {
       onError: () => {
         toast.error("Failed to create order");
       },
-
       mutationKey: ["createOrder"],
     });
 
@@ -55,10 +51,7 @@ const BillingPage = () => {
   }
 
   const handlePrintBill = async () => {
-    // TODO: Implement print bill functionality
-    console.log("Printing bill for items");
     const completedOrder = completeOrder(employee!);
-
     createOrderMutation(completedOrder);
   };
 
@@ -83,32 +76,24 @@ const BillingPage = () => {
         height: "100%",
       }}
     >
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          height: "100%",
-          flexWrap: "nowrap",
-        }}
-      >
-        {/* Left Section - Product Selection (2/3 width on desktop, full width on tablet) */}
-        <Grid item xs={12} md={8}>
+      <Grid container spacing={2} height="100%">
+        {/* Product Selection Section */}
+        <Grid item xs={12} md={8} lg={9} height="100%">
           <Box
             sx={{
               backgroundColor: "#ffffff",
-              borderRadius: isTablet ? "12px" : "16px",
-              padding: isTablet ? "16px" : "24px",
-              height: "100%",
-              overflowY: "auto",
+              borderRadius: "16px",
+              padding: "24px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+              marginBottom: 0,
+              height: "100%",
             }}
           >
             {renderLeftSection()}
           </Box>
         </Grid>
 
-        {/* Right Section - Order Summary (1/3 width on desktop, fixed width on tablet) */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4} lg={3}>
           <OrderSummary
             onPrintBill={handlePrintBill}
             isCreatingOrder={isCreatingOrder}

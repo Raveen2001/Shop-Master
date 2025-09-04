@@ -1,9 +1,9 @@
 import { Box, IconButton, Typography } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { QuantitySelector } from "ui";
-import { useBillingStore } from "../../store/billingStore";
+import { useBillingStore } from "../../../store/billingStore";
 import { TOrderItemFormSchema } from "schema";
-import { useGlobalStore } from "../../store";
+import { useGlobalStore } from "../../../store";
 
 type OrderItemProps = {
   orderItem: TOrderItemFormSchema;

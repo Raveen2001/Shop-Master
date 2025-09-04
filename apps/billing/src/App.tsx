@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 import "ui/styles.css";
+import "./global.css";
 
 const queryClient = new QueryClient();
 
@@ -13,7 +14,6 @@ function AppContent() {
   // get the logged in status from local storage
   const isLoggedIn = useMemo(() => !!localStorage.getItem("token"), []);
 
-  console.log("ENVS", import.meta.env);
   // redirect to login page if not logged in
   useEffect(() => {
     const location = window.location.pathname;
