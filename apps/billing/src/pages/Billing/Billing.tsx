@@ -1,4 +1,4 @@
-import { Box, Grid, useTheme, toast } from "ui";
+import { Box, Grid, toast, useMediaQuery, useTheme } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
 import {
@@ -14,6 +14,8 @@ import { printBill } from "../../services/printer";
 import { convertOrderToPrinterOrder } from "../../utils/printer";
 
 const BillingPage = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { products, employee, productVariants } = useGlobalStore();
   const {
     currentStep,
@@ -71,21 +73,20 @@ const BillingPage = () => {
   return (
     <Box
       sx={{
-        padding: "16px",
+        padding: isMobile ? "8px" : "16px",
         backgroundColor: "#f5f5f5",
-        height: "100%",
+        height: "100dvh",
       }}
     >
-      <Grid container spacing={2} height="100%">
+      <Grid container spacing={isMobile ? 0 : 2} height="100%">
         {/* Product Selection Section */}
         <Grid item xs={12} md={8} lg={9} height="100%">
           <Box
             sx={{
               backgroundColor: "#ffffff",
-              borderRadius: "16px",
-              padding: "24px",
+              borderRadius: isMobile ? "0" : "16px",
+              padding: isMobile ? "8px" : "24px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-              marginBottom: 0,
               height: "100%",
             }}
           >

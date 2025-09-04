@@ -21,7 +21,7 @@ export const ProductVariantsView: React.FC = () => {
   );
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" height="100%">
       <Box className="flex justify-between">
         <Breadcrumb
           items={[
@@ -94,7 +94,7 @@ export const ProductVariantsView: React.FC = () => {
       </Box>
 
       {/* Variants Grid */}
-      <Grid container spacing={2}>
+      <Grid container spacing={2} height="100%" overflow="auto">
         {variants.map((variant) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={variant.id}>
             <ProductVariantCard variant={variant} />

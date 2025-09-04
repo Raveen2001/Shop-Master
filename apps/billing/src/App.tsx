@@ -35,7 +35,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppContent />
-      <ReactQueryDevtools initialIsOpen={false} position={"bottom"} />
+      {/* <ReactQueryDevtools initialIsOpen={false} position={"bottom"} /> */}
     </QueryClientProvider>
   );
 }

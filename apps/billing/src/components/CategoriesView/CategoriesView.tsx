@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
-import { CategoryCard, Breadcrumb } from "ui";
+import { CategoryCard } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
 
@@ -12,8 +12,6 @@ export const CategoriesView: React.FC = () => {
 
   return (
     <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <Breadcrumb items={[{ label: "Categories" }]} showBackButton={false} />
-
       <Typography
         variant="h4"
         sx={{

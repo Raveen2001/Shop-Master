@@ -56,14 +56,14 @@ const MobileDrawer = ({ isOpen, onToggle, children }: MobileDrawerProps) => (
           borderTopLeftRadius: "20px",
           borderTopRightRadius: "20px",
           boxShadow: "0 -4px 20px rgba(0,0,0,0.2)",
-          maxHeight: "80vh",
+          maxHeight: "90dvh",
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
         }}
       >
         <DrawerHandle onToggle={onToggle} />
-        {children}
+        <Box sx={{ overflow: "auto" }}>{children}</Box>
       </Box>
     </Slide>
   </>

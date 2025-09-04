@@ -104,15 +104,12 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
     return (
       <>
         {/* Floating action button */}
-        {order.items.length > 0 && (
-          <FloatingActionButton
-            itemCount={order.items.length}
-            total={order.total}
-            isOpen={isDrawerOpen}
-            onToggle={toggleDrawer}
-          />
-        )}
-
+        <FloatingActionButton
+          itemCount={order.items.length}
+          total={order.total}
+          isOpen={isDrawerOpen}
+          onToggle={toggleDrawer}
+        />
         {/* Mobile drawer */}
         <MobileDrawer isOpen={isDrawerOpen} onToggle={toggleDrawer}>
           <_OrderSummary
