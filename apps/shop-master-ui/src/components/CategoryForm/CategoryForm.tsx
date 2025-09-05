@@ -162,7 +162,7 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
           props.category?.name || props.category?.tamilName || "Category"
         }
         isLoading={isDeleteLoading}
-        error={deleteError?.response?.data?.message || null}
+        error={deleteError?.response?.data?.error || null}
       />
     </>
   );

@@ -74,7 +74,7 @@ const QuantitySelector = ({
           inputProps={{
             style: {
               textAlign: "center",
-              fontSize: "14px",
+              fontSize: "18px",
               fontWeight: 500,
               minWidth: "30px",
             },

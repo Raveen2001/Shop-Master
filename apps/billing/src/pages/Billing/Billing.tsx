@@ -75,7 +75,7 @@ const BillingPage = () => {
       sx={{
         padding: isMobile ? "8px" : "16px",
         backgroundColor: "#f5f5f5",
-        height: "100dvh",
+        height: "100%",
       }}
     >
       <Grid container spacing={isMobile ? 0 : 2} height="100%">

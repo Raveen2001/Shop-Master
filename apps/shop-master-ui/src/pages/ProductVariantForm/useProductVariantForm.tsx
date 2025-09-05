@@ -17,7 +17,7 @@ import { useGlobalStore } from "../../store/globalStore";
 import { TProductVariantFormProps } from "./ProductVariantForm";
 
 //TODO: add image upload
-const useProductVariantForm = (props?: TProductVariantFormProps) => {
+const useProductVariantForm = (props: TProductVariantFormProps) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -146,7 +146,7 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
   });
 
   const handleDelete = () => {
-    if (props?.variant?.id) {
+    if (props.variant?.id) {
       deleteMutation.mutate(props.variant.id);
     }
   };
@@ -155,7 +155,7 @@ const useProductVariantForm = (props?: TProductVariantFormProps) => {
     if (props.onSuccess) {
       props.onSuccess();
     } else {
-      navigate("/products");
+      navigate(`/products/${props.productId}`);
     }
   };
 

@@ -20,13 +20,23 @@ export const convertOrderToPrinterOrder = (
         (variant) => variant.id === item.productVariantId
       );
       let productName = "";
-
+      let productQuantity = "";
       if (variant) {
-        productName = `${variant.tamilName} - ${variant.noOfUnits}${variant.unit}`;
+        if (variant.onlyForBilling) {
+          productQuantity = `${item.quantity * variant.noOfUnits} ${
+            variant.unit
+          }`;
+        } else {
+          productQuantity = `${item.quantity} ${variant.unit}`;
+        }
+
+        productName = `${variant.tamilName} - ${productQuantity}`;
       }
       return {
         name: productName,
-        quantity: item.quantity,
+        quantity: variant?.onlyForBilling
+          ? item.quantity * variant.noOfUnits
+          : item.quantity,
         unitPrice: item.unitPrice,
         totalPrice: item.totalPrice,
         mrp: variant?.mrp || item.unitPrice,

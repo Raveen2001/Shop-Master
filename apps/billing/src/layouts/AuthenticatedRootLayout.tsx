@@ -12,7 +12,7 @@ const AuthenticatedRootLayout = () => {
   const { isAllDataLoaded, isLoading, isError } = useFetchDataForGlobalStore();
 
   return (
-    <Box className="flex h-screen flex-col">
+    <Box className="flex h-[100dvh] flex-col">
       {/* <BillingHeader /> */}
       <PageStatus
         isLoading={isLoading}

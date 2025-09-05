@@ -9,6 +9,7 @@ import {
 } from "schema";
 import { INITIAL_ORDER } from "../constants/order";
 import { CustomItemFormData } from "../components/AddCustomItemModal/AddCustomItemModal";
+import { roundToTwoDecimalPlaces } from "../utils/math";
 
 type IBillingStore = {
   // Navigation state
@@ -151,14 +152,16 @@ export const useBillingStore = create(
           // Update existing item quantity
           state.order.items[existingItemIndex].quantity += quantity;
           state.order.items[existingItemIndex].totalPrice =
-            state.order.items[existingItemIndex].quantity * variant.salePrice;
+            roundToTwoDecimalPlaces(
+              state.order.items[existingItemIndex].quantity * variant.salePrice
+            );
         } else {
           // Add new item
           state.order.items.push({
             productVariantId: variant.id,
             unitPrice: variant.salePrice,
             quantity,
-            totalPrice: quantity * variant.salePrice,
+            totalPrice: roundToTwoDecimalPlaces(quantity * variant.salePrice),
             discount: 0,
           });
         }
@@ -176,7 +179,9 @@ export const useBillingStore = create(
         // Generate a unique ID for custom items
         const customItemId = `custom-${Date.now()}`;
 
-        const totalPrice = customItem.quantity * customItem.unitPrice;
+        const totalPrice = roundToTwoDecimalPlaces(
+          customItem.quantity * customItem.unitPrice
+        );
 
         // Add custom item to order
         state.order.items.push({
@@ -203,7 +208,9 @@ export const useBillingStore = create(
         );
         if (item) {
           item.quantity = newQuantity;
-          item.totalPrice = newQuantity * item.unitPrice;
+          item.totalPrice = roundToTwoDecimalPlaces(
+            newQuantity * item.unitPrice
+          );
 
           const totalPrice = state.order.items.reduce(
             (sum, item) => sum + item.totalPrice,

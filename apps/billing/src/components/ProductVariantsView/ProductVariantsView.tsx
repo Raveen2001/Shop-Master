@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Typography, Grid, Divider, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Divider,
+  Button,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { Breadcrumb } from "ui";
 import { ProductVariantCard } from "../ProductVariantCard";
 import { useBillingStore } from "../../store/billingStore";
@@ -19,6 +27,9 @@ export const ProductVariantsView: React.FC = () => {
   const variants = store.productVariants.filter(
     (variant) => variant.productId === selectedProduct?.id
   );
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <Box display="flex" flexDirection="column" height="100%">
@@ -100,6 +111,9 @@ export const ProductVariantsView: React.FC = () => {
             <ProductVariantCard variant={variant} />
           </Grid>
         ))}
+
+        {/* Spacer for mobile to make space for the floating action button*/}
+        {isMobile && <Grid item xs={12} sx={{ height: "60px" }} />}
       </Grid>
 
       {variants.length === 0 && (

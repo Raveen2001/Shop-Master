@@ -161,7 +161,7 @@ const useProductForm = (props: TUseProductFormProps) => {
     if (props.onSuccess) {
       props.onSuccess();
     } else {
-      navigate("/products");
+      navigate("/categories");
     }
   };
 
