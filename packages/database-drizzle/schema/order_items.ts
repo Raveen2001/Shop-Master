@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uuid, integer, serial } from "drizzle-orm/pg-core";
+import { pgTable, uuid, integer, serial, text } from "drizzle-orm/pg-core";
 import { ordersDB } from "./orders";
 import { productVariantsDB } from "./product_variants";
 
@@ -14,6 +14,9 @@ export const orderItemsDB = pgTable("order_items", {
     () => productVariantsDB.id
   ),
 
+  // Custom product name for this order item (overrides product variant name)
+  customProductName: text("custom_product_name"),
+
   quantity: integer("quantity").notNull(),
   unitPrice: integer("unit_price").notNull(),
   totalPrice: integer("total_price").default(0).notNull(),
@@ -24,8 +27,10 @@ export const ORDER_ITEMS_DB_COLUMNS = [
   "id",
   "orderId",
   "productVariantId",
+  "customProductName",
   "quantity",
   "unitPrice",
+  "totalPrice",
   "discount",
 ] as const;
 
