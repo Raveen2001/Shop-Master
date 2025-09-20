@@ -1,6 +1,8 @@
 import { TOrderData, TProductVariantData, TShopData } from "schema";
 import { PrinterOrder, PrinterOrderItem } from "../types/printer";
 
+const INCLUDE_QUANTITY_UNITS = ["KG", "L"];
+
 export const convertOrderToPrinterOrder = (
   order: TOrderData,
   variants: TProductVariantData[],
@@ -25,15 +27,23 @@ export const convertOrderToPrinterOrder = (
       if (variant) {
         let productQuantity = "";
         if (variant.onlyForBilling) {
-          productQuantity = `${item.quantity * variant.noOfUnits} ${
-            variant.unit
-          }`;
+          productQuantity = `${item.quantity * variant.noOfUnits}`;
         } else {
-          productQuantity = `${variant.noOfUnits} ${variant.unit}`;
+          // dont include quantity if 1Box, 1Packet or 1PCS
+          // only include 1 if unit is KG or L
+          if (
+            (variant.noOfUnits === 1 &&
+              INCLUDE_QUANTITY_UNITS.includes(variant.unit)) ||
+            variant.noOfUnits !== 1
+          ) {
+            productQuantity = variant.noOfUnits.toString();
+          }
         }
+
+        productQuantity += variant.unit;
         productName = `${
           item.customProductName || variant.tamilName
-        } - ${productQuantity}`;
+        } [${productQuantity}]`;
 
         if (variant.onlyForBilling) {
           productName = `L ${productName}`;

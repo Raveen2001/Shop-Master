@@ -12,7 +12,21 @@ import { productsDB } from "./products";
 import { shopsDB } from "./shops";
 import { ownersDB } from "./owners";
 
-export const unitEnum = pgEnum("unit", ["KG", "L", "G", "ML", "PCS"]);
+export const unitEnum = pgEnum("unit", [
+  "KG",
+  "G",
+  "L",
+  "ML",
+  "PCS",
+  "RS",
+  "BOX",
+  "DOZEN",
+  "PACKET",
+  "BAG",
+  "BOTTLE",
+  "JAR",
+  "CAN",
+]);
 
 export const productVariantsDB = pgTable("product_variants", {
   id: uuid("id").defaultRandom().primaryKey(),

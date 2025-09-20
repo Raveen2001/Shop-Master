@@ -26,7 +26,6 @@ const ProductVariantRoutes: FastifyPluginAsyncTypebox = async (
     Body: TNewProductVariantsDB;
   }>("/create", CreateProductVariantOpts, async (req, reply) => {
     const { includeProduct } = req.query;
-    console.log("req.body", req.body);
 
     const productVariantBody = req.body;
     productVariantBody.ownerId = req.userInfo.data.id;

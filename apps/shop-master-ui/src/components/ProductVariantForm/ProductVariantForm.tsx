@@ -28,6 +28,7 @@ export type TProductVariantFormProps = {
   productId?: string;
   onSuccess?: () => void;
   variant?: TProductVariantData; // For editing existing variant
+  closeProductVariantForm?: () => void;
 };
 
 const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
@@ -50,9 +51,6 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
     isDeleteLoading,
     deleteError,
   } = useProductVariantForm(props);
-
-  // Check if this is being used in a modal context
-  const isModal = !!props.productId;
 
   const handleDeleteClick = () => {
     setIsDeleteDialogOpen(true);
@@ -167,6 +165,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                     {...register("noOfUnits")}
                     error={!!formErrors.noOfUnits}
                     helperText={formErrors.noOfUnits?.message}
+                    inputProps={{ inputMode: "decimal" }}
                     fullWidth
                   />
 
@@ -175,6 +174,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                     {...register("acquiredPrice")}
                     error={!!formErrors.acquiredPrice}
                     helperText={formErrors.acquiredPrice?.message}
+                    inputProps={{ inputMode: "decimal" }}
                     fullWidth
                   />
                   <TextField
@@ -182,6 +182,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                     {...register("salePrice")}
                     error={!!formErrors.salePrice}
                     helperText={formErrors.salePrice?.message}
+                    inputProps={{ inputMode: "decimal" }}
                     fullWidth
                   />
                   <TextField
@@ -189,6 +190,7 @@ const ProductVariantForm: FC<TProductVariantFormProps> = (props) => {
                     {...register("mrp")}
                     error={!!formErrors.mrp}
                     helperText={formErrors.mrp?.message}
+                    inputProps={{ inputMode: "decimal" }}
                     fullWidth
                   />
                 </Box>

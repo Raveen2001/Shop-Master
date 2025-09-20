@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { TProductData, TProductVariantData } from "schema";
 import { Row, ReactTable } from "ui";
 import { createColumnsDefs } from "./columns";

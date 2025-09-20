@@ -173,9 +173,9 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
             onBlur={handleBlur("unitPrice")}
             error={!!errors.unitPrice}
             helperText={errors.unitPrice}
+            inputProps={{ inputMode: "decimal", min: 0 }}
             fullWidth
             variant="outlined"
-            inputProps={{ min: 0 }}
           />
           <TextField
             label="Quantity"
@@ -187,7 +187,7 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
             helperText={errors.quantity}
             fullWidth
             variant="outlined"
-            inputProps={{ min: 1, step: 1 }}
+            inputProps={{ inputMode: "numeric", min: 1, step: 1 }}
           />
 
           {formData.quantity > 0 && formData.unitPrice > 0 && (

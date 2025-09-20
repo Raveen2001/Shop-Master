@@ -43,7 +43,7 @@ const EditablePrice = ({ price, productVariantId }: EditablePriceProps) => {
         autoFocus
         size="small"
         type="number"
-        inputProps={{ min: 0, step: 0.01 }}
+        inputProps={{ inputMode: "decimal", min: 0 }}
         sx={{
           "& .MuiInputBase-input": {
             fontSize: "16px",

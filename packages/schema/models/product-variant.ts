@@ -1,7 +1,21 @@
 import { TProductData } from "./product.js";
 import { object, string, InferType, number, boolean } from "yup";
 
-export const UNITS = ["KG", "G", "L", "ML", "PCS"] as const;
+export const UNITS = [
+  "KG",
+  "G",
+  "L",
+  "ML",
+  "PCS",
+  "RS",
+  "BOX",
+  "DOZEN",
+  "PACKET",
+  "BAG",
+  "BOTTLE",
+  "JAR",
+  "CAN",
+] as const;
 
 export const ProductVariantFormSchema = object({
   ownerId: string().required(),
