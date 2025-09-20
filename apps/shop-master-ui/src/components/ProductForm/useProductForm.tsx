@@ -115,8 +115,6 @@ const useProductForm = (props: TUseProductFormProps) => {
     // Clear any previous upload errors
     setUploadError(null);
 
-    console.log("Form submission started", { data, productImage });
-
     try {
       // Handle image upload if a new image is selected
       if (productImage) {
@@ -129,8 +127,6 @@ const useProductForm = (props: TUseProductFormProps) => {
       } else {
         console.log("No image to upload");
       }
-
-      console.log("Proceeding with product operation:", data);
 
       if (isEditMode) {
         updateMutation.mutate({

@@ -20,6 +20,7 @@ export type TCategoryFormProps = {
   parentCategoryId?: string | null;
   onSuccess?: () => void;
   category?: TCategoryData; // For editing existing category
+  closeCategoryForm?: () => void;
 };
 
 const CategoryForm: FC<TCategoryFormProps> = (props) => {
@@ -39,6 +40,7 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
     handleDelete,
     isDeleteLoading,
     deleteError,
+    uploadError,
   } = useCategoryForm(props);
 
   const handleDeleteClick = () => {
@@ -48,6 +50,7 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
   const handleDeleteConfirm = () => {
     handleDelete();
     setIsDeleteDialogOpen(false);
+    props.closeCategoryForm?.();
   };
 
   const handleDeleteCancel = () => {
@@ -147,6 +150,19 @@ const CategoryForm: FC<TCategoryFormProps> = (props) => {
           <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
             {mutateError?.response?.data.error ??
               "Something went wrong, please try again later"}
+          </Alert>
+        </Snackbar>
+
+        <Snackbar
+          open={!!uploadError}
+          autoHideDuration={6000}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+        >
+          <Alert severity="error" variant="filled" sx={{ width: "100%" }}>
+            {uploadError}
           </Alert>
         </Snackbar>
       </Box>

@@ -27,7 +27,7 @@ import CategoryForm from "./pages/CategoryForm";
 
 import ManageProducts from "./pages/ManageProducts";
 import ProductForm from "./components/ProductForm";
-import ProductVariantForm from "./pages/ProductVariantForm";
+import ProductVariantForm from "./components/ProductVariantForm";
 import ProductDetail from "./pages/ProductDetail";
 
 import ManageOrders from "./pages/ManageOrders";

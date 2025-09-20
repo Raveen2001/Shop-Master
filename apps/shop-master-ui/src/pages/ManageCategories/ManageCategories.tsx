@@ -126,6 +126,7 @@ const ManageCategories = () => {
         <CategoryForm
           onSuccess={closeCreateModal}
           parentCategoryId={currentCategoryId}
+          closeCategoryForm={closeCreateModal}
         />
       </Dialog>
 
@@ -152,6 +153,7 @@ const ManageCategories = () => {
         <CategoryForm
           onSuccess={closeEditModal}
           category={categoryToEdit || undefined}
+          closeCategoryForm={closeEditModal}
           parentCategoryId={categoryToEdit?.parentId}
         />
       </Dialog>

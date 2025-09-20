@@ -9,6 +9,7 @@ import {
   updateCategory,
   deleteCategory,
 } from "../../services/category";
+import { uploadImage } from "../../services/upload";
 import { useGlobalStore } from "../../store/globalStore";
 import { TCategoryFormProps } from "./CategoryForm";
 
@@ -20,6 +21,8 @@ const useCategoryForm = (props?: TCategoryFormProps) => {
   ]);
 
   const [categoryImage, setCategoryImage] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const isEditMode = !!props?.category;
 
   const queryClient = useQueryClient();
@@ -65,7 +68,6 @@ const useCategoryForm = (props?: TCategoryFormProps) => {
       queryClient.invalidateQueries({
         queryKey: ["shop", selectedShop?.id, "categories"],
       });
-      navigate("/categories");
     },
   });
 
@@ -83,20 +85,46 @@ const useCategoryForm = (props?: TCategoryFormProps) => {
       parentId: props?.parentCategoryId || props?.category?.parentId || null,
       shopId: props?.category?.shopId || selectedShop?.id || "",
       ownerId: props?.category?.ownerId || owner?.id || "",
+      image: props?.category?.image || null,
     },
   });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     if (!data.tamilName) data.tamilName = null;
     if (!data.parentId) data.parentId = null;
 
-    if (isEditMode) {
-      updateMutation.mutate({
-        id: props.category!.id,
-        data,
-      });
-    } else {
-      createMutation.mutate(data);
+    // Clear any previous upload errors
+    setUploadError(null);
+
+    try {
+      // Handle image upload if a new image is selected
+      if (categoryImage) {
+        console.log("Starting image upload...", categoryImage);
+        setIsUploading(true);
+        const uploadResult = await uploadImage(categoryImage);
+        console.log("Image upload successful:", uploadResult);
+        data.image = uploadResult.url;
+        setIsUploading(false);
+      } else {
+        console.log("No image to upload");
+      }
+
+      if (isEditMode && props.category) {
+        updateMutation.mutate({
+          id: props.category.id,
+          data,
+        });
+      } else {
+        createMutation.mutate(data);
+      }
+    } catch (error) {
+      console.error("Error in form submission:", error);
+      setIsUploading(false);
+      setUploadError(
+        error instanceof Error ? error.message : "Failed to upload image"
+      );
+      // Don't proceed with category creation/update if image upload fails
+      return;
     }
   });
 
@@ -119,7 +147,7 @@ const useCategoryForm = (props?: TCategoryFormProps) => {
     onSubmit,
     formErrors,
     isMutateError: mutation.isError,
-    isMutateLoading: mutation.isPending,
+    isMutateLoading: mutation.isPending || isUploading,
     mutateError: mutation.error,
     shop: selectedShop,
     owner,
@@ -128,6 +156,8 @@ const useCategoryForm = (props?: TCategoryFormProps) => {
     handleDelete,
     isDeleteLoading: deleteMutation.isPending,
     deleteError: deleteMutation.error,
+    isUploading,
+    uploadError,
   };
 };
 

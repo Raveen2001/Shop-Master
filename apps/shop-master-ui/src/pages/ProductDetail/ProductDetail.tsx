@@ -5,7 +5,7 @@ import { Box, Button, ReactTable, Typography, Card, Dialog } from "ui";
 import { Add, ArrowBack } from "ui/icons";
 import { getProductById } from "../../services/product";
 import { createColumnsDefs } from "./columns";
-import ProductVariantForm from "../ProductVariantForm/ProductVariantForm";
+import ProductVariantForm from "../../components/ProductVariantForm/ProductVariantForm";
 import { useGlobalStore } from "../../store/globalStore";
 import { TProductVariantData } from "schema";
 

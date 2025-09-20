@@ -22,7 +22,7 @@ import {
 import { Close } from "ui/icons";
 import { Controller } from "react-hook-form";
 import { UNITS, TProductVariantData } from "schema";
-import DeleteConfirmationDialog from "../../components/DeleteConfirmationDialog/DeleteConfirmationDialog";
+import DeleteConfirmationDialog from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 
 export type TProductVariantFormProps = {
   productId?: string;
