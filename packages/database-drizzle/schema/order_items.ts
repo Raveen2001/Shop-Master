@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uuid, integer, serial, text } from "drizzle-orm/pg-core";
+import { pgTable, uuid, decimal, serial, text } from "drizzle-orm/pg-core";
 import { ordersDB } from "./orders";
 import { productVariantsDB } from "./product_variants";
 
@@ -17,10 +17,10 @@ export const orderItemsDB = pgTable("order_items", {
   // Custom product name for this order item (overrides product variant name)
   customProductName: text("custom_product_name"),
 
-  quantity: integer("quantity").notNull(),
-  unitPrice: integer("unit_price").notNull(),
-  totalPrice: integer("total_price").default(0).notNull(),
-  discount: integer("discount").notNull(),
+  quantity: decimal("quantity").notNull(),
+  unitPrice: decimal("unit_price").notNull(),
+  totalPrice: decimal("total_price").notNull(),
+  discount: decimal("discount").notNull(),
 });
 
 export const ORDER_ITEMS_DB_COLUMNS = [

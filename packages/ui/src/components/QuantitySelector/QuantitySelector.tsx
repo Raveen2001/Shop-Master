@@ -54,8 +54,7 @@ const QuantitySelector = ({
       >
         <IconButton
           size="small"
-          onClick={() => onUpdateQuantity(Math.max(0.1, quantity - 1))}
-          disabled={quantity <= 0.1}
+          onClick={() => onUpdateQuantity(Math.max(0, quantity - 1))}
           sx={{
             padding: "4px",
             borderRadius: 0,

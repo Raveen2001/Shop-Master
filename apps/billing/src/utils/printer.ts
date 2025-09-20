@@ -1,5 +1,5 @@
 import { TOrderData, TProductVariantData, TShopData } from "schema";
-import { PrinterOrder } from "../types/printer";
+import { PrinterOrder, PrinterOrderItem } from "../types/printer";
 
 export const convertOrderToPrinterOrder = (
   order: TOrderData,
@@ -27,21 +27,24 @@ export const convertOrderToPrinterOrder = (
             variant.unit
           }`;
         } else {
-          productQuantity = `${item.quantity} ${variant.unit}`;
+          productQuantity = `${variant.noOfUnits} ${variant.unit}`;
         }
-
         productName = `${variant.tamilName} - ${productQuantity}`;
+
+        if (variant.onlyForBilling) {
+          productName = `L ${productName}`;
+        }
       }
-      return {
+      const orderItem: PrinterOrderItem = {
         name: productName,
-        quantity: variant?.onlyForBilling
-          ? item.quantity * variant.noOfUnits
-          : item.quantity,
+        quantity: variant?.onlyForBilling ? 1 : item.quantity,
         unitPrice: item.unitPrice,
         totalPrice: item.totalPrice,
         mrp: variant?.mrp || item.unitPrice,
         discount: item.discount || 0,
       };
+
+      return orderItem;
     }),
   };
 
