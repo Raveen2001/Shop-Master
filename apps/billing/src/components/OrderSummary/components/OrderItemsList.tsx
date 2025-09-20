@@ -1,7 +1,7 @@
 import { Box } from "ui";
 import { TOrderItemFormSchema } from "schema";
 import { Typography } from "@mui/material";
-import OrderItem from "./OrderItem";
+import OrderItem from "./OrderItem/OrderItem";
 
 type OrderItemsListProps = {
   items: TOrderItemFormSchema[];

@@ -38,6 +38,8 @@ type IBillingStore = {
   addToOrder: (variant: TProductVariantData, quantity?: number) => void;
   addCustomItemToOrder: (customItem: CustomItemFormData) => void;
   updateOrderItemQuantity: (variantId: string, newQuantity: number) => void;
+  updateOrderItemName: (variantId: string, newName: string) => void;
+  updateOrderItemUnitPrice: (variantId: string, newUnitPrice: number) => void;
   removeOrderItem: (variantId: string) => void;
   completeOrder: (employee: TEmployeeData) => TOrderFormSchema;
   clearOrder: () => void;
@@ -54,7 +56,6 @@ export const useBillingStore = create(
     categoryPath: [],
 
     order: INITIAL_ORDER,
-    customItems: [],
 
     setCurrentStep: (step) => {
       set((state) => {
@@ -160,6 +161,10 @@ export const useBillingStore = create(
           state.order.items.push({
             productVariantId: variant.id,
             unitPrice: variant.salePrice,
+            acquiredPrice: variant.acquiredPrice,
+            mrp: variant.mrp,
+            customProductName: null,
+
             quantity,
             totalPrice: roundToTwoDecimalPlaces(quantity * variant.salePrice),
             discount: 0,
@@ -190,6 +195,9 @@ export const useBillingStore = create(
           quantity: customItem.quantity,
           totalPrice: totalPrice,
           discount: 0,
+          acquiredPrice: customItem.acquiredPrice,
+          mrp: customItem.mrp,
+          customProductName: customItem.name,
         });
 
         // Update order total
@@ -210,6 +218,37 @@ export const useBillingStore = create(
           item.quantity = newQuantity;
           item.totalPrice = roundToTwoDecimalPlaces(
             newQuantity * item.unitPrice
+          );
+
+          const totalPrice = state.order.items.reduce(
+            (sum, item) => sum + item.totalPrice,
+            0
+          );
+          state.order.total = totalPrice;
+        }
+      });
+    },
+
+    updateOrderItemName: (variantId, newName) => {
+      set((state) => {
+        const item = state.order.items.find(
+          (item) => item.productVariantId === variantId
+        );
+        if (item) {
+          item.customProductName = newName;
+        }
+      });
+    },
+
+    updateOrderItemUnitPrice: (variantId, newUnitPrice) => {
+      set((state) => {
+        const item = state.order.items.find(
+          (item) => item.productVariantId === variantId
+        );
+        if (item) {
+          item.unitPrice = roundToTwoDecimalPlaces(newUnitPrice);
+          item.totalPrice = roundToTwoDecimalPlaces(
+            item.quantity * item.unitPrice
           );
 
           const totalPrice = state.order.items.reduce(

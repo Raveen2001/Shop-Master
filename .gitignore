@@ -34,3 +34,6 @@ yarn-error.log*
 .env
 **/dist/**
 **/uploads/**
+
+# bills
+**/receipts/**

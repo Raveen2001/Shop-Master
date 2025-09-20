@@ -18,6 +18,9 @@ export const orderItemsDB = pgTable("order_items", {
   customProductName: text("custom_product_name"),
 
   quantity: decimal("quantity").notNull(),
+
+  acquiredPrice: decimal("acquired_price").notNull(),
+  mrp: decimal("mrp").notNull(),
   unitPrice: decimal("unit_price").notNull(),
   totalPrice: decimal("total_price").notNull(),
   discount: decimal("discount").notNull(),

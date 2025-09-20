@@ -71,6 +71,13 @@
       "when": 1757825418753,
       "tag": "0009_naive_apocalypse",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1758353392825,
+      "tag": "0010_yielding_hydra",
+      "breakpoints": true
     }
   ]
 }

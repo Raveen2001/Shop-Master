@@ -15,13 +15,15 @@ export const convertOrderToPrinterOrder = (
       phone: shop.phone,
       gstin: "TO BE ADDED",
     },
+
     items: order.items.map((item) => {
+      console.log(item);
       const variant = variants.find(
         (variant) => variant.id === item.productVariantId
       );
-      let productName = "";
-      let productQuantity = "";
+      let productName = item.customProductName || "";
       if (variant) {
+        let productQuantity = "";
         if (variant.onlyForBilling) {
           productQuantity = `${item.quantity * variant.noOfUnits} ${
             variant.unit
@@ -29,7 +31,9 @@ export const convertOrderToPrinterOrder = (
         } else {
           productQuantity = `${variant.noOfUnits} ${variant.unit}`;
         }
-        productName = `${variant.tamilName} - ${productQuantity}`;
+        productName = `${
+          item.customProductName || variant.tamilName
+        } - ${productQuantity}`;
 
         if (variant.onlyForBilling) {
           productName = `L ${productName}`;
@@ -48,5 +52,6 @@ export const convertOrderToPrinterOrder = (
     }),
   };
 
+  console.log(printerOrder);
   return printerOrder;
 };

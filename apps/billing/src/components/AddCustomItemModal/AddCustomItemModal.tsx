@@ -13,6 +13,9 @@ import {
 import { Close as CloseIcon } from "@mui/icons-material";
 
 export type CustomItemFormData = {
+  name: string;
+  acquiredPrice: number;
+  mrp: number;
   quantity: number;
   unitPrice: number;
 };
@@ -20,6 +23,9 @@ export type CustomItemFormData = {
 type CustomItemFormErrors = {
   quantity?: string;
   unitPrice?: string;
+  acquiredPrice?: string;
+  mrp?: string;
+  name?: string;
 };
 
 type AddCustomItemModalProps = {
@@ -36,6 +42,9 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
   const [formData, setFormData] = useState<CustomItemFormData>({
     quantity: 1,
     unitPrice: 1,
+    name: "",
+    acquiredPrice: 0,
+    mrp: 0,
   });
 
   const [errors, setErrors] = useState<Partial<CustomItemFormErrors>>({});
@@ -82,6 +91,12 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
 
   const handleSubmit = () => {
     if (validateForm()) {
+      formData.name = formData.name.trim();
+      formData.unitPrice = parseFloat(formData.unitPrice.toString());
+      formData.quantity = parseInt(formData.quantity.toString());
+      formData.acquiredPrice = parseFloat(formData.acquiredPrice.toString());
+      formData.mrp = parseFloat(formData.mrp.toString());
+
       onAddItem(formData);
       handleClose();
     }
@@ -91,6 +106,9 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
     setFormData({
       quantity: 1,
       unitPrice: 1,
+      name: "",
+      acquiredPrice: 0,
+      mrp: 0,
     });
     setErrors({});
     onClose();
@@ -127,8 +145,26 @@ export const AddCustomItemModal: React.FC<AddCustomItemModalProps> = ({
         </IconButton>
       </DialogTitle>
 
-      <DialogContent sx={{ paddingTop: "0 !important" }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <DialogContent>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            paddingTop: "10px",
+          }}
+        >
+          <TextField
+            label="Item Name"
+            type="text"
+            value={formData.name}
+            onChange={handleChange("name")}
+            error={!!errors.name}
+            helperText={errors.name}
+            fullWidth
+            variant="outlined"
+            placeholder="Item name"
+          />
           <TextField
             label="Unit Price (₹)"
             type="number"

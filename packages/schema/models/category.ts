@@ -5,7 +5,7 @@ export const CategoryFormSchema = object({
   shopId: string().required(),
   name: string()
     .trim()
-    .min(3, "Name must be at least 3 characters")
+    .min(1, "Name must be at least 1 characters")
     .required("Name is required"),
 
   tamilName: string().trim().nullable(),

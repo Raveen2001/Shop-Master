@@ -33,12 +33,11 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
       ...req.body,
       createdAt: new Date(req.body.createdAt),
     };
-    console.log(data);
 
     const { insertedId } = (
       await fastify.db
         .insert(ordersDB)
-        .values(data)
+        .values(data as any)
         .onConflictDoNothing()
         .returning({ insertedId: ordersDB.id })
     )[0];
@@ -48,7 +47,10 @@ const OrderRoutes: FastifyPluginAsyncTypebox = async (
       orderId: insertedId,
     }));
 
-    await fastify.db.insert(orderItemsDB).values(orderItems).returning();
+    await fastify.db
+      .insert(orderItemsDB)
+      .values(orderItems as any)
+      .returning();
 
     const order = await fastify.db.query.ordersDB.findFirst({
       where: (ordersDB, { eq }) => eq(ordersDB.id, insertedId),

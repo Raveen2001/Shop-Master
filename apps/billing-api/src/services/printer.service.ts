@@ -206,17 +206,27 @@ export class PrinterService {
         ctx.font = "28px 'Noto Sans Tamil', 'Arial Unicode MS', Latha, Arial";
         order.items.forEach((item) => {
           const [itemName, itemQuantity] = item.name.split(" - ");
-          const trimmedName =
-            itemName.length > 20 ? itemName.substring(0, 20) : itemName;
-          const fullName = `${trimmedName}-${itemQuantity || ""}`;
+
+          const fullName = `${itemName.trim()}${itemQuantity ? `(${itemQuantity})` : ""}`;
 
           ctx.textAlign = "left";
+          if (fullName.length > 20) {
+            ctx.font =
+              "18px 'Noto Sans Tamil', 'Arial Unicode MS', Latha, Arial";
+          }
           ctx.fillText(fullName, 20, currentY);
+          ctx.font = "28px 'Noto Sans Tamil', 'Arial Unicode MS', Latha, Arial";
 
           ctx.textAlign = "right";
           ctx.fillText(item.unitPrice.toFixed(2), 450, currentY);
           ctx.fillText(item.quantity.toFixed(2), 550, currentY);
-          ctx.fillText(item.mrp.toFixed(2), 670, currentY);
+          ctx.fillText(
+            item.unitPrice <= item.mrp
+              ? item.mrp.toFixed(2)
+              : item.unitPrice.toFixed(2),
+            670,
+            currentY
+          );
           ctx.fillText(item.totalPrice.toFixed(2), 812, currentY);
 
           currentY += 40;
