@@ -224,7 +224,7 @@ export const getBillCanvas = (order: PrinterOrder): Canvas => {
   ctx.font = getFont(42, "bold");
   const totalText = `Total Amount : ₹${totalAmount.toFixed(2)}`;
   textWithUnderline(canvas, totalText, "center", canvas.width / 2, currentY);
-  currentY += 70;
+  //   currentY += 70;
 
   ctx.save();
 
