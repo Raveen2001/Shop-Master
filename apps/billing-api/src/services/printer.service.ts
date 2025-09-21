@@ -67,6 +67,7 @@ export class PrinterService {
   }
 
   async printOrder(order: PrinterOrder) {
+    this.initializeUSBPrinter();
     return new Promise((resolve, reject) => {
       try {
         // Format date and time
