@@ -121,6 +121,7 @@ const OrderItem = ({ orderItem }: OrderItemProps) => {
             onUpdateQuantity={(quantity) =>
               updateOrderItemQuantity(productVariantId, quantity)
             }
+            onRemoveQuantity={() => removeOrderItem(productVariantId)}
           />
           {productVariant?.onlyForBilling && (
             <Typography

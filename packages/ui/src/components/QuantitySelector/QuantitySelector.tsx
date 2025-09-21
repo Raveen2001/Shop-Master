@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 interface QuantitySelectorProps {
   quantity: number;
   onUpdateQuantity: (quantity: number) => void;
+  onRemoveQuantity: () => void;
 }
 
 const QuantitySelector = ({
   quantity,
   onUpdateQuantity,
+  onRemoveQuantity,
 }: QuantitySelectorProps) => {
   const [inputValue, setInputValue] = useState(quantity.toString());
 
@@ -28,8 +30,18 @@ const QuantitySelector = ({
   };
 
   const handleBlur = () => {
+    if (inputValue === "") {
+      onRemoveQuantity();
+      return;
+    }
+
     const numValue = parseFloat(inputValue);
-    if (isNaN(numValue) || numValue === 0) {
+    if (numValue === 0) {
+      onRemoveQuantity();
+      return;
+    }
+
+    if (isNaN(numValue)) {
       setInputValue(quantity.toString());
       return;
     }
@@ -54,7 +66,12 @@ const QuantitySelector = ({
       >
         <IconButton
           size="small"
-          onClick={() => onUpdateQuantity(Math.max(0, quantity - 1))}
+          onClick={() => {
+            onUpdateQuantity(Math.max(0, quantity - 1));
+            if (quantity - 1 <= 0) {
+              onRemoveQuantity();
+            }
+          }}
           sx={{
             padding: "4px",
             borderRadius: 0,

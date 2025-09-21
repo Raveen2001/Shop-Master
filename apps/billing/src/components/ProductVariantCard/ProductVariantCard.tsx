@@ -11,7 +11,8 @@ interface ProductVariantCardProps {
 export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
   variant,
 }) => {
-  const { addToOrder, updateOrderItemQuantity, order } = useBillingStore();
+  const { addToOrder, updateOrderItemQuantity, order, removeOrderItem } =
+    useBillingStore();
 
   const isVariantAddedToOrder = order.items.some(
     (item) => item.productVariantId === variant.id
@@ -104,7 +105,6 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
           <Typography
             variant="body1"
             sx={{
-              textDecoration: "line-through",
               color: "text.secondary",
               fontSize: "14px",
             }}
@@ -154,6 +154,7 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
             onUpdateQuantity={(quantity) =>
               updateOrderItemQuantity(variant.id, quantity)
             }
+            onRemoveQuantity={() => removeOrderItem(variant.id)}
           />
         )}
       </Box>
