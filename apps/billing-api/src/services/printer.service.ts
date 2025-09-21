@@ -212,8 +212,14 @@ export class PrinterService {
           ctx.textAlign = "left";
           if (fullName.length > 20) {
             ctx.font =
-              "18px 'Noto Sans Tamil', 'Arial Unicode MS', Latha, Arial";
+              "24px 'Noto Sans Tamil', 'Arial Unicode MS', Latha, Arial";
           }
+
+          if (fullName.length > 25) {
+            ctx.font =
+              "20px 'Noto Sans Tamil', 'Arial Unicode MS', Latha, Arial";
+          }
+
           ctx.fillText(fullName, 20, currentY);
           ctx.font = "28px 'Noto Sans Tamil', 'Arial Unicode MS', Latha, Arial";
 
