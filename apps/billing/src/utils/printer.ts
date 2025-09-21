@@ -15,7 +15,7 @@ export const convertOrderToPrinterOrder = (
       name: shop.name,
       address: shop.address,
       phone: shop.phone,
-      gstin: "TO BE ADDED",
+      // gstin: "TO BE ADDED",
     },
 
     items: order.items.map((item) => {
