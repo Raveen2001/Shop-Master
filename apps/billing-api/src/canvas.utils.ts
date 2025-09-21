@@ -107,7 +107,7 @@ export const getBillCanvas = (order: PrinterOrder): Canvas => {
   // Set default text properties
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
-  let currentY = 10;
+  let currentY = 70;
 
   // Shop header with underline
   ctx.font = getFont(42, "bold");
@@ -225,6 +225,8 @@ export const getBillCanvas = (order: PrinterOrder): Canvas => {
   const totalText = `Total Amount : ₹${totalAmount.toFixed(2)}`;
   textWithUnderline(canvas, totalText, "center", canvas.width / 2, currentY);
   currentY += 70;
+
+  ctx.save();
 
   return canvas;
 };
