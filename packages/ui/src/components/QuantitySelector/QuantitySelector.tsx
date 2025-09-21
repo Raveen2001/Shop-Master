@@ -71,6 +71,8 @@ const QuantitySelector = ({
           variant="standard"
           size="small"
           inputProps={{
+            inputMode: "decimal",
+
             style: {
               textAlign: "center",
               fontSize: "18px",
