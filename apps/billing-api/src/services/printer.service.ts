@@ -133,7 +133,7 @@ export class PrinterService {
       this.initializeUSBPrinter();
 
       await this.sendCanvasToPrinter(canvas);
-      return canvas;
+      return "Printed successfully";
     } catch (error) {
       console.error("❌ Failed to print order:", error);
       throw error;
