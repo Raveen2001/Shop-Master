@@ -6,3 +6,4 @@ export { CategoriesView } from "./CategoriesView";
 export { CategoryDetailsView } from "./CategoryDetailsView";
 export { ProductVariantsView } from "./ProductVariantsView";
 export { AddCustomItemModal } from "./AddCustomItemModal";
+export { default as FullscreenButton } from "./FullscreenButton";
