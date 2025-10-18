@@ -17,6 +17,12 @@ function App() {
   useEffect(() => {
     const location = window.location.pathname;
 
+    console.log("location", location);
+
+    if (location === "/config") {
+      return;
+    }
+
     if (!isLoggedIn) {
       router.navigate("/login");
       return;

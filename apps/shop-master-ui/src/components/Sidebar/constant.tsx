@@ -7,6 +7,7 @@ import {
   InventoryTwoTone,
   NoteTwoTone,
   NoteAddTwoTone,
+  SettingsTwoTone,
 } from "ui/icons";
 import { TSidebarItem } from "./models";
 
@@ -112,6 +113,17 @@ export const SIDEBAR_ITEMS: TSidebarItem[] = [
         path: "/shops",
         icon: <StoreTwoTone />,
         highlightPathPattern: /^\/shops(\/(edit|create))?$/,
+      },
+    ],
+  },
+  {
+    name: "Settings",
+    items: [
+      {
+        name: "Configuration",
+        path: "/config",
+        icon: <SettingsTwoTone />,
+        highlightPathPattern: /^\/config$/,
       },
     ],
   },

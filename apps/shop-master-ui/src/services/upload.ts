@@ -1,4 +1,5 @@
 import { axiosClient } from "../utils/axios";
+import { getImageBaseUrl } from "../utils/configStorage";
 
 export interface UploadResponse {
   url: string;
@@ -65,6 +66,6 @@ export const getImageUrl = (imagePath: string): string => {
   }
 
   // If it's a relative path, prepend the API base URL
-  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:9000";
+  const baseUrl = getImageBaseUrl();
   return `${baseUrl}${imagePath}`;
 };

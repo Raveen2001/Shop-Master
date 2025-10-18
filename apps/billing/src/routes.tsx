@@ -5,11 +5,16 @@ import Layout from "./layouts/Layout";
 
 import LoginPage from "./pages/Login";
 import BillingPage from "./pages/Billing";
+import ConfigPage from "./pages/Config";
 
 export const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/config",
+    element: <ConfigPage />,
   },
   {
     path: "/",
@@ -29,6 +34,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+
       {
         path: "*",
         element: <h1>404 Not Found</h1>,

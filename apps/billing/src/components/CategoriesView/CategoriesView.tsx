@@ -3,6 +3,7 @@ import { Box, Typography, Grid } from "@mui/material";
 import { CategoryCard } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
+import FullscreenButton from "../FullscreenButton";
 
 export const CategoriesView: React.FC = () => {
   const store = useGlobalStore();
@@ -12,16 +13,20 @@ export const CategoriesView: React.FC = () => {
 
   return (
     <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: 600,
-          marginBottom: "24px",
-          color: "text.primary",
-        }}
-      >
-        Browse Categories
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 600,
+            marginBottom: "24px",
+            color: "text.primary",
+          }}
+        >
+          Browse Categories
+        </Typography>
+
+        <FullscreenButton />
+      </Box>
 
       <Typography
         variant="body1"

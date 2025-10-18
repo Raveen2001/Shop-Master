@@ -1,11 +1,12 @@
 import axios from "axios";
+import { getApiBaseUrl, getPrinterApiBaseUrl } from "./configStorage";
 
 export const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: getApiBaseUrl(),
 });
 
 export const printerAxiosClient = axios.create({
-  baseURL: import.meta.env.VITE_PRINTER_API_BASE_URL,
+  baseURL: getPrinterApiBaseUrl(),
 });
 
 axiosClient.interceptors.request.use((config) => {

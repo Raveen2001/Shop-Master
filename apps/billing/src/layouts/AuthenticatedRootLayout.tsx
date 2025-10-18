@@ -6,13 +6,10 @@ import {
   // BillingHeader,
   BillingErrorState,
   BillingLoadingState,
-  FullscreenButton,
 } from "../components";
-import { useFullscreen } from "../hooks/useFullscreen";
 
 const AuthenticatedRootLayout = () => {
   const { isAllDataLoaded, isLoading, isError } = useFetchDataForGlobalStore();
-  const { isFullscreen } = useFullscreen();
 
   return (
     <Box className="flex h-[100dvh] flex-col">
@@ -23,38 +20,6 @@ const AuthenticatedRootLayout = () => {
         isAllDataLoaded={isAllDataLoaded}
       >
         <Box className="relative flex-1 overflow-auto">
-          {/* Fullscreen Button */}
-          <Box
-            sx={{
-              position: "fixed",
-              top: 16,
-              right: 16,
-              zIndex: 1000,
-            }}
-          >
-            <FullscreenButton />
-          </Box>
-
-          {/* Fullscreen indicator */}
-          {isFullscreen && (
-            <Box
-              sx={{
-                position: "fixed",
-                top: 16,
-                left: 16,
-                zIndex: 1000,
-                backgroundColor: "rgba(0, 0, 0, 0.7)",
-                color: "white",
-                padding: "8px 12px",
-                borderRadius: "4px",
-                fontSize: "12px",
-                fontWeight: "bold",
-              }}
-            >
-              FULLSCREEN MODE
-            </Box>
-          )}
-
           <Outlet />
         </Box>
       </PageStatus>

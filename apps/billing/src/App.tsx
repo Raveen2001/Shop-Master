@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useEffect, useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
@@ -17,6 +16,10 @@ function AppContent() {
   // redirect to login page if not logged in
   useEffect(() => {
     const location = window.location.pathname;
+
+    if (location === "/config") {
+      return;
+    }
 
     if (!isLoggedIn) {
       router.navigate("/login");

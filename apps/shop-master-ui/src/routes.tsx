@@ -23,7 +23,6 @@ import CustomerPaymentForm from "./pages/CustomerPaymentForm";
 
 import ManageCategories from "./pages/ManageCategories";
 import { CategoryProvider } from "./pages/ManageCategories/CategoryContext";
-import CategoryForm from "./pages/CategoryForm";
 
 import ManageProducts from "./pages/ManageProducts";
 import ProductForm from "./components/ProductForm";
@@ -32,6 +31,7 @@ import ProductDetail from "./pages/ProductDetail";
 
 import ManageOrders from "./pages/ManageOrders";
 import OrderForm from "./pages/OrderForm";
+import ConfigPage from "./pages/Config";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +41,10 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/config",
+    element: <ConfigPage />,
   },
   {
     path: "/",
