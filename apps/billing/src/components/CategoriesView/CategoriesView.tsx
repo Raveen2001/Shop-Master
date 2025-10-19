@@ -4,6 +4,7 @@ import { CategoryCard } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
 import FullscreenButton from "../FullscreenButton";
+import { getImageBaseUrl } from "../../utils/configStorage";
 
 export const CategoriesView: React.FC = () => {
   const store = useGlobalStore();
@@ -51,7 +52,11 @@ export const CategoriesView: React.FC = () => {
               height: "max-content",
             }}
           >
-            <CategoryCard category={category} onClick={selectCategory} />
+            <CategoryCard
+              category={category}
+              onClick={selectCategory}
+              baseURL={getImageBaseUrl()}
+            />
           </Grid>
         ))}
       </Grid>

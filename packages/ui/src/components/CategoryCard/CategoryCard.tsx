@@ -4,16 +4,17 @@ import { Edit } from "@mui/icons-material";
 import { TCategoryData } from "schema";
 
 // import env variables from process.env
-const { VITE_IMAGE_BASE_URL } = import.meta.env;
 
 interface CategoryCardProps {
   category: TCategoryData;
+  baseURL: string;
   onClick: (category: TCategoryData) => void;
   onEdit?: (category: TCategoryData) => void;
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({
   category,
+  baseURL,
   onClick,
   onEdit,
 }) => {
@@ -24,7 +25,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
         onClick={() => onClick(category)}
         sx={{
           backgroundImage: category.image
-            ? `url(${VITE_IMAGE_BASE_URL}${category.image})`
+            ? `url(${baseURL}${category.image})`
             : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",

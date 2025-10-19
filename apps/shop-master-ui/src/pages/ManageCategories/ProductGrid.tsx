@@ -4,6 +4,7 @@ import { useCategoryContext } from "./CategoryContext";
 import { useGlobalStore } from "../../store/globalStore";
 import { useNavigate } from "react-router-dom";
 import { TProductData } from "schema";
+import { getImageBaseUrl } from "../../utils/configStorage";
 
 interface ProductGridProps {
   onProductEdit?: (product: TProductData) => void;
@@ -41,6 +42,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ onProductEdit }) => {
       {filteredProducts.map((product) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
           <ProductCard
+            baseURL={getImageBaseUrl()}
             product={product}
             onClick={() => navigate(`/products/${product.id}`)}
             variants={product.variants || []}

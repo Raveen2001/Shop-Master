@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Card, Grid, LinearProgress, CategoryCard } from "ui";
 import { useCategoryContext } from "./CategoryContext";
 import { TCategoryData } from "schema";
+import { getImageBaseUrl } from "../../utils/configStorage";
 
 interface CategoryGridProps {
   onCategoryClick: (category: { id: string; name: string }) => void;
@@ -41,6 +42,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
       {filteredCategories.map((category) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={category.id}>
           <CategoryCard
+            baseURL={getImageBaseUrl()}
             category={category}
             onClick={onCategoryClick}
             onEdit={onCategoryEdit}

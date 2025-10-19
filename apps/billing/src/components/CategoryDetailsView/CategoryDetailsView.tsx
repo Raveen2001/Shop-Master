@@ -3,6 +3,7 @@ import { Box, Typography, Grid, Divider, Button } from "@mui/material";
 import { CategoryCard, ProductCard, Breadcrumb } from "ui";
 import { useGlobalStore } from "../../store";
 import { useBillingStore } from "../../store/billingStore";
+import { getImageBaseUrl } from "../../utils/configStorage";
 
 export const CategoryDetailsView: React.FC = () => {
   // Get subcategories of the current category
@@ -105,6 +106,7 @@ export const CategoryDetailsView: React.FC = () => {
                 <Grid item xs={12} sm={6} lg={4} key={subCategory.id}>
                   <CategoryCard
                     category={subCategory}
+                    baseURL={getImageBaseUrl()}
                     onClick={selectCategory}
                   />
                 </Grid>
@@ -146,6 +148,7 @@ export const CategoryDetailsView: React.FC = () => {
               {categoryProducts.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                   <ProductCard
+                    baseURL={getImageBaseUrl()}
                     product={product}
                     onClick={selectProduct}
                     variants={store.productVariants.filter(

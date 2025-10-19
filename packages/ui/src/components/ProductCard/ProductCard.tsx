@@ -4,11 +4,9 @@ import { Edit } from "@mui/icons-material";
 import { TProductData, TProductVariantData } from "schema";
 import { formatCurrency } from "../../utils/currency";
 
-// import env variables from process.env
-const { VITE_IMAGE_BASE_URL } = import.meta.env;
-
 interface ProductCardProps {
   product: TProductData;
+  baseURL: string;
   onClick: (product: TProductData) => void;
   variants: TProductVariantData[];
   onEdit?: (product: TProductData) => void;
@@ -18,6 +16,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onClick,
   variants,
+  baseURL,
   onEdit,
 }) => {
   const renderVariantInfo = () => {
@@ -78,7 +77,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         onClick={() => onClick(product)}
         sx={{
           backgroundImage: product.image
-            ? `url(${VITE_IMAGE_BASE_URL}${product.image})`
+            ? `url(${baseURL}${product.image})`
             : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
