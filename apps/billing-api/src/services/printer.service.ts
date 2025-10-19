@@ -2,7 +2,7 @@ import escpos from "escpos";
 // @ts-expect-error - escpos-usb package lacks TypeScript definitions
 import escposUSB from "escpos-usb";
 import { PrinterOrder } from "../types/order";
-import { createCanvas, CanvasRenderingContext2D, Canvas } from "canvas";
+import { Canvas } from "canvas";
 import fs from "fs";
 import path from "path";
 import { getBillCanvas } from "../canvas.utils";
